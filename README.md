@@ -187,22 +187,30 @@ sheet just means different numbers. **Record every new asset in `ASSETS.md`.**
 
 **Live site:** https://jhester599.github.io/combats/
 
-Deployment is automatic. Every push to `main` runs
-`.github/workflows/deploy-pages.yml`, which uploads the repo and publishes it —
-the same setup Fakeamon Spark uses. There is no build step; the workflow just
-hands the static files to Pages.
+The site is served straight from the `main` branch — GitHub Pages is set to
+**Deploy from a branch** (`main`, `/ (root)`). Because Battle Bats is plain
+static files with no build step, there is nothing to compile: **push to `main`
+and the site updates by itself** a minute or so later.
 
-You can also re-run it by hand from the repo's **Actions** tab →
-*Deploy to GitHub Pages* → **Run workflow**.
+You can watch a deploy land in the repo's **Actions** tab, as a run named
+*pages build and deployment*.
 
-The workflow turns Pages on by itself the first time it runs
-(`enablement: true`), so there is no one-time switch to flip in Settings. The
-repo does have to stay **public** for Pages on a free GitHub account.
+### Settings behind it (already done, for reference)
 
-The empty `.nojekyll` file in the root is a belt-and-braces measure: this
-workflow doesn't run Jekyll anyway, but if the site is ever switched to the
-older "deploy from a branch" mode, `.nojekyll` stops GitHub ignoring folders
-that start with an underscore.
+- **Settings → Pages → Build and deployment → Source:** *Deploy from a branch*
+- **Branch:** `main`, folder `/ (root)`
+- The repo must stay **public** for Pages on a free GitHub account.
+
+The empty `.nojekyll` file in the root matters in this mode: serving a branch
+directly runs the files through Jekyll first, and `.nojekyll` turns that off so
+every file is published exactly as committed.
+
+> Fakeamon Spark publishes a different way — a GitHub Actions workflow
+> (`.github/workflows/deploy-pages.yml`) that uploads the site on each push.
+> Both end up in the same place. Branch deploy is the simpler of the two and
+> needs no workflow file at all, which is why this repo uses it. Switching to
+> the Actions style later just means changing the Source setting to *GitHub
+> Actions* and adding the workflow back.
 
 ## Ideas for later
 
