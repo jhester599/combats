@@ -17,9 +17,12 @@
    attackInterval seconds between hits (SMALLER = attacks faster)
    range          how far away (in pixels) it can hit from
    speed          pixels it walks per second
-   color          the colour of the placeholder art
+   color          the colour of the placeholder art (ignored once real art exists)
    enemy          true = belongs to the bad guys, false/missing = your team
-   sprite         which picture sheet to use (for now we draw it ourselves)
+   sprite         which picture sheet to use
+   scale          how big to draw it. 1 = the picture's real size, 0.5 = half.
+                  This is how two units drawn at the same size in the art tool
+                  end up looking big and small in the game.
    anims          which picture frames to use for each animation
 
    DAMAGE PER SECOND (DPS) = attack / attackInterval
@@ -49,19 +52,24 @@ window.UNITS = {
     attackInterval: 0.6,   // seconds between hits
     range: 40,             // pixels
     speed: 90,             // pixels per second
-    color: '#6fd3ff',      // <-- TRY ME: any colour you like, e.g. '#ff00ff'
+    color: '#6fd3ff',      // only used by placeholder art - this bat has real art now
     sprite: 'scoutBat',
+    scale: 0.75,           // <-- TRY ME: makes the Scout look small and nippy
 
-    // Which frames of the picture sheet to play for each action.
-    // (Our placeholder art is drawn to match these numbers exactly, so if you
-    //  swap in a real sprite sheet later, just update the numbers here.)
+    // REAL ART, but only ONE picture so far.
+    // Lewis drew this in PixelLab as a single 64x64 pose, so all four actions
+    // point at frame 0 and the bat does not actually animate yet.
+    // When animated frames arrive, run tools/pack-spritesheet.js and paste the
+    // block it prints in here - nothing else needs to change.
     anims: {
-      frameWidth: 48,
-      frameHeight: 48,
-      idle:   { start: 0,  end: 1,  frameRate: 4,  repeat: -1 },  // -1 = loop forever
-      walk:   { start: 2,  end: 5,  frameRate: 11, repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 14, repeat: 0  },  // 0 = play once
-      death:  { start: 9,  end: 12, frameRate: 9,  repeat: 0  }
+      frameWidth: 64,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },  // -1 = loop forever
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },  // 0 = play once
+      // With one frame, frameRate here just sets how long the death fade takes:
+      // 1 frame / 2 per second = half a second.
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -74,15 +82,18 @@ window.UNITS = {
     attackInterval: 1.4,
     range: 46,
     speed: 45,
-    color: '#b487ff',
+    color: '#b487ff',      // only used by placeholder art - this bat has real art now
     sprite: 'bruteBat',
+    scale: 1.05,           // <-- TRY ME: makes the Brute loom over the Scout
+
+    // REAL ART, single pose - same note as the Scout Bat above.
     anims: {
       frameWidth: 64,
       frameHeight: 64,
-      idle:   { start: 0,  end: 1,  frameRate: 3,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 7,  repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 9,  repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 7,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -110,6 +121,7 @@ window.UNITS = {
     speed: 62,
     color: '#ff9d5c',
     sprite: 'critter',
+    scale: 1,              // still placeholder art, drawn at its natural size
     anims: {
       frameWidth: 48,
       frameHeight: 48,
@@ -132,6 +144,7 @@ window.UNITS = {
     speed: 38,
     color: '#e8574d',
     sprite: 'bruiser',
+    scale: 1,              // still placeholder art, drawn at its natural size
     anims: {
       frameWidth: 64,
       frameHeight: 64,

@@ -20,7 +20,11 @@ window.CONFIG = {
   screen: {
     width: 960,
     height: 540,
-    backgroundColor: '#150f2b'   // the colour behind everything
+    backgroundColor: '#150f2b',  // the colour behind everything
+
+    // Our bats are PIXEL ART. Without this the browser smooths them when they
+    // are scaled and they go blurry; with it, every pixel stays a crisp square.
+    pixelArt: true
   },
 
   /* ---------------------------------------------------------------------
@@ -111,7 +115,12 @@ window.CONFIG = {
   healthBar: {
     unitWidth: 34,
     unitHeight: 5,
-    unitOffsetY: -54,     // how far above the unit the bar floats
+
+    // How far above the TOP OF THE BAT its bar floats. The game works out each
+    // bat's height itself (frame size x its scale), so a big bat's bar sits
+    // higher than a small one's automatically - change a unit's scale and the
+    // bar follows it.
+    unitBarGap: 8,
     baseWidth: 88,
     baseHeight: 12,
     baseOffsetY: -104,
@@ -165,7 +174,12 @@ window.CONFIG = {
 
     cooldownOverlayColor: 0x000000,
     cooldownOverlayAlpha: 0.62,
-    disabledTextAlpha: 0.45
+    disabledTextAlpha: 0.45,
+
+    // How big the little bat picture on each button is. This gets multiplied
+    // by the unit's own "scale" from units.js, so a Scout Bat's portrait is
+    // smaller than a Brute Bat's - same as on the battlefield.
+    portraitScale: 0.7
   },
 
   /* ---------------------------------------------------------------------

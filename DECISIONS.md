@@ -47,7 +47,8 @@ answers.)*
 
 | # | Question | Decision | Why | Date |
 |---|---|---|---|---|
-| — | — | *waiting on Round 1* | — | — |
+| 1 | **B4** (part) — what the player bats look like | **Scout Bat = small brown bat in blue flight goggles. Brute Bat = heavier bat in a cape.** Lewis made both in PixelLab. | Lewis's call as creative director — he drew them. Folded into `DESIGN.md` §9 and `ASSETS.md`. **B4 stays open for the enemies.** | 2026-09-18 |
+| 2 | Sizing two same-size sprites | Both art files are **64×64**; the size difference is done in game with a per-unit **`scale`** (Scout 0.75, Brute 1.05) | Lewis draws everything at one convenient size and we tune how big it looks without re-exporting. One number in `data/units.js`. | 2026-09-18 |
 
 ---
 
@@ -75,7 +76,7 @@ These were settled while building Milestone 1. **Any of them can be overruled**
 | B1 | Why are the bats fighting? | §1 Vision, §10 Story | 🔲 On the plate |
 | B2 | The world's name & look | §1 Vision | 🔲 On the plate |
 | B3 | Who is the enemy? | §4 The Enemy | 🔲 On the plate |
-| B4 | What the bats look like | §9 Look & Sound | 🔲 On the plate |
+| B4 | What things look like | §9 Look & Sound | ✅ player bats done, enemies open |
 | B5 | The third bat | §3 The Bats | 🔲 On the plate |
 | B6 | Special powers? | §3 The Bats | 🔲 Open (M5) |
 | B7 | How strict is saving up? | §3 The Bats | 🔲 On the plate |
@@ -92,3 +93,4 @@ These were settled while building Milestone 1. **Any of them can be overruled**
 | B18 | The base-breaking moment | §9 Look & Sound | 🔲 Open (anytime) |
 | B19 | Can you upgrade a bat? | §8 Progression | 🔲 Open (M4) |
 | B20 | A fast-forward button? | §5 Energy & Deploying | 🔲 Open (anytime) |
+| B21 | Animate the bats, or one pose? | §9 Look & Sound | 🔲 Open (**next art job**) |

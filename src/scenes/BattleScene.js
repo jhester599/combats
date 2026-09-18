@@ -329,7 +329,9 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
   // A little portrait of the bat so you can tell the buttons apart at a glance.
   var portrait = this.add.sprite(x + 34, y + (b.height / 2) + 12, stats.sprite);
   portrait.setOrigin(0.5, 1);
-  portrait.setScale(0.75);
+  // Multiplying by the unit's own scale keeps the buttons telling the same
+  // story as the battlefield: the Scout's picture is smaller than the Brute's.
+  portrait.setScale(b.portraitScale * window.Unit.scaleOf(stats));
   portrait.play(unitKey + '_idle');
 
   var nameText = this.add.text(x + 62, y + 14, stats.name, {

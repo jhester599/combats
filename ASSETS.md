@@ -52,7 +52,15 @@ committed PNG.
 
 | Sprite | Made by | Terms | When |
 |---|---|---|---|
-| *(none yet)* | | | |
+| `assets/sprites/scoutBat.png` — Scout Bat (goggles) | Lewis, via PixelLab (AI-generated) | ⚠️ **see note below** | 2026-09-18 |
+| `assets/sprites/bruteBat.png` — Brute Bat (cape) | Lewis, via PixelLab (AI-generated) | ⚠️ **see note below** | 2026-09-18 |
+
+Both are single 64×64 poses with transparency — **one frame each, no animation
+yet.** They are drawn at different sizes in game via each unit's `scale` in
+`data/units.js` (Scout 0.75, Brute 1.05), not by resizing the files.
+
+⚠️ **Still to confirm:** what Jeff's PixelLab plan says about ownership and
+commercial use. Write the answer here once so nobody has to look it up again.
 
 ### Art we plan to use (researched, licences checked)
 

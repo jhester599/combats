@@ -32,7 +32,7 @@ That's question **B7**.
 
 ## 🟡 Round 1 — eight questions
 
-**This round:** B1, B2, B3, B4, B5, B7, B10, B13.
+**This round:** B1, B2, B3, ~~B4~~ ✅, B5, B7, B10, B13.
 *(The numbers aren't 1-8 because they come from the full question bank in
 `HOMEWORK_BACKLOG.md` — these are just the eight that matter first.)*
 
@@ -85,7 +85,28 @@ placeholders and both are currently orange and red blobs.
 
 ---
 
-### 🔲 B4. INVENT: What do our bats actually look like? 🎨 *(needed by M3 — real art)*
+### ✅ B4. INVENT: What do our bats actually look like? 🎨 *(player bats DONE 2026-09-18)*
+
+> 🎉 **You did this one — in PixelLab!** The **Scout Bat** in blue flight
+> goggles and the **Brute Bat** in its cape are **in the game now**. Go look:
+> https://jhester599.github.io/combats/
+>
+> You drew them both at 64×64 and we made the Scout smaller *in the game*
+> (`scale: 0.75`) and the Brute bigger (`scale: 1.05`) — so you never have to
+> worry about size when you draw, just change one number afterwards.
+>
+> **Still to do for this question:** the two enemies are still boring orange and
+> red blobs. They need your treatment next — that's tied to **B3** (who the
+> enemy actually *is*).
+>
+> **And a new question came out of it — B21:** your bats have *one pose*, so
+> they slide along without flapping. Do you want to make walk / attack / death
+> frames in PixelLab, or leave them as one pose for now? *(In
+> `HOMEWORK_BACKLOG.md`.)*
+
+<details>
+<summary>The original question</summary>
+
 
 Right now the game **draws its own bats** — round body, flappy wings, two white
 eyes. They're fine, but they're not *designed*.
@@ -97,7 +118,8 @@ Tell Dad the vibe:
   `color` in `data/units.js`. Try it!)*
 - Does the Scout Bat look **small and fast**? Does the Brute look **heavy**?
 
-**Lewis's answer:** _(open)_
+**Lewis's answer:** ✅ Goggled Scout Bat + caped Brute Bat, made in PixelLab.
+</details>
 
 ---
 

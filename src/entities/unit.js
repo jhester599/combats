@@ -33,6 +33,11 @@ window.Unit = function (scene) {
   this.buildView();
 };
 
+/* A unit's draw size from data/units.js. Missing means "actual size". */
+window.Unit.scaleOf = function (stats) {
+  return (stats.scale === undefined) ? 1 : stats.scale;
+};
+
 /* -------------------------------------------------------------------------
    Build the on-screen parts ONCE. A container keeps the sprite and the
    health bar glued together so we only have to move one thing.
@@ -43,14 +48,16 @@ window.Unit.prototype.buildView = function () {
   this.sprite = this.scene.add.sprite(0, 0, '__DEFAULT');
   this.sprite.setOrigin(0.5, 1);   // feet at the bottom, standing on the lane
 
+  // The bars get their real height in spawn(), once we know how big this
+  // particular bat is drawn.
   this.barBack = this.scene.add.rectangle(
-    0, cfg.healthBar.unitOffsetY,
+    0, 0,
     cfg.healthBar.unitWidth, cfg.healthBar.unitHeight,
     cfg.healthBar.backColor, cfg.healthBar.backAlpha
   );
 
   this.barFill = this.scene.add.rectangle(
-    -cfg.healthBar.unitWidth / 2, cfg.healthBar.unitOffsetY,
+    -cfg.healthBar.unitWidth / 2, 0,
     cfg.healthBar.unitWidth, cfg.healthBar.unitHeight,
     cfg.healthBar.fillColorHigh
   );
@@ -89,6 +96,17 @@ window.Unit.prototype.spawn = function (unitKey, startX) {
   // Enemies are the same drawing, just mirrored to face left.
   this.sprite.setFlipX(this.stats.enemy === true);
   this.sprite.setAlpha(1);
+
+  // How big to draw it. Two units can be the same size in the art tool and
+  // still look big and small in the game - that is what "scale" is for.
+  var scale = window.Unit.scaleOf(this.stats);
+  this.sprite.setScale(scale);
+
+  // Float the health bar just above this bat's head. The sprite is drawn with
+  // its feet at 0 and grows upwards, so the top of it is minus its height.
+  var barY = -(this.stats.anims.frameHeight * scale) - cfg.healthBar.unitBarGap;
+  this.barBack.y = barY;
+  this.barFill.y = barY;
   this.sprite.setTexture(this.stats.sprite, this.stats.anims.idle.start);
 
   // A tiny offset so a pile of units reads as a crowd, not one blob.

@@ -18,7 +18,8 @@ Every creative-director decision for the whole game, in one place, sorted by
 - Numbers (B1, B2…) never change, even when questions move between files. They
   are how `DESIGN.md` §13 points at things.
 
-> **On the plate right now (Round 1):** B1, B2, B3, B4, B5, B7, B10, B13.
+> **On the plate right now (Round 1):** B1, B2, B3, B5, B7, B10, B13.
+> *(B4 ✅ answered 2026-09-18 — the player bats exist.)*
 > They're written out in full in `HOMEWORK.md` — go there to answer them.
 
 ---
@@ -89,8 +90,25 @@ all need names — and a name is usually where a level's *idea* comes from.
 
 ## 🎨 M3 — Look & sound
 
-### 🔲 B4. INVENT: What do the bats look like? *(needed by M3 — on the plate)*
-Full text in `HOMEWORK.md`. → `DESIGN.md` §9
+### ✅ B4. INVENT: What do the bats look like? *(player bats answered 2026-09-18)*
+Lewis made the **Scout Bat** (blue flight goggles) and **Brute Bat** (cape) in
+PixelLab; both are in the game. **Still open for the enemies** — see B3.
+→ `DESIGN.md` §9, `DECISIONS.md` #1
+
+### 🔲 B21. PICK ONE: Animate the bats, or leave them as one pose? *(next art job)*
+
+Your bats are **one picture each**, so they slide along the lane without
+flapping, and an attack looks the same as walking.
+
+- [ ] **A) Make animation frames in PixelLab** — a few frames each for walk,
+  attack and death. Best looking, most work. Drop them in a folder and
+  `tools/pack-spritesheet.js` turns them into what the game needs.
+- [ ] **B) Just a walk flap** — even 2 frames would make them feel alive.
+  Much less work than all four actions.
+- [ ] **C) Leave them still for now**, and Dad adds a little bob-and-lunge in
+  code so they move a bit without any new art.
+
+**Lewis picks:** _(open)_ → `DESIGN.md` §9
 
 ### 🔲 B15. PICK ONE: Music and sound effects *(needed by M3)*
 

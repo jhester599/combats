@@ -26,15 +26,22 @@ window.BootScene.prototype.constructor = window.BootScene;
 window.BootScene.prototype.preload = function () {
   this.showLoadingBar();
 
-  /* WHEN WE HAVE REAL ART, it gets loaded here, like this:
+  /* REAL ART.
+     One line per unit that has a real picture. Any unit NOT listed here gets
+     placeholder art drawn for it in create() instead - that happens
+     automatically, there is no list to keep in step.
 
-       this.load.spritesheet('scoutBat', 'assets/sprites/scout-bat.png', {
-         frameWidth: 48, frameHeight: 48
-       });
+     The frame size must match that unit's anims.frameWidth/frameHeight in
+     data/units.js. tools/pack-spritesheet.js prints the exact line to paste.
+     Remember to credit every picture in ASSETS.md. */
 
-     Add the file to /assets/sprites, add a line here, and delete that unit
-     from the placeholder list in create(). Remember to credit it in ASSETS.md!
-  */
+  this.load.spritesheet('scoutBat', 'assets/sprites/scoutBat.png', {
+    frameWidth: 64, frameHeight: 64
+  });
+
+  this.load.spritesheet('bruteBat', 'assets/sprites/bruteBat.png', {
+    frameWidth: 64, frameHeight: 64
+  });
 };
 
 /* -------------------------------------------------------------------------

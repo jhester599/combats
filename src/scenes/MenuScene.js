@@ -74,6 +74,7 @@ window.MenuScene.prototype.drawBackdrop = function () {
     );
 
     bat.setAlpha(0.22);
+    bat.setScale(window.Unit.scaleOf(window.UNITS[keys[i % keys.length]]));
     bat.play(keys[i % keys.length] + '_walk');
 
     // Gentle bobbing, using Phaser's built-in tween engine.

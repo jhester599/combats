@@ -212,8 +212,21 @@ Nothing is saved yet. Every visit starts fresh at Level 1.
 
 ## 9. Look & Sound
 
-**Art today is a placeholder that draws itself.** At startup the game paints a
-sprite sheet for each unit — a round body, flapping wings, two eyes — with real
+**DECIDED (2026-09-18) — the player bats have real art.** Lewis made both in
+PixelLab: the **Scout Bat** is a small brown bat in blue flight goggles, the
+**Brute Bat** a heavier one in a cape. They are one 64×64 pose each, drawn at
+different sizes in game through each unit's `scale` (Scout 0.75, Brute 1.05) —
+so "make them both 64×64 and size them in the game" is now the pipeline.
+
+**They do not animate yet.** One pose means idle, walk, attack and death all
+show the same frame; death is a half-second fade. Getting walk/attack/death
+cycles out of PixelLab is the next art job. *(See B21.)*
+
+**The enemies are still placeholder** — flat orange and red shapes, and they
+look it next to the real bats. *(B3 decides what they should be.)*
+
+**How placeholder art works,** for the units that still use it: at startup the
+game paints a sprite sheet — a round body, flapping wings, two eyes — with real
 **idle / walk / attack / death** frames, sliced exactly like a downloaded sheet.
 
 That's deliberate: swapping in real art means adding a file and one load line.
@@ -228,7 +241,8 @@ anything**. The moment B4 is answered, sprites can go straight in.
 
 There is **no sound at all** yet.
 
-**`[TO DECIDE]` — what should the bats actually look like?** *(B4)*
+**`[TO DECIDE]` — what should the *enemies* look like?** *(B4, and B3 for what they are)*
+**`[TO DECIDE]` — do the bats get animation frames, or stay as one pose?** *(B21)*
 **`[TO DECIDE]` — music and sound effects?** *(B15)*
 **`[TO DECIDE]` — what happens visually when a bat dies?** *(B16)*
 **`[TO DECIDE]` — what does the enemy base do when it breaks?** *(B18)*
@@ -287,7 +301,7 @@ Full detail is in `README.md`; the design-relevant parts:
 | B1 | Why are the bats fighting? | §1, §10 | anytime |
 | B2 | The world's name and look | §1 | M3 |
 | B3 | Who is the enemy? | §4 | M2 |
-| B4 | What do the bats look like? | §9 | M3 |
+| B4 | What things look like | §9 | ✅ player bats done; enemies open |
 | B5 | The third bat | §3 | **M2 — next up** |
 | B6 | Special powers, or stats only? | §3 | M5 |
 | B7 | How strict should saving up be? | §3 | M2 |
@@ -304,6 +318,7 @@ Full detail is in `README.md`; the design-relevant parts:
 | B18 | The base-breaking moment | §9 | anytime |
 | B19 | Can you upgrade a bat? | §8 | M4 |
 | B20 | A fast-forward button? | §5 | anytime |
+| B21 | Animate the bats, or leave them as one pose? | §9 | **M3 — next art job** |
 
 Questions live in `HOMEWORK_BACKLOG.md`; the current round is on Lewis's plate
 in `HOMEWORK.md`; answers get recorded through the loop in `DECISIONS.md`.

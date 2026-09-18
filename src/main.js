@@ -20,6 +20,11 @@ window.GAME_CONFIG = {
   backgroundColor: window.CONFIG.screen.backgroundColor,
   parent: 'game',                        // the <div id="game"> in index.html
 
+  render: {
+    // Keeps our pixel-art bats crisp instead of blurry when they are scaled.
+    pixelArt: window.CONFIG.screen.pixelArt
+  },
+
   scale: {
     // Shrink or grow the whole game to fit the window, keeping it the right
     // shape, and centre it. This is what makes it work on a phone.
