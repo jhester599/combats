@@ -155,6 +155,8 @@ src/
     base.js           a building with HP
 tools/
   balance-sim.js      plays a level with no graphics (testing only)
+  pack-spritesheet.js turns a folder of frames into one sprite sheet
+  png.js              reads/writes PNG files, used by the packer
 assets/             empty for now - real art goes here
 ```
 
@@ -185,6 +187,32 @@ the browser try to simulate ten minutes in one frame.
 back in the pool and the next bat reuses it, instead of being thrown away for
 the browser to clean up later (which shows up as stutter on phones). A whole
 battle only ever creates about 20 unit objects.
+
+### Adding real art
+
+When you have sprites — from PixelLab, Aseprite, an asset pack, anywhere — the
+game wants **one PNG per unit**: every frame in a single row, all the same size,
+in the order `idle`, `walk`, `attack`, `death`, drawn **facing right** (enemies
+are flipped automatically in code).
+
+Art tools rarely export it that way, so there's a packer:
+
+```bash
+node tools/pack-spritesheet.js path/to/frames --key scoutBat
+```
+
+It accepts frames as a subfolder per animation, as flat files named
+`walk_01.png`, or as one wide strip per animation — all three give the same
+result. It writes `assets/sprites/<key>.png` and then prints the exact
+`anims` block to paste into `data/units.js` and the exact `this.load.spritesheet`
+line for `BootScene.preload()`.
+
+It also checks the things that go wrong: frames of differing sizes (it stops and
+tells you, or `--pad` grows them all, bottom-aligned so feet stay put), blank
+frames, and art that leaves so much empty space the bat will look tiny in game.
+
+Like `balance-sim.js`, it's a developer tool — it needs nothing installed, and
+the game itself never loads it. **Record anything you add in `ASSETS.md`.**
 
 ### Placeholder art
 

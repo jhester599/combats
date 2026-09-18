@@ -33,6 +33,27 @@ because someone else's server went down.
 There are **no third-party art files in this repo yet.** The `assets/` folders
 are empty and waiting.
 
+### AI-generated art (PixelLab)
+
+We have a **PixelLab** account for this project. Sprites made there go in the
+table above like anything else, with one extra column's worth of care:
+
+- Put **"PixelLab (AI-generated)"** as the author, and note **which account**
+  made it and **roughly when**.
+- **Check your PixelLab plan's terms** for what you own and whether commercial
+  use is allowed, and write the answer here once so nobody has to re-check.
+  AI-generated art is not automatically CC0 — the terms are set by the service,
+  not by a public licence.
+- Keep the **prompt** next to the entry if it's worth regenerating later.
+
+Sprites are brought into the game with `tools/pack-spritesheet.js` (see
+README). Nothing calls PixelLab at play time — the game only ever loads a
+committed PNG.
+
+| Sprite | Made by | Terms | When |
+|---|---|---|---|
+| *(none yet)* | | | |
+
 ### Art we plan to use (researched, licences checked)
 
 Nothing below is in the repo yet. When one of these is added, move it up into

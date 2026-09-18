@@ -221,7 +221,10 @@ The frame layout is per-unit data, so a different sheet is just different
 numbers. Any unit that has real art skips the placeholder automatically.
 
 Licence-checked candidates are recorded in `ASSETS.md` (Calciumtrice's animated
-bat, CC BY; Kenney's UI packs, CC0).
+bat, CC BY; Kenney's UI packs, CC0). We also have a **PixelLab** account, so
+Lewis can generate bats himself — `tools/pack-spritesheet.js` turns whatever an
+art tool exports into the sheet the game wants, so **art is not blocking
+anything**. The moment B4 is answered, sprites can go straight in.
 
 There is **no sound at all** yet.
 
