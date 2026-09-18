@@ -30,6 +30,23 @@ Phaser engine, loaded by `<script>` tags in `index.html`.
 
 ---
 
+## Design docs
+
+Battle Bats is designed the same way Fakeamon Spark is — Lewis makes the
+creative calls, and there's a paper trail so nothing gets lost between sessions:
+
+| File | What it's for |
+|---|---|
+| **[`DESIGN.md`](DESIGN.md)** | The living design document. What the game *is*, what's decided, what's still open. |
+| **[`HOMEWORK.md`](HOMEWORK.md)** | 🦇 **Lewis's current questions.** Start here. |
+| **[`HOMEWORK_BACKLOG.md`](HOMEWORK_BACKLOG.md)** | Every question for the whole game, sorted by when we need it. |
+| **[`DECISIONS.md`](DECISIONS.md)** | The decision loop, and the log of what's been settled and why. |
+
+**Lewis answers → Dad tells Claude → the loop in `DECISIONS.md` folds it into
+the design and builds it.**
+
+---
+
 ## FOR LEWIS 🎨
 
 **You do not need to touch any code.** Everything you can change lives in the
