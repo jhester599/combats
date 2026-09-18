@@ -52,12 +52,21 @@ committed PNG.
 
 | Sprite | Made by | Terms | When |
 |---|---|---|---|
-| `assets/sprites/scoutBat.png` — Scout Bat (goggles) | Lewis, via PixelLab (AI-generated) | ⚠️ **see note below** | 2026-09-18 |
-| `assets/sprites/bruteBat.png` — Brute Bat (cape) | Lewis, via PixelLab (AI-generated) | ⚠️ **see note below** | 2026-09-18 |
+| `assets/sprites/scoutBat.png` — Scout Bat (goggles): 1 pose + 16-frame walk | Lewis, via PixelLab (AI-generated) | ⚠️ **see note below** | 2026-09-18 |
+| `assets/sprites/bruteBat.png` — Brute Bat (cape): 1 pose | Lewis, via PixelLab (AI-generated) | ⚠️ **see note below** | 2026-09-18 |
 
-Both are single 64×64 poses with transparency — **one frame each, no animation
-yet.** They are drawn at different sizes in game via each unit's `scale` in
-`data/units.js` (Scout 0.75, Brute 1.05), not by resizing the files.
+The **original exports** are kept in `assets/sprites/source/` so a sheet can be
+rebuilt when more frames arrive — see the README there for the exact command.
+The files in `assets/sprites/` are built from those by
+`tools/pack-spritesheet.js`; don't hand-edit them.
+
+All art faces **east (right)**; the game mirrors enemies itself. Units are
+drawn at different sizes through each one's `scale` in `data/units.js`
+(Scout 0.75, Brute 1.05), not by resizing the files — so everything can be
+drawn at a convenient 64×64.
+
+**Still missing:** attack and death frames for both bats, and a walk cycle for
+the Brute. Until those exist, those animations fall back to the standing pose.
 
 ⚠️ **Still to confirm:** what Jeff's PixelLab plan says about ownership and
 commercial use. Write the answer here once so nobody has to look it up again.

@@ -22,6 +22,11 @@
      --key <name>    the unit key in data/units.js (default: folder name)
      --order <list>  which animations, in order
                      (default: idle,walk,attack,death)
+     --frame <size>  the size of ONE frame, e.g. --frame 64 or --frame 48x64.
+                     Use this when an animation is a single image holding a
+                     GRID of frames (PixelLab exports a 4x4 grid of 64x64
+                     frames as one 256x256 png). Frames are read left to
+                     right, then top to bottom.
      --pad           if frames are different sizes, grow them all to the
                      biggest instead of stopping with an error. Frames are
                      centred left-to-right and sat on the BOTTOM edge, because
@@ -40,6 +45,10 @@
    or one wide strip per animation, which gets sliced into squares:
 
        my-bat/walk.png     (a 192x48 image = four 48x48 frames)
+
+   or one GRID per animation, with --frame telling it the cell size:
+
+       my-bat/walk.png     (a 256x256 image + --frame 64 = sixteen frames)
    ========================================================================= */
 
 var fs = require('fs');
@@ -69,6 +78,8 @@ function parseArgs(argv) {
       opts.out = argv[++i];
     } else if (argv[i] === '--key') {
       opts.key = argv[++i];
+    } else if (argv[i] === '--frame') {
+      opts.frame = parseFrameSize(argv[++i]);
     } else if (argv[i] === '--order') {
       opts.order = argv[++i].split(',').map(function (s) { return s.trim(); });
     } else if (argv[i].charAt(0) === '-') {
@@ -80,6 +91,24 @@ function parseArgs(argv) {
 
   opts.input = rest[0];
   return opts;
+}
+
+/* "64" or "48x64" -> { width, height } */
+function parseFrameSize(text) {
+  var m = /^(\d+)(?:[xX](\d+))?$/.exec(String(text || '').trim());
+
+  if (!m) {
+    throw new Error('--frame wants a size like 64 or 48x64, not "' + text + '"');
+  }
+
+  var w = parseInt(m[1], 10);
+  var h = m[2] ? parseInt(m[2], 10) : w;
+
+  if (w < 1 || h < 1) {
+    throw new Error('--frame size must be at least 1x1');
+  }
+
+  return { width: w, height: h };
 }
 
 /* "walk2.png" must come before "walk10.png", so compare digits as numbers. */
@@ -130,8 +159,39 @@ function findFrameFiles(dir, animName) {
   }).sort(naturalCompare).map(function (f) { return path.join(dir, f); });
 }
 
-/* Load files for one animation, slicing a wide strip if that is what it is. */
-function loadFrames(files, animName) {
+/* Cut a single image into a grid of cells, left to right then top to bottom. */
+function sliceGrid(img, frame, label, animName) {
+  if (img.width % frame.width !== 0 || img.height % frame.height !== 0) {
+    throw new Error(
+      label + ' is ' + img.width + 'x' + img.height + ', which does not divide\n' +
+      '  evenly into ' + frame.width + 'x' + frame.height + ' frames.\n' +
+      '  Check the --frame size matches what the art tool exported.'
+    );
+  }
+
+  var cols = img.width / frame.width;
+  var rows = img.height / frame.height;
+  var out = [];
+  var r;
+  var c;
+
+  for (r = 0; r < rows; r++) {
+    for (c = 0; c < cols; c++) {
+      out.push({
+        file: label + ' [row ' + r + ', col ' + c + ']',
+        image: png.crop(img, c * frame.width, r * frame.height, frame.width, frame.height)
+      });
+    }
+  }
+
+  console.log('  ' + animName + ': sliced ' + label + ' into a ' + cols + 'x' + rows +
+              ' grid = ' + out.length + ' frames');
+
+  return out;
+}
+
+/* Load files for one animation, slicing a strip or grid if that is what it is. */
+function loadFrames(files, animName, frame) {
   var images = files.map(function (f) {
     try {
       return { file: f, image: png.decode(fs.readFileSync(f)) };
@@ -140,8 +200,15 @@ function loadFrames(files, animName) {
     }
   });
 
-  // One file that is much wider than tall, by a whole number of squares?
-  // Treat it as a strip of square frames.
+  // One file plus an explicit --frame size means it is a grid (or a strip -
+  // a strip is just a grid one row tall).
+  if (images.length === 1 && frame) {
+    return sliceGrid(images[0].image, frame,
+                     path.basename(images[0].file), animName);
+  }
+
+  // No --frame given: one file much wider than tall, by a whole number of
+  // squares, is a strip of square frames.
   if (images.length === 1) {
     var img = images[0].image;
 
@@ -235,7 +302,7 @@ function main() {
       return;
     }
 
-    groups.push({ name: animName, frames: loadFrames(files, animName) });
+    groups.push({ name: animName, frames: loadFrames(files, animName, opts.frame) });
   });
 
   if (missing.length > 0) {

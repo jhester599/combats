@@ -48,6 +48,8 @@ answers.)*
 | # | Question | Decision | Why | Date |
 |---|---|---|---|---|
 | 1 | **B4** (part) — what the player bats look like | **Scout Bat = small brown bat in blue flight goggles. Brute Bat = heavier bat in a cape.** Lewis made both in PixelLab. | Lewis's call as creative director — he drew them. Folded into `DESIGN.md` §9 and `ASSETS.md`. **B4 stays open for the enemies.** | 2026-09-18 |
+| 3 | **B21** (part) — animate the bats? | **Yes.** Scout Bat has a **16-frame walk cycle**; Brute still one pose. Attack/death not drawn yet, so they reuse the standing pose. | Lewis made the frames in PixelLab. Packed with `tools/pack-spritesheet.js --frame 64`. | 2026-09-18 |
+| 2b | Which way the art faces | **Everything is drawn facing east (right).** The first two sprites faced west and were re-exported mirrored. | The game flips enemies itself, so one rule covers both sides. Recorded in `assets/sprites/source/README.md`. | 2026-09-18 |
 | 2 | Sizing two same-size sprites | Both art files are **64×64**; the size difference is done in game with a per-unit **`scale`** (Scout 0.75, Brute 1.05) | Lewis draws everything at one convenient size and we tune how big it looks without re-exporting. One number in `data/units.js`. | 2026-09-18 |
 
 ---
@@ -93,4 +95,4 @@ These were settled while building Milestone 1. **Any of them can be overruled**
 | B18 | The base-breaking moment | §9 Look & Sound | 🔲 Open (anytime) |
 | B19 | Can you upgrade a bat? | §8 Progression | 🔲 Open (M4) |
 | B20 | A fast-forward button? | §5 Energy & Deploying | 🔲 Open (anytime) |
-| B21 | Animate the bats, or one pose? | §9 Look & Sound | 🔲 Open (**next art job**) |
+| B21 | Animate the bats, or one pose? | §9 Look & Sound | ✅ Scout walks; Brute + attack/death open |

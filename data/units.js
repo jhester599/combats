@@ -56,20 +56,22 @@ window.UNITS = {
     sprite: 'scoutBat',
     scale: 0.75,           // <-- TRY ME: makes the Scout look small and nippy
 
-    // REAL ART, but only ONE picture so far.
-    // Lewis drew this in PixelLab as a single 64x64 pose, so all four actions
-    // point at frame 0 and the bat does not actually animate yet.
-    // When animated frames arrive, run tools/pack-spritesheet.js and paste the
-    // block it prints in here - nothing else needs to change.
+    // REAL ART from PixelLab, packed by tools/pack-spritesheet.js.
+    // The sheet is one pose + a 16-frame walk cycle = 17 frames.
+    //
+    // Two animations share frame 0 on purpose: there is no attack or death art
+    // yet, so both fall back to the standing pose. When Lewis draws them, put
+    // the new frames in assets/sprites/source/scoutBat/, re-run the packer, and
+    // paste the block it prints over this one.
     anims: {
       frameWidth: 64,
       frameHeight: 64,
-      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },  // -1 = loop forever
-      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
-      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },  // 0 = play once
-      // With one frame, frameRate here just sets how long the death fade takes:
-      // 1 frame / 2 per second = half a second.
-      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
+      idle:   { start: 0, end:  0, frameRate: 1,  repeat: -1 },  // -1 = loop forever
+      walk:   { start: 1, end: 16, frameRate: 16, repeat: -1 },  // <-- TRY ME: flap speed
+      attack: { start: 0, end:  0, frameRate: 1,  repeat: 0  },  // no attack art yet
+      // No death art either. With one frame, frameRate only sets how long the
+      // fade-out lasts: 1 frame / 2 per second = half a second.
+      death:  { start: 0, end:  0, frameRate: 2,  repeat: 0  }
     }
   },
 
@@ -86,7 +88,8 @@ window.UNITS = {
     sprite: 'bruteBat',
     scale: 1.05,           // <-- TRY ME: makes the Brute loom over the Scout
 
-    // REAL ART, single pose - same note as the Scout Bat above.
+    // REAL ART from PixelLab - still a single pose, so the Brute does not flap
+    // yet. Give it a walk grid like the Scout's and it will.
     anims: {
       frameWidth: 64,
       frameHeight: 64,

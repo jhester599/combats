@@ -218,9 +218,16 @@ PixelLab: the **Scout Bat** is a small brown bat in blue flight goggles, the
 different sizes in game through each unit's `scale` (Scout 0.75, Brute 1.05) —
 so "make them both 64×64 and size them in the game" is now the pipeline.
 
-**They do not animate yet.** One pose means idle, walk, attack and death all
-show the same frame; death is a half-second fade. Getting walk/attack/death
-cycles out of PixelLab is the next art job. *(See B21.)*
+**DECIDED (2026-09-18) — the bats face east, and the Scout flaps.** The first
+pair were drawn facing *west* while walking east, so Lewis re-exported them
+mirrored; **all art faces east from now on** and the game mirrors enemies
+itself. He also made the Scout a **16-frame walk cycle**, so it now flaps
+across the lane.
+
+**Still to draw:** a walk cycle for the **Brute** (it still slides along
+without flapping), and **attack and death** frames for both — those currently
+fall back to the standing pose, so a swing looks like standing still and dying
+is just a fade. *(See B21.)*
 
 **The enemies are still placeholder** — flat orange and red shapes, and they
 look it next to the real bats. *(B3 decides what they should be.)*

@@ -95,20 +95,22 @@ Lewis made the **Scout Bat** (blue flight goggles) and **Brute Bat** (cape) in
 PixelLab; both are in the game. **Still open for the enemies** — see B3.
 → `DESIGN.md` §9, `DECISIONS.md` #1
 
-### 🔲 B21. PICK ONE: Animate the bats, or leave them as one pose? *(next art job)*
+### ✅ B21. Animate the bats *(Scout walk done 2026-09-18 — A)*
 
-Your bats are **one picture each**, so they slide along the lane without
-flapping, and an attack looks the same as walking.
+Lewis picked **A** and made the Scout Bat a **16-frame walk cycle** in PixelLab.
+It flaps across the lane now.
 
-- [ ] **A) Make animation frames in PixelLab** — a few frames each for walk,
-  attack and death. Best looking, most work. Drop them in a folder and
-  `tools/pack-spritesheet.js` turns them into what the game needs.
-- [ ] **B) Just a walk flap** — even 2 frames would make them feel alive.
-  Much less work than all four actions.
-- [ ] **C) Leave them still for now**, and Dad adds a little bob-and-lunge in
-  code so they move a bit without any new art.
+**What's left, in the order that would help most:**
 
-**Lewis picks:** _(open)_ → `DESIGN.md` §9
+- [ ] **A walk cycle for the Brute Bat** — it still slides along stiffly next to
+  the flapping Scout, which looks odd.
+- [ ] **Attack frames** for both — right now a swing looks exactly like standing
+  still, which makes fights hard to read.
+- [ ] **Death frames** for both — dying is just a fade at the moment.
+
+Export each as its own grid, drop it in `assets/sprites/source/<unit>/`, and
+re-run the packer (command in the README there).
+→ `DESIGN.md` §9, `DECISIONS.md` #3
 
 ### 🔲 B15. PICK ONE: Music and sound effects *(needed by M3)*
 
