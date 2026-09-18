@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="description" content="Battle Bats - a lane auto-battler by Jeff and Lewis" />
+  <title>Battle Bats</title>
+
+  <!-- A tiny inline bat icon, so the browser does not ask for /favicon.ico
+       (which would be a harmless but noisy 404 in the console). -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='18' r='7' fill='%236fd3ff'/%3E%3Cpath d='M9 16 L1 10 L3 21 Z' fill='%236fd3ff'/%3E%3Cpath d='M23 16 L31 10 L29 21 Z' fill='%236fd3ff'/%3E%3Ccircle cx='13' cy='17' r='2' fill='%23fff'/%3E%3Ccircle cx='19' cy='17' r='2' fill='%23fff'/%3E%3C/svg%3E" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #150f2b;
+      overflow: hidden;
+      /* Stop a finger-drag from scrolling or zooming the page while playing. */
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    #game {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    /* ---------------------------------------------------------------
+       Battle Bats is a wide game, so on a phone held upright it shrinks
+       to a thin strip. This asks the player to turn the phone sideways.
+       It is pure CSS - the game keeps running underneath, so turning the
+       phone back just uncovers it.
+       --------------------------------------------------------------- */
+    #rotate-hint {
+      display: none;
+    }
+
+    @media (orientation: portrait) and (max-width: 900px) {
+      #rotate-hint {
+        display: flex;
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        background: #150f2b;
+        color: #ffd24a;
+        font-family: Verdana, Geneva, sans-serif;
+        font-size: 20px;
+        text-align: center;
+        padding: 24px;
+      }
+
+      #rotate-hint .phone {
+        width: 54px;
+        height: 92px;
+        border: 4px solid #ffd24a;
+        border-radius: 10px;
+        animation: tip 1.6s ease-in-out infinite;
+      }
+    }
+
+    @keyframes tip {
+      0%, 40%   { transform: rotate(0deg); }
+      60%, 100% { transform: rotate(-90deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game"></div>
+
+  <div id="rotate-hint">
+    <div class="phone"></div>
+    <div>Turn your phone sideways to play Battle Bats</div>
+  </div>
+
+  <!-- =====================================================================
+       SCRIPT ORDER MATTERS. Each file puts something on 'window', and later
+       files use what earlier files put there. Top to bottom:
+
+         1. the engine
+         2. the data (the numbers Lewis edits)
+         3. the systems (rules)
+         4. the entities (things on screen)
+         5. the scenes (screens)
+         6. main.js, which starts the game
+
+       If you add a new file, add its <script> tag in the right group.
+       ===================================================================== -->
+
+  <!-- 1. Engine: Phaser 4.2.1, MIT licence, kept in /vendor so the game
+          never depends on the internet at run time. -->
+  <script src="vendor/phaser.min.js"></script>
+
+  <!-- 2. Data - ALL the tuning numbers live here -->
+  <script src="data/config.js"></script>
+  <script src="data/units.js"></script>
+  <script src="data/levels.js"></script>
+
+  <!-- 3. Systems -->
+  <script src="src/systems/economy.js"></script>
+  <script src="src/systems/pool.js"></script>
+  <script src="src/systems/combat.js"></script>
+  <script src="src/systems/spawner.js"></script>
+
+  <!-- 4. Entities -->
+  <script src="src/entities/unit.js"></script>
+  <script src="src/entities/base.js"></script>
+
+  <!-- 5. Scenes -->
+  <script src="src/scenes/BootScene.js"></script>
+  <script src="src/scenes/MenuScene.js"></script>
+  <script src="src/scenes/BattleScene.js"></script>
+
+  <!-- 6. Start the game -->
+  <script src="src/main.js"></script>
+
+</body>
+</html>
