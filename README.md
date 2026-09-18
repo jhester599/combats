@@ -5,9 +5,11 @@ Send bats down a lane, they fight on their own, smash the enemy base.
 
 Made by **Jeff** (code) and **Lewis** (creative director — units, stats, levels).
 
+### ▶ [Play it in your browser](https://jhester599.github.io/combats/)
+
 ---
 
-## Play it
+## Run it on your own machine
 
 The game needs to be served over `http://`, not opened as a `file://` path —
 browsers block scripts from loading that way. Any tiny static server works:
@@ -181,21 +183,26 @@ sheet just means different numbers. **Record every new asset in `ASSETS.md`.**
 
 ---
 
-## Put it on the internet (GitHub Pages)
+## Play it online (GitHub Pages)
 
-The game is static files, so Pages needs no configuration:
+**Live site:** https://jhester599.github.io/combats/
 
-1. Push to GitHub.
-2. Repo **Settings** → **Pages**.
-3. **Source**: *Deploy from a branch*. Pick your branch and the **`/ (root)`**
-   folder. Save.
-4. Wait a minute, then open `https://<your-username>.github.io/<repo>/`.
+Deployment is automatic. Every push to `main` runs
+`.github/workflows/deploy-pages.yml`, which uploads the repo and publishes it —
+the same setup Fakeamon Spark uses. There is no build step; the workflow just
+hands the static files to Pages.
 
-The empty `.nojekyll` file in the root is deliberate — it stops GitHub running
-the files through Jekyll, which would ignore any folder starting with an
-underscore.
+You can also re-run it by hand from the repo's **Actions** tab →
+*Deploy to GitHub Pages* → **Run workflow**.
 
----
+The workflow turns Pages on by itself the first time it runs
+(`enablement: true`), so there is no one-time switch to flip in Settings. The
+repo does have to stay **public** for Pages on a free GitHub account.
+
+The empty `.nojekyll` file in the root is a belt-and-braces measure: this
+workflow doesn't run Jekyll anyway, but if the site is ever switched to the
+older "deploy from a branch" mode, `.nojekyll` stops GitHub ignoring folders
+that start with an underscore.
 
 ## Ideas for later
 

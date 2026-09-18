@@ -1,0 +1,49 @@
+name: Deploy to GitHub Pages
+
+# Publishes the game to GitHub Pages on every push to main.
+#
+# Battle Bats has no build step - it is just static files - so this workflow
+# uploads the repository as-is and hands it to Pages.
+#
+# "enablement: true" below means this workflow switches Pages on by itself the
+# first time it runs, so there is no one-time click in Settings -> Pages.
+# The repo does need to be public (it is) for Pages on a free account.
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it half way.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "."
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
