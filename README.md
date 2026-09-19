@@ -97,7 +97,7 @@ A button for it appears automatically. No code changes needed.
 Add one line to the level's `waves` list:
 
 ```js
-{ time: 30, enemy: 'critter', count: 3, gap: 0.7 },
+{ time: 30, enemy: 'mosquito', count: 3, gap: 0.7 },
 ```
 
 - `time` — seconds after the battle starts
@@ -122,11 +122,34 @@ In `data/levels.js`:
 
 ```bash
 node tools/balance-sim.js level1
+node tools/balance-sim.js graveyard
 ```
 
 This plays the whole level instantly and tells you whether it can be won, how
 long it takes, and whether your base survives. Great for checking a level after
 you change a lot of numbers.
+
+**It plays as a *person*, not as a robot** — it runs the level at a range of
+reaction times (0s to 1.0s) and at the end prints a **VERDICT**. Read that, and
+ignore the `0s (robot)` row: tuning against a perfect thumb is what made Level 1
+unwinnable once (see `DECISIONS.md` D8–D10).
+
+It also checks one rule automatically: a cheap bat you're meant to spam must be
+limited by **money**, not by its cooldown. If a cooldown is longer than the time
+it takes to afford the bat, the button sits lit waiting for your thumb and every
+late tap is a bat you never get.
+
+### Check the Necrobatcer's rules still hold
+
+```bash
+node tools/necro-test.js
+```
+
+Twenty checks on the summoning: who leaves a grave, that a raised bat can never
+be raised a second time, that a Necrobatcer can't raise another Necrobatcer, and
+that a recycled unit object forgets it was raised. Get any of those wrong and one
+grave becomes an endless army — which wouldn't crash, it would just quietly make
+the game unlosable.
 
 ---
 
@@ -150,11 +173,13 @@ src/
     spawner.js        turns a wave list into timed spawns
     combat.js         who can reach what, and damage
     pool.js           reuses unit objects instead of making new ones
+    necro.js          the Necrobatcer's summoning: graves, and raising them
   entities/
     unit.js           one bat: walk, fight, die
     base.js           a building with HP
 tools/
   balance-sim.js      plays a level with no graphics (testing only)
+  necro-test.js       checks the summoning rules hold (testing only)
   pack-spritesheet.js turns a folder of frames into one sprite sheet
   png.js              reads/writes PNG files, used by the packer
 assets/             empty for now - real art goes here

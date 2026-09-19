@@ -69,7 +69,18 @@ window.BattleScene.prototype.create = function () {
   this.world = {
     units: this.unitPool.active,
     playerBase: this.playerBase,
-    enemyBase: this.enemyBase
+    enemyBase: this.enemyBase,
+
+    // Where your fallen bats are buried, for the Necrobatcer to raise.
+    // src/systems/necro.js fills this and empties it.
+    graves: [],
+
+    // How anything in the world creates a new unit. The Necrobatcer needs it
+    // to bring a bat back, and handing it over like this keeps the summoning
+    // rules free of any knowledge of Phaser or of this scene.
+    spawn: function (unitKey, x) {
+      return self.spawnUnit(unitKey, x);
+    }
   };
 
   // --- cooldown timers, one per deployable unit ---

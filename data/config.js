@@ -106,8 +106,45 @@ window.CONFIG = {
     //      This is how The Battle Cats feels, and it is the default.
     // 26 = a tidy single-file queue, but only the front bat fights.
     //      <-- TRY ME: set this to 26 and watch how much slower a battle is.
-    personalSpace: 0
+    personalSpace: 0,
+
+    // How many graves a Necrobatcer can choose from (src/systems/necro.js).
+    // Every bat of yours that dies leaves one, so in a long battle the list
+    // would grow for ever - and this game is careful never to pile up objects
+    // (see the pool). Past this many, the OLDEST grave is forgotten.
+    //
+    // It reads as a rule too: a bat that fell ages ago is long gone.
+    maxGraves: 40        // <-- TRY ME: 3 and only the freshly fallen come back
   },
+
+  /* ---------------------------------------------------------------------
+     BAT UPGRADE COLOURS  (Lewis's homework answer B4, 2026-09-19)
+     ---------------------------------------------------------------------
+     "Black and white for level 1 bats, then as you buy upgrades to level up
+      your bats, they change color, backwards rainbow (VIBGYOR)."  - Lewis
+
+     So a bat starts as Lewis drew it - plain black and white - and climbs the
+     rainbow BACKWARDS as it is upgraded. Red is the top of the ladder.
+
+     THE CLEVER BIT, and the reason black-and-white art is a good call: a
+     white drawing can be TINTED any colour by the engine. So Lewis draws each
+     bat exactly ONCE, and the game makes all eight versions of it. Nobody has
+     to draw eight Scout Bats.
+
+     NOT WIRED UP YET. There is nothing to spend upgrades on until the suns
+     and the casino exist (homework B13, milestone M4). This is the agreed
+     ladder, parked here so it is decided rather than remembered.
+     --------------------------------------------------------------------- */
+  upgradeTiers: [
+    { name: 'Plain',  tint: 0xffffff },   // as drawn: black and white
+    { name: 'Violet', tint: 0x9d5cf6 },
+    { name: 'Indigo', tint: 0x5346e5 },
+    { name: 'Blue',   tint: 0x2f8ff0 },
+    { name: 'Green',  tint: 0x35b84a },
+    { name: 'Yellow', tint: 0xf2d02a },
+    { name: 'Orange', tint: 0xf58220 },
+    { name: 'Red',    tint: 0xe03028 }
+  ],
 
   /* ---------------------------------------------------------------------
      HEALTH BARS (the little green/red bars above everyone)

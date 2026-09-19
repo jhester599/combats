@@ -62,7 +62,7 @@ window.MenuScene.prototype.drawBackdrop = function () {
     0x241a47
   );
 
-  var keys = ['scoutBat', 'bruteBat', 'critter'];
+  var keys = ['scoutBat', 'bruteBat', 'mosquito'];
   var i;
   var bat;
 

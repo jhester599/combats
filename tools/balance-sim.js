@@ -44,6 +44,7 @@ require(path.join(root, 'src/systems/economy.js'));
 require(path.join(root, 'src/systems/pool.js'));
 require(path.join(root, 'src/systems/combat.js'));
 require(path.join(root, 'src/systems/spawner.js'));
+require(path.join(root, 'src/systems/necro.js'));
 
 var W = global.window;
 
@@ -66,6 +67,10 @@ SimUnit.prototype.spawn = function (unitKey, startX) {
   this.isDying = false;
   this.active = true;
 
+  // Same pooled-state reset as the real Unit does. Without this the sim would
+  // quietly disagree with the game about who can be raised.
+  W.Necro.resetUnit(this);
+
   var death = this.stats.anims.death;
   this.deathDuration = (death.end - death.start + 1) / death.frameRate;
 };
@@ -75,9 +80,14 @@ SimUnit.prototype.update = function (dt, world) {
 
   if (this.isDying) {
     this.dyingTimer -= dt;
-    if (this.dyingTimer <= 0) { this.active = false; }
+    if (this.dyingTimer <= 0) {
+      W.Necro.recordDeath(this, world);   // leave a grave where it fell
+      this.active = false;
+    }
     return;
   }
+
+  W.Necro.update(this, dt, world);        // Necrobatcers raise a fallen friend
 
   var target = W.Combat.findTarget(this, world);
 
@@ -147,7 +157,23 @@ function playLevel(levelKey, options) {
 
   var playerBase = new SimBase('player', level.playerBaseHp);
   var enemyBase = new SimBase('enemy', level.enemyBaseHp);
-  var world = { units: pool.active, playerBase: playerBase, enemyBase: enemyBase };
+  var world = {
+    units: pool.active,
+    playerBase: playerBase,
+    enemyBase: enemyBase,
+    graves: [],
+
+    // Only the summoning system uses world.spawn, so counting calls here is
+    // an exact count of how many bats got raised from the dead.
+    spawn: function (unitKey, x) {
+      var u = pool.obtain();
+      u.spawn(unitKey, x);
+      raisedCount++;
+      return u;
+    }
+  };
+
+  var raisedCount = 0;
 
   var cooldowns = {};
   var litSince = {};   // when each button BECAME tappable (null = it is dark)
@@ -230,6 +256,7 @@ function playLevel(levelKey, options) {
       enemyBasePct: Math.round((enemyBase.hp / enemyBase.maxHp) * 100),
       peakUnits: peakUnits,
       sent: sent,
+      raised: raisedCount,
       wastedEnergy: Math.round(wastedEnergy),
       firstBaseHitAt: firstBaseHit === null ? null : +firstBaseHit.toFixed(1),
       wavesUnspawned: spawner.schedule.length - spawner.nextIndex,
@@ -355,7 +382,8 @@ var runs = band.map(function (r) {
   var res = playLevel(levelKey, { reaction: r, maxSeconds: 300 });
   console.log('  ' + pad(r === 0 ? '0s (robot)' : r + 's', 11) + pad(res.outcome, 12) +
     pad(res.seconds + 's', 10) + pad(res.playerBasePct + '%', 12) +
-    pad(res.enemyBasePct + '%', 12) + describeSent(res.sent));
+    pad(res.enemyBasePct + '%', 12) + describeSent(res.sent) +
+    (res.raised ? '  (+' + res.raised + ' raised)' : ''));
   return res;
 });
 

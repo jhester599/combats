@@ -27,7 +27,7 @@ because someone else's server went down.
 
 | Thing | Author | Licence | Where it came from |
 |---|---|---|---|
-| All unit sprites (Scout Bat, Brute Bat, Cave Critter, Cave Bruiser) | *placeholder — drawn by the game itself* | n/a | Generated at start-up in `src/scenes/BootScene.js`. Not a file, not downloaded. |
+| Enemy sprites (Mosquito, Spider, Scorpion) and the Necrobatcer | *placeholder — drawn by the game itself* | n/a | Generated at start-up in `src/scenes/BootScene.js`. Not a file, not downloaded. |
 | Backgrounds, bases, UI panels | *placeholder — plain coloured rectangles* | n/a | Drawn by Phaser at run time. |
 
 There are **no third-party art files in this repo yet.** The `assets/` folders
@@ -62,14 +62,53 @@ The files in `assets/sprites/` are built from those by
 
 All art faces **east (right)**; the game mirrors enemies itself. Units are
 drawn at different sizes through each one's `scale` in `data/units.js`
-(Scout 0.75, Brute 1.05), not by resizing the files — so everything can be
-drawn at a convenient 64×64.
+(Scout 0.75, Brute 1.05, Necrobatcer 0.9), not by resizing the files — so
+everything can be drawn at a convenient 64×64.
 
 **Still missing:** attack and death frames for both bats, and a walk cycle for
 the Brute. Until those exist, those animations fall back to the standing pose.
 
 ⚠️ **Still to confirm:** what Jeff's PixelLab plan says about ownership and
 commercial use. Write the answer here once so nobody has to look it up again.
+
+---
+
+## 🎨 THE CURRENT DRAWING BRIEF (Lewis, homework B4, 2026-09-19)
+
+**Lewis changed the bats' design on 2026-09-19.** The goggled Scout and the
+caped Brute above are now **placeholders again** — they stay in the game so
+nothing is broken, but they no longer match the design.
+
+What to draw in PixelLab:
+
+| | |
+|---|---|
+| Style | **Hand-drawn looking. Not realistic.** |
+| Body | **A large circle** |
+| Has | **Wings, ears, a mouth** |
+| Does not have | **Legs** |
+| Colour | **Black and white only** |
+| Size | 64×64 |
+| Facing | **East (right)** — the game mirrors enemies itself |
+
+### Why black and white is the important part
+
+A white or grey drawing can be **tinted** any colour by the engine at run time.
+So each bat is drawn **once** and the game produces every colour of it.
+
+That matters because Lewis's other B4 decision is a colour ladder: a bat starts
+plain and climbs the rainbow **backwards** as it is upgraded — Violet, Indigo,
+Blue, Green, Yellow, Orange, **Red** at the top. Eight appearances per bat.
+
+**Do not draw eight versions of anything.** Draw one, in black and white, and
+let `CONFIG.upgradeTiers` in `data/config.js` do the rest. (Not wired up yet —
+it switches on with the casino, homework B13.)
+
+One thing to watch when drawing: a tint **multiplies** colour in, so pure black
+pixels stay black whatever tint is applied, and white pixels take the tint most
+strongly. Outlines in black and bodies in white/light grey will colour up best.
+
+---
 
 ### Art we plan to use (researched, licences checked)
 

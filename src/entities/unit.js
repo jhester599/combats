@@ -88,6 +88,10 @@ window.Unit.prototype.spawn = function (unitKey, startX) {
   this.active = true;
   this.currentAnim = null;
 
+  // Summoning state (graves, raise timers). Units are pooled, so this MUST be
+  // reset for every new bat - see the note in src/systems/necro.js.
+  window.Necro.resetUnit(this);
+
   // How long the death animation lasts, worked out from the frame data so
   // nobody has to keep two numbers in sync.
   var death = this.stats.anims.death;
@@ -133,10 +137,21 @@ window.Unit.prototype.update = function (dt, world) {
     this.dyingTimer -= dt;
 
     if (this.dyingTimer <= 0) {
+      // Leave a grave BEFORE going inactive, while this.x is still the spot
+      // where it fell. A Necrobatcer can raise it later.
+      window.Necro.recordDeath(this, world);
+
       this.active = false;     // the battle scene will pool it next sweep
     }
 
     return;
+  }
+
+  // A Necrobatcer raises a fallen friend. Every other bat ignores this.
+  if (window.Necro.update(this, dt, world)) {
+    // It just summoned - show the attack pose as the "casting" move. There is
+    // no summon animation drawn yet; that is homework B21 territory.
+    this.playAnim('attack', true);
   }
 
   var target = window.Combat.findTarget(this, world);
@@ -267,7 +282,13 @@ window.Unit.prototype.deactivate = function () {
   this.currentAnim = null;
 };
 
-/* TODO for Lewis: special powers could live here, for example
-     - if (this.stats.explodesOnDeath) { hurt everyone nearby }
-     - if (this.stats.healsFriends)   { top up the bat in front }
-   Add a flag in data/units.js, then check for it in update(). */
+/* The FIRST special power is the Necrobatcer's summon, and it is NOT written
+   in this file - it lives in src/systems/necro.js, because the headless
+   balance sim has to obey exactly the same rules as the browser does.
+
+   Copy that pattern for the next power. TODO for Lewis, ideas:
+     - a bat that EXPLODES when it dies and hurts everything nearby
+     - a bat that HEALS the bat in front of it
+     - a bat that FREEZES whatever it hits for a second
+   Each one is: a block of numbers in data/units.js, a rules file in
+   src/systems/, and two lines here and in tools/balance-sim.js. */
