@@ -17,6 +17,10 @@
    playerUnits     which units from units.js get a deploy button, in order
                    (max 4 fit on screen nicely)
    waves           the enemy spawn schedule - see below
+   practice        OPTIONAL. true = this is a try-things-out level, not a real
+                   cave. tools/balance-sim.js then stops failing it for letting
+                   a hoarder win, because being generous is the whole point of
+                   a practice level. Leave it out for a real cave.
 
    ------------------- HOW TO ADD A WAVE -------------------
    Add one line to the "waves" list:
@@ -122,6 +126,12 @@ window.LEVELS = {
      ======================================================================= */
   graveyard: {
     name: 'The Graveyard (test level)',
+
+    // This is a PRACTICE level, not a cave. It tells tools/balance-sim.js not
+    // to complain that a hoarder can win here: hoarding is *supposed* to work
+    // on a level built for trying the Necrobatcer out, and a tool that cries
+    // wolf is a tool people stop reading.
+    practice: true,
 
     playerBaseHp: 1200,
     enemyBaseHp: 2600,

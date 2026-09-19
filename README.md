@@ -38,7 +38,7 @@ creative calls, and there's a paper trail so nothing gets lost between sessions:
 | File | What it's for |
 |---|---|
 | **[`DESIGN.md`](DESIGN.md)** | The living design document. What the game *is*, what's decided, what's still open. |
-| **[`HOMEWORK.md`](HOMEWORK.md)** | 🦇 **Lewis's current questions.** Start here. |
+| **[`HOMEWORK.md`](HOMEWORK.md)** | 🦇 **Lewis's current questions — Round 2.** Start here. |
 | **[`HOMEWORK_BACKLOG.md`](HOMEWORK_BACKLOG.md)** | Every question for the whole game, sorted by when we need it. |
 | **[`DECISIONS.md`](DECISIONS.md)** | The decision loop, and the log of what's been settled and why. |
 

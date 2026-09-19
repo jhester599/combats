@@ -35,7 +35,11 @@ var root = path.join(__dirname, '..');
 // The game files expect a browser 'window'. Node does not have one, so we
 // make an empty object and let each file hang its part off it, exactly like
 // the browser does.
-global.window = {};
+//
+// Reuse one if a caller already made it: another script (necro-test.js, or a
+// throwaway experiment) may have loaded the data files and set up its own
+// units before requiring this. Overwriting it would silently throw that away.
+global.window = global.window || {};
 
 require(path.join(root, 'data/config.js'));
 require(path.join(root, 'data/units.js'));
@@ -418,8 +422,15 @@ console.log('  VERDICT');
 console.log('  ' + (attentiveWins ? '[ok]  ' : '[BAD] ') +
   'Tapping attentively (0.2s - 0.5s late) ' + (attentiveWins ? 'WINS' : 'DOES NOT always win') +
   (lengths.length ? ', taking ' + Math.min.apply(null, lengths) + '-' + Math.max.apply(null, lengths) + 's' : ''));
-console.log('  ' + (hoarderWins ? '[BAD] ' : '[ok]  ') +
-  'Hoarding energy ' + (hoarderWins ? 'ALSO WINS - the level has no lesson left' : 'loses, which is the point of Level 1'));
+if (level.practice) {
+  // A practice level is meant to be generous, so a hoarder winning is fine.
+  console.log('  [--]  Hoarding energy ' + (hoarderWins ? 'also wins' : 'loses') +
+    ', which does not matter: this level is marked practice: true');
+} else {
+  console.log('  ' + (hoarderWins ? '[BAD] ' : '[ok]  ') +
+    'Hoarding energy ' + (hoarderWins ? 'ALSO WINS - the level has no lesson left'
+      : 'loses, which is the point of Level 1'));
+}
 if (oneReaction !== null) {
   // Only one reaction time was played, so we cannot say anything about the band.
   console.log('  [--]  Only ' + oneReaction + 's was tested. Run without --reaction for the whole band.');
@@ -430,9 +441,14 @@ if (oneReaction !== null) {
     'Starts losing once you are ' + firstLoss + 's late');
 }
 console.log('');
-console.log('  A good Level 1 wins across the whole 0.2s - 0.5s band in about 50-100s,');
-console.log('  and still loses if you hoard. Do NOT tune against the 0s robot row: no');
-console.log('  child has a 0s thumb, and tuning to it is what broke this level once.');
+if (level.practice) {
+  console.log('  This is a PRACTICE level (practice: true), so it only has to be winnable');
+  console.log('  and fun to experiment on. It is not measured for a lesson.');
+} else {
+  console.log('  A good cave wins across the whole 0.2s - 0.5s band in about 50-100s,');
+  console.log('  and still loses if you hoard. Do NOT tune against the 0s robot row: no');
+  console.log('  child has a 0s thumb, and tuning to it is what broke Level 1 once.');
+}
 console.log('');
 console.log('  (Note: in a one-lane game the ending is nearly all-or-nothing. Win and the');
 console.log('  fight is happening at THEIR base, so yours finishes near 100%. There is no');

@@ -19,12 +19,25 @@ Every creative-director decision for the whole game, in one place, sorted by
   are how `DESIGN.md` §13 points at things.
 
 > **Round 1 is DONE — 2026-09-19.** Lewis answered all eight (B1, B2, B3, B5,
-> B7, B10, B13) and re-answered B4. Logged as decisions 4–14 in `DECISIONS.md`.
+> B7, B10, B13) and re-answered B4. Those answers also settled B6, B12 and B19
+> by implication. Logged as decisions 4–14 in `DECISIONS.md`.
 >
-> **On the plate for Round 2:** **B17** (name ~10 caves), **B11** (what makes
-> cave 2 different), **B22** (casino: shop or gamble?), **B23** (how many colour
-> tiers), **B24** (can the Necrobatcer raise bugs?), plus **redrawing the bats**
-> and the three bugs for B4/B3.
+> **🟡 On the plate now (Round 2), in priority order:**
+>
+> | | # | Question | Why it's here |
+> |---|---|---|---|
+> | 🔥 | **B17** | Name the caves (~10) | Blocking — cave 2 can't be built unnamed |
+> | 🔥 | **B11** | What makes cave 2 different? | Blocking — and the Spider is built and unused |
+> | 🔥 | **B9** | A long-range bat? | Blocking-ish — fixes the 100%-or-0% ending, and Dad measured that it needs **no new code** |
+> | 😄 | **B8** | Is there a boss? | Fun, and mostly just numbers |
+> | 😄 | **B24** | Can the Necrobatcer raise bugs? | Quick, and it's about his own invention |
+> | 😄 | **B16** | What happens when a bat dies? | M3 — and a grave marker would make B5 visible (see B25) |
+> | 🎰 | **B22** | Casino: shop or gamble? | Not urgent, but **all of M4 is blocked on it** |
+> | 🎰 | **B23** | How many colour tiers? | Pairs with B22 |
+>
+> Plus two **drawing jobs**, not questions: redraw the bats to the new B4 brief,
+> and draw the Mosquito, Spider and Scorpion.
+>
 > They're written out in full in `HOMEWORK.md` — go there to answer them.
 
 ---
@@ -58,44 +71,66 @@ they fell. Built; rules in `src/systems/necro.js`, checked by
 ### ✅ B7. PICK ONE: How strict should saving up be? *(ANSWERED 2026-09-19)*
 **A — keep it strict.** Economy unchanged. Lewis's note that "level 1 is too
 difficult" was the D8 cooldown bug, which was fixed but not yet live on the site
-he played — so **no second difficulty change was made**. → `DESIGN.md` §3
+he played at the time — so **no second difficulty change was made**. The fix is
+live as of 2026-09-19 12:22 UTC, so the next word on difficulty is his.
+→ `DESIGN.md` §3
 
-### 🔲 B9. PICK ONE: Should a bat attack from far away? *(needed by M2)*
+### 🔲 B9. PICK ONE: Should a bat attack from far away? *(needed by M2 — ON THE PLATE)*
 
 Right now **every** bat has to walk into the fight, and that creates a problem
 Dad measured while building Level 1: your base almost always ends a battle at
-**100% or 0%**, never in between. Whoever wins the front line takes everything.
+**100% or 0%**, never in between. Whoever wins the front line takes everything,
+so there is no way to turn around a fight you are losing.
 
-A bat that can hit *past* the front line is the main thing that would change
-that — it's why the Sniper is option A in B5.
+A bat that can hit *past* the front line is still the only idea on the table
+that changes that. It was option A in B5; Lewis invented the Necrobatcer
+instead, which **reinforces** the front line rather than reaching over it — so
+the problem is untouched and this question is now the fourth-bat question.
 
-- [ ] **A) Yes — make the third bat the Sniper.** *(Same as picking A in B5.)*
-- [ ] **B) Yes, but later** — keep the third bat simple, add a sniper as the
-  fourth.
-- [ ] **C) No** — everyone brawls up close. Simpler and keeps the game honest.
+**Measured 2026-09-19: this needs NO new code.** Reach is one number in
+`data/units.js`, and `Combat.isInReach` already honours any value. A probe bat
+with `range: 250` was confirmed to reach a target at 320px that a Scout (range
+40) cannot, to stop at exactly 250px, and to win Level 1 alone in 80.3s —
+hitting the enemy base from range at 24.8s. **One caveat from the same probe:**
+offered *alongside* Scouts it was never affordable, because Scout spam consumes
+the entire income. A fourth bat has to be worth choosing *instead of* Scouts.
 
-**Lewis picks:** _(open)_
+- [ ] **A) Yes — make it the fourth bat.** Tiny health so it pops if reached.
+- [ ] **B) Yes, but later** — finish the caves first.
+- [ ] **C) No** — everyone brawls up close, and the all-or-nothing ending stays.
+
+**Lewis picks:** _(open)_ — **and if A, what is it called?**
 
 ### ✅ B10. PICK ONE: How many levels? *(ANSWERED 2026-09-19 — C, ten or more)*
 Full text in `HOMEWORK.md`. → `DESIGN.md` §7
 
-### 🔲 B11. INVENT: What makes Level 2 different from Level 1? *(needed by M2)*
+### 🔲 B11. PICK ONE: What makes cave 2 different from The Cave? *(needed by M2 — ON THE PLATE, BLOCKING)*
 
-A new level shouldn't just be "the same but more." Pick a twist — or invent one:
+A new cave shouldn't just be "the same but more" — that gets noticed instantly.
+Pick the **one thing** that changes:
 
-- A **new enemy** that does something the others don't.
-- **Less energy**, so every deploy really counts.
-- A **swarm** level: loads of weak enemies, all at once.
-- A **race**: the enemy base is weak, but so is yours — whoever's fastest wins.
-- A **new place** with its own look *(ties into B2)*.
+- [ ] **A) A new bug.** ⭐ The **Spider** is already built and has never appeared
+  in a level: tougher than a Mosquito, faster than a Scorpion. Cheapest good
+  answer on the list.
+- [ ] **B) Less energy** — harder in a thinking way, not a faster way.
+- [ ] **C) A tougher fortress** — a longer siege.
+- [ ] **D) No warm-up** — bugs from second one, no gentle opening.
+- [ ] **E) Something else** — Dad works out the numbers.
 
 **Lewis's answer:** _(open)_
 → `DESIGN.md` §7
 
-### 🔲 B17. INVENT: Name the levels *(needed by M2)*
+### 🔲 B17. INVENT: Name the caves *(needed by M2 — ON THE PLATE, BLOCKING)*
 
-"First Cave" is a placeholder. Once B10 decides how many levels there are, they
-all need names — and a name is usually where a level's *idea* comes from.
+Cave 1 is **The Cave** (B2). B10 asked for **ten or more**, so about nine names
+are missing — and a name is usually where a cave's *idea* comes from, so this
+question tends to answer B11 for free.
+
+They need not all be caves: Palopa can hold anywhere a bug lives — somewhere
+wet (a drip, a well, a drain), high (a roof, a belfry), horrible (a bin, a
+compost heap), or just ominous (The Deep, The Nest).
+
+Naming only caves 2 and 3 is enough to unblock building.
 
 **Lewis's answer:** _(open)_
 → `DESIGN.md` §7
@@ -137,14 +172,34 @@ re-run the packer (command in the README there).
 dying / the base breaking / winning) _(open)_
 → `DESIGN.md` §9
 
-### 🔲 B16. PICK ONE: What happens when a bat dies? *(needed by M3)*
+### 🔲 B16. PICK ONE: What happens when a bat dies? *(needed by M3 — ON THE PLATE)*
 
-Right now it fades out and tips over. Options:
+Right now it just fades out. Options:
 
 - [ ] **A) Keep the fade.** Calm, and stays readable when 20 bats are fighting.
-- [ ] **B) A little puff of smoke.**
+- [ ] **B) A little puff of dust.**
 - [ ] **C) A tiny ghost floats up.** 👻
-- [ ] **D) A dramatic squeak and a spin.**
+- [ ] **D) It topples over** and lies there a moment.
+- [ ] **E) Something else.**
+
+**Worth raising with him:** a **grave marker** left on the ground would make the
+Necrobatcer's invisible rule visible — the game already records exactly where
+every bat fell (`world.graves` in `src/systems/necro.js`), so the data is there
+and it is a drawing job plus a few lines, not a new mechanic. Filed as B25.
+
+**Lewis picks:** _(open)_
+→ `DESIGN.md` §9
+
+### 🔲 B25. PICK ONE: Should graves be visible on the ground? *(anytime — NEW)*
+
+The Necrobatcer can only raise a bat within 320px of itself, and only bats that
+have actually fallen — but none of that is on screen, so it reads as luck.
+
+- [ ] **A) Yes, show a grave marker** where each bat fell, and clear it when the
+  bat is raised. Makes the summoner something you can *aim*.
+- [ ] **B) Yes, and show the Necrobatcer's reach too** — a faint ring around it.
+  Clearest, but more clutter.
+- [ ] **C) No** — keep the battlefield clean; a surprise resurrection is nicer.
 
 **Lewis picks:** _(open)_
 → `DESIGN.md` §9
