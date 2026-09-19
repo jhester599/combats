@@ -161,9 +161,27 @@ the live site he was playing — so he judged the broken build. **The fix went
 live on 2026-09-19 at 12:22 UTC** (merge `f8f87d3`, Pages deploy run #7), and on
 that build attentive tapping wins Level 1 in 56–60 seconds.
 
-**No further difficulty change has been made** — doing both would overshoot, and
-it would undo the "keep it strict" half of Lewis's own answer. The next word on
-Level 1's difficulty is his, after playing the live version.
+**UPDATED 2026-09-19 — he played the fixed version, said it was still too hard,
+and he was right.** The measurements agreed with him: cave 1 was the **only**
+cave in Palopa that a 1.0s-late thumb lost, while all nine others survived a
+3.0s thumb. The tutorial was the hardest thing in the game.
+
+The cause is structural: **cave 1 is the only cave where you have two bats.**
+Caves 2–10 are gentler because the Archer and the Necrobatcer carry them, and
+cave 1 was being asked to match that with Scouts alone.
+
+| | was | now |
+|---|---|---|
+| Starting energy | 40 | **70** |
+| Fortress | 4000 | **3800** |
+| Your base | 1000 | **1400** |
+| Bugs | 30 | **26** |
+| **Income** | **13/s** | **13/s — unchanged** |
+
+**The income is deliberately untouched.** "More energy per second" was exactly
+option B in B7, and Lewis turned it down for "keep it strict". So the tight
+economy stays, hoarding still loses outright, and `teachesSpending` still holds.
+It now wins at 49–58s attentively and survives a **4-second** thumb.
 
 ---
 
@@ -396,7 +414,7 @@ instead of mushy. All ten are built, and every number below is measured:
 
 | # | Cave | Its lever | Fortress | Income | Bats |
 |---|---|---|---|---|---|
-| 1 | **The Cave** | the tutorial: keep spending | 4000 | 13/s | Scout, Brute |
+| 1 | **The Cave** | the tutorial: keep spending | 3800 | 13/s | Scout, Brute |
 | 2 | **Crystal Falls** | a new bug — the **Spider** arrives | 4200 | 13/s | + Archer |
 | 3 | **Dream Land** | **no warm-up** — bugs at second one | 4200 | 13/s | + Archer |
 | 4 | **Pyramid** | a **tougher fortress** | 5600 | 15/s | + Necrobatcer |
@@ -421,8 +439,13 @@ dearest — and in every one of them **spending beats hoarding on the clock**.
 What the sim cannot tell us is how hard a cave **feels**. Both of its player
 models are extremes, and neither composes an army the way a person does, so the
 rising difficulty is designed from rising pressure (total HP to chew through
-climbs 6730 → 11370 across the ten) rather than proved. **That part needs
+climbs 6310 → 11375 across the ten) rather than proved. **That part needs
 Lewis to play them.** See `DECISIONS.md` D23.
+
+One thing the sim *can* show, and did: until 2026-09-19 **cave 1 was the only
+cave that a slow thumb lost at all**, which made the tutorial the hardest cave
+in the game. It has been eased (D27) and now, like the other nine, it holds up
+past a 3-second reaction.
 
 ---
 

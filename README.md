@@ -99,7 +99,7 @@ different (B11), and every one measured with the balance sim:
 
 | # | Cave | What makes it different |
 |---|---|---|
-| 1 | The Cave | the tutorial: keep spending, hoarding loses |
+| 1 | The Cave | the tutorial: keep spending, hoarding loses. **Eased 2026-09-19** |
 | 2 | Crystal Falls | a new bug — the Spider arrives |
 | 3 | Dream Land | no warm-up: bugs from second one |
 | 4 | Pyramid | a tougher fortress |

@@ -18,7 +18,7 @@
 
 | | Cave | What makes this one different |
 |---|---|---|
-| 1 | **The Cave** | the easy one, where you learn to keep spending |
+| 1 | **The Cave** | the easy one, where you learn to keep spending — **and Dad has just made it easier, because you were right** |
 | 2 | **Crystal Falls** | 🕸️ the **Spider** finally shows up |
 | 3 | **Dream Land** | ⚡ **no warm-up** — bugs from the very first second |
 | 4 | **Pyramid** | 🧱 a **much tougher fortress** |
@@ -54,6 +54,35 @@ in the same homework. 🎉
 
 *(You can still beat her with a big swarm of cheap Scout Bats — Dad checked —
 it just takes about three times as long.)*
+
+### 🥇 You were right about The Cave. Twice.
+
+You said it was too hard, Dad checked, and **you were right** — by a mile. Here
+is the embarrassing bit: The Cave was the **hardest cave in the whole game.**
+
+Dad has a way of measuring how forgiving a cave is: how late can your thumb be
+before you lose?
+
+- **Every other cave:** you can be **three whole seconds** late and still win.
+- **The Cave:** **one second** and you lost.
+
+The tutorial was harder than the Final Stadium. 🙃
+
+**Why?** Because The Cave is the only one where you have just **two bats**. All
+the others are easier because your Archer and your Necrobatcer are doing half
+the work for you.
+
+**What changed:** you start with **70 energy instead of 40** (the big one — it
+lets you get a line of bats going before the bugs arrive), the fortress is a bit
+smaller, your base is tougher, and there are **26 bugs instead of 30**.
+
+**What did NOT change: the energy rate.** You were offered "more energy per
+second" back in B7 and you said **no, keep it strict** — so Dad left it alone.
+Your rule stands. Hoarding still loses.
+
+You can now be **four seconds** late on every tap and still win it.
+
+---
 
 ### 🐛 One thing Dad got wrong, and fixed
 

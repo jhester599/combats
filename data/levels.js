@@ -54,10 +54,29 @@ window.LEVELS = {
 
     // The enemy base is a big fortress - that is the point. It should take a
     // sustained push to knock down, not one lucky bat.
-    playerBaseHp: 1000,    // <-- TRY ME: make it 200 for a scary hard game
-    enemyBaseHp: 4000,     // <-- TRY ME: drop it to 800 for a quick win
+    //
+    // ------------------- MADE EASIER 2026-09-19 -------------------
+    // Lewis said twice that this cave was too hard, and he was right - the
+    // measurements agreed with him. It was the ONLY cave in Palopa that a
+    // 1.0s-late thumb lost; every one of the other nine survived a 3.0s thumb.
+    // The tutorial was the hardest thing in the game.
+    //
+    // The reason is that this is the only cave where you have just TWO bats.
+    // Caves 2-10 are gentler because the Archer and the Necrobatcer do the
+    // work for you, and cave 1 was being asked to match that with Scouts.
+    //
+    // What did NOT change: energyPerSecond is still 13. Lewis was offered
+    // exactly that lever in homework B7 ("more energy per second") and turned
+    // it down in favour of "keep it strict", so the tight economy stays.
+    // Hoarding still loses, which is this cave's whole lesson.
+    playerBaseHp: 1400,    // <-- TRY ME: make it 200 for a scary hard game
+    enemyBaseHp: 3800,     // <-- TRY ME: drop it to 800 for a quick win
 
-    startEnergy: 40,
+    // The biggest single thing that made this cave fair. An opening buffer
+    // lets the front line get established, and once it holds, it holds - so
+    // 70 turns "loses if you are a second late" into "wins even if you are
+    // four seconds late". 40 was not enough to survive learning the game.
+    startEnergy: 70,
     // 13 per second is tuned so that spamming Scout Bats eats almost all your
     // income - so saving up for a Brute Bat is a real decision.
     energyPerSecond: 13,   // <-- TRY ME: 40 makes you rich and the game silly
@@ -88,6 +107,9 @@ window.LEVELS = {
     // NOTE: these numbers are MEASURED (DECISIONS.md D8). If you change them,
     // run  node tools/balance-sim.js  and check the VERDICT still passes.
     // Spiders exist in data/units.js but are deliberately not in this level.
+    // 26 bugs, down from 30 - the later waves each lost one, so the cave still
+    // builds but the back half no longer piles on faster than two bats can
+    // answer.
     waves: [
       // --- Warm up: a couple of mosquitos drift over. ---
       { time: 3,  enemy: 'mosquito', count: 2, gap: 0.8 },
@@ -99,18 +121,18 @@ window.LEVELS = {
 
       // --- It gets busy. ---
       { time: 27, enemy: 'scorpion', count: 1 },
-      { time: 32, enemy: 'mosquito', count: 3, gap: 0.5 },
+      { time: 32, enemy: 'mosquito', count: 2, gap: 0.5 },
 
       // --- Two scorpions at once. ---
       { time: 40, enemy: 'scorpion', count: 2, gap: 1.0 },
-      { time: 46, enemy: 'mosquito', count: 4, gap: 0.4 },
+      { time: 46, enemy: 'mosquito', count: 3, gap: 0.4 },
 
       { time: 54, enemy: 'scorpion', count: 2, gap: 0.8 },
-      { time: 60, enemy: 'mosquito', count: 4, gap: 0.4 },
+      { time: 60, enemy: 'mosquito', count: 3, gap: 0.4 },
 
       // --- Final push. Survive this and the cave is yours. ---
       { time: 68, enemy: 'scorpion', count: 2, gap: 0.8 },
-      { time: 76, enemy: 'mosquito', count: 5, gap: 0.3 }
+      { time: 76, enemy: 'mosquito', count: 4, gap: 0.3 }
     ]
   },
 
