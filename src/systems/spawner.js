@@ -4,9 +4,9 @@
    It reads the "waves" list from a level (data/levels.js) and turns it into
    a simple ordered to-do list of single spawns, like:
 
-       at 10.0s -> critter
-       at 10.8s -> critter
-       at 20.0s -> bruiser
+       at 10.0s -> mosquito
+       at 10.8s -> mosquito
+       at 20.0s -> scorpion
 
    Then every simulation step it asks "is it time for the next one yet?".
 
