@@ -220,6 +220,23 @@ window.CONFIG = {
   },
 
   /* ---------------------------------------------------------------------
+     THE MENU'S CAVE PICKER
+     The title screen lists every cave in data/levels.js so they can all be
+     reached. B10 asked for ten or more, so the list is a grid rather than a
+     column - ten buttons stacked vertically would not fit on the screen.
+     --------------------------------------------------------------------- */
+  menu: {
+    caveWidth: 150,
+    caveHeight: 52,
+    caveGap: 14,
+    cavesPerRow: 5,        // 5 across x 2 rows holds the ten caves of B10
+    caveRowY: 268,         // top row's centre line
+    practiceY: 400,        // the "just for practice" row sits below the caves
+    practiceWidth: 250,
+    practiceHeight: 44
+  },
+
+  /* ---------------------------------------------------------------------
      TEXT STYLE
      --------------------------------------------------------------------- */
   text: {

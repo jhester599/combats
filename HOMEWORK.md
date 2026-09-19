@@ -11,7 +11,7 @@
 
 ---
 
-## 🎉 First — go and play it, because three things changed
+## 🎉 First — go and play it, because four things changed
 
 **https://jhester599.github.io/combats/**
 
@@ -20,11 +20,22 @@
 | **Level 1 is winnable now.** The bug you found is fixed and **live**. | Tap Scout Bat every time it lights up → you should win in **about a minute**. |
 | **Level 1 is called The Cave**, in the world of **Palopa**. | It says so at the top of the screen. |
 | **The blobs have names.** The orange one is a **Mosquito**, the red one is a **Scorpion**. | They still look like blobs. That's your next drawing job. 🎨 |
+| **💀 You can play your NECROBATCER now.** The title screen lists every level, and yours is on it. | Look under **"just for practice"**, below the caves: **The Graveyard**. |
 
-**And your Necrobatcer is built.** It isn't on the website yet because it needs
-a level of its own — ask Dad to run it on his computer and you can play it in
-about ten seconds. It raises your dead bats *where they fell*, right in the
-middle of the fight.
+It raises your dead bats *where they fell*, right in the middle of the fight.
+
+### 🔧 And Dad fixed a dead end you'd have hit straight away
+
+Before today, beating The Cave left you stuck: **RETRY** played The Cave again,
+and **MENU** led to a Start button that *also* played The Cave. No way out — and
+no way to reach The Graveyard at all without editing code.
+
+Now the title screen lists **every** level, and when you beat a cave that has
+another cave after it you get a **NEXT CAVE** button.
+
+Right now there *is* no cave 2, so after winning you'll see *"that is all of
+Palopa so far"* — which is at least honest. **Making cave 2 exist is B17 and B11
+below.** 👇
 
 <details>
 <summary>🐛 The story of the 0.08-second bug you found (worth a read)</summary>
@@ -346,7 +357,7 @@ Your bat rewards *patience*. Level 1 punishes it. Both are right; they just
 can't be in the same cave.
 
 So it lives in a practice level called **The Graveyard** until the real cave 2
-exists. Ask Dad to switch `STARTING_LEVEL` in `src/main.js` to `'graveyard'`.
+exists. Pick it straight from the title screen, under "just for practice".
 
 Also, two rules Dad had to add or the game breaks:
 

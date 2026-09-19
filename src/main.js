@@ -8,9 +8,12 @@
    No bundler, no build step, no npm. Just script tags in order.
    ========================================================================= */
 
-/* Which level the Start button plays.
-   FOR LEWIS: after you add 'level2' to data/levels.js, change this to
-   'level2' to jump straight into it. */
+/* Which level the game drops you into if it is ever asked to start a battle
+   without saying which one.
+
+   You no longer have to edit this to play a different level: the title screen
+   lists every level in data/levels.js and you pick one. Add a level block to
+   that file and a button for it appears by itself. */
 window.STARTING_LEVEL = 'level1';
 
 window.GAME_CONFIG = {

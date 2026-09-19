@@ -92,6 +92,17 @@ you double its damage; if you *halve* `attackInterval` you also double it.
 
 A button for it appears automatically. No code changes needed.
 
+### Add a whole new cave → `data/levels.js`
+
+Copy the `level1` block, rename the key, change the numbers. **That is the only
+step** — the title screen builds its cave list from this file, so a button for
+it appears by itself, in the position you wrote it, and the cave before it gains
+a **NEXT CAVE** button on its victory screen.
+
+Add `practice: true` to a level and it is treated as a place to try things out
+rather than a cave: listed separately on the menu, left out of the numbering,
+and not held to the balance verdict (see the sim section below).
+
 ### Add a new enemy wave → `data/levels.js`
 
 Add one line to the level's `waves` list:
@@ -174,6 +185,7 @@ src/
     combat.js         who can reach what, and damage
     pool.js           reuses unit objects instead of making new ones
     necro.js          the Necrobatcer's summoning: graves, and raising them
+    caves.js          what caves exist, and which one comes next
   entities/
     unit.js           one bat: walk, fight, die
     base.js           a building with HP

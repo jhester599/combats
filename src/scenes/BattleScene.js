@@ -234,6 +234,29 @@ window.BattleScene.prototype.checkWinOrLose = function () {
   }
 };
 
+/* -------------------------------------------------------------------------
+   What the panel says. Winning the last cave that exists is a different
+   message from winning one with another cave after it - telling the player
+   "that is all of Palopa so far" is better than leaving them tapping RETRY
+   wondering where cave 2 is.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.resultMessage = function (playerWon) {
+  if (!playerWon) {
+    return 'Your base fell. Try different bats!';
+  }
+
+  if (window.Caves.next(this.levelKey)) {
+    return 'The cave is yours. Great flying!';
+  }
+
+  if (window.LEVELS[this.levelKey].practice) {
+    return 'Nice practice. Pick a real cave from the menu!';
+  }
+
+  // Last cave in data/levels.js. More are coming: homework B11 and B17.
+  return 'The cave is yours - and that is all of Palopa so far!';
+};
+
 /* =========================================================================
    SPAWNING
    ========================================================================= */
@@ -478,52 +501,110 @@ window.BattleScene.prototype.buildResultPanel = function () {
     color: '#ffffff'
   }).setOrigin(0.5);
 
-  var retryBox = this.add.rectangle(centreX - 100, centreY + 70, 180, 56, 0x3a2c66);
-  retryBox.setStrokeStyle(2, 0xffffff, 0.5);
-  retryBox.setInteractive({ useHandCursor: true });
-
-  var retryText = this.add.text(centreX - 100, centreY + 70, 'RETRY', {
-    fontFamily: cfg.text.fontFamily,
-    fontSize: '22px',
-    color: '#ffffff'
-  }).setOrigin(0.5);
-
-  var menuBox = this.add.rectangle(centreX + 100, centreY + 70, 180, 56, 0x3a2c66);
-  menuBox.setStrokeStyle(2, 0xffffff, 0.5);
-  menuBox.setInteractive({ useHandCursor: true });
-
-  var menuText = this.add.text(centreX + 100, centreY + 70, 'MENU', {
-    fontFamily: cfg.text.fontFamily,
-    fontSize: '22px',
-    color: '#ffffff'
-  }).setOrigin(0.5);
-
   var self = this;
 
-  retryBox.on('pointerdown', function () {
+  // Three buttons get BUILT, but only some are shown - see showResultPanel().
+  // NEXT CAVE only appears when there actually is one, so the game never
+  // offers a door that leads nowhere.
+  var next = this.makePanelButton('NEXT CAVE', function () {
+    var nextKey = window.Caves.next(self.levelKey);
+
+    if (nextKey) {
+      self.scene.start('BattleScene', { levelKey: nextKey });
+    }
+  });
+
+  var retry = this.makePanelButton('RETRY', function () {
     self.scene.restart({ levelKey: self.levelKey });
   });
 
-  menuBox.on('pointerdown', function () {
+  var menu = this.makePanelButton('MENU', function () {
     self.scene.start('MenuScene');
   });
 
   this.resultPanel = {
-    parts: [panel, title, subtitle, retryBox, retryText, menuBox, menuText],
+    panel: panel,
     title: title,
-    subtitle: subtitle
+    subtitle: subtitle,
+    next: next,
+    retry: retry,
+    menu: menu
   };
 
   this.showResultPanel(false);
 };
 
-window.BattleScene.prototype.showResultPanel = function (visible) {
+/* -------------------------------------------------------------------------
+   One button for the result panel. It is positioned later, in
+   layoutResultButtons(), because how many are on screen decides where they go.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.makePanelButton = function (label, onClick) {
+  var cfg = window.CONFIG;
+
+  var box = this.add.rectangle(0, 0, 160, 56, 0x3a2c66);
+  box.setStrokeStyle(2, 0xffffff, 0.5);
+  box.setInteractive({ useHandCursor: true });
+
+  var text = this.add.text(0, 0, label, {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: '20px',
+    color: '#ffffff'
+  }).setOrigin(0.5);
+
+  box.on('pointerdown', onClick);
+
+  return { box: box, text: text, width: 160 };
+};
+
+/* -------------------------------------------------------------------------
+   Space the visible buttons evenly across the panel, so two buttons sit where
+   two buttons look right and three do too.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.layoutResultButtons = function (buttons) {
+  var cfg = window.CONFIG;
+  var centreX = cfg.screen.width / 2;
+  var y = (cfg.screen.height / 2) + 70;
+  var gap = 16;
+
+  var total = buttons.reduce(function (sum, b) { return sum + b.width; }, 0) +
+    (gap * (buttons.length - 1));
+
+  var x = centreX - (total / 2);
   var i;
 
-  for (i = 0; i < this.resultPanel.parts.length; i++) {
-    this.resultPanel.parts[i].setVisible(visible);
-    this.resultPanel.parts[i].setDepth(2000);
+  for (i = 0; i < buttons.length; i++) {
+    buttons[i].box.setPosition(x + (buttons[i].width / 2), y);
+    buttons[i].text.setPosition(x + (buttons[i].width / 2), y);
+    x += buttons[i].width + gap;
   }
+};
+
+window.BattleScene.prototype.showResultPanel = function (visible) {
+  var r = this.resultPanel;
+
+  // Offer the next cave only after a WIN, and only if one exists.
+  var nextKey = window.Caves.next(this.levelKey);
+  var offerNext = visible && this.playerWon && !!nextKey;
+
+  var shown = offerNext ? [r.next, r.retry, r.menu] : [r.retry, r.menu];
+
+  this.layoutResultButtons(shown);
+
+  var always = [r.panel, r.title, r.subtitle];
+  var i;
+
+  for (i = 0; i < always.length; i++) {
+    always[i].setVisible(visible);
+    always[i].setDepth(2000);
+  }
+
+  [r.next, r.retry, r.menu].forEach(function (button) {
+    var on = visible && (shown.indexOf(button) !== -1);
+    button.box.setVisible(on);
+    button.text.setVisible(on);
+    button.box.setDepth(2000);
+    button.text.setDepth(2000);
+  });
 };
 
 /* ------------------------------------------------------------------------- */
@@ -536,10 +617,7 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
   this.playerWon = playerWon;
 
   this.resultPanel.title.setText(playerWon ? 'VICTORY!' : 'DEFEAT');
-
-  this.resultPanel.subtitle.setText(playerWon
-    ? 'The cave is yours. Great flying!'
-    : 'Your base fell. Try different bats!');
+  this.resultPanel.subtitle.setText(this.resultMessage(playerWon));
 
   this.showResultPanel(true);
 };

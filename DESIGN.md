@@ -298,9 +298,21 @@ the plan.
 
 What it changes, beyond just writing more levels:
 
-- **A level needs to be pickable.** With ten caves, `STARTING_LEVEL` in
-  `src/main.js` stops being good enough — there has to be a map or a list. That
-  lands with the progression work in §8 (B13).
+- **A level needs to be pickable. ✅ DONE 2026-09-19.** `STARTING_LEVEL` in
+  `src/main.js` was the only way to choose a level, so the game was a dead end:
+  you beat The Cave, and RETRY sent you back to The Cave while MENU led to a
+  Start button that also launched The Cave. The Graveyard existed in the data
+  and could not be reached at all without editing code.
+
+  The title screen now lists **every level in `data/levels.js`** — caves
+  numbered, practice levels shown separately — and the victory panel offers
+  **NEXT CAVE** when there is one. `src/systems/caves.js` is the single place
+  that answers "what exists and what is next", so the menu and the victory
+  screen cannot disagree.
+
+  **Nothing is locked and nothing is saved.** Every cave is pickable. Locking,
+  remembering what you beat, and earning suns are B12/B13 (M4) — this change
+  only stops the game being a loop.
 - **Levels have to get cheaper to make.** Each one is measured, and Level 1 took
   a lot of testing. `tools/balance-sim.js` is what makes ten caves realistic
   instead of exhausting: it plays a whole cave in a fraction of a second and
@@ -311,7 +323,8 @@ What it changes, beyond just writing more levels:
 There is a second entry in `data/levels.js` called `graveyard`. It is **not**
 one of the caves of Palopa and has no story: it exists so Lewis can play with
 the Necrobatcer today, because the bat is built but is deliberately kept out of
-Level 1. Switch `STARTING_LEVEL` in `src/main.js` to `'graveyard'` to play it.
+Level 1. **Pick it from the title screen** — it appears under "just for
+practice", below the caves. (Editing `STARTING_LEVEL` is no longer needed.)
 
 It is generous on purpose (120 starting energy, 18/sec) so that summoning is
 easy to see rather than something to budget for. Measured: a win in 41–55s
@@ -463,7 +476,7 @@ B8 (a boss) and B18 (what the last moment looks like).
 | Milestone | What it adds | Status |
 |---|---|---|
 | **M1 — First playable** | One lane, two bats, two enemies, energy + cooldowns, bases, win/lose, Retry, placeholder art | ✅ **Done 2026-09-18** |
-| **M2 — Content** | **Ten or more caves** (B10 = C), a difficulty curve, a way to pick a cave | 🔜 Next — third bat ✅ built, enemies ✅ named; still needs **B11**, **B17** |
+| **M2 — Content** | **Ten or more caves** (B10 = C), a difficulty curve, a way to pick a cave | 🔜 Next — third bat ✅, enemies ✅, **cave picker ✅**; the caves themselves still need **B11**, **B17** |
 | **M3 — Look & feel** | Hand-drawn black-and-white bats, the three bugs, a wet-cave background, sound | Needs the **B4 redraw**, B15, B16 |
 | **M4 — Progression** | Saved progress, **suns**, **the casino**, bat upgrades shown as colours | Scoped by B13/B12/B19 ✅; needs **B22** (shop or gamble?) |
 | **M5 — Depth** | A boss, maybe a second lane. *Special powers arrived early* — the Necrobatcer's summon is the first one | Needs B8, B14 |
