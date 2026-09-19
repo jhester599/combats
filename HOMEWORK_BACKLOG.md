@@ -18,14 +18,24 @@ Every creative-director decision for the whole game, in one place, sorted by
 - Numbers (B1, B2…) never change, even when questions move between files. They
   are how `DESIGN.md` §13 points at things.
 
-> **Round 1 is DONE — 2026-09-19.** Lewis answered all eight (B1, B2, B3, B5,
-> B7, B10, B13) and re-answered B4. Those answers also settled B6, B12 and B19
-> by implication. Logged as decisions 4–14 in `DECISIONS.md`.
+> **Rounds 1 and 2 are DONE.** Lewis has answered **19 of the 27** questions,
+> and everything answerable has been built: ten caves, four bats, a boss, grave
+> markers. Logged as decisions 4–22 in `DECISIONS.md`.
 >
-> **🟡 On the plate now (Round 2), in priority order:**
+> **🟡 On the plate now (Round 3) — only four, and two are drawing:**
 >
 > | | # | Question | Why it's here |
 > |---|---|---|---|
+> | 🐛 | **B26** | Name the new bugs | B11 asked for new bugs; naming creatures is his job. All ten caves share three bugs |
+> | 🧪 | **B27** | What do blood, potions and fruits DO? | **Blocks the casino** — three names need three jobs |
+> | 🎨 | **B4** | Redraw the four bats | The game still shows the superseded goggled/caped pair |
+> | 🎨 | **B3/B4** | Draw the bugs and the Bee | They are all still coloured blobs |
+>
+> **The bottleneck is now art, not design.** Nothing in M3 waits on Dad.
+>
+> Written out in full in `HOMEWORK.md` — go there to answer them.
+
+---|---|---|---|
 > | 🔥 | **B17** | Name the caves (~10) | Blocking — cave 2 can't be built unnamed |
 > | 🔥 | **B11** | What makes cave 2 different? | Blocking — and the Spider is built and unused |
 > | 🔥 | **B9** | A long-range bat? | Blocking-ish — fixes the 100%-or-0% ending, and Dad measured that it needs **no new code** |
@@ -75,7 +85,7 @@ he played at the time — so **no second difficulty change was made**. The fix i
 live as of 2026-09-19 12:22 UTC, so the next word on difficulty is his.
 → `DESIGN.md` §3
 
-### 🔲 B9. PICK ONE: Should a bat attack from far away? *(needed by M2 — ON THE PLATE)*
+### ✅ B9. PICK ONE: Should a bat attack from far away? *(ANSWERED & BUILT 2026-09-19 — A, the Archer Bat)*
 
 Right now **every** bat has to walk into the fight, and that creates a problem
 Dad measured while building Level 1: your base almost always ends a battle at
@@ -104,7 +114,7 @@ the entire income. A fourth bat has to be worth choosing *instead of* Scouts.
 ### ✅ B10. PICK ONE: How many levels? *(ANSWERED 2026-09-19 — C, ten or more)*
 Full text in `HOMEWORK.md`. → `DESIGN.md` §7
 
-### 🔲 B11. PICK ONE: What makes cave 2 different from The Cave? *(needed by M2 — ON THE PLATE, BLOCKING)*
+### ✅ B11. What makes each cave different? *(ANSWERED & BUILT 2026-09-19)*
 
 A new cave shouldn't just be "the same but more" — that gets noticed instantly.
 Pick the **one thing** that changes:
@@ -120,7 +130,7 @@ Pick the **one thing** that changes:
 **Lewis's answer:** _(open)_
 → `DESIGN.md` §7
 
-### 🔲 B17. INVENT: Name the caves *(needed by M2 — ON THE PLATE, BLOCKING)*
+### ✅ B17. INVENT: Name the caves *(ANSWERED & BUILT 2026-09-19 — all ten)*
 
 Cave 1 is **The Cave** (B2). B10 asked for **ten or more**, so about nine names
 are missing — and a name is usually where a cave's *idea* comes from, so this
@@ -172,7 +182,7 @@ re-run the packer (command in the README there).
 dying / the base breaking / winning) _(open)_
 → `DESIGN.md` §9
 
-### 🔲 B16. PICK ONE: What happens when a bat dies? *(needed by M3 — ON THE PLATE)*
+### ✅ B16. PICK ONE: What happens when a bat dies? *(ANSWERED & BUILT 2026-09-19 — D, grave markers)*
 
 Right now it just fades out. Options:
 
@@ -190,7 +200,7 @@ and it is a drawing job plus a few lines, not a new mechanic. Filed as B25.
 **Lewis picks:** _(open)_
 → `DESIGN.md` §9
 
-### 🔲 B25. PICK ONE: Should graves be visible on the ground? *(anytime — NEW)*
+### ✅ B25. Should graves be visible on the ground? *(ANSWERED BY B16 2026-09-19 — yes, built)*
 
 The Necrobatcer can only raise a bat within 320px of itself, and only bats that
 have actually fallen — but none of that is on screen, so it reads as luck.
@@ -239,7 +249,7 @@ a side effect. Blocked on **B22** before anything can be built.
 
 → `DESIGN.md` §8, §9
 
-### 🔲 B22. PICK ONE: Is the casino a shop, or a gamble? *(needed by M4 — NEW, on the plate)*
+### ✅ B22. Is the casino a shop, or a gamble? *(ANSWERED 2026-09-19 — both, with goods in between)*
 
 Lewis invented the casino in B13: suns get spent there to upgrade bats. But
 "casino" can mean two very different things, and they are different games.
@@ -255,7 +265,7 @@ Lewis invented the casino in B13: suns get spent there to upgrade bats. But
 
 **Lewis picks:** _(open)_ → `DESIGN.md` §8
 
-### 🔲 B23. PICK ONE: How many upgrade colours, really? *(needed by M4 — NEW)*
+### ✅ B23. How many upgrade colours, really? *(ANSWERED 2026-09-19 — B, four)*
 
 B4 says a bat climbs the rainbow backwards as you upgrade it: Violet, Indigo,
 Blue, Green, Yellow, Orange, Red. Lewis said "we may simplify down a bit", so:
@@ -285,7 +295,7 @@ go up together?
 
 → `DESIGN.md` §3
 
-### 🔲 B24. PICK ONE: Can the Necrobatcer raise the bugs too? *(anytime — NEW)*
+### ✅ B24. Can the Necrobatcer raise the bugs too? *(ANSWERED 2026-09-19 — A, bats only, longer reach)*
 
 Right now it only raises **your** bats. Dead mosquitos stay dead.
 
@@ -297,13 +307,38 @@ Right now it only raises **your** bats. Dead mosquitos stay dead.
 
 **Lewis picks:** _(open)_ → `DESIGN.md` §3
 
-### 🔲 B8. PICK ONE: Is there a boss? *(needed by M5 — see also B3)*
+### ✅ B8. PICK ONE: Is there a boss? *(ANSWERED & BUILT 2026-09-19 — A, the Cow Killer Bee)*
 
 - [ ] **A) One big boss at the end of the game.**
 - [ ] **B) A boss at the end of every few levels.**
 - [ ] **C) No bosses** — the enemy base is the challenge.
 
 **If yes — what is it, and what's it called?** _(open)_ → `DESIGN.md` §4
+
+### 🔲 B26. INVENT: Name the new bugs of the later caves *(needed by M3 — ON THE PLATE)*
+
+B11 asked for new bugs to be introduced as the caves get harder, and that is the
+right instinct - but all ten caves currently share the Mosquito, Spider and
+Scorpion, because naming creatures is Lewis's job and not Dad's.
+
+Three more would spread nicely: one for the desert caves (Sahara-hara, Forgotten
+Oasis), one for Dream Land (a bug in a dream could be anything), one for the
+Abyss of Darkness. For each: **what it is called**, and **small and fast or big
+and slow?** Dad works out the numbers.
+
+**Lewis's answer:** _(open)_ → `DESIGN.md` §4
+
+### 🔲 B27. INVENT: What do blood, potions and fruits DO? *(needed by M4 — ON THE PLATE, BLOCKING)*
+
+B22 invented a two-step casino: suns buy **blood, potions and fruits**, and those
+are then traded or gambled for upgrades. Three named goods need three different
+jobs, or they are one thing with three labels.
+
+Some shapes that would work: one raises a bat's **damage** and another its
+**health**; one is the **gambling** good (drink it and find out); one is **rare**
+and only drops from a boss.
+
+**Lewis's answer:** _(open)_ → `DESIGN.md` §8
 
 ### 🔲 B14. PICK ONE: A second lane? *(needed by M5)*
 
@@ -344,6 +379,19 @@ gets dull once you know you've won.
 | B12 | **A** — unlock by winning *(by implication of B13)* |
 | B13 | **B** — saves, plus suns and the casino |
 | B19 | **A** — yes, and an upgrade shows as a colour *(by implication)* |
+
+**Round 2, 2026-09-19 — all eight, and everything buildable got built.**
+
+| # | Answer | Built? |
+|---|---|---|
+| B17 | **All ten cave names**, The Cave → Final Stadium | ✅ all ten caves exist |
+| B11 | Each cave tougher, **one lever each**; new bugs sometimes | ✅ built (bugs → B26) |
+| B9 | **A** — the **Archer Bat**, reach 240 | ✅ built |
+| B8 | **A** — one boss, the **Cow Killer Bee** | ✅ built, cave 10 |
+| B24 | **A** — bats only, and reach **320 → 460** | ✅ done |
+| B16 | **D** — **grave markers** *(also settles B25)* | ✅ built |
+| B22 | Casino: suns → **blood/potions/fruits** → trade or gamble | 🔲 needs B27 |
+| B23 | **B** — four colours | ✅ in the data |
 
 **Earlier, 2026-09-18:** B4 (the first answer, now superseded), B21 (Scout walk
 cycle). Full reasoning for every one is in `DECISIONS.md`.

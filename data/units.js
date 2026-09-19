@@ -150,7 +150,12 @@ window.UNITS = {
     // Necrobatcer raises one grave every "interval" seconds.
     summon: {
       interval: 5.0,       // <-- TRY ME: 1.0 and the dead never stay dead
-      range: 320,          // how far it can reach for a grave, in pixels
+
+      // Homework B24 (2026-09-19): Lewis kept it to his own bats only, and
+      // asked for it to reach further. 320 -> 460, which is most of the way
+      // across the lane (the two bases are about 800px apart), so a
+      // Necrobatcer safely behind the line can still reach the front of it.
+      range: 460,          // how far it can reach for a grave, in pixels
       hpFactor: 0.6        // a raised bat comes back with 60% of its health
       // Two rules are in the code, not here, because they stop the game
       // breaking rather than tune it:
@@ -168,10 +173,65 @@ window.UNITS = {
     }
   },
 
+  /* =====================================================================
+     THE ARCHER BAT - Lewis's fourth bat (homework B9 = A, 2026-09-19)
+     =====================================================================
+     The first bat that does NOT have to walk into the fight. It stops a long
+     way back and shoots over the top of everyone.
+
+     Why it exists, in Dad's words: a battle used to end with your base at
+     100% or 0% and nothing in between, because whoever won the scrap in the
+     middle took everything and no bat could reach past it. The Archer is the
+     bat that can.
+
+     The whole power is ONE NUMBER: range 240 instead of the Scout's 40.
+     src/systems/combat.js already honoured any reach, so this needed no new
+     code at all - which is why it was measured before it was promised.
+
+     It is expensive and made of paper on purpose. Per energy spent it does
+     LESS damage than a Scout; what you are paying for is a bat that keeps
+     shooting because nothing can touch it. Let one get caught alone and it
+     pops instantly.
+     ===================================================================== */
+
+  archerBat: {
+    name: 'Archer Bat',
+    cost: 45,
+    // Below cost / energyPerSecond (45 / 13 = 3.46s), so money is the limit
+    // and a slow tap costs nothing. See the Scout's note above.
+    cooldown: 3.0,
+    hp: 24,                // <-- paper. One scorpion sting and it is gone.
+
+    // MEASURED, and this took a few goes. At attack 14 it was 12.7 dps, which
+    // is 0.28 damage per energy spent against a Scout Bat's 0.53 - less than
+    // half. A bat that costs nearly twice a Scout and does half the damage per
+    // coin is not "expensive but safe", it is just bad, and the balance sim
+    // showed the whole army getting weaker whenever the button was offered.
+    //
+    // At 22 it is the right shape instead: STRONGER than a Scout per bat
+    // (20.0 dps against 13.3), still WEAKER per energy (0.44 against 0.53).
+    // So you are paying a premium for a bat nothing can reach - which is the
+    // trade it was invented to offer.
+    attack: 22,
+    attackInterval: 1.1,   // 20.0 dps
+    range: 240,            // <-- THE WHOLE POINT. The Scout's is 40.
+    speed: 75,
+    color: '#7ce0a8',      // placeholder art until Lewis draws it
+    sprite: 'archerBat',
+    scale: 0.8,
+
+    anims: {
+      frameWidth: 48,
+      frameHeight: 48,
+      idle:   { start: 0,  end: 1,  frameRate: 4,  repeat: -1 },
+      walk:   { start: 2,  end: 5,  frameRate: 10, repeat: -1 },
+      attack: { start: 6,  end: 8,  frameRate: 12, repeat: 0  },
+      death:  { start: 9,  end: 12, frameRate: 9,  repeat: 0  }
+    }
+  },
+
   /* TODO for Lewis - fun bats to invent later:
-     - sniperBat:  huge range (like 250) but very low hp
      - healerBat:  needs a new "heal" power in the code, ask Dad
-     - bossBat:    hp 2000, attack 120, and make it the last wave of a level
      - ghostBat:   walks past enemies without fighting until it reaches the base
   */
 
@@ -232,6 +292,49 @@ window.UNITS = {
       walk:   { start: 2,  end: 5,  frameRate: 7,  repeat: -1 },
       attack: { start: 6,  end: 8,  frameRate: 9,  repeat: 0  },
       death:  { start: 9,  end: 12, frameRate: 7,  repeat: 0  }
+    }
+  },
+
+  /* =====================================================================
+     THE COW KILLER BEE - the boss (homework B8 = A, 2026-09-19)
+     =====================================================================
+     "One big boss, 'cow killer bee', that looks like a queen bee with a very
+      long stinger."  - Lewis
+
+     One boss, at the very end of the game: the last wave of cave 10, the
+     Final Stadium. Nothing else in Palopa comes close to it.
+
+     THE LONG STINGER IS THE FIGHT. Taking Lewis's description literally, the
+     stinger is REACH: range 130, against a Scout Bat's 40. So the boss stands
+     back and kills your whole front line without ever being touched by it.
+     Brute Bats and Scout Bats simply cannot answer that.
+
+     The Archer Bat can - range 240 out-reaches the stinger's 130. That is not
+     a coincidence, it is the point: Lewis's two answers this round happen to
+     be the lock and the key, so the boss is the fight his Archer was invented
+     for. Measured: the Final Stadium is winnable with Archers and a grind
+     without them.
+     ===================================================================== */
+  cowKillerBee: {
+    name: 'Cow Killer Bee',
+    enemy: true,
+    cost: 0,
+    cooldown: 0,
+    hp: 2400,              // <-- TRY ME: the whole cave is balanced round this
+    attack: 55,
+    attackInterval: 1.8,   // 30.6 dps - three times a Scorpion's
+    range: 130,            // <-- THE LONG STINGER. Out-reaches every melee bat.
+    speed: 26,             // a queen does not hurry
+    color: '#e8c33f',      // placeholder: queen-bee yellow
+    sprite: 'cowKillerBee',
+    scale: 1.6,            // <-- looms over everything else on the screen
+    anims: {
+      frameWidth: 64,
+      frameHeight: 64,
+      idle:   { start: 0,  end: 1,  frameRate: 2,  repeat: -1 },
+      walk:   { start: 2,  end: 5,  frameRate: 5,  repeat: -1 },
+      attack: { start: 6,  end: 8,  frameRate: 7,  repeat: 0  },
+      death:  { start: 9,  end: 12, frameRate: 5,  repeat: 0  }
     }
   },
 

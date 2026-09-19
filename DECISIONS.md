@@ -62,6 +62,14 @@ and changed one earlier answer.*
 | 12 | **B13** — does progress save? | **B, and more.** It remembers beaten caves, you earn **suns** for winning one, and suns are spent in **the casino** on bat upgrades and "other things you need later". | Turns M4 into three connected pieces: saving, a between-battles currency, and a shop. `DESIGN.md` §8 | 2026-09-19 |
 | 13 | **B12** — how do you get new bats? | **A, by winning caves**, by implication of 12. | The B13 option Lewis picked says "you unlock bats by winning". `DESIGN.md` §8 | 2026-09-19 |
 | 14 | **B19** — can you upgrade a bat? | **A, yes** — and an upgrade **shows as a colour**, by implication of 7 + 12. | Both answers have him spending suns to upgrade bats, and 7 says what an upgrade looks like. `DESIGN.md` §8, §9 | 2026-09-19 |
+| 15 | **B17** — name the caves | **All ten, in order:** The Cave, Crystal Falls, Dream Land, Pyramid, Sahara-hara Desert, Wait Um, Scarred Woods, Abyss of Darkness, Forgotten Oasis, Final Stadium | Every one is built and on the title screen. The names drove the designs: "Wait Um" became the longest siege in the game, "Final Stadium" the boss arena. `DESIGN.md` §7 | 2026-09-19 |
+| 16 | **B11** — what makes each cave different? | **"Each cave gets tougher, new bugs are introduced but not every level has a new bug. Some have less energy or tougher fortress or no warm up."** | Built as **one named lever per cave** so the difference is legible rather than mushy: a new bug (2), no warm-up (3, 7), a tougher fortress (4, 6), less energy (5), two levers at once (8), heavy bugs (9), the boss (10). `DESIGN.md` §7 | 2026-09-19 |
+| 17 | **B9** — a long-range bat? | **A, yes: the ARCHER BAT.** Cost 45, 24hp, 20 dps, **reach 240** against a Scout's 40 | The first bat that does not walk into the fight, and the answer to the 100%-or-0% ending Dad had measured twice. Needed no new code - reach was always one number. `DESIGN.md` §3 | 2026-09-19 |
+| 18 | **B8** — is there a boss? | **A, one big boss: the COW KILLER BEE**, "a queen bee with a very long stinger". 2400hp, 30 dps, **reach 130**, only in the last wave of cave 10 | The long stinger is taken literally, so she out-reaches every melee bat: Scouts and Brutes die without touching her. Only the Archer out-reaches her. `DESIGN.md` §4 | 2026-09-19 |
+| 19 | **B24** — can the Necrobatcer raise bugs? | **A, only his own bats** - and **raise from further away**: summon range **320 → 460** | Lewis asked for the reach specifically. 460 is most of the way across the lane, so a Necrobatcer safely behind the line can still reach the front of it. `DESIGN.md` §3 | 2026-09-19 |
+| 20 | **B16** — what happens when a bat dies? | **D, the graveyard idea: a grave marker on the ground**, cleared when the bat is raised | Also settles **B25**. The best of the options because it makes an invisible rule visible: you can now see where your Necrobatcer can reach, and aim it. The positions were already tracked. `DESIGN.md` §9 | 2026-09-19 |
+| 21 | **B22** — casino: shop or gamble? | **Neither, exactly — a two-step economy.** "At the casino you exchange suns for blood, potions, fruits that you can trade or gamble for upgrades." | He invented past the question, which is his job. Suns buy **goods**; goods are then **traded or gambled** for upgrades. So both of Dad's options exist, with an item layer between. Raises B27. `DESIGN.md` §8 | 2026-09-19 |
+| 22 | **B23** — how many colour tiers? | **B, four:** Plain → Violet → Blue → Yellow → Red | Seven upgrades per bat would have been seven prices to balance for every bat. Four keeps the backwards rainbow reading the same way. In `data/config.js` as `upgradeTiers` | 2026-09-19 |
 
 ---
 
@@ -90,6 +98,12 @@ These were settled while building Milestone 1. **Any of them can be overruled**
 | D16 | Shipped to the live site | Round 1's work merged to `main` as `f8f87d3`; Pages deploy run #7 succeeded 2026-09-19 12:22 UTC | The fix is only real when Lewis can play it. Worth recording because the gap between "fixed" and "live" is exactly what made his B7 answer look like a difficulty complaint | 2026-09-19 |
 | D17 | A level can declare `practice: true` | `graveyard` carries it; `tools/balance-sim.js` then stops failing it for letting a hoarder win | The sim was reporting `[BAD] Hoarding ALSO WINS` on a level deliberately built to be generous. A tool that cries wolf is a tool people stop reading — which is how the D8 bug survived. Real caves omit the flag and face the full verdict | 2026-09-19 |
 | D19 | The title screen lists every level | A cave picker built from `data/levels.js`, plus **NEXT CAVE** on the victory panel. Order = the order levels are written in `levels.js`; `practice: true` levels are listed apart and kept out of the numbering | Jeff hit it: after beating Level 1 the game was a **loop** — RETRY replayed it, MENU led to a Start button that replayed it, and the Graveyard was unreachable without editing `main.js`. `src/systems/caves.js` is now the one place that answers "what exists, what is next" so the menu and victory screen cannot disagree | 2026-09-19 |
+| D21 | How new bats arrive | Cave by cave, through each level's `playerUnits`: Archer from cave 2, Necrobatcer from cave 4 | B12 said bats unlock by winning, but unlocking needs saved progress (M4). A level's bat list gets the same *feeling* today with no guesswork, and becomes the unlock table later | 2026-09-19 |
+| D22 | The sim models **two** spending policies | `prefer: 'cheapest'` (spams the cheap bat) and `prefer: 'priciest'` (saves for the dear one). A cave must be winnable **both** ways | This nearly caused a bad build. The old player deployed anything affordable in list order, so the 25-energy Scout always drank the wallet first - "attentive play" was really *Scout-spam-only*. Raising cave 2's bugs by 25% made the sim report that fast play LOST while dawdling WON, which is nonsense: what loses is the spamming, not the attention. Same class of mistake as D10, one layer down | 2026-09-19 |
+| D23 | What the sim can and cannot prove | It proves a cave is **winnable, robustly, more than one way**. It does **not** prove how hard a cave *feels* | Both player models are extremes - one spams the cheapest bat, one hoards for the dearest - and neither composes an army the way a person does. A model that plays *well* is an AI problem, not a balance problem. So the curve is designed from rising pressure (total HP 6730 → 11370 across the ten) and **needs Lewis to play it** to confirm | 2026-09-19 |
+| D24 | Only cave 1 must punish hoarding | `teachesSpending: true` on cave 1; every other cave must merely make spending the **faster** route | From cave 2 the player has the Archer (safe behind the line) and the Necrobatcer (recycles the dead), and patient play becomes a real, slower way to win. That is those bats working, not a broken cave. Demanding a hoarder always lose would be the wrong test; silently dropping the test would be worse | 2026-09-19 |
+| D25 | The Archer's damage, 14 → 22 | 20.0 dps: stronger than a Scout per bat, still weaker per energy | At 14 it did 0.28 damage per energy against a Scout's 0.53 - less than half, for nearly double the price. Not "expensive but safe", just bad: the sim showed the whole army getting *weaker* whenever the button was offered | 2026-09-19 |
+| D26 | The boss must actually be met | Cave 10's fortress 3400 → 5000 and the bee moved from 58s to 40s | First draft was won at 44-52s while she arrived at 58s, so the boss of the whole game never met the player once | 2026-09-19 |
 | D20 | No locking and no saving, yet | Every cave is pickable from the menu | Locking caves behind wins is B12/B13 (M4) and needs the suns/casino design. Guessing at it now would pre-empt Lewis; an open picker is strictly better than a dead end and throws nothing away | 2026-09-19 |
 | D18 | `balance-sim.js` no longer clobbers `global.window` | `global.window = global.window \|\| {}` | It exports `playLevel` for other scripts to use, then overwrote the `window` any caller had already built — so reusing it as a library silently discarded your setup. Found while probing the B9 long-range question | 2026-09-19 |
 
@@ -106,21 +120,23 @@ These were settled while building Milestone 1. **Any of them can be overruled**
 | B5 | The third bat | §3 The Bats | ✅ Answered **& built** — the Necrobatcer |
 | B6 | Special powers? | §3 The Bats | ✅ Answered by B5 — yes |
 | B7 | How strict is saving up? | §3 The Bats | ✅ Answered — A, keep it strict |
-| B8 | Is there a boss? | §4 The Enemy | 🔲 Open (M5) |
-| B9 | A long-range bat? | §6 Combat Rules | 🔲 Open (M2) — the all-or-nothing ending is still unsolved |
+| B8 | Is there a boss? | §4 The Enemy | ✅ Answered **& built** — the Cow Killer Bee |
+| B9 | A long-range bat? | §6 Combat Rules | ✅ Answered **& built** — the Archer Bat |
 | B10 | How many levels? | §7 Levels & Waves | ✅ Answered — C, ten or more |
-| B11 | What makes the next cave different? | §7 Levels & Waves | 🔲 **Now blocking M2** |
+| B11 | What makes each cave different? | §7 Levels & Waves | ✅ Answered **& built** — one lever per cave |
 | B12 | How you unlock bats | §8 Progression | ✅ Answered by B13 — by winning |
 | B13 | Does progress save? | §8 Progression | ✅ Answered — yes, + suns + casino |
 | B14 | A second lane? | §6 Combat Rules | 🔲 Open (M5) |
 | B15 | Music & sound | §9 Look & Sound | 🔲 Open (M3) |
-| B16 | What a bat's death looks like | §9 Look & Sound | 🔲 Open (M3) |
-| B17 | Cave names | §7 Levels & Waves | 🔲 **Now blocking M2** — and B10 wants ~10 |
+| B16 | What a bat's death looks like | §9 Look & Sound | ✅ Answered **& built** — grave markers |
+| B17 | Cave names | §7 Levels & Waves | ✅ Answered **& built** — all ten |
 | B18 | The base-breaking moment | §9 Look & Sound | 🔲 Open (anytime) |
 | B19 | Can you upgrade a bat? | §8 Progression | ✅ Answered by B4 + B13 — yes, as colour |
 | B20 | A fast-forward button? | §5 Energy & Deploying | 🔲 Open (anytime) |
 | B21 | Animate the bats, or one pose? | §9 Look & Sound | ⚠️ Scout walks, but the B4 redraw resets this |
-| B22 | Casino: shop or gamble? | §8 Progression | 🔲 **New** (M4) |
-| B23 | How many colour tiers, really? | §9 Look & Sound | 🔲 **New** (M4) |
-| B24 | Can the Necrobatcer raise bugs too? | §3 The Bats | 🔲 **On the plate** (anytime) |
-| B25 | Should graves show on the ground? | §9 Look & Sound | 🔲 **New** (anytime) |
+| B22 | Casino: shop or gamble? | §8 Progression | ✅ Answered — suns → goods → trade or gamble |
+| B23 | How many colour tiers, really? | §9 Look & Sound | ✅ Answered — B, four |
+| B24 | Can the Necrobatcer raise bugs too? | §3 The Bats | ✅ Answered — A, bats only, longer reach |
+| B25 | Should graves show on the ground? | §9 Look & Sound | ✅ Answered by B16 — yes, built |
+| B26 | Name the new bugs for the later caves | §4 The Enemy | 🔲 **New** — on the plate |
+| B27 | What do blood, potions and fruits DO? | §8 Progression | 🔲 **New** — on the plate |

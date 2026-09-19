@@ -92,6 +92,27 @@ you double its damage; if you *halve* `attackInterval` you also double it.
 
 A button for it appears automatically. No code changes needed.
 
+### The ten caves of Palopa
+
+Named by Lewis (homework B17), each built around **one** thing that makes it
+different (B11), and every one measured with the balance sim:
+
+| # | Cave | What makes it different |
+|---|---|---|
+| 1 | The Cave | the tutorial: keep spending, hoarding loses |
+| 2 | Crystal Falls | a new bug — the Spider arrives |
+| 3 | Dream Land | no warm-up: bugs from second one |
+| 4 | Pyramid | a tougher fortress |
+| 5 | Sahara-hara Desert | less energy |
+| 6 | Wait Um | the longest siege in the game |
+| 7 | Scarred Woods | no warm-up, and spider country |
+| 8 | Abyss of Darkness | two levers at once |
+| 9 | Forgotten Oasis | scorpions, and lots of them |
+| 10 | Final Stadium | the boss — the **Cow Killer Bee** |
+
+Plus **The Graveyard**, a practice level for trying the Necrobatcer out. All of
+them are on the title screen.
+
 ### Add a whole new cave → `data/levels.js`
 
 Copy the `level1` block, rename the key, change the numbers. **That is the only

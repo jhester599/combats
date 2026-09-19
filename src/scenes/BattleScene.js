@@ -92,6 +92,7 @@ window.BattleScene.prototype.create = function () {
     this.cooldowns[this.level.playerUnits[i]] = 0;
   }
 
+  this.buildGraveMarkers();
   this.buildEnergyBar();
   this.buildDeployButtons();
   this.buildResultPanel();
@@ -430,6 +431,66 @@ window.BattleScene.prototype.syncView = function () {
 
   this.syncEnergyBar();
   this.syncButtons();
+  this.syncGraves();
+};
+
+/* -------------------------------------------------------------------------
+   GRAVE MARKERS (homework B16). One headstone per fallen bat, at the spot it
+   fell, cleared the moment a Necrobatcer raises it.
+
+   The stones are POOLED like everything else in this game: a fixed set is
+   built once and shown or hidden, so a long battle never piles up objects.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.buildGraveMarkers = function () {
+  var g = window.CONFIG.graveMarker;
+  var i;
+
+  this.graveMarkers = [];
+
+  for (i = 0; i < g.maxDrawn; i++) {
+    // A headstone: an upright slab with a paler crossbar across it.
+    var stone = this.add.rectangle(0, 0, g.width, g.height, g.color, g.alpha);
+    var bar = this.add.rectangle(0, 0, g.width + 4, 2, g.crossColor, g.alpha);
+
+    stone.setVisible(false);
+    bar.setVisible(false);
+
+    this.graveMarkers.push({ stone: stone, bar: bar });
+  }
+};
+
+window.BattleScene.prototype.syncGraves = function () {
+  if (!this.graveMarkers) {
+    return;
+  }
+
+  var cfg = window.CONFIG;
+  var g = cfg.graveMarker;
+  var graves = this.world.graves;
+  var i;
+
+  for (i = 0; i < this.graveMarkers.length; i++) {
+    var marker = this.graveMarkers[i];
+    var grave = graves[i];
+
+    if (!grave) {
+      marker.stone.setVisible(false);
+      marker.bar.setVisible(false);
+      continue;
+    }
+
+    var y = cfg.lane.y + g.yOffset;
+
+    marker.stone.setPosition(grave.x, y - (g.height / 2));
+    marker.bar.setPosition(grave.x, y - (g.height * 0.62));
+
+    // Behind the bats, so a pile of fighting units still reads clearly.
+    marker.stone.setDepth(cfg.lane.y - 40);
+    marker.bar.setDepth(cfg.lane.y - 40);
+
+    marker.stone.setVisible(true);
+    marker.bar.setVisible(true);
+  }
 };
 
 window.BattleScene.prototype.syncEnergyBar = function () {

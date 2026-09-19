@@ -126,6 +126,11 @@ window.CONFIG = {
      So a bat starts as Lewis drew it - plain black and white - and climbs the
      rainbow BACKWARDS as it is upgraded. Red is the top of the ladder.
 
+     SIMPLIFIED to four steps by homework B23 = B (2026-09-19). Lewis had said
+     he might "simplify down a bit", and seven upgrades per bat would have been
+     seven prices to balance for every bat in the game. Violet, Blue, Yellow,
+     Red keeps the rainbow reading the same way with a quarter of the work.
+
      THE CLEVER BIT, and the reason black-and-white art is a good call: a
      white drawing can be TINTED any colour by the engine. So Lewis draws each
      bat exactly ONCE, and the game makes all eight versions of it. Nobody has
@@ -138,12 +143,9 @@ window.CONFIG = {
   upgradeTiers: [
     { name: 'Plain',  tint: 0xffffff },   // as drawn: black and white
     { name: 'Violet', tint: 0x9d5cf6 },
-    { name: 'Indigo', tint: 0x5346e5 },
     { name: 'Blue',   tint: 0x2f8ff0 },
-    { name: 'Green',  tint: 0x35b84a },
     { name: 'Yellow', tint: 0xf2d02a },
-    { name: 'Orange', tint: 0xf58220 },
-    { name: 'Red',    tint: 0xe03028 }
+    { name: 'Red',    tint: 0xe03028 }    // the top of the ladder
   ],
 
   /* ---------------------------------------------------------------------
@@ -217,6 +219,32 @@ window.CONFIG = {
     // by the unit's own "scale" from units.js, so a Scout Bat's portrait is
     // smaller than a Brute Bat's - same as on the battlefield.
     portraitScale: 0.7
+  },
+
+  /* ---------------------------------------------------------------------
+     GRAVE MARKERS  (Lewis's homework answer B16 = D, 2026-09-19)
+     ---------------------------------------------------------------------
+     A little headstone is left where each of your bats falls, and it vanishes
+     when a Necrobatcer raises it.
+
+     Lewis chose this over a puff of dust or a ghost, and it is the better
+     answer for a reason worth writing down: the Necrobatcer's rules were
+     completely invisible. It can only raise a bat that really fell, and only
+     one within summon.range of itself - so a resurrection looked like luck.
+     Now the graves are on the ground, so a player can SEE where the summoner
+     can reach and aim it. It turns a hidden rule into a decision.
+
+     The positions were already being tracked (world.graves in
+     src/systems/necro.js), so this draws what the game always knew.
+     --------------------------------------------------------------------- */
+  graveMarker: {
+    width: 7,
+    height: 11,
+    color: 0xcfc6e6,
+    alpha: 0.72,
+    crossColor: 0x8a7fb0,
+    yOffset: -6,          // how far above the lane line the stone sits
+    maxDrawn: 40          // never draw more stones than CONFIG.combat.maxGraves
   },
 
   /* ---------------------------------------------------------------------

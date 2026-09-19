@@ -1,265 +1,129 @@
-# Homework for Lewis — Round 2 🦇
+# Homework for Lewis — Round 3 🦇
 
-> **You're the creative director.** That means the *look*, the *feel*, and the
+> **You're the creative director.** The *look*, the *feel*, and the
 > *what-even-is-this* calls are yours. Dad builds whatever you decide.
 >
-> **How to answer:** just tell Dad. "B17 — cave 2 is called The Drip. B9 = A and
-> it's called Zap." You don't have to do them all at once, and you don't have to
-> pick from the options — **"something else"** is always allowed and usually
-> better. (You proved that last time: the Necrobatcer beat all four of Dad's
-> ideas.)
+> **How to answer:** just tell Dad. You don't have to do them all at once, and
+> you don't have to pick from the options — **"something else"** is always
+> allowed. You keep proving that: the Necrobatcer beat all four of Dad's ideas,
+> and your casino answer was better than either option he offered.
 
 ---
 
-## 🎉 First — go and play it, because four things changed
+## 🎉 EVERYTHING YOU ASKED FOR IS BUILT. Go and play it.
 
 **https://jhester599.github.io/combats/**
 
-| What's new | Go and look |
+**All ten of your caves exist.** They're on the title screen, in your order:
+
+| | Cave | What makes this one different |
+|---|---|---|
+| 1 | **The Cave** | the easy one, where you learn to keep spending |
+| 2 | **Crystal Falls** | 🕸️ the **Spider** finally shows up |
+| 3 | **Dream Land** | ⚡ **no warm-up** — bugs from the very first second |
+| 4 | **Pyramid** | 🧱 a **much tougher fortress** |
+| 5 | **Sahara-hara Desert** | 💰 **less energy** — every bat really counts |
+| 6 | **Wait Um** | ⏳ the **longest siege** in the whole game |
+| 7 | **Scarred Woods** | 🕸️ no warm-up **and** spiders everywhere |
+| 8 | **Abyss of Darkness** | 💀 **two** hard things at once |
+| 9 | **Forgotten Oasis** | 🦂 **scorpions**, and lots of them |
+| 10 | **Final Stadium** | 👑 **THE COW KILLER BEE** |
+
+And the three other things you asked for:
+
+| Your answer | What happened |
 |---|---|
-| **Level 1 is winnable now.** The bug you found is fixed and **live**. | Tap Scout Bat every time it lights up → you should win in **about a minute**. |
-| **Level 1 is called The Cave**, in the world of **Palopa**. | It says so at the top of the screen. |
-| **The blobs have names.** The orange one is a **Mosquito**, the red one is a **Scorpion**. | They still look like blobs. That's your next drawing job. 🎨 |
-| **💀 You can play your NECROBATCER now.** The title screen lists every level, and yours is on it. | Look under **"just for practice"**, below the caves: **The Graveyard**. |
+| **B9** — the Archer Bat 🏹 | **Built.** It shoots from **240 pixels** away. A Scout Bat has to get within 40. You get it from cave 2 onwards. |
+| **B8** — the Cow Killer Bee 👑 | **Built.** 2400 health, and her stinger reaches **130** — further than any of your other bats can hit back from. |
+| **B16** — grave markers 🗿 | **Built.** Every bat that falls leaves a little headstone, and it disappears when your Necrobatcer raises it. |
+| **B24** — Necrobatcer reaches further | **Done.** 320 → **460**. |
+| **B23** — four colours not seven | **Done.** Plain → Violet → Blue → Yellow → **Red**. |
 
-It raises your dead bats *where they fell*, right in the middle of the fight.
+### 🏹 Why your Archer Bat and your Bee are a perfect pair
 
-### 🔧 And Dad fixed a dead end you'd have hit straight away
+You answered these two separately, but look what happened:
 
-Before today, beating The Cave left you stuck: **RETRY** played The Cave again,
-and **MENU** led to a Start button that *also* played The Cave. No way out — and
-no way to reach The Graveyard at all without editing code.
+- the Cow Killer Bee's stinger reaches **130**
+- Scout Bat reaches 40. Brute Bat 46. Necrobatcer 60. **All of them die without
+  ever touching her.**
+- **Archer Bat reaches 240.** It's the only bat in the game that can hit her
+  while she can't hit back.
 
-Now the title screen lists **every** level, and when you beat a cave that has
-another cave after it you get a **NEXT CAVE** button.
+You accidentally invented the boss *and* the only bat that properly answers her,
+in the same homework. 🎉
 
-Right now there *is* no cave 2, so after winning you'll see *"that is all of
-Palopa so far"* — which is at least honest. **Making cave 2 exist is B17 and B11
-below.** 👇
+*(You can still beat her with a big swarm of cheap Scout Bats — Dad checked —
+it just takes about three times as long.)*
 
-<details>
-<summary>🐛 The story of the 0.08-second bug you found (worth a read)</summary>
+### 🐛 One thing Dad got wrong, and fixed
 
-You tapped Scout Bat every time the button lit up — exactly what this page told
-you to do — and you lost. That was **the game's fault**, not yours.
-
-- You could **afford** a Scout Bat every **1.9 seconds**.
-- But the button made you **wait 2.0 seconds**.
-- The wait was longer than the money — by **0.08 of a second**.
-
-So the button sat there lit up, *waiting for your thumb*, and every little bit
-of time before you tapped was a bat you never got back. Being a third of a
-second late — which is just being a person — cost you **13% of your whole
-army**. And 13% was exactly the difference between winning and losing.
-
-The really bad part: Dad's testing robot tapped on the *exact* 1/60th of a
-second the button lit up. So **it** won every time and kept reporting the level
-was fine. It was measuring a robot, not a boy.
-
-**Both are fixed.** The Scout's cooldown is 1.4 seconds, so now your *energy*
-slows you down instead of the clock — a slow tap just banks the energy. And the
-robot has a reaction time now, so it can't lie to us again.
-
-It's logged as decisions **D8, D9 and D10** in `DECISIONS.md`. Finding it
-counts. 🦇
-
-</details>
+The first time he built the Final Stadium, **the Bee never appeared.** She was
+set to arrive at 58 seconds, but the cave was already won by 52. The boss of the
+entire game was never meeting the player once. She now arrives at **40 seconds**,
+and the fortress is big enough that she's definitely still there.
 
 ---
 
-## 🟡 Round 2 — eight questions, in the order that helps most
+## 🟡 Round 3 — four questions
 
-Dad has sorted these so the **top three unblock today**. If you only feel like
-answering three, answer those three.
-
----
-
-# 🔥 These three unblock today
+Much shorter this time, because you answered nearly everything. Two of these are
+**drawing**, which is the real bottleneck now.
 
 ---
 
-### 🔲 B17. INVENT: Name the caves 🗺️ *(blocking — Dad can't build cave 2 without this)*
+### 🔲 B26. INVENT: Name the new bugs 🐛 *(needed by M3)*
 
-You picked **ten or more caves**, so Dad needs names. He has one: **The Cave**.
-That leaves about nine. 😄
+You said *"new bugs are introduced but not every level has a new bug"* — and
+you're right, that's how it should work. But Dad only has **three** bugs
+(Mosquito, Spider, Scorpion), so all ten caves currently use those three.
 
-**They don't all have to be caves!** Palopa can have anywhere a bug would live:
+**Naming creatures is your job, not his.** So: what new bugs live in the later
+caves? You don't need ten — even **three more** would spread nicely:
 
-- somewhere **wet** — a drip, a well, a puddle, a drain
-- somewhere **high** — a roof, a belfry, a chimney
-- somewhere **horrible** — a bin, a compost heap, a drain pipe
-- somewhere that sounds **scary** — The Deep, The Long Dark, The Nest
+- something for the **desert** caves (Sahara-hara, Forgotten Oasis)
+- something for **Dream Land** (a bug in a dream could be anything at all)
+- something for the **Abyss of Darkness** (something that lives in the dark)
 
-**You don't have to do all nine now.** Even just cave 2 and cave 3 lets Dad
-start building.
-
-**Cave 1 is called:** The Cave ✅
-**Cave 2 is called:** _(open)_
-**Cave 3 is called:** _(open)_
-**…and after that:** _(open)_
-
----
-
-### 🔲 B11. PICK ONE (or invent): What makes cave 2 *different*? 🕸️ *(blocking)*
-
-If cave 2 is "the same but more bugs", it's boring, and you'll notice straight
-away. So pick the **one thing** that changes:
-
-- [ ] **A) A new bug.** ⭐ *Dad's suggestion, because it's already built* — the
-  **Spider** exists in the game right now and has never once appeared. It's
-  tougher than a Mosquito and faster than a Scorpion. Cave 2 could be where you
-  meet it.
-- [ ] **B) Less energy.** You get money more slowly, so you have to be fussier
-  about what you send. Harder in a *thinking* way, not a *faster* way.
-- [ ] **C) A tougher fortress.** The enemy base has way more health, so it's a
-  longer siege. Harder in a *patience* way.
-- [ ] **D) No warm-up.** Cave 1 gives you a few gentle seconds at the start.
-  Cave 2 throws bugs at you from second one.
-- [ ] **E) Something else** — tell Dad and he'll work out the numbers.
-
-**Lewis picks:** _(open)_
-
----
-
-### 🔲 B9. PICK ONE: A bat that attacks from FAR away? 🎯 *(blocking — and Dad has already tested it)*
-
-**This is the most important question on the page,** because it fixes something
-broken about how battles *feel*.
-
-**The problem:** right now a battle almost always ends with your base at **100%
-or 0%** — never in between. Whoever wins the scrap in the middle takes
-everything. There's no "phew, that was close". Every one of your bats has to
-walk *into* the fight, so there's no way to change a fight you're losing.
-
-**A bat that shoots over the top of the fight is the only idea that fixes it.**
-
-**Dad tested this already, and it needs no new code at all** — how far a bat can
-reach is just one number. He tried a bat with reach **250** instead of the
-Scout's **40**:
-
-- ✅ it worked first time, no code written
-- ✅ it won Level 1 in 80 seconds
-- ✅ it started hitting the enemy fortress **from a distance**, 24 seconds in
-- ⚠️ but when he gave it to you *alongside* Scout Bats, he could **never afford
-  a single one** — because spamming Scouts eats all your money. So it has to be
-  worth *choosing instead of* Scouts.
-
-- [ ] **A) Yes — the fourth bat is a long-range one.** ⭐ Dad's suggestion.
-  Tiny health, so if anything reaches it, it pops. **What's it called?**
-- [ ] **B) Yes, but not yet** — finish the caves first, add it later.
-- [ ] **C) No** — three bats is enough. *(Then the 100%-or-0% thing stays.)*
-
-**Lewis picks:** _(open)_
-**If A, its name is:** _(open)_
-
----
-
-# 😄 These three are quick, and Dad can build them today too
-
----
-
-### 🔲 B8. PICK ONE + INVENT: Is there a boss? 👑
-
-Now the enemies are *bugs*, a boss is easy to picture: the biggest, oldest,
-nastiest thing in the cave.
-
-- [ ] **A) One big boss, right at the very end of the game.**
-- [ ] **B) A boss every few caves.** More bosses, more work, but you get one
-  sooner.
-- [ ] **C) No bosses** — the fortress is the challenge.
-
-**Good news:** a boss is *mostly just numbers* (huge health, big hit, appears in
-the last wave), so Dad can build one the same day you ask.
-
-**If yes — what IS it, and what's it called?** A queen? A spider the size of the
-whole screen? Something with too many legs?
+For each one, Dad needs: **what it's called**, and **is it small and fast, or
+big and slow?** He'll work out the numbers.
 
 **Lewis's answer:** _(open)_
 
 ---
 
-### 🔲 B24. PICK ONE: Can the Necrobatcer raise BUGS too? 💀
+### 🔲 B27. INVENT: What do blood, potions and fruits actually DO? 🧪 *(blocks the casino)*
 
-Right now your Necrobatcer only raises **your** bats. Dead bugs stay dead.
+Your casino answer was better than either option Dad offered — you invented a
+middle step:
 
-- [ ] **A) Only your own bats.** *(How it works today.)* Simple, and it keeps
-  your summoner feeling like it's on your side.
-- [ ] **B) Bugs as well** — raise a dead Scorpion and it fights **for you**.
-  Much creepier, and *much* stronger, so it'd have to cost more.
-- [ ] **C) Bugs only** — a totally different bat that eats the graveyard.
+```
+beat a cave  ->  SUNS  ->  at the casino  ->  BLOOD / POTIONS / FRUIT
+                                                      |
+                                       trade them  or  gamble them
+                                                      |
+                                                  UPGRADE a bat's colour
+```
 
-**Lewis picks:** _(open)_
+That's genuinely clever, because a bad gamble costs you *stuff* instead of your
+progress. But three named things need **three different jobs**, or they're the
+same thing with three labels.
 
----
+So what's the difference?
 
-### 🔲 B16. PICK ONE: What happens when a bat dies? 💀 *(needed by M3)*
+- Is **blood** the one that makes a bat hit harder, and **fruit** the one that
+  gives it more health? *(Bats do eat fruit.)*
+- Are **potions** the gambling ones — drink it and find out?
+- Is one of them **rare**, so you only get it from beating a boss?
 
-Right now a dying bat just quietly fades out. It's a bit flat for something you
-should *feel*.
-
-- [ ] **A) A puff of dust.**
-- [ ] **B) A little ghost bat flutters up** and disappears. 👻
-- [ ] **C) It topples over** and lies there a moment.
-- [ ] **D) Something else.**
-
-**💡 One idea worth hearing, because of *your* bat:** what if a dead bat left a
-little **grave marker** on the ground — so you could actually *see* the spots
-your Necrobatcer is able to raise? The game already keeps track of exactly where
-every bat fell. It'd turn an invisible rule into something you can look at and
-plan around.
-
-**Lewis picks:** _(open)_
+**Lewis's answer:** _(open)_
 
 ---
 
-# 🎰 These two aren't urgent — but nothing in the casino can be built until you answer
+### 🎨 B4 (still). YOUR BIG JOB: redraw the bats
 
----
-
-### 🔲 B22. PICK ONE: Is the casino a SHOP, or a GAMBLE? 🎰 *(needed by M4)*
-
-You invented the casino: suns get spent there to upgrade your bats. But
-"casino" can mean two really different things, and Dad has to know which.
-
-- [ ] **A) A shop with price tags.** A violet Scout Bat costs 50 suns, always.
-  You know exactly what you're saving up *for*.
-- [ ] **B) A real gamble.** Pay 10 suns for a spin and you *might* get an
-  upgrade. Exciting — but it means sometimes paying and getting **nothing at
-  all**, which can feel pretty mean in a game you're playing for fun.
-- [ ] **C) Both** — a shop for the upgrades, and a machine you can gamble spare
-  suns on if you feel lucky.
-
-**Lewis picks:** _(open)_
-
----
-
-### 🔲 B23. PICK ONE: How many upgrade colours, really? 🌈 *(needed by M4)*
-
-You said the bats climb the rainbow **backwards** as you upgrade them, and that
-you might "simplify down a bit". So:
-
-| Tier | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-|---|---|---|---|---|---|---|---|---|
-| | Plain | Violet | Indigo | Blue | Green | Yellow | Orange | **Red** |
-
-- [ ] **A) All seven.** A long ladder with loads to aim for — but seven prices
-  for *every* bat is a lot for Dad to balance.
-- [ ] **B) Four.** Violet, Blue, Yellow, Red. Same idea, a quarter of the work.
-- [ ] **C) Three.** Plain → Blue → Red. Dead easy to read at a glance.
-
-**Also:** does each bat level up **on its own**, or do all your bats go up
-**together**?
-
-**Lewis picks:** _(open)_
-
----
-
-## 🎨 Your drawing jobs (not questions — just things to make)
-
-### 1. Redraw the bats ⭐ *the big one*
-
-Your new design replaced the goggles and the cape, so the game is still showing
-the **old** bats. When you're next in PixelLab:
+This is the one thing blocking everything else. The game is **still showing the
+old goggled Scout and caped Brute**, because your new design hasn't been drawn
+yet. Your own brief, from last time:
 
 | | |
 |---|---|
@@ -270,23 +134,32 @@ the **old** bats. When you're next in PixelLab:
 | Colour | **Black and white only** |
 | Size | 64×64, facing **east** (to the right) |
 
-**✨ And here's the clever thing about black and white:** the *game* can paint a
-white drawing any colour it likes. So you draw each bat **once** and the game
-makes all eight colours of it by itself.
+**Four bats now:** Scout, Brute, Necrobatcer and the new **Archer Bat**.
 
-**You do not have to draw eight Scout Bats.** Choosing black and white wasn't
-just a look — it was a genuinely smart call that saved you about 80% of the
-drawing. 👏
+**✨ Remember why black and white is clever:** the game can paint a white drawing
+any colour. You draw each bat **once** and the game makes all the colours. You do
+**not** draw five Scout Bats.
 
-### 2. Draw the three bugs
+---
+
+### 🎨 B3/B4 (still). Draw the bugs
 
 **Mosquito** (small, fast, frail), **Spider** (in between), **Scorpion**
-(armoured, slow, heavy). Same size and direction as the bats.
+(armoured, slow, heavy) — and **the Cow Killer Bee**, who should look like a
+queen bee with a very long stinger and be the scariest thing you've drawn. She's
+1.6 times the size of everything else on screen.
 
-### 3. Later, if you fancy it
+---
 
-Walk / attack / death frames. Right now attacking and dying both just show the
-standing pose, because that art doesn't exist yet. *(That's B21.)*
+## 📝 Still open from before, whenever you fancy them
+
+| # | Question |
+|---|---|
+| **B15** | Music and sound effects? |
+| **B18** | What does the enemy fortress look like when it breaks? |
+| **B20** | A 2× fast-forward button, for when you know you've won? |
+| **B21** | Walk / attack / death frames — or leave the bats as one pose? |
+| **B14** | A second lane, one day? *(big build)* |
 
 ---
 
@@ -296,26 +169,27 @@ Open `data/units.js`, change a number, save, refresh the browser. That's it.
 
 | Try this | What happens |
 |---|---|
+| Archer Bat `range: 240` → `700` | It shoots the fortress from your own base 🏹 |
+| Cow Killer Bee `hp: 2400` → `200` | The boss is a pushover |
+| Cow Killer Bee `scale: 1.6` → `4` | She fills the entire screen 😱 |
 | Scout Bat `cost: 25` → `5` | You can spam a *hundred* Scout Bats 😄 |
-| Scout Bat `color: '#6fd3ff'` → `'#ff00ff'` | Hot pink bats |
-| Any bat `range: 40` → `250` | It shoots from **miles** away *(this is B9!)* |
 | Necrobatcer `summon.interval: 5.0` → `1.0` | The dead never stay dead 💀 |
-| Necrobatcer `summon.hpFactor: 0.6` → `1.0` | Raised bats come back at **full** health |
 | In `data/config.js`: `maxGraves: 40` → `3` | Only the freshly fallen can be raised |
-| Brute Bat `hp: 220` → `2000` | One Brute tanks the entire cave |
 | Any bat `speed: 90` → `300` | They sprint across the screen |
-| In `data/levels.js`: `energyPerSecond: 13` → `40` | You're rich, the game gets silly |
 
 **Want to check a cave is still beatable after your changes?**
 
 ```
-node tools/balance-sim.js level1
-node tools/balance-sim.js graveyard
+node tools/balance-sim.js finalStadium
 ```
 
-It plays the whole cave instantly, as **several different people** — a robot
-with a perfect thumb, someone sharp, someone relaxed — and as a hoarder who
-saves everything up. Read the **VERDICT** at the bottom.
+Swap in any cave's key: `level1`, `crystalFalls`, `dreamLand`, `pyramid`,
+`saharaDesert`, `waitUm`, `scarredWoods`, `abyssOfDarkness`, `forgottenOasis`,
+`finalStadium`, `graveyard`.
+
+It plays the whole cave instantly as **several different people** — a robot with
+a perfect thumb, someone sharp, someone relaxed, someone who spends carefully,
+and a hoarder who saves everything up. Read the **VERDICT** at the bottom.
 
 **Ignore the `0s (robot)` row.** That's the row that fooled us.
 

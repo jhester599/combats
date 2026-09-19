@@ -143,6 +143,17 @@ SimBase.prototype.takeDamage = function (amount) {
                  attention. 8 = a person deliberately hoarding energy.
      use         which of the level's buttons this player actually presses
                  (default: all of them)
+     prefer      WHICH bat gets the money when several are affordable:
+                   'cheapest' (default) - spends on the cheap bat the moment it
+                      can, so the wallet never fills. With a 25-energy Scout in
+                      the list this is a Scout-spammer and nothing else.
+                   'priciest' - puts the money into the best bat it can afford,
+                      so Brutes and Archers actually get sent.
+                 This matters more than it sounds. Measuring only 'cheapest'
+                 says "attentive play loses" about any cave that punishes a
+                 stream of 40hp Scouts, when what loses is the SPAMMING, not
+                 the attention. Caves 2-10 were nearly tuned against that
+                 mistake - see DECISIONS.md D22.
      maxSeconds  give up and call it a stalemate after this long
    ------------------------------------------------------------------------- */
 function playLevel(levelKey, options) {
@@ -154,6 +165,28 @@ function playLevel(levelKey, options) {
   var use = options.use || level.playerUnits;
   var reaction = options.reaction || 0;
   var maxSeconds = options.maxSeconds || 300;
+
+  // The order we consider the buttons in IS the spending policy: whichever we
+  // look at first gets the energy. Priciest-first means a full wallet buys a
+  // Brute instead of being nibbled away by Scouts.
+  var order = use.slice();
+  var reserve = 0;
+
+  if (options.prefer === 'priciest') {
+    order.sort(function (a, b) { return W.UNITS[b].cost - W.UNITS[a].cost; });
+
+    // Sorting alone changes nothing, because at a sharp reaction time the
+    // wallet never holds two bats' worth at once - the Scout is affordable the
+    // instant the energy lands, so it is the only thing ever considered.
+    //
+    // A person who is spending WELL withholds: they leave enough in the bank to
+    // field the big bat when its cooldown ends, instead of dribbling it away on
+    // cheap ones. That is what this reserve is, and it is the difference
+    // between modelling a Scout-spammer and modelling a player.
+    reserve = order.reduce(function (most, k) {
+      return Math.max(most, W.UNITS[k].cost);
+    }, 0);
+  }
 
   var economy = new W.Economy(level.startEnergy, level.energyPerSecond, level.maxEnergy);
   var spawner = new W.Spawner(level);
@@ -205,7 +238,8 @@ function playLevel(levelKey, options) {
     // The player. A button is "lit" when it is affordable AND off cooldown -
     // exactly what BattleScene.canDeploy() checks. Our pretend thumb lands
     // 'reaction' seconds after that, which is the whole point of this tool.
-    use.forEach(function (k) {
+    // We walk the buttons in spending-policy order (see 'prefer' above).
+    order.forEach(function (k) {
       var lit = (cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost));
 
       if (!lit) {
@@ -216,6 +250,14 @@ function playLevel(levelKey, options) {
       if (litSince[k] === null) { litSince[k] = t; }
 
       if (t - litSince[k] >= reaction) {
+        // Keeping the reserve: only buy a cheap bat while still leaving enough
+        // banked for the dearest one. The dearest bat itself is never withheld.
+        var cost = W.UNITS[k].cost;
+
+        if (reserve > 0 && cost < reserve && (economy.energy - cost) < reserve) {
+          return;
+        }
+
         economy.spend(W.UNITS[k].cost);
         cooldowns[k] = W.UNITS[k].cooldown;
         litSince[k] = null;
@@ -378,15 +420,30 @@ if (trouble.length) {
 var band = (oneReaction !== null) ? [oneReaction] : [0, 0.2, 0.3, 0.4, 0.5, 0.7, 1.0];
 
 console.log('');
-console.log('  PLAYED BY A PERSON (tapping every button the moment it lights up)');
+console.log('  PLAYED BY A PERSON (tapping every button the moment it lights up, so the');
+console.log('  cheap bat soaks up the money - in practice a Scout-spammer)');
 console.log('  ' + pad('reaction', 11) + pad('outcome', 12) + pad('length', 10) +
   pad('your base', 12) + pad('enemy base', 12) + 'bats sent');
 
 var runs = band.map(function (r) {
-  var res = playLevel(levelKey, { reaction: r, maxSeconds: 300 });
+  var res = playLevel(levelKey, { reaction: r, maxSeconds: 400 });
   console.log('  ' + pad(r === 0 ? '0s (robot)' : r + 's', 11) + pad(res.outcome, 12) +
     pad(res.seconds + 's', 10) + pad(res.playerBasePct + '%', 12) +
     pad(res.enemyBasePct + '%', 12) + describeSent(res.sent) +
+    (res.raised ? '  (+' + res.raised + ' raised)' : ''));
+  return res;
+});
+
+/* --- the same band, but spending the money differently ------------------ */
+console.log('');
+console.log('  THE SAME PLAYER, SPENDING WELL (saving up for the dearest bat instead');
+console.log('  of dribbling it away on the cheap one)');
+console.log('  ' + pad('reaction', 11) + pad('outcome', 12) + pad('length', 10) + 'bats sent');
+
+var wellRuns = band.map(function (r) {
+  var res = playLevel(levelKey, { reaction: r, prefer: 'priciest', maxSeconds: 400 });
+  console.log('  ' + pad(r === 0 ? '0s (robot)' : r + 's', 11) + pad(res.outcome, 12) +
+    pad(res.seconds + 's', 10) + describeSent(res.sent) +
     (res.raised ? '  (+' + res.raised + ' raised)' : ''));
   return res;
 });
@@ -417,19 +474,51 @@ runs.forEach(function (r) {
 var lengths = attentive.filter(function (r) { return r.outcome === 'WIN'; })
   .map(function (r) { return r.seconds; });
 
+var wellAttentive = wellRuns.filter(function (r) { return r.reaction > 0 && r.reaction <= 0.5; });
+var wellWins = wellAttentive.length > 0 && wellAttentive.every(function (r) { return r.outcome === 'WIN'; });
+
 console.log('');
 console.log('  VERDICT');
+console.log('  ' + (wellWins ? '[ok]  ' : '[BAD] ') +
+  'Spending well (saving for the dear bat) ' + (wellWins ? 'also WINS' : 'LOSES') +
+  ' - a cave should not demand one exact way of playing');
 console.log('  ' + (attentiveWins ? '[ok]  ' : '[BAD] ') +
   'Tapping attentively (0.2s - 0.5s late) ' + (attentiveWins ? 'WINS' : 'DOES NOT always win') +
   (lengths.length ? ', taking ' + Math.min.apply(null, lengths) + '-' + Math.max.apply(null, lengths) + 's' : ''));
+/* Is SPENDING rewarded? This is the check that matters on every cave.
+
+   From cave 2 on, the player has the Archer (safe behind the line) and the
+   Necrobatcer (recycles the dead), and a patient turtle becomes a real way to
+   win. That is those bats doing their job, not a broken cave - so demanding
+   that a hoarder always LOSE would be the wrong test, and quietly dropping
+   the test would be worse.
+
+   What has to stay true is that pressing on is the FASTER route. If turtling
+   ever finishes sooner than attentive play, the cave is rewarding hoarding and
+   Lewis's B7 answer ("keep it strict") has been thrown away. */
+var slowestAttentive = lengths.length ? Math.max.apply(null, lengths) : Infinity;
+
+var patientButFaster = hoarders.filter(function (r) {
+  return r.outcome === 'WIN' && r.seconds <= slowestAttentive;
+});
+
 if (level.practice) {
-  // A practice level is meant to be generous, so a hoarder winning is fine.
-  console.log('  [--]  Hoarding energy ' + (hoarderWins ? 'also wins' : 'loses') +
+  console.log('  [--]  Hoarding ' + (hoarderWins ? 'also wins' : 'loses') +
     ', which does not matter: this level is marked practice: true');
+} else if (patientButFaster.length) {
+  console.log('  [BAD] Playing PATIENTLY is as fast or faster than spending - this cave');
+  console.log('        rewards hoarding, which is the opposite of the intended economy');
+} else if (hoarderWins) {
+  console.log('  [ok]  Patient play can also win, but it is slower - spending still pays');
 } else {
+  console.log('  [ok]  Hoarding loses outright');
+}
+
+/* And the tutorial's own, stricter promise, only where a level claims it. */
+if (level.teachesSpending) {
   console.log('  ' + (hoarderWins ? '[BAD] ' : '[ok]  ') +
-    'Hoarding energy ' + (hoarderWins ? 'ALSO WINS - the level has no lesson left'
-      : 'loses, which is the point of Level 1'));
+    'teachesSpending: a hoarder must lose outright here, and ' +
+    (hoarderWins ? 'DOES NOT' : 'does'));
 }
 if (oneReaction !== null) {
   // Only one reaction time was played, so we cannot say anything about the band.
@@ -445,9 +534,9 @@ if (level.practice) {
   console.log('  This is a PRACTICE level (practice: true), so it only has to be winnable');
   console.log('  and fun to experiment on. It is not measured for a lesson.');
 } else {
-  console.log('  A good cave wins across the whole 0.2s - 0.5s band in about 50-100s,');
-  console.log('  and still loses if you hoard. Do NOT tune against the 0s robot row: no');
-  console.log('  child has a 0s thumb, and tuning to it is what broke Level 1 once.');
+  console.log('  A good cave wins across the whole 0.2s - 0.5s band in about 50-100s, and');
+  console.log('  is quicker to win by spending than by hoarding. Do NOT tune against the');
+  console.log('  0s robot row: no child has a 0s thumb, and tuning to it broke cave 1 once.');
 }
 console.log('');
 console.log('  (Note: in a one-lane game the ending is nearly all-or-nothing. Win and the');

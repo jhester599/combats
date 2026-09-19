@@ -1,9 +1,9 @@
 # Battle Bats — Game Design Document
 
 > A 2D lane auto-battler, built together by Jeff & Lewis.
-> **Status:** Living document — v0.2, updated 2026-09-19 after Lewis's homework
-> Round 1 shipped (the Level 1 fix, the Necrobatcer, and the named enemies are
-> all **live**).
+> **Status:** Living document — v0.3, updated 2026-09-19. Homework Rounds 1 and
+> 2 are both shipped: **all ten caves of Palopa exist**, along with the Archer
+> Bat, the Cow Killer Bee, and grave markers.
 >
 > **`[TO DECIDE]`** = an open question waiting on Lewis (see `HOMEWORK.md`).
 > **`DECIDED (date):`** = settled, and the reason is written down.
@@ -70,6 +70,7 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 | **Scout Bat** | 25 | 1.4s | 40 | 8 | 0.6s | **13.3** | 40 | 90 |
 | **Brute Bat** | 90 | 6.0s | 220 | 30 | 1.4s | **21.4** | 46 | 45 |
 | **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | 60 | 70 |
+| **Archer Bat** | 45 | 3.0s | 24 | 22 | 1.1s | **20.0** | **240** | 75 |
 
 `DPS = attack ÷ attackInterval`.
 
@@ -91,7 +92,8 @@ Its fighting is deliberately pathetic — a quarter of a Scout's damage. What it
 does instead:
 
 - every one of **your** bats that dies leaves a **grave where it fell**;
-- the Necrobatcer raises one grave every **5 seconds**, within **320px**;
+- the Necrobatcer raises one grave every **5 seconds**, within **460px** (320
+  until B24 raised it);
 - the raised bat returns at **60% health**, standing **where it died** — so it
   skips the long walk from your base. That is the real power.
 
@@ -102,6 +104,32 @@ turns a single grave into an endless army. Both are checked by
 `node tools/necro-test.js`.
 
 **It is built and playable now**, but **not in Level 1** — see §7 for why.
+
+**DECIDED (2026-09-19) — B24: it raises only Lewis's own bats, and reaches
+further.** Dead bugs stay dead. Summon range **320 → 460**, which Lewis asked
+for specifically — that is most of the way across the lane, so a Necrobatcer
+standing safely behind the line can still reach the front of it.
+
+**DECIDED (2026-09-19) — B9 = A: the fourth bat is the ARCHER BAT.** The first
+bat that does not walk into the fight. Reach **240** against a Scout's 40, and
+24 hp, so it is lethal from a distance and instant confetti up close.
+
+Its whole power was one number — `src/systems/combat.js` already honoured any
+reach — so this was measured before it was promised rather than after.
+
+**Its damage had to be fixed twice, and the reason is worth keeping.** At 14
+attack it did **0.28 damage per energy spent** against a Scout Bat's 0.53: less
+than half the damage for nearly double the price. That is not "expensive but
+safe", it is just a bad bat, and the balance sim showed the whole army getting
+*weaker* whenever the button was offered. At 22 the shape is right:
+
+| | per bat | per energy |
+|---|---|---|
+| **Scout Bat** | 13.3 dps | **0.53** |
+| **Archer Bat** | **20.0 dps** | 0.44 |
+
+Stronger per bat, weaker per coin — you are paying a premium for a bat nothing
+can reach.
 
 **DECIDED (2026-09-19) — B6 follows from B5: yes, bats get special powers.**
 Lewis's choice of a summoner settles this by implication, since a summoner
@@ -167,8 +195,30 @@ ready for Level 2.
 All three are still art the game draws itself. What they actually *look* like is
 the open half of B4 — see §9.
 
-**`[TO DECIDE]` — is there a boss?** *(B8)* — still open, and now easier to
-answer: a boss would be the biggest thing in the cave.
+**DECIDED (2026-09-19) — B8 = A: one big boss, the COW KILLER BEE.** "A queen
+bee with a very long stinger." — Lewis. She appears **once in the whole game**,
+in the last wave of cave 10, the Final Stadium.
+
+| Boss | HP | Attack | Interval | **DPS** | Range | Speed |
+|---|---|---|---|---|---|---|
+| **Cow Killer Bee** | 2400 | 55 | 1.8s | **30.6** | **130** | 26 |
+
+**The long stinger is the fight.** Taken literally, the stinger is *reach*: 130
+against a Scout Bat's 40 and a Brute's 46. So she kills your entire front line
+without any of it ever touching her. Only the **Archer Bat**, at 240, out-reaches
+her — Lewis's two answers this round turned out to be the lock and the key, which
+was luck rather than planning but is exactly how it should read.
+
+She is not a wall you must solve, though: a Scout swarm can still grind her down
+by attrition. Measured, a Brute-heavy army takes about **210 seconds** to beat
+cave 10 because its bats die without landing a hit, against 66–73s for a mixed
+one. **The boss punishes pure melee without ever making the cave impossible** —
+which matters when the player is nine years old.
+
+**`[TO DECIDE]` — what do the new bugs of the later caves look like, and what
+are they called?** *(B26, new)* — Lewis's B11 asked for new bugs to be
+introduced; the ten caves currently draw on the Mosquito, Spider and Scorpion,
+because naming creatures is his job, not Dad's.
 
 ---
 
@@ -250,7 +300,7 @@ middle ground; we tested it.
 The two things that *would* change this are a **ranged bat** that can hit past
 the front line, and a **second lane**.
 
-**`[TO DECIDE]` — add a bat that attacks from far away?** *(B9)*
+**DECIDED (2026-09-19) — B9 = A: the Archer Bat, reach 240.** See §3.
 **`[TO DECIDE]` — a second lane, later?** *(B14)*
 
 ---
@@ -336,9 +386,43 @@ for experimenting, and a tool that cries wolf is a tool people stop reading —
 which is how the original Level 1 bug survived in the first place. A real cave
 omits the flag and is held to the full verdict.
 
-**`[TO DECIDE]` — what makes level 2 different from level 1?** *(B11)*
-**`[TO DECIDE]` — what are the caves called?** *(B17)* — both still open, and
-both now needed, since B10 asks for ten of them.
+**DECIDED (2026-09-19) — B17: the ten caves of Palopa, and B11: what makes each
+one different.** Lewis named all ten and said *"each cave gets tougher, new bugs
+are introduced but not every level has a new bug. some have less energy or
+tougher fortress or no warm up."*
+
+So each cave leans on **one named lever**, which keeps the difference legible
+instead of mushy. All ten are built, and every number below is measured:
+
+| # | Cave | Its lever | Fortress | Income | Bats |
+|---|---|---|---|---|---|
+| 1 | **The Cave** | the tutorial: keep spending | 4000 | 13/s | Scout, Brute |
+| 2 | **Crystal Falls** | a new bug — the **Spider** arrives | 4200 | 13/s | + Archer |
+| 3 | **Dream Land** | **no warm-up** — bugs at second one | 4200 | 13/s | + Archer |
+| 4 | **Pyramid** | a **tougher fortress** | 5600 | 15/s | + Necrobatcer |
+| 5 | **Sahara-hara Desert** | **less energy** | 4600 | 11/s | all four |
+| 6 | **Wait Um** | the **longest siege** in the game | 7600 | 15/s | all four |
+| 7 | **Scarred Woods** | no warm-up, and **spider country** | 4400 | 14/s | all four |
+| 8 | **Abyss of Darkness** | **two levers at once** | 5600 | 12/s | all four |
+| 9 | **Forgotten Oasis** | **scorpions**, and lots of them | 5600 | 13/s | all four |
+| 10 | **Final Stadium** | the **boss** | 5000 | 16/s | all four |
+
+**DECIDED (2026-09-19) — bats arrive cave by cave.** B12 said bats unlock by
+winning, but unlocking needs saved progress (M4). A cave's `playerUnits` list
+gives the same feeling today with no guesswork, and becomes the unlock table
+later.
+
+### What is measured, and what is not
+
+Every cave is **winnable across the whole 0.2–0.5s reaction band, two very
+different ways** — by spamming the cheapest bat *and* by saving up for the
+dearest — and in every one of them **spending beats hoarding on the clock**.
+
+What the sim cannot tell us is how hard a cave **feels**. Both of its player
+models are extremes, and neither composes an army the way a person does, so the
+rising difficulty is designed from rising pressure (total HP to chew through
+climbs 6730 → 11370 across the ten) rather than proved. **That part needs
+Lewis to play them.** See `DECISIONS.md` D23.
 
 ---
 
@@ -367,9 +451,28 @@ B13 says "you unlock bats by winning", so bats come from beating caves.
 spending suns to upgrade bats, so upgrading is in. **An upgrade shows as a
 colour** — the backwards-rainbow ladder in §9.
 
-**`[TO DECIDE]` — is the casino a shop or a gamble?** *(B22, new)* — "casino"
-could mean fixed prices, or paying suns for a *chance* at an upgrade. Those are
-different games and different builds, so it is Lewis's call, not a guess.
+**DECIDED (2026-09-19) — B22: the casino is a TWO-STEP economy**, which is not
+either answer Dad offered. "At the casino you exchange suns for blood, potions,
+fruits that you can trade or gamble for upgrades." — Lewis
+
+So there are three currencies, not two:
+
+```
+beat a cave  ->  SUNS  ->  (at the casino)  ->  BLOOD / POTIONS / FRUIT
+                                                      |
+                                    trade them  or  gamble them
+                                                      |
+                                                  UPGRADES (a bat's colour)
+```
+
+Both of Dad's options survive — there is a shop *and* a gamble — with an item
+layer between, so a bad gamble costs you goods rather than your progress. That
+is a gentler shape than a straight slot machine, which matters in a game a child
+plays.
+
+**`[TO DECIDE]` — what do blood, potions and fruits each DO?** *(B27, new)* —
+three named goods need three different jobs, or they are the same thing with
+three labels.
 
 ---
 
@@ -427,27 +530,39 @@ realistic. A **large circle** for the body. **Wings, ears, a mouth. No legs.**
 **The colour ladder.** A bat starts plain black-and-white and climbs the rainbow
 *backwards* as it is upgraded:
 
-| Tier | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
-|---|---|---|---|---|---|---|---|---|
-| | Plain | Violet | Indigo | Blue | Green | Yellow | Orange | Red |
+**DECIDED (2026-09-19) — B23 = B: four steps, not seven.**
 
-Red is the top. The ladder is in `data/config.js` as `upgradeTiers`. It is
-**not wired up** — there is nothing to spend upgrades on until the suns and the
-casino exist (B13, M4).
+| Tier | 0 | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|---|
+| | Plain | Violet | Blue | Yellow | Red |
+
+Red is the top. Seven upgrades per bat would have meant seven prices to balance
+for every bat in the game; four keeps the backwards rainbow reading the same way
+for a quarter of the work. The ladder is in `data/config.js` as `upgradeTiers`.
+It is **not wired up** — there is nothing to spend upgrades on until the suns
+and the casino exist (B13, M4).
 
 **Why black-and-white art is a genuinely good call:** a white drawing can be
 **tinted** any colour by the engine. So Lewis draws each bat **once** and the
-game produces all eight versions of it. Nobody draws eight Scout Bats.
-
-**`[TO DECIDE]` — how many colour tiers, really?** *(B23, new)* — Lewis said
-VIBGYOR "although we may simplify down a bit". Seven upgrades per bat is a lot
-of casino prices to balance.
+game produces every colour of it. Nobody draws five Scout Bats.
 
 **`[TO DECIDE]` — what should the *enemies* look like?** *(B4, and B3 says what
 they are: a mosquito, a spider and a scorpion)*
 **`[TO DECIDE]` — do the bats get animation frames, or stay as one pose?** *(B21)*
 **`[TO DECIDE]` — music and sound effects?** *(B15)*
-**`[TO DECIDE]` — what happens visually when a bat dies?** *(B16)*
+**DECIDED (2026-09-19) — B16 = D: a bat leaves a GRAVE MARKER where it fell.**
+A small headstone on the lane, cleared the instant a Necrobatcer raises it.
+
+Lewis picked this over a puff of dust or a ghost, and it is the strongest of the
+options for a reason worth recording: **the Necrobatcer's rules were completely
+invisible.** It can only raise a bat that really fell, and only one within its
+summon range — so a resurrection looked like luck. With the graves drawn, a
+player can see where the summoner can reach and *aim* it. A hidden rule became a
+decision.
+
+It also settles **B25**, which asked exactly this. The positions were already
+tracked in `world.graves`, so this draws what the game always knew. Settings live
+in `CONFIG.graveMarker`; the stones are pooled like everything else.
 **`[TO DECIDE]` — what does the enemy base do when it breaks?** *(B18)*
 
 ---
@@ -476,18 +591,20 @@ B8 (a boss) and B18 (what the last moment looks like).
 | Milestone | What it adds | Status |
 |---|---|---|
 | **M1 — First playable** | One lane, two bats, two enemies, energy + cooldowns, bases, win/lose, Retry, placeholder art | ✅ **Done 2026-09-18** |
-| **M2 — Content** | **Ten or more caves** (B10 = C), a difficulty curve, a way to pick a cave | 🔜 Next — third bat ✅, enemies ✅, **cave picker ✅**; the caves themselves still need **B11**, **B17** |
-| **M3 — Look & feel** | Hand-drawn black-and-white bats, the three bugs, a wet-cave background, sound | Needs the **B4 redraw**, B15, B16 |
-| **M4 — Progression** | Saved progress, **suns**, **the casino**, bat upgrades shown as colours | Scoped by B13/B12/B19 ✅; needs **B22** (shop or gamble?) |
-| **M5 — Depth** | A boss, maybe a second lane. *Special powers arrived early* — the Necrobatcer's summon is the first one | Needs B8, B14 |
+| **M2 — Content** | **Ten caves** (B10 = C), a difficulty curve, a way to pick a cave | ✅ **Done 2026-09-19** — all ten built and measured, four bats, a boss, a cave picker |
+| **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, a wet-cave background, sound | 🔜 **Next** — and now the biggest gap: ten caves, one look. Needs the **B4 redraw**, **B26**, B15 |
+| **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | Scoped by B13/B12/B19/B22/B23 ✅; needs **B27** (what the goods do) |
+| **M5 — Depth** | Maybe a second lane, more powers | Needs B14. *Both of its headline items arrived early* — the Necrobatcer's summon (B5) and the boss (B8) |
 
 Order is a plan, not a promise — if Lewis most wants a boss, we build the boss.
 
-**Round 1 of the homework moved four of these.** The third bat is built, the
-enemies have names and a reason to exist, the world has a name, and M4 has a
-shape. The two things now blocking M2 are both Lewis's: **what makes the next
-cave different (B11)** and **what the caves are called (B17)** — and B10 means
-he needs about ten of those names.
+**Two rounds of homework finished M2.** Palopa has all ten of its caves, four
+bats, a boss and a cave picker, and every cave is measured. Rounds 1 and 2
+answered 19 of the 27 questions.
+
+**The gap is now art, not design.** Ten caves share one flat purple background,
+the bats are still the superseded goggled-and-caped pair, and the bugs are
+coloured blobs. Nothing in M3 is blocked on Dad — it is blocked on drawings.
 
 ---
 
@@ -526,33 +643,37 @@ Full detail is in `README.md`; the design-relevant parts:
 | B5 | The third bat | §3 | ✅ **answered & built** — the Necrobatcer |
 | B6 | Special powers, or stats only? | §3 | ✅ **answered by B5** — yes, powers |
 | B7 | How strict should saving up be? | §3 | ✅ **answered** — A, keep it strict |
-| B8 | Is there a boss? | §4 | 🔲 **on the plate** — mostly numbers, buildable at once |
-| B9 | A long-range bat? | §6 | 🔲 **on the plate** — measured: needs no new code, see below |
+| B8 | Is there a boss? | §4 | ✅ **answered & built** — the Cow Killer Bee |
+| B9 | A long-range bat? | §6 | ✅ **answered & built** — the Archer Bat |
 | B10 | How many levels? | §7 | ✅ **answered** — C, ten or more caves |
-| B11 | What makes the next cave different? | §7 | 🔲 **on the plate — blocking M2** |
+| B11 | What makes each cave different? | §7 | ✅ **answered & built** — one lever per cave |
 | B12 | How do you unlock bats? | §8 | ✅ **answered by B13** — by winning caves |
 | B13 | Does progress save? | §8 | ✅ **answered** — B: saves, plus suns and the casino |
 | B14 | A second lane? | §6 | 🔲 M5 |
 | B15 | Music and sound | §9 | 🔲 M3 |
-| B16 | What a bat's death looks like | §9 | 🔲 **on the plate** (M3) |
-| B17 | Cave names | §7 | 🔲 **on the plate — blocking M2**, B10 wants ~10 |
+| B16 | What a bat's death looks like | §9 | ✅ **answered & built** — grave markers |
+| B17 | Cave names | §7 | ✅ **answered & built** — all ten |
 | B18 | The base-breaking moment | §9 | 🔲 anytime |
 | B19 | Can you upgrade a bat? | §8 | ✅ **answered by B4 + B13** — yes, shown as colour |
 | B20 | A fast-forward button? | §5 | 🔲 anytime |
 | B21 | Animate the bats, or leave them as one pose? | §9 | ⚠️ Scout walks, but the **B4 redraw resets this** |
-| B22 | Is the casino a shop or a gamble? | §8 | 🔲 **on the plate** — blocks all of M4 |
-| B23 | How many colour tiers, really? | §9 | 🔲 **on the plate** (M4) |
-| B24 | Can the Necrobatcer raise the bugs too? | §3 | 🔲 **on the plate**, anytime |
-| B25 | Should graves be visible on the ground? | §9 | 🔲 **new**, anytime |
+| B22 | Is the casino a shop or a gamble? | §8 | ✅ **answered** — both, with goods in between |
+| B23 | How many colour tiers, really? | §9 | ✅ **answered** — four |
+| B24 | Can the Necrobatcer raise the bugs too? | §3 | ✅ **answered** — bats only, longer reach |
+| B25 | Should graves be visible on the ground? | §9 | ✅ **answered by B16** — yes, built |
+| B26 | Name the new bugs of the later caves | §4 | 🔲 **new — on the plate** |
+| B27 | What do blood, potions and fruits do? | §8 | 🔲 **new — on the plate**, blocks M4 |
 
-### Still unsolved: the all-or-nothing ending (B9)
+### Solved, mostly: the all-or-nothing ending (B9)
 
 A battle almost always ends with your base at **100% or 0%**, never in between,
 because whoever wins the front line takes everything. B9 exists to fix that, and
 the Necrobatcer does **not** fix it — it reinforces the front line rather than
 reaching past it, so the runaway is unchanged. A bat that can hit *over* the
-front line is still the only idea on the table, and it is now **on Lewis's plate
-as the fourth bat**.
+front line was the only idea on the table, and Lewis took it: **the Archer Bat
+is built** (B9 = A). Whether it actually makes endings feel closer is now a
+question for playing, not measuring - the sim still reports 100% or 0% because
+its two player models both fight to the death rather than retreating.
 
 **Measured 2026-09-19 — it needs no new code.** `range` is one number and
 `Combat.isInReach` already honours any value. A probe bat with `range: 250`
