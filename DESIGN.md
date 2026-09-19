@@ -1,7 +1,9 @@
 # Battle Bats — Game Design Document
 
 > A 2D lane auto-battler, built together by Jeff & Lewis.
-> **Status:** Living document — v0.1, written 2026-09-18 after Milestone 1 shipped.
+> **Status:** Living document — v0.2, updated 2026-09-19 after Lewis's homework
+> Round 1 shipped (the Level 1 fix, the Necrobatcer, and the named enemies are
+> all **live**).
 >
 > **`[TO DECIDE]`** = an open question waiting on Lewis (see `HOMEWORK.md`).
 > **`DECIDED (date):`** = settled, and the reason is written down.
@@ -125,13 +127,15 @@ game." — Lewis. So the economy does **not** loosen: `energyPerSecond` stays 13
 and the Brute stays 90. Spamming Scouts still eats your whole income, and you
 still have to deliberately stop tapping to afford anything bigger.
 
-Lewis added: *"but level 1 is too difficult currently."* That was almost
-certainly the **cooldown bug** (`DECISIONS.md` D8), which was fixed the same
-week but had not yet reached the live site he was playing. On the fixed build,
-attentive tapping wins Level 1 in 56–60 seconds. **No further difficulty change
-has been made** — doing both would overshoot, and it would undo the "keep it
-strict" half of Lewis's own answer. If it still feels hard after he plays the
-fixed version, that is a fresh measurement, not a guess.
+Lewis added: *"but level 1 is too difficult currently."* That was the **cooldown
+bug** (`DECISIONS.md` D8), which was fixed the same day but had not yet reached
+the live site he was playing — so he judged the broken build. **The fix went
+live on 2026-09-19 at 12:22 UTC** (merge `f8f87d3`, Pages deploy run #7), and on
+that build attentive tapping wins Level 1 in 56–60 seconds.
+
+**No further difficulty change has been made** — doing both would overshoot, and
+it would undo the "keep it strict" half of Lewis's own answer. The next word on
+Level 1's difficulty is his, after playing the live version.
 
 ---
 
@@ -312,6 +316,12 @@ Level 1. Switch `STARTING_LEVEL` in `src/main.js` to `'graveyard'` to play it.
 It is generous on purpose (120 starting energy, 18/sec) so that summoning is
 easy to see rather than something to budget for. Measured: a win in 41–55s
 across the whole reaction band, raising 7–9 bats from the dead per playthrough.
+
+It carries **`practice: true`**, which tells `tools/balance-sim.js` not to fail
+it for letting a hoarder win. Hoarding is *supposed* to work on a level built
+for experimenting, and a tool that cries wolf is a tool people stop reading —
+which is how the original Level 1 bug survived in the first place. A real cave
+omits the flag and is held to the full verdict.
 
 **`[TO DECIDE]` — what makes level 2 different from level 1?** *(B11)*
 **`[TO DECIDE]` — what are the caves called?** *(B17)* — both still open, and
@@ -503,23 +513,24 @@ Full detail is in `README.md`; the design-relevant parts:
 | B5 | The third bat | §3 | ✅ **answered & built** — the Necrobatcer |
 | B6 | Special powers, or stats only? | §3 | ✅ **answered by B5** — yes, powers |
 | B7 | How strict should saving up be? | §3 | ✅ **answered** — A, keep it strict |
-| B8 | Is there a boss? | §4 | 🔲 M5 |
-| B9 | A long-range bat? | §6 | 🔲 M2 — **still the open problem**, see below |
+| B8 | Is there a boss? | §4 | 🔲 **on the plate** — mostly numbers, buildable at once |
+| B9 | A long-range bat? | §6 | 🔲 **on the plate** — measured: needs no new code, see below |
 | B10 | How many levels? | §7 | ✅ **answered** — C, ten or more caves |
-| B11 | What makes the next cave different? | §7 | 🔲 **M2 — now blocking** |
+| B11 | What makes the next cave different? | §7 | 🔲 **on the plate — blocking M2** |
 | B12 | How do you unlock bats? | §8 | ✅ **answered by B13** — by winning caves |
 | B13 | Does progress save? | §8 | ✅ **answered** — B: saves, plus suns and the casino |
 | B14 | A second lane? | §6 | 🔲 M5 |
 | B15 | Music and sound | §9 | 🔲 M3 |
-| B16 | What a bat's death looks like | §9 | 🔲 M3 |
-| B17 | Cave names | §7 | 🔲 **M2 — now blocking, and B10 wants ~10** |
+| B16 | What a bat's death looks like | §9 | 🔲 **on the plate** (M3) |
+| B17 | Cave names | §7 | 🔲 **on the plate — blocking M2**, B10 wants ~10 |
 | B18 | The base-breaking moment | §9 | 🔲 anytime |
 | B19 | Can you upgrade a bat? | §8 | ✅ **answered by B4 + B13** — yes, shown as colour |
 | B20 | A fast-forward button? | §5 | 🔲 anytime |
 | B21 | Animate the bats, or leave them as one pose? | §9 | ⚠️ Scout walks, but the **B4 redraw resets this** |
-| B22 | Is the casino a shop or a gamble? | §8 | 🔲 **new**, M4 |
-| B23 | How many colour tiers, really? | §9 | 🔲 **new**, M4 |
-| B24 | Can the Necrobatcer raise the bugs too? | §3 | 🔲 **new**, anytime |
+| B22 | Is the casino a shop or a gamble? | §8 | 🔲 **on the plate** — blocks all of M4 |
+| B23 | How many colour tiers, really? | §9 | 🔲 **on the plate** (M4) |
+| B24 | Can the Necrobatcer raise the bugs too? | §3 | 🔲 **on the plate**, anytime |
+| B25 | Should graves be visible on the ground? | §9 | 🔲 **new**, anytime |
 
 ### Still unsolved: the all-or-nothing ending (B9)
 
@@ -527,8 +538,17 @@ A battle almost always ends with your base at **100% or 0%**, never in between,
 because whoever wins the front line takes everything. B9 exists to fix that, and
 the Necrobatcer does **not** fix it — it reinforces the front line rather than
 reaching past it, so the runaway is unchanged. A bat that can hit *over* the
-front line, like the Sniper in B5's option A, is still the main idea on the
-table. Worth putting back on Lewis's plate as a fourth bat.
+front line is still the only idea on the table, and it is now **on Lewis's plate
+as the fourth bat**.
+
+**Measured 2026-09-19 — it needs no new code.** `range` is one number and
+`Combat.isInReach` already honours any value. A probe bat with `range: 250`
+reached a target at 320px that a Scout (range 40) cannot, stopped at exactly
+250px, and won Level 1 alone in 80.3s, first hitting the enemy base from range
+at 24.8s. **The caveat matters as much as the result:** offered alongside
+Scouts, it was never once affordable, because Scout spam consumes the entire
+income. A fourth bat has to be worth choosing *instead of* Scouts — which is
+B7 = A doing exactly what Lewis intended.
 
 Questions live in `HOMEWORK_BACKLOG.md`; the current round is on Lewis's plate
 in `HOMEWORK.md`; answers get recorded through the loop in `DECISIONS.md`.
