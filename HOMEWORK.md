@@ -55,6 +55,28 @@ in the same homework. 🎉
 *(You can still beat her with a big swarm of cheap Scout Bats — Dad checked —
 it just takes about three times as long.)*
 
+### 🔓 NEW: the caves unlock as you beat them
+
+You can only play **The Cave** to start with. Beat it and **Crystal Falls**
+opens. Beat that and **Dream Land** opens, and so on to the Final Stadium.
+
+The locked ones are still on the screen, greyed out with a 🔒 — so you can
+always see how far you've got and what's coming next. Beaten caves get a ✓, and
+the top of the screen counts them: *"3 of 10 beaten"*.
+
+**It remembers.** Close the browser, come back tomorrow, and your caves are
+still unlocked. That's your **B13** answer working — the suns and the casino are
+the part still to come.
+
+*(If you ever want to start again from scratch: open **Credits** and tap
+"Reset progress" twice.)*
+
+### ⏱️ NEW: the fortresses are half the size
+
+Battles were dragging at the end. Dad measured it: **72% of your playing time
+was spent hitting a fortress** after the bugs were already dealt with. Every
+fortress is now half as big, so every cave is **10 to 15 seconds shorter**.
+
 ### 🥇 You were right about The Cave. Twice.
 
 You said it was too hard, Dad checked, and **you were right** — by a mile. Here

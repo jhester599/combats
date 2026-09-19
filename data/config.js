@@ -261,7 +261,13 @@ window.CONFIG = {
     caveRowY: 268,         // top row's centre line
     practiceY: 400,        // the "just for practice" row sits below the caves
     practiceWidth: 250,
-    practiceHeight: 44
+    practiceHeight: 44,
+
+    // A cave you have not unlocked yet. Shown, but plainly not available -
+    // seeing what is ahead is half the point of a map.
+    lockedColor: 0x241d3d,
+    lockedTextAlpha: 0.42,
+    lockedBorderAlpha: 0.18
   },
 
   /* ---------------------------------------------------------------------

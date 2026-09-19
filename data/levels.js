@@ -7,6 +7,18 @@
    FOR LEWIS: this is where you design the actual challenge. Adding a wave is
    a one-line job - see "HOW TO ADD A WAVE" below.
 
+   ------------------- FORTRESSES WERE HALVED, 2026-09-19 -------------------
+   Every cave's enemyBaseHp was cut in half. Measured before the change: 72% of
+   all playing time across the ten caves was spent chewing a fortress, because
+   your bats reach it at 11-23s and then hammer a wall for another 35-50s. The
+   endgame was longer than the fight.
+
+   Halving takes 10-15 seconds off every cave and changes nothing else: all ten
+   still pass, cave 1 still punishes hoarding, and the Cow Killer Bee still
+   lands well before the Final Stadium ends. The caves keep their relative
+   sizes, so "Wait Um is the longest siege" and "Pyramid has a tough fortress"
+   are both still true.
+
    ------------------- WHAT EACH NUMBER MEANS -------------------
    name            shown on screen at the start of the battle
    playerBaseHp    how much damage YOUR base can take before you lose
@@ -70,7 +82,7 @@ window.LEVELS = {
     // it down in favour of "keep it strict", so the tight economy stays.
     // Hoarding still loses, which is this cave's whole lesson.
     playerBaseHp: 1400,    // <-- TRY ME: make it 200 for a scary hard game
-    enemyBaseHp: 3800,     // <-- TRY ME: drop it to 800 for a quick win
+    enemyBaseHp: 1900,     // <-- TRY ME: drop it to 400 for a quick win
 
     // The biggest single thing that made this cave fair. An opening buffer
     // lets the front line get established, and once it holds, it holds - so
@@ -156,7 +168,7 @@ window.LEVELS = {
   crystalFalls: {
     name: 'Crystal Falls',
     playerBaseHp: 1000,
-    enemyBaseHp: 4200,
+    enemyBaseHp: 2100,
     startEnergy: 40,
     energyPerSecond: 13,
     maxEnergy: 300,
@@ -185,7 +197,7 @@ window.LEVELS = {
   dreamLand: {
     name: 'Dream Land',
     playerBaseHp: 1000,
-    enemyBaseHp: 4200,
+    enemyBaseHp: 2100,
     startEnergy: 75,       // <-- the compensation for having no warm-up
     energyPerSecond: 13,
     maxEnergy: 300,
@@ -214,7 +226,7 @@ window.LEVELS = {
   pyramid: {
     name: 'Pyramid',
     playerBaseHp: 1100,
-    enemyBaseHp: 5600,     // <-- the lever. Cave 1's is 4000.
+    enemyBaseHp: 2800,     // <-- the lever. Cave 1's is 1900.
     startEnergy: 50,
 
     // MEASURED, and the interesting one: at 14 the attentive band ran 65-104s
@@ -249,7 +261,7 @@ window.LEVELS = {
   saharaDesert: {
     name: 'Sahara-hara Desert',
     playerBaseHp: 1100,
-    enemyBaseHp: 4600,
+    enemyBaseHp: 2300,
     // MEASURED: eps 10 with 45 starting energy was unwinnable past a 0.4s
     // thumb. 11 with 60 keeps the cave clearly poorer than cave 1's 13 while
     // staying beatable - the lever survives, the cave works.
@@ -279,7 +291,7 @@ window.LEVELS = {
   waitUm: {
     name: 'Wait Um',
     playerBaseHp: 1200,
-    enemyBaseHp: 7600,     // <-- the lever, and the biggest number in the game
+    enemyBaseHp: 3800,     // <-- the lever, and the biggest number in the game
     startEnergy: 55,
     energyPerSecond: 15,
     maxEnergy: 340,
@@ -310,7 +322,7 @@ window.LEVELS = {
   scarredWoods: {
     name: 'Scarred Woods',
     playerBaseHp: 1200,
-    enemyBaseHp: 4400,
+    enemyBaseHp: 2200,
     // MEASURED, twice. 80 lost at a 0.4s thumb; 95 fixed that but a player who
     // saved for Brute Bats still lost outright, because Brutes walk at 45px/s
     // and the spiders are already on top of you. 140 is a big purse, which
@@ -342,7 +354,7 @@ window.LEVELS = {
   abyssOfDarkness: {
     name: 'Abyss of Darkness',
     playerBaseHp: 1200,
-    enemyBaseHp: 5600,     // <-- lever one
+    enemyBaseHp: 2800,     // <-- lever one
     startEnergy: 70,
     energyPerSecond: 12,   // <-- lever two
     maxEnergy: 320,
@@ -377,7 +389,7 @@ window.LEVELS = {
   forgottenOasis: {
     name: 'Forgotten Oasis',
     playerBaseHp: 1300,
-    enemyBaseHp: 5600,
+    enemyBaseHp: 2800,
     startEnergy: 60,
     energyPerSecond: 13,
     maxEnergy: 340,
@@ -416,7 +428,7 @@ window.LEVELS = {
     // 3400 and the bee arrived at 58s, but the cave was already WON by 44-52s.
     // The boss of the whole game was never even meeting the player. A fortress
     // this size has to outlast her entrance, not fall before it.
-    enemyBaseHp: 5000,
+    enemyBaseHp: 2500,
 
     // MEASURED: at 90 a player saving for Brute Bats lost at a 0.5s thumb, and
     // losing the last cave of the game to a knife-edge is a rotten ending. 130

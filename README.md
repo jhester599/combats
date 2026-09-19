@@ -110,8 +110,13 @@ different (B11), and every one measured with the balance sim:
 | 9 | Forgotten Oasis | scorpions, and lots of them |
 | 10 | Final Stadium | the boss — the **Cow Killer Bee** |
 
-Plus **The Graveyard**, a practice level for trying the Necrobatcer out. All of
-them are on the title screen.
+Plus **The Graveyard**, a practice level for trying the Necrobatcer out.
+
+**Caves unlock as you beat them** — cave 1 is open, and each win opens the next
+one. Locked caves are still shown on the title screen so you can see what is
+coming. Progress is saved in the browser (`src/systems/progress.js`); there is a
+two-tap **Reset progress** inside the Credits panel if you want to start over or
+test the locking.
 
 ### Add a whole new cave → `data/levels.js`
 
@@ -207,6 +212,7 @@ src/
     pool.js           reuses unit objects instead of making new ones
     necro.js          the Necrobatcer's summoning: graves, and raising them
     caves.js          what caves exist, and which one comes next
+    progress.js       which caves you have beaten, saved in localStorage
   entities/
     unit.js           one bat: walk, fight, die
     base.js           a building with HP

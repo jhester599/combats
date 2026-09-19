@@ -58,8 +58,10 @@ window.MenuScene.prototype.buildCavePicker = function () {
   var caves = window.Caves.all();
   var self = this;
 
+  var beaten = window.Progress.beatenCount();
+
   this.add.text(cfg.screen.width / 2, m.caveRowY - 48,
-    (caves.length === 1) ? 'Choose a cave' : 'Choose a cave (' + caves.length + ')', {
+    'Choose a cave  -  ' + beaten + ' of ' + caves.length + ' beaten', {
       fontFamily: cfg.text.fontFamily,
       fontSize: '16px',
       color: '#8f82b8'
@@ -77,10 +79,51 @@ window.MenuScene.prototype.buildCavePicker = function () {
     var x = startX + (column * (m.caveWidth + m.caveGap)) + (m.caveWidth / 2);
     var y = m.caveRowY + (row * (m.caveHeight + m.caveGap));
 
-    self.makeButton(x, y, m.caveWidth, m.caveHeight, window.Caves.label(key), function () {
+    // Locked caves are drawn, but dark and unclickable. B12: you unlock a cave
+    // by beating the one before it.
+    if (!window.Progress.isUnlocked(key)) {
+      self.makeLockedButton(x, y, m.caveWidth, m.caveHeight, window.Caves.label(key));
+      return;
+    }
+
+    var label = window.Caves.label(key);
+
+    // A tick on the ones already done, so the map shows where you are.
+    if (window.Progress.hasBeaten(key)) {
+      label = label + '  \u2713';
+    }
+
+    self.makeButton(x, y, m.caveWidth, m.caveHeight, label, function () {
       self.scene.start('BattleScene', { levelKey: key });
     });
   });
+};
+
+/* -------------------------------------------------------------------------
+   A cave you cannot play yet. Deliberately still VISIBLE: seeing that Crystal
+   Falls is next, and that there are ten of these, is most of what a map is for.
+   It just does not respond to a tap.
+   ------------------------------------------------------------------------- */
+window.MenuScene.prototype.makeLockedButton = function (x, y, w, h, label) {
+  var cfg = window.CONFIG;
+  var m = cfg.menu;
+
+  var box = this.add.rectangle(x, y, w, h, m.lockedColor);
+  box.setStrokeStyle(2, cfg.buttons.borderColor, m.lockedBorderAlpha);
+
+  var text = this.add.text(x, y, '\U0001f512 ' + label, {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: '15px',
+    color: cfg.text.color,
+    align: 'center',
+    wordWrap: { width: w - 16 }
+  }).setOrigin(0.5).setAlpha(m.lockedTextAlpha);
+
+  if (text.width > w - 12) {
+    text.setScale((w - 12) / text.width);
+  }
+
+  return { box: box, text: text };
 };
 
 /* -------------------------------------------------------------------------
@@ -220,6 +263,32 @@ window.MenuScene.prototype.buildCredits = function () {
     'Tap anywhere to close'
   ];
 
+  // Somewhere out of the way to wipe your progress, so a cave can be replayed
+  // from the beginning - and so the locking can be tested without clearing the
+  // whole browser. Deliberately NOT on the title screen itself, where it would
+  // be one mis-tap away from undoing everything.
+  var resetLabel = this.add.text(centreX, centreY + 165,
+    'Reset progress (tap twice)', {
+      fontFamily: cfg.text.fontFamily,
+      fontSize: '14px',
+      color: '#e0808f'
+    }).setOrigin(0.5);
+
+  resetLabel.setInteractive({ useHandCursor: true });
+  resetLabel.armed = false;
+
+  resetLabel.on('pointerdown', function () {
+    if (!resetLabel.armed) {
+      resetLabel.armed = true;
+      resetLabel.setText('Really? Tap again to wipe it');
+      return;
+    }
+
+    window.Progress.reset();
+    resetLabel.setText('Progress wiped - back to cave 1');
+    resetLabel.armed = false;
+  });
+
   var panel = this.add.rectangle(centreX, centreY, 620, 400, 0x120c24, 0.96);
   panel.setStrokeStyle(2, 0xffd24a, 0.8);
 
@@ -230,12 +299,17 @@ window.MenuScene.prototype.buildCredits = function () {
     align: 'center'
   }).setOrigin(0.5);
 
-  this.creditsGroup = [panel, text];
+  this.creditsGroup = [panel, text, resetLabel];
 
   panel.setInteractive();
   panel.on('pointerdown', function () {
     this.toggleCredits();
   }.bind(this));
+
+  // The reset label has to sit ABOVE the panel or the panel's close-on-tap
+  // swallows it, and closing the credits must re-draw the menu so a wipe shows
+  // up straight away.
+  resetLabel.setDepth(1001);
 
   this.setCreditsVisible(false);
 };
@@ -252,5 +326,13 @@ window.MenuScene.prototype.setCreditsVisible = function (visible) {
 };
 
 window.MenuScene.prototype.toggleCredits = function () {
+  var closing = this.creditsVisible;
+
   this.setCreditsVisible(!this.creditsVisible);
+
+  // Rebuild the menu on close, so a progress wipe is visible immediately
+  // instead of next time the game starts.
+  if (closing) {
+    this.scene.restart();
+  }
 };

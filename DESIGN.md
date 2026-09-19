@@ -414,16 +414,25 @@ instead of mushy. All ten are built, and every number below is measured:
 
 | # | Cave | Its lever | Fortress | Income | Bats |
 |---|---|---|---|---|---|
-| 1 | **The Cave** | the tutorial: keep spending | 3800 | 13/s | Scout, Brute |
-| 2 | **Crystal Falls** | a new bug — the **Spider** arrives | 4200 | 13/s | + Archer |
-| 3 | **Dream Land** | **no warm-up** — bugs at second one | 4200 | 13/s | + Archer |
-| 4 | **Pyramid** | a **tougher fortress** | 5600 | 15/s | + Necrobatcer |
-| 5 | **Sahara-hara Desert** | **less energy** | 4600 | 11/s | all four |
-| 6 | **Wait Um** | the **longest siege** in the game | 7600 | 15/s | all four |
-| 7 | **Scarred Woods** | no warm-up, and **spider country** | 4400 | 14/s | all four |
-| 8 | **Abyss of Darkness** | **two levers at once** | 5600 | 12/s | all four |
-| 9 | **Forgotten Oasis** | **scorpions**, and lots of them | 5600 | 13/s | all four |
-| 10 | **Final Stadium** | the **boss** | 5000 | 16/s | all four |
+| 1 | **The Cave** | the tutorial: keep spending | 1900 | 13/s | Scout, Brute |
+| 2 | **Crystal Falls** | a new bug — the **Spider** arrives | 2100 | 13/s | + Archer |
+| 3 | **Dream Land** | **no warm-up** — bugs at second one | 2100 | 13/s | + Archer |
+| 4 | **Pyramid** | a **tougher fortress** | 2800 | 15/s | + Necrobatcer |
+| 5 | **Sahara-hara Desert** | **less energy** | 2300 | 11/s | all four |
+| 6 | **Wait Um** | the **longest siege** in the game | 3800 | 15/s | all four |
+| 7 | **Scarred Woods** | no warm-up, and **spider country** | 2200 | 14/s | all four |
+| 8 | **Abyss of Darkness** | **two levers at once** | 2800 | 12/s | all four |
+| 9 | **Forgotten Oasis** | **scorpions**, and lots of them | 2800 | 13/s | all four |
+| 10 | **Final Stadium** | the **boss** | 2500 | 16/s | all four |
+
+**DECIDED (2026-09-19) — every fortress was HALVED.** The endgame dragged, and
+the measurement was blunt about why: **72% of all playing time across the ten
+caves was spent chewing a fortress.** Bats reach it at 11–23s and then hammer a
+wall for another 35–50 seconds. Halving takes 10–15 seconds off every cave and
+changes nothing else — all ten still pass, cave 1 still punishes hoarding, and
+the Cow Killer Bee still lands well before the Final Stadium ends. Relative
+sizes are kept, so "Wait Um is the longest siege" and "Pyramid has a tough
+fortress" both remain true.
 
 **DECIDED (2026-09-19) — bats arrive cave by cave.** B12 said bats unlock by
 winning, but unlocking needs saved progress (M4). A cave's `playerUnits` list
@@ -451,7 +460,30 @@ past a 3-second reaction.
 
 ## 8. Progression & Unlocks
 
-Nothing is saved yet. Every visit starts fresh at Level 1.
+**BUILT 2026-09-19 — the caves lock, and progress is saved.** Cave 1 is always
+open; every other cave opens when the one before it is beaten. The Graveyard is a
+practice ground rather than part of Palopa, so it is always open.
+
+Locked caves are still **drawn** on the title screen, dark and unclickable —
+seeing that there are ten of them, and which one is next, is most of what a map
+is for. Beaten caves get a tick, and the header counts them.
+
+This is `src/systems/progress.js`, saved under one `localStorage` key. Three
+things about it worth knowing:
+
+- **It is per browser, per device.** No account, nothing leaves the machine, and
+  clearing browser data clears progress. That is the right trade for a game with
+  no login.
+- **Every read and write is wrapped in try/catch, and corrupt data is treated as
+  a fresh start.** `localStorage` *throws* rather than returning null in a
+  private window, and can be blocked or full. A game that dies on the title
+  screen because storage is unavailable would be far worse than one that forgets.
+- **Progress can be wiped**, from a "Reset progress" line inside the Credits
+  panel that needs two taps. A cave should be replayable, and the locking has to
+  be testable — but not one mis-tap from undoing everything.
+
+Only the list of beaten caves is stored. Suns, goods and bat upgrades are still
+to come, so adding them later means adding fields rather than rewriting this.
 
 **DECIDED (2026-09-19) — B13 = B: the game remembers, and you earn SUNS.**
 "Yes it remembers and you earn money ('suns') for beating a cave. The suns can
@@ -616,7 +648,7 @@ B8 (a boss) and B18 (what the last moment looks like).
 | **M1 — First playable** | One lane, two bats, two enemies, energy + cooldowns, bases, win/lose, Retry, placeholder art | ✅ **Done 2026-09-18** |
 | **M2 — Content** | **Ten caves** (B10 = C), a difficulty curve, a way to pick a cave | ✅ **Done 2026-09-19** — all ten built and measured, four bats, a boss, a cave picker |
 | **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, a wet-cave background, sound | 🔜 **Next** — and now the biggest gap: ten caves, one look. Needs the **B4 redraw**, **B26**, B15 |
-| **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | Scoped by B13/B12/B19/B22/B23 ✅; needs **B27** (what the goods do) |
+| **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | 🟡 **Started** — saved progress and cave unlocking ✅ built; suns, goods and upgrades need **B27** |
 | **M5 — Depth** | Maybe a second lane, more powers | Needs B14. *Both of its headline items arrived early* — the Necrobatcer's summon (B5) and the boss (B8) |
 
 Order is a plan, not a promise — if Lewis most wants a boss, we build the boss.

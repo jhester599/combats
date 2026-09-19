@@ -246,8 +246,10 @@ window.BattleScene.prototype.resultMessage = function (playerWon) {
     return 'Your base fell. Try different bats!';
   }
 
-  if (window.Caves.next(this.levelKey)) {
-    return 'The cave is yours. Great flying!';
+  var nextKey = window.Caves.next(this.levelKey);
+
+  if (nextKey) {
+    return 'The cave is yours - ' + window.LEVELS[nextKey].name + ' is unlocked!';
   }
 
   if (window.LEVELS[this.levelKey].practice) {
@@ -570,7 +572,9 @@ window.BattleScene.prototype.buildResultPanel = function () {
   var next = this.makePanelButton('NEXT CAVE', function () {
     var nextKey = window.Caves.next(self.levelKey);
 
-    if (nextKey) {
+    // Winning recorded this cave a moment ago, so the next one is unlocked by
+    // the time this button can be pressed. Checked anyway rather than assumed.
+    if (nextKey && window.Progress.isUnlocked(nextKey)) {
       self.scene.start('BattleScene', { levelKey: nextKey });
     }
   });
@@ -676,6 +680,12 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
 
   this.battleOver = true;
   this.playerWon = playerWon;
+
+  // Remember it, which is what unlocks the next cave (homework B12/B13).
+  // Practice levels are not part of Palopa, so they unlock nothing.
+  if (playerWon && !this.level.practice) {
+    window.Progress.markBeaten(this.levelKey);
+  }
 
   this.resultPanel.title.setText(playerWon ? 'VICTORY!' : 'DEFEAT');
   this.resultPanel.subtitle.setText(this.resultMessage(playerWon));
