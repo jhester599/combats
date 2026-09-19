@@ -578,9 +578,23 @@ mind about what the bats look like, which is entirely his call. The old answer
 > bats, then as you buy upgrades to level up your bats, they change color,
 > backwards rainbow (VIBGYOR, although we may simplify down a bit)." — Lewis
 
-**The drawing brief**, for when Lewis is next in PixelLab: hand-drawn, not
-realistic. A **large circle** for the body. **Wings, ears, a mouth. No legs.**
-**Black and white.** 64×64, facing east. Full details in `ASSETS.md`.
+**DELIVERED 2026-09-19 — three of the four bats are drawn and in the game:**
+the **Scout Bat** (big eyes, big ears), the **Brute Bat** (scowling), and the
+**Necrobatcer**, which Lewis drew as a **bat skull carrying a flaming staff** -
+a better idea than anything the brief asked for. The **Archer Bat** and all the
+bugs are still placeholder shapes.
+
+Two things the import settled, both in `ASSETS.md` in full:
+
+- **The frames are wide** (150×64, 132×64, 100×64), because a bat with its
+  wings out is a wide thing. They share a 64px height so every bat stands on
+  the same baseline, and each unit's `scale` came down to match.
+- **They are 66–70% light pixels inside black outlines**, which is exactly what
+  the colour ladder needs: a tint multiplies, so the light areas take the
+  colour and the outlines stay black.
+
+The bats are drawn **front-on and symmetrical**, so the old "everything faces
+east" rule no longer bites - mirroring them changes nothing.
 
 **The colour ladder.** A bat starts plain black-and-white and climbs the rainbow
 *backwards* as it is upgraded:

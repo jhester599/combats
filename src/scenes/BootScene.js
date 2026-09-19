@@ -36,11 +36,15 @@ window.BootScene.prototype.preload = function () {
      Remember to credit every picture in ASSETS.md. */
 
   this.load.spritesheet('scoutBat', 'assets/sprites/scoutBat.png', {
-    frameWidth: 64, frameHeight: 64
+    frameWidth: 150, frameHeight: 64
   });
 
   this.load.spritesheet('bruteBat', 'assets/sprites/bruteBat.png', {
-    frameWidth: 64, frameHeight: 64
+    frameWidth: 132, frameHeight: 64
+  });
+
+  this.load.spritesheet('necroBat', 'assets/sprites/necroBat.png', {
+    frameWidth: 100, frameHeight: 64
   });
 };
 

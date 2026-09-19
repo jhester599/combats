@@ -69,24 +69,28 @@ window.UNITS = {
     speed: 90,             // pixels per second
     color: '#6fd3ff',      // only used by placeholder art - this bat has real art now
     sprite: 'scoutBat',
-    scale: 0.75,           // <-- TRY ME: makes the Scout look small and nippy
+    scale: 0.55,           // <-- TRY ME: makes the Scout look small and nippy
 
-    // REAL ART from PixelLab, packed by tools/pack-spritesheet.js.
-    // The sheet is one pose + a 16-frame walk cycle = 17 frames.
+    // REAL ART - Lewis's 2026-09-19 redraw (homework B4): hand-drawn, a big
+    // circle body, wings, ears, a mouth, no legs, black and white.
     //
-    // Two animations share frame 0 on purpose: there is no attack or death art
-    // yet, so both fall back to the standing pose. When Lewis draws them, put
-    // the new frames in assets/sprites/source/scoutBat/, re-run the packer, and
+    // The frames are WIDE now (150x64 rather than 64x64) because a bat with
+    // its wings out is a wide thing. The scale above is lower to match, so it
+    // takes up about the same room on screen as the old square drawing did.
+    //
+    // All four animations share frame 0: there is only a standing pose so far.
+    // When Lewis draws walk/attack/death, drop the frames in
+    // assets/sprites/source/scoutBat/, re-run tools/pack-spritesheet.js, and
     // paste the block it prints over this one.
     anims: {
-      frameWidth: 64,
+      frameWidth: 150,
       frameHeight: 64,
-      idle:   { start: 0, end:  0, frameRate: 1,  repeat: -1 },  // -1 = loop forever
-      walk:   { start: 1, end: 16, frameRate: 16, repeat: -1 },  // <-- TRY ME: flap speed
-      attack: { start: 0, end:  0, frameRate: 1,  repeat: 0  },  // no attack art yet
-      // No death art either. With one frame, frameRate only sets how long the
-      // fade-out lasts: 1 frame / 2 per second = half a second.
-      death:  { start: 0, end:  0, frameRate: 2,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },  // -1 = loop forever
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      // With one frame, frameRate only sets how long the fade-out lasts:
+      // 1 frame / 2 per second = half a second.
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -101,12 +105,12 @@ window.UNITS = {
     speed: 45,
     color: '#b487ff',      // only used by placeholder art - this bat has real art now
     sprite: 'bruteBat',
-    scale: 1.05,           // <-- TRY ME: makes the Brute loom over the Scout
+    scale: 0.8,            // <-- TRY ME: makes the Brute loom over the Scout
 
-    // REAL ART from PixelLab - still a single pose, so the Brute does not flap
-    // yet. Give it a walk grid like the Scout's and it will.
+    // REAL ART - Lewis's 2026-09-19 redraw (homework B4). The scowling one.
+    // Single pose, so the Brute does not flap yet.
     anims: {
-      frameWidth: 64,
+      frameWidth: 132,
       frameHeight: 64,
       idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
       walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
@@ -141,9 +145,9 @@ window.UNITS = {
     attackInterval: 1.2,   // 3.3 dps, about a quarter of a Scout's
     range: 60,             // hangs back a little further than the others
     speed: 70,
-    color: '#8f7fd6',      // placeholder art until Lewis draws it
+    color: '#8f7fd6',      // only used by placeholder art - this bat has real art now
     sprite: 'necroBat',
-    scale: 0.9,
+    scale: 0.7,
 
     // ------------------- THE SUMMONING POWER -------------------
     // Every bat of yours that dies leaves a GRAVE where it fell. A
@@ -163,13 +167,16 @@ window.UNITS = {
       //   * a Necrobatcer can never raise another Necrobatcer
     },
 
+    // REAL ART - Lewis's 2026-09-19 drawing (homework B4): a bat SKULL with a
+    // flaming staff, which is exactly right for something that raises the
+    // dead. Single pose so far.
     anims: {
-      frameWidth: 48,
-      frameHeight: 48,
-      idle:   { start: 0,  end: 1,  frameRate: 3,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 8,  repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 10, repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 8,  repeat: 0  }
+      frameWidth: 100,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 

@@ -349,6 +349,32 @@ window.BattleScene.prototype.buildDeployButtons = function () {
 };
 
 /* ------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------
+   How big to draw one bat's picture on its deploy button.
+
+   Fit it inside CONFIG.buttons.portraitMaxWidth/Height first, so no drawing
+   can ever overflow its button however wide the art is, then nudge it by how
+   big that bat is in the game so the buttons still hint at which is the heavy.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.portraitScaleFor = function (stats) {
+  var b = window.CONFIG.buttons;
+
+  var fit = Math.min(
+    b.portraitMaxWidth / stats.anims.frameWidth,
+    b.portraitMaxHeight / stats.anims.frameHeight
+  );
+
+  // The biggest bat on THIS level's button row is the yardstick.
+  var biggest = this.level.playerUnits.reduce(function (most, key) {
+    return Math.max(most, window.Unit.scaleOf(window.UNITS[key]));
+  }, 0);
+
+  var story = 1 - b.portraitSizeStory +
+    (b.portraitSizeStory * (window.Unit.scaleOf(stats) / biggest));
+
+  return fit * story;
+};
+
 window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
   var cfg = window.CONFIG;
   var b = cfg.buttons;
@@ -366,9 +392,7 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
   // A little portrait of the bat so you can tell the buttons apart at a glance.
   var portrait = this.add.sprite(x + 34, y + (b.height / 2) + 12, stats.sprite);
   portrait.setOrigin(0.5, 1);
-  // Multiplying by the unit's own scale keeps the buttons telling the same
-  // story as the battlefield: the Scout's picture is smaller than the Brute's.
-  portrait.setScale(b.portraitScale * window.Unit.scaleOf(stats));
+  portrait.setScale(this.portraitScaleFor(stats));
   portrait.play(unitKey + '_idle');
 
   var nameText = this.add.text(x + 62, y + 14, stats.name, {

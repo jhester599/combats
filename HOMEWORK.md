@@ -170,11 +170,30 @@ So what's the difference?
 
 ---
 
-### 🎨 B4 (still). YOUR BIG JOB: redraw the bats
+### ✅ B4. YOUR BATS ARE IN THE GAME 🎨 *(3 of 4 done 2026-09-19)*
 
-This is the one thing blocking everything else. The game is **still showing the
-old goggled Scout and caped Brute**, because your new design hasn't been drawn
-yet. Your own brief, from last time:
+> 🎉 **You drew them and they're in.** The **Scout Bat**, the **Brute Bat**
+> and the **Necrobatcer** are the real art now - go and look at a battle.
+>
+> The **Necrobatcer is the best one.** You drew a bat **skull** with a **flaming
+> staff**, which nobody asked for and is exactly right for something that raises
+> the dead.
+>
+> Two things Dad had to change to fit them in, both of them your drawings' fault
+> in a good way:
+>
+> - **They're wide.** A bat with its wings out is a wide thing, so the pictures
+>   are 150 wide instead of 64. Everything got scaled down a bit so they don't
+>   fill the whole screen.
+> - **The buttons broke.** The Brute's little picture on its button came out
+>   74 pixels wide on a 168-pixel button and hung off the edge. Fixed.
+>
+> **✨ And the black-and-white thing is working exactly as planned:** Dad
+> measured your drawings and they're **66-70% white inside black outlines**.
+> That's the bit that lets the game colour them in later. Good call. 👏
+>
+> **Still to draw:** the **Archer Bat**, the three bugs, and the **Cow Killer
+> Bee**. Same brief:
 
 | | |
 |---|---|
@@ -184,8 +203,6 @@ yet. Your own brief, from last time:
 | Does not have | **Legs** |
 | Colour | **Black and white only** |
 | Size | 64×64, facing **east** (to the right) |
-
-**Four bats now:** Scout, Brute, Necrobatcer and the new **Archer Bat**.
 
 **✨ Remember why black and white is clever:** the game can paint a white drawing
 any colour. You draw each bat **once** and the game makes all the colours. You do

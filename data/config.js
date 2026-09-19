@@ -215,10 +215,22 @@ window.CONFIG = {
     cooldownOverlayAlpha: 0.62,
     disabledTextAlpha: 0.45,
 
-    // How big the little bat picture on each button is. This gets multiplied
-    // by the unit's own "scale" from units.js, so a Scout Bat's portrait is
-    // smaller than a Brute Bat's - same as on the battlefield.
-    portraitScale: 0.7
+    // The box each button's little bat picture has to fit inside. It is a BOX
+    // rather than a plain multiplier because the bats stopped being square:
+    // Lewis's 2026-09-19 drawings are up to 150x64, and the old
+    // "scale x the unit's own scale" sizing put the Brute's portrait 74px wide,
+    // spilling off the left edge of its button and underneath the label.
+    //
+    // The picture is scaled to fit this box, and then nudged a little by how
+    // big the bat is in the game so the buttons still tell you which one is
+    // the heavy.
+    portraitMaxWidth: 52,
+    portraitMaxHeight: 46,
+
+    // How much of the size difference between bats survives into the buttons.
+    // 0 = every portrait the same size, 1 = the full difference (which would
+    // overflow again). 0.25 is a hint, not a shout.
+    portraitSizeStory: 0.25
   },
 
   /* ---------------------------------------------------------------------

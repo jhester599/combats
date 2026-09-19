@@ -52,34 +52,59 @@ committed PNG.
 
 | Sprite | Made by | Terms | When |
 |---|---|---|---|
-| `assets/sprites/scoutBat.png` — Scout Bat (goggles): 1 pose + 16-frame walk | Lewis, via PixelLab (AI-generated) | ⚠️ **see note below** | 2026-09-18 |
-| `assets/sprites/bruteBat.png` — Brute Bat (cape): 1 pose | Lewis, via PixelLab (AI-generated) | ⚠️ **see note below** | 2026-09-18 |
+| `assets/sprites/scoutBat.png` — Scout Bat: big eyes, big ears, 1 pose (150×64) | Lewis | ⚠️ **tool not recorded** | 2026-09-19 |
+| `assets/sprites/bruteBat.png` — Brute Bat: the scowling one, 1 pose (132×64) | Lewis | ⚠️ **tool not recorded** | 2026-09-19 |
+| `assets/sprites/necroBat.png` — Necrobatcer: a bat skull with a flaming staff, 1 pose (100×64) | Lewis | ⚠️ **tool not recorded** | 2026-09-19 |
+| *(superseded)* Scout Bat in goggles, Brute Bat in a cape | Lewis, via PixelLab (AI-generated) | ⚠️ see note below | 2026-09-18 |
+
+The 2026-09-18 pair were replaced by the redraw above (homework B4). Their
+source exports are kept in `assets/sprites/source/_superseded-2026-09-18/`.
+
+⚠️ **Which tool made the 2026-09-19 drawings has not been recorded.** The
+2026-09-18 pair were PixelLab; these arrived as finished images, so the tool
+and its terms still need writing down here the same way. Somebody who knows
+should fill this in.
 
 The **original exports** are kept in `assets/sprites/source/` so a sheet can be
 rebuilt when more frames arrive — see the README there for the exact command.
 The files in `assets/sprites/` are built from those by
 `tools/pack-spritesheet.js`; don't hand-edit them.
 
-All art faces **east (right)**; the game mirrors enemies itself. Units are
-drawn at different sizes through each one's `scale` in `data/units.js`
-(Scout 0.75, Brute 1.05, Necrobatcer 0.9), not by resizing the files — so
-everything can be drawn at a convenient 64×64.
+**Facing: the 2026-09-19 bats are drawn FRONT-ON and symmetrical**, wings out
+either side, so the "everything faces east" rule no longer bites - mirroring a
+symmetrical drawing changes nothing, and the game's enemy flip is a harmless
+no-op on them. Anything drawn in profile still needs to face east.
 
-**Still missing:** attack and death frames for both bats, and a walk cycle for
-the Brute. Until those exist, those animations fall back to the standing pose.
+**The frames are wide now.** A bat with its wings out is a wide thing, so the
+sheets are 150×64, 132×64 and 100×64 rather than square. Each unit's `scale` in
+`data/units.js` came down to match (Scout 0.75→0.55, Brute 1.05→0.8,
+Necrobatcer 0.9→0.7), so they take up about the same room on screen as the old
+square drawings did.
+
+**They are mostly WHITE inside a black outline** - measured at 66–70% light
+pixels. That is what makes the colour ladder possible later: a tint multiplies,
+so light areas take the colour and the outlines stay black.
+
+**Still missing:** every bat is a SINGLE POSE. The Scout's old 16-frame walk
+cycle belonged to the superseded drawing and did not survive the redraw, so
+nothing flaps at the moment - idle, walk, attack and death all show the
+standing pose. That is homework B21.
+
+**Still to draw:** the **Archer Bat**, the three bugs and the **Cow Killer
+Bee**. All are still placeholder shapes the game paints itself.
 
 ⚠️ **Still to confirm:** what Jeff's PixelLab plan says about ownership and
 commercial use. Write the answer here once so nobody has to look it up again.
 
 ---
 
-## 🎨 THE CURRENT DRAWING BRIEF (Lewis, homework B4, 2026-09-19)
+## ✅ THE DRAWING BRIEF (Lewis, homework B4) — three of four delivered
 
-**Lewis changed the bats' design on 2026-09-19.** The goggled Scout and the
-caped Brute above are now **placeholders again** — they stay in the game so
-nothing is broken, but they no longer match the design.
+**Done 2026-09-19:** the **Scout Bat**, **Brute Bat** and **Necrobatcer** are
+drawn to this brief and are in the game. The **Archer Bat** is still a
+placeholder, and so are the bugs.
 
-What to draw in PixelLab:
+The brief, for whatever is drawn next:
 
 | | |
 |---|---|
