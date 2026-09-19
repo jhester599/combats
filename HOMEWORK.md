@@ -10,6 +10,36 @@
 
 ---
 
+## 🐛 If you played it and LOST — that was our bug, not you
+
+**Lewis, you did it exactly right.** You only sent a Scout Bat when the button
+was ready, which is precisely what this page told you to do, and you still lost.
+That was **the game's fault**, and it is fixed now.
+
+Here is what was actually wrong, because it's a good one:
+
+- You could **afford** a Scout Bat every **1.9 seconds**.
+- But the button made you **wait 2.0 seconds** between bats.
+- The wait was longer than the money — by **0.08 of a second**.
+
+That tiny gap meant the button sat there lit up, *waiting for your thumb*. And
+every little bit of time before you tapped was a bat you never got back. Being a
+third of a second late — which is just being a person — cost you **13% of your
+whole army**, and 13% was exactly the difference between winning and losing.
+
+Worse: Dad's testing robot tapped on the *exact* 1/60th of a second the button
+lit up, so **it** won every time and reported the level was fine. It was
+measuring a robot, not a boy. The robot now has a reaction time.
+
+**The fix:** the Scout Bat's cooldown went from 2.0s to **1.4s**, so now your
+*energy* is what slows you down, not the clock — and a slow tap just banks the
+energy instead of throwing a bat away. You get half a second of "late" free on
+every single tap.
+
+**Now go and win it.** Same link, and it should take you about a minute.
+
+---
+
 ## 🎮 First, go play it
 
 **https://jhester599.github.io/combats/**
@@ -17,7 +47,7 @@
 Play Level 1 two ways before you answer anything:
 
 1. **Tap Scout Bat every single time the button lights up.** You should win in
-   about a minute.
+   **56–60 seconds**. (If you don't, tell Dad — that's a bug, not you.)
 2. **Now play again and be stingy** — wait, save your energy, only send a few.
    You should lose.
 
@@ -208,10 +238,19 @@ it plays the whole thing instantly:
 node tools/balance-sim.js level1
 ```
 
+It plays the level as **several different people** — a robot with a perfect
+thumb, someone sharp, someone relaxed — and as a hoarder who saves everything
+up. Read the **VERDICT** at the bottom. Ignore the `0s (robot)` row: that row is
+the one that fooled us.
+
 **If you break something,** nothing is lost — Dad can undo any change.
 
 ---
 
 ## ✅ Answered so far
 
-Nothing yet — this is Round 1! Answers get recorded in `DECISIONS.md`.
+No questions answered yet — this is Round 1! Answers get recorded in
+`DECISIONS.md`.
+
+One thing *is* in there already, though: the Level 1 bug you found by playing it
+is logged as **D8, D9 and D10**. Finding that counts. 🦇

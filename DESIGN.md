@@ -54,7 +54,7 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 
 | Bat | Cost | Cooldown | HP | Attack | Interval | **DPS** | Range | Speed |
 |---|---|---|---|---|---|---|---|---|
-| **Scout Bat** | 25 | 2.0s | 40 | 8 | 0.6s | **13.3** | 40 | 90 |
+| **Scout Bat** | 25 | 1.4s | 40 | 8 | 0.6s | **13.3** | 40 | 90 |
 | **Brute Bat** | 90 | 6.0s | 220 | 30 | 1.4s | **21.4** | 46 | 45 |
 
 `DPS = attack ÷ attackInterval`.
@@ -74,9 +74,10 @@ That's the whole strategy at Milestone 1: Scouts kill, Brutes survive.
 
 ### A known weakness to fix, not ignore
 
-At 13 energy/second, spamming Scouts eats **12.5 of it** (25 energy ÷ 2s
-cooldown). A Brute costs 90. So if you tap Scout every time it's ready, you can
-almost **never** afford a Brute — you have to deliberately *stop* tapping to
+At 13 energy/second, spamming Scouts eats **all of it**: a Scout costs 25, so
+you can afford one every 1.92s, and that is now also how often you actually get
+one (§5). A Brute costs 90. So if you tap Scout every time it's ready, you can
+**never** afford a Brute — you have to deliberately *stop* tapping to
 save up. That's a real decision, but it means a player who just mashes one
 button never meets the second bat at all.
 
@@ -110,9 +111,28 @@ Both names and looks are **placeholders**.
 - A button is dead (dimmed, unclickable) if you can't afford it **or** it's
   cooling down. The dark shade over a button drains away as it becomes ready.
 
-**DECIDED (2026-09-18) — the economy is tuned so cooldowns, not money, are the
-usual limit** on how fast you can spam the cheap bat. That keeps a floor under
-how quickly the board can fill up.
+**⚠️ SUPERSEDED (2026-09-18) — "cooldowns, not money, are the usual limit" on
+how fast you can spam the cheap bat.** It sounded tidy. It made Level 1
+unwinnable for an actual child. Replaced by the rule below.
+
+**DECIDED (2026-09-19) — for a cheap bat you are meant to spam, MONEY is the
+limit and never the cooldown:**
+
+```
+a spammable bat's cooldown  <  its cost ÷ the level's energyPerSecond
+```
+
+Why this matters far more than it looks. When the **cooldown** is the limit, the
+button sits there lit, waiting for your thumb — and every fraction of a second
+you are late is a bat you never get back. Nobody is frame-perfect, and a 0.3s
+delay cost **13% of a whole army**. When **money** is the limit, a late tap just
+banks the energy and costs you nothing.
+
+The Scout was cost 25, cooldown 2.0s, at 13 energy/sec: 1.92s to afford one,
+2.0s before you were allowed one. The cooldown won by **0.08 seconds** — and
+that was enough to make Level 1 unwinnable for a person, while a balance sim
+that tapped perfectly kept reporting a comfortable win. The Scout's cooldown is
+now **1.4s**, which leaves 0.52s of lateness free on every single tap.
 
 **`[TO DECIDE]` — a 2× fast-forward button?** *(B20)*
 
@@ -184,12 +204,19 @@ order; the game sorts them by time.
 | Your bats | Scout, Brute |
 | Enemies | 30 across 12 waves, last at 76s |
 
-**DECIDED (2026-09-18) — Level 1 is tuned to teach one lesson: keep spending.**
-Measured with `tools/balance-sim.js`:
+**DECIDED (2026-09-19) — Level 1 is tuned to teach one lesson: keep spending.**
+Measured with `tools/balance-sim.js` — which now plays like a person, not a
+robot — and each row confirmed by playing the real game in a real browser:
 
-- Playing actively → **win at about 68 seconds**, having met most waves.
-- Sitting on your energy (25% less spending) → **you lose.**
+- Tapping attentively (0.2–0.5s after the button lights) → **win in 56–60s**.
+  Still a win with a relaxed 0.7s thumb, at 77s.
+- Sitting on your energy → **you lose**, every time.
 - Brutes only → you still win, but it takes 106 seconds.
+
+**Never tune this level against a perfect thumb again.** The first version was
+measured at 0s reaction, reported "win at 68s", and the first people who played
+it exactly as the homework instructed **lost**. The sim now reports the whole
+0s–1.0s band and fails a level that only wins at 0s.
 
 **The enemy base is deliberately huge (4000 vs your 1000).** It's a fortress, not
 a fair fight — it's the thing you're besieging, and it should take a real push.
@@ -296,8 +323,10 @@ Full detail is in `README.md`; the design-relevant parts:
 - **Mouse and touch both work**; the game scales to fit, and asks you to turn a
   phone sideways.
 - **`tools/balance-sim.js`** plays a whole level headlessly in a fraction of a
-  second, using the same data files. Use it to check a level is still winnable
-  after changing numbers.
+  second, using the same data files. It plays with a **reaction time** (0s to
+  1.0s), so it measures what a person gets rather than what a robot gets, and it
+  flags any cheap bat whose *cooldown* rather than its *price* is the thing
+  limiting you. Use it after changing any number.
 
 ---
 

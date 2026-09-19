@@ -64,10 +64,13 @@ These were settled while building Milestone 1. **Any of them can be overruled**
 | D1 | Engine | Phaser 4.2.1, vendored, no build step | Same setup as Fakeamon Spark; open it and it runs | 2026-09-18 |
 | D2 | Unit control | You never steer a bat — deploy and forget | It's what makes it *this* genre | 2026-09-18 |
 | D3 | Do bats queue or swarm? | **Swarm** — they pile on and all attack | With any spacing, only the front bat is in range, so a 10-bat army did the damage of 1. `DESIGN.md` §6 | 2026-09-18 |
-| D4 | Level 1's lesson | Keep spending; hoarding loses | Active play wins at ~68s, hoarding loses. Measured, not guessed | 2026-09-18 |
+| D4 | Level 1's lesson | ⚠️ **Superseded by D8.** Keep spending; hoarding loses | Right lesson, wrong measurement: "active play wins at ~68s" was measured with a sim that tapped perfectly. A real thumb lost. | 2026-09-18 |
 | D5 | Enemy base HP | 4000 vs your 1000 | It's a fortress you're besieging, not a duel | 2026-09-18 |
 | D6 | Art | Placeholder art the game draws itself | Real sprite sheets drop in as a data change, so art isn't blocking | 2026-09-18 |
 | D7 | Where numbers live | All gameplay numbers in `data/`, never in code | So Lewis can change anything without touching code | 2026-09-18 |
+| D8 | Level 1's lesson, re-measured | Keep spending; hoarding loses. **Attentive tapping wins in 56–60s** and still wins with a relaxed 0.7s thumb; hoarding still loses | Lewis and Dad played it as the homework instructed and **lost**. Scout cooldown 2.0s → **1.4s**. Verified in the sim across 0–1.0s reaction *and* in a real browser | 2026-09-19 |
+| D9 | What limits spamming a cheap bat | **Money, never the cooldown.** A spammable bat's `cooldown` must be **below** `cost ÷ energyPerSecond` | When the cooldown is the limit, the button waits lit for your thumb and every fraction of a second you are late is a bat you never get. When money is the limit, a late tap just banks the energy. Overturns the old §5 rule | 2026-09-19 |
+| D10 | The balance sim plays like a person | It has a **reaction time** and reports the whole 0–1.0s band, warns when D9 is violated, and fails a level that only wins at 0s | The old sim tapped on the exact 1/60th of a second and called an unwinnable level a win. A tool that measures a robot is worse than no tool | 2026-09-19 |
 
 ---
 

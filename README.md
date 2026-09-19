@@ -63,7 +63,7 @@ Find the bat you want to change and edit its numbers:
 scoutBat: {
   name: "Scout Bat",     // the words on the button
   cost: 25,              // energy it costs to send out
-  cooldown: 2.0,         // seconds before you can send another one
+  cooldown: 1.4,         // seconds before you can send another one
   hp: 40,                // how much damage it can take
   attack: 8,             // damage per hit
   attackInterval: 0.6,   // seconds between hits (SMALLER = faster)

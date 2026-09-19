@@ -46,7 +46,22 @@ window.UNITS = {
   scoutBat: {
     name: 'Scout Bat',
     cost: 25,              // <-- TRY ME: make it cheaper to spam more bats
-    cooldown: 2.0,         // seconds before you can send another Scout Bat
+
+    // THE SPAMMABLE-BAT RULE: keep this number BELOW  cost / energyPerSecond.
+    //
+    // At 25 energy and 13 energy per second it takes 1.92s to AFFORD a Scout,
+    // so a 1.4s cooldown means the button is already lit and waiting by the
+    // time you can pay for it. Money is the limit, not the clock.
+    //
+    // Why that matters: a person is never frame-perfect. When the COOLDOWN is
+    // the limit - it used to be 2.0s here - every fraction of a second between
+    // the button lighting up and your thumb landing is a bat you never get
+    // back. A 0.3s delay cost 13% of your whole army, which was enough to LOSE
+    // Level 1 while doing exactly what the homework said to do. When MONEY is
+    // the limit, a slow tap just banks the energy and costs you nothing.
+    //
+    // Run  node tools/balance-sim.js  and it checks this rule for every bat.
+    cooldown: 1.4,         // seconds before you can send another Scout Bat
     hp: 40,
     attack: 8,             // damage per hit
     attackInterval: 0.6,   // seconds between hits
