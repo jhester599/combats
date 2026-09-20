@@ -102,9 +102,27 @@ commercial use. Write the answer here once so nobody has to look it up again.
 
 **Done 2026-09-19:** the **Scout Bat**, **Brute Bat** and **Necrobatcer** are
 drawn to this brief and are in the game. The **Archer Bat** is still a
-placeholder, and so are the bugs.
+placeholder, and so are all the bugs.
 
-The brief, for whatever is drawn next:
+### What is still a coloured blob the game paints itself
+
+| | Unit | Placeholder colour | Homework |
+|---|---|---|---|
+| 🏹 | Archer Bat | mint green | B4 |
+| 🦟 | Mosquito | pale insect green | B3/B4 |
+| 🕷️ | Spider | dusty purple | B3/B4 |
+| 🦂 | Scorpion | sandy brown | B3/B4 |
+| 👑 | Cow Killer Bee | queen-bee yellow | B3/B4 |
+| 🦂 | **Desert Scorpion** | bright desert sand | **B30** *(new)* |
+| 🦋 | **Evil Butterfly** | dream magenta | **B30** *(new)* |
+| ✨ | **Lightning Bug** | firefly yellow-green | **B30** *(new)* |
+
+The three new ones arrived with homework B26 on 2026-09-20. Note that the **bugs
+are not bats**, so the "large circle, wings, ears, no legs" brief below does not
+apply to them — they can look like whatever Lewis thinks they look like. Only
+the size, the facing and the black-and-white rule carry over.
+
+The brief, for whatever **bat** is drawn next:
 
 | | |
 |---|---|
@@ -122,12 +140,15 @@ A white or grey drawing can be **tinted** any colour by the engine at run time.
 So each bat is drawn **once** and the game produces every colour of it.
 
 That matters because Lewis's other B4 decision is a colour ladder: a bat starts
-plain and climbs the rainbow **backwards** as it is upgraded — Violet, Indigo,
-Blue, Green, Yellow, Orange, **Red** at the top. Eight appearances per bat.
+plain and climbs the rainbow **backwards** as it is upgraded. **Homework B23 cut
+this to four steps** — Plain → Violet → Blue → Yellow → **Red** — so it is
+**five** appearances per bat, not the eight this page used to claim. Seven
+upgrades per bat would have meant seven prices to balance for every bat in the
+game.
 
-**Do not draw eight versions of anything.** Draw one, in black and white, and
-let `CONFIG.upgradeTiers` in `data/config.js` do the rest. (Not wired up yet —
-it switches on with the casino, homework B13.)
+**Do not draw five versions of anything.** Draw one, in black and white, and let
+`CONFIG.upgradeTiers` in `data/config.js` do the rest. (Not wired up yet — it
+switches on with the casino, homework B13.)
 
 One thing to watch when drawing: a tint **multiplies** colour in, so pure black
 pixels stay black whatever tint is applied, and white pixels take the tint most

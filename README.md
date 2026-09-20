@@ -176,17 +176,36 @@ limited by **money**, not by its cooldown. If a cooldown is longer than the time
 it takes to afford the bat, the button sits lit waiting for your thumb and every
 late tap is a bat you never get.
 
-### Check the Necrobatcer's rules still hold
+**On a cave with a gambling bug in it, it plays 20 different battles.** The
+Desert Scorpion can kill a bat outright on any hit, so one run proves nothing —
+the report gains a `THE COIN FLIP` section and the cave has to win **all
+twenty**. A cave lost to bad luck isn't a hard cave, it's an unfair one.
+
+The dice are **seeded**, so the same seed always gives the same battle. A
+measuring tool whose answer changes every run can't tune anything.
+
+### Check the rules still hold
 
 ```bash
-node tools/necro-test.js
+node tools/necro-test.js    # 20 checks - the Necrobatcer's summoning
+node tools/sting-test.js    # 27 checks - the Desert Scorpion's gamble
+node tools/items-test.js    # 37 checks - potions and fruit
 ```
 
-Twenty checks on the summoning: who leaves a grave, that a raised bat can never
-be raised a second time, that a Necrobatcer can't raise another Necrobatcer, and
-that a recycled unit object forgets it was raised. Get any of those wrong and one
-grave becomes an endless army — which wouldn't crash, it would just quietly make
-the game unlosable.
+Each covers the rules that stop the game quietly breaking, rather than the ones
+that tune how it feels:
+
+- **necro** — a raised bat can never be raised again, a Necrobatcer can't raise
+  another Necrobatcer, and a recycled unit object forgets it was raised. Get any
+  wrong and one grave becomes an endless army: no crash, just a game you can't
+  lose.
+- **sting** — a sting can *never* instantly kill a base (one roll must not
+  decide a cave), it can't finish something already dying, and `killChance: 0.2`
+  really does mean 20%. That last one matters because every balance measurement
+  is taken with these dice.
+- **items** — three potions give ten weakened seconds and not thirty, a potion
+  never weakens your own bats, fruit can't overheal, and nothing writes on the
+  shared stats object in `data/units.js`.
 
 ---
 
@@ -199,6 +218,7 @@ data/               EVERY tuning number lives here
   config.js           screen, lane, bars, buttons, timing
   units.js            all unit stats (yours and the enemy's)
   levels.js           base HP, economy, and the wave schedule
+  items.js            potions, fruit and blood (the casino goods)
 src/
   main.js             starts Phaser, lists the scenes
   scenes/
@@ -211,6 +231,8 @@ src/
     combat.js         who can reach what, and damage
     pool.js           reuses unit objects instead of making new ones
     necro.js          the Necrobatcer's summoning: graves, and raising them
+    sting.js          the Desert Scorpion's gamble, and its seeded dice
+    items.js          potions and fruit: what they do and what they refuse
     caves.js          what caves exist, and which one comes next
     progress.js       which caves you have beaten, saved in localStorage
   entities/
@@ -219,6 +241,8 @@ src/
 tools/
   balance-sim.js      plays a level with no graphics (testing only)
   necro-test.js       checks the summoning rules hold (testing only)
+  sting-test.js       checks the gambling rules hold (testing only)
+  items-test.js       checks the item rules hold (testing only)
   pack-spritesheet.js turns a folder of frames into one sprite sheet
   png.js              reads/writes PNG files, used by the packer
 assets/             empty for now - real art goes here
@@ -234,6 +258,12 @@ assets/             empty for now - real art goes here
   is a subtraction (`src/systems/combat.js`). Arcade/Matter would be overkill.
 - **No gameplay numbers in code.** If a number decides how the game *plays*, it
   belongs in `data/`. Systems and entities read it; they never hardcode it.
+- **A special power lives in `src/systems/`, never in `unit.js`.** There are two
+  so far — `necro.js` and `sting.js` — and both are run by the real game *and*
+  by `tools/balance-sim.js`, which keeps its own copy of the unit brain. A power
+  written inside `unit.js` would be invisible to the sim, and the sim would then
+  cheerfully report balance for a game nobody plays. Every hit in the game goes
+  through one function, `Combat.strike()`, for the same reason.
 - **Small, readable functions**, so a kid can follow along.
 
 ### Two details worth knowing

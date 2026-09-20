@@ -376,5 +376,201 @@ window.UNITS = {
       attack: { start: 6,  end: 8,  frameRate: 11, repeat: 0  },
       death:  { start: 9,  end: 12, frameRate: 8,  repeat: 0  }
     }
+  },
+
+  /* =====================================================================
+     THE LATER CAVES' BUGS  (homework B26, 2026-09-20)
+     =====================================================================
+     Lewis was asked to name a bug for the desert, one for Dream Land and one
+     for the Abyss of Darkness, and to say whether each was small and fast or
+     big and slow. He gave all three, and one of them turned out to need real
+     code rather than just numbers.
+
+     Each one only appears in the caves he put it in - see data/levels.js.
+     All three are PLACEHOLDER art for now; the colours below are the only
+     thing telling them apart until they get drawn.
+     ===================================================================== */
+
+  /* ---------------------------------------------------------------------
+     THE DESERT SCORPION - Sahara-hara Desert and Forgotten Oasis
+     ---------------------------------------------------------------------
+     "desert has scorpions (fast, every attack has a chance to kill you or
+      kill itself)"   - Lewis
+
+     This is the SECOND thing in the game with a power instead of just numbers,
+     and the first one that gambles. Its rules are in src/systems/sting.js.
+
+     It is a different creature from the plain Scorpion above, which is slow and
+     armoured and lives in every cave. This one is the opposite: quick, not very
+     tough, and dangerous in a way that has nothing to do with its damage.
+
+     WHY ITS ORDINARY NUMBERS ARE MODEST. An instant kill ignores health
+     completely, so the sting is already the scary part. If it also hit hard and
+     had a lot of health it would be three threats in one bug. 12 dps is less
+     than a Spider's 13 - you are not meant to fear its bite, you are meant to
+     fear its luck.
+
+     WHAT IT DOES TO YOUR ARMY, which is the interesting bit: an instant kill
+     does not care whether it lands on a 40hp Scout or a 220hp Brute Bat. So the
+     desert is the one place in Palopa where putting all your energy into one
+     expensive bat is a bad idea, and a crowd of cheap ones is the safer answer.
+     A cave that changes which army is correct is a cave with an identity.
+
+     FOR LEWIS: this one is worth opening tools/balance-sim.js for. Because the
+     sting is a coin flip, the sim plays these caves on TWENTY different runs
+     and tells you how many it won - one lucky battle proves nothing.
+     --------------------------------------------------------------------- */
+  desertScorpion: {
+    name: 'Desert Scorpion',
+    enemy: true,
+    cost: 0,
+    cooldown: 0,
+    hp: 120,               // fragile next to the plain Scorpion's 190
+    attack: 12,
+    attackInterval: 1.0,   // 12 dps - deliberately less than a Spider's 13
+    range: 42,
+    speed: 78,             // <-- FAST, as Lewis asked. A Mosquito does 62.
+    color: '#e8b44a',      // placeholder: bright desert sand
+    sprite: 'desertScorpion',
+    scale: 1,
+
+    // ------------------- THE GAMBLING STING -------------------
+    // Rolled fresh on EVERY attack. Both can happen on the same swing: it
+    // stings your bat dead and bursts doing it.
+    // MEASURED, and the interesting lesson of this whole bug. The first draft
+    // was killChance 0.08 with 90 health, and the sting was INVISIBLE: the sim
+    // showed each scorpion landing exactly 1.0 attacks before a Scout swarm
+    // killed it, so 8% of one swing meant one stung bat every ten battles. A
+    // signature power nobody ever sees is not a power.
+    //
+    // The obvious fix - a much bigger killChance - was measured and REJECTED. At
+    // 30% the desert caves started losing outright (4-8 losses in 80 runs),
+    // because an instant kill has no counterplay: a run of bad luck deletes the
+    // front line and there is nothing a player could have done differently.
+    //
+    // What worked was MORE ROLLS, NOT LUCKIER ONES: 20%, a bit more health so it
+    // survives to swing more than once, and more scorpions in the two desert
+    // caves. Same number of bats lost on average, far thinner unlucky tail -
+    // which is what "fair" means for something random. The two desert caves now
+    // win on every one of 160 rolls of the dice.
+    sting: {
+      // <-- TRY ME: 0.5 and the desert becomes a horror film
+      killChance: 0.20,      // chance this hit kills the bat outright
+
+      // Bigger than killChance on purpose, so the sting usually costs the
+      // scorpion its own life. Each one expects to take about two-thirds of a
+      // bat with it (0.20 / 0.30) before it bursts.
+      backfireChance: 0.30   // chance it kills ITSELF instead
+      // Three rules are in src/systems/sting.js rather than here, because they
+      // stop the game being unfair rather than tune it:
+      //   * a sting can NEVER instantly kill a base - one roll must not decide
+      //     a whole cave
+      //   * it cannot finish off something already dying
+      //   * the backfire is rolled on every attack, even against a building
+    },
+
+    anims: {
+      frameWidth: 48,
+      frameHeight: 48,
+      idle:   { start: 0,  end: 1,  frameRate: 5,  repeat: -1 },
+      walk:   { start: 2,  end: 5,  frameRate: 12, repeat: -1 },
+      attack: { start: 6,  end: 8,  frameRate: 13, repeat: 0  },
+      death:  { start: 9,  end: 12, frameRate: 9,  repeat: 0  }
+    }
+  },
+
+  /* ---------------------------------------------------------------------
+     THE EVIL BUTTERFLY - Dream Land
+     ---------------------------------------------------------------------
+     "Dream Land has evil butterfly (don't really move, they hover like a wall
+      to protect the tower)"   - Lewis
+
+     A bug that does not walk, which nothing else in the game does. The whole
+     thing is ONE NUMBER: speed 0.
+
+     That needed no new code at all, because a unit that never moves simply
+     stays where it spawned - and enemies spawn just in front of the enemy
+     tower. So a wave of butterflies appears as a living wall across the
+     fortress door, exactly as Lewis described it, and your bats have to eat
+     through them to reach the building.
+
+     IT IS A SHIELD, NOT A KILLER. 6.9 dps is the feeblest attack of any bug in
+     Palopa. What it costs you is TIME, and time is what the late waves are
+     built to punish - so a butterfly wall hurts by letting the bugs behind you
+     catch up.
+
+     Dream Land's fortress was made smaller when these arrived (see
+     data/levels.js). The butterflies are part of the tower's defence now, so
+     the tower itself did not need to be as thick.
+     --------------------------------------------------------------------- */
+  evilButterfly: {
+    name: 'Evil Butterfly',
+    enemy: true,
+    cost: 0,
+    cooldown: 0,
+    hp: 190,               // a wall's worth of health
+    attack: 9,
+    attackInterval: 1.3,   // 6.9 dps - the weakest attack in the game
+    range: 40,
+    speed: 0,              // <-- THE WHOLE POINT. It hovers and never advances.
+    color: '#d98ae0',      // placeholder: dream-ish magenta
+    sprite: 'evilButterfly',
+    scale: 1.1,            // wide, so the wall reads as a wall
+    anims: {
+      frameWidth: 64,
+      frameHeight: 64,
+      idle:   { start: 0,  end: 1,  frameRate: 3,  repeat: -1 },
+      walk:   { start: 2,  end: 5,  frameRate: 6,  repeat: -1 },
+      attack: { start: 6,  end: 8,  frameRate: 8,  repeat: 0  },
+      death:  { start: 9,  end: 12, frameRate: 6,  repeat: 0  }
+    }
+  },
+
+  /* ---------------------------------------------------------------------
+     THE LIGHTNING BUG - Abyss of Darkness
+     ---------------------------------------------------------------------
+     "abyss of darkness has lightning bugs (slow and weak)"   - Lewis
+
+     Slow and weak, and nothing else - no power, because Lewis did not ask for
+     one. A lightning bug is a firefly, so in the cave with no light these are
+     the only things you can see down there, which is a lovely idea and costs
+     nothing to honour: they are the brightest colour of any bug in the game.
+
+     Being slow AND weak makes them the gentlest bug in Palopa, so the Abyss
+     gets MORE of them rather than tougher ones.
+
+     MEASURED, because "they add atmosphere" is not a design: the twenty of them
+     make the Abyss take 71s instead of 57s, a quarter longer. They do it purely
+     by being in the way - at 45 health they die almost the moment they meet your
+     front line, and never more than about three are alive at once, so what they
+     really are is 900 extra health delivered in a steady trickle rather than a
+     pile-up you can see.
+
+     That is enough, and only just: making the swarms four bigger each lost ALL
+     80 test runs. Slow and weak is a fine brief, but twenty small things still
+     add up to a wall, and this cave was already the one whose first draft was
+     unwinnable at every reaction time.
+     --------------------------------------------------------------------- */
+  lightningBug: {
+    name: 'Lightning Bug',
+    enemy: true,
+    cost: 0,
+    cooldown: 0,
+    hp: 45,                // <-- WEAK. Dies to four Scout pokes.
+    attack: 5,
+    attackInterval: 1.1,   // 4.5 dps
+    range: 36,
+    speed: 26,             // <-- SLOW. The same crawl as the boss.
+    color: '#d8f05a',      // placeholder: firefly glow, the brightest in Palopa
+    sprite: 'lightningBug',
+    scale: 0.8,            // little
+    anims: {
+      frameWidth: 48,
+      frameHeight: 48,
+      idle:   { start: 0,  end: 1,  frameRate: 6,  repeat: -1 },
+      walk:   { start: 2,  end: 5,  frameRate: 7,  repeat: -1 },
+      attack: { start: 6,  end: 8,  frameRate: 9,  repeat: 0  },
+      death:  { start: 9,  end: 12, frameRate: 8,  repeat: 0  }
+    }
   }
 };

@@ -234,6 +234,66 @@ window.CONFIG = {
   },
 
   /* ---------------------------------------------------------------------
+     ITEM BUTTONS  (Lewis's homework answer B27, 2026-09-20)
+     ---------------------------------------------------------------------
+     Potions and fruit get their own small buttons to the RIGHT of the bats,
+     in the gap after the fourth deploy button (24 + 4x168 + 3x18 = 750, so
+     there are 210 pixels of room and these use 186 of them).
+
+     A button is only built for an item you are actually CARRYING - see
+     buildItemButtons() in src/scenes/BattleScene.js. The ten caves start with
+     nothing, so they show no item buttons at all, which is the honest thing to
+     draw: the casino that hands them out does not exist yet, and a row of empty
+     buttons in every cave would promise something the game cannot give.
+     --------------------------------------------------------------------- */
+  itemButtons: {
+    startX: 762,
+    y: 456,              // the same line as the deploy buttons
+    width: 88,
+    height: 76,
+    gap: 10,
+
+    readyColor: 0x2f4a42,       // you have some and can use one
+    emptyColor: 0x2a2440,       // none left, or nothing to heal
+    iconSize: 22,
+
+    // How big the "x3" count is drawn.
+    countFontSize: '17px'
+  },
+
+  /* ---------------------------------------------------------------------
+     FLOATING MESSAGES
+     ---------------------------------------------------------------------
+     The little words that jump up off the lane: a Desert Scorpion's sting
+     landing, a scorpion bursting, a potion going off.
+
+     They exist because a random power is baffling without them. The sting
+     already decided a bat's fate on a coin flip; if the bat simply vanished,
+     the fairest mechanic in the world would read as a bug.
+
+     POOLED, like the grave markers: a fixed set is made once and reused, so a
+     long battle never piles up objects.
+     --------------------------------------------------------------------- */
+  floatingText: {
+    maxDrawn: 16,
+    seconds: 1.1,        // how long one message lives
+    rise: 40,            // pixels it drifts upwards over its life
+    fontSize: '15px',
+    yOffset: -54,        // starting height above the lane
+
+    // Two messages in the same spot used to print on top of each other and
+    // come out as gibberish - a potion and a fruit tapped together read as
+    // "BtOWGES/WHEAKLEED!". A second message near the same place is lifted
+    // this far so both can be read.
+    stackGap: 19,
+    stackWithin: 120,    // how close counts as "the same place", in pixels
+
+    stungColor: '#ff6b6b',    // your bat was stung dead
+    burstColor: '#ffd24a',    // the scorpion killed itself
+    itemColor: '#66e0b8'      // a potion or a fruit was used
+  },
+
+  /* ---------------------------------------------------------------------
      GRAVE MARKERS  (Lewis's homework answer B16 = D, 2026-09-19)
      ---------------------------------------------------------------------
      A little headstone is left where each of your bats falls, and it vanishes

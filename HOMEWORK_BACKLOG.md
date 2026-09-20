@@ -18,20 +18,22 @@ Every creative-director decision for the whole game, in one place, sorted by
 - Numbers (B1, B2…) never change, even when questions move between files. They
   are how `DESIGN.md` §13 points at things.
 
-> **Rounds 1 and 2 are DONE.** Lewis has answered **19 of the 27** questions,
+> **Rounds 1, 2 and 3 are DONE.** Lewis has answered **21 of the 30** questions,
 > and everything answerable has been built: ten caves, four bats, a boss, grave
-> markers. Logged as decisions 4–22 in `DECISIONS.md`.
+> markers, three more bugs, and potions and fruit. Logged as decisions 4–25 in
+> `DECISIONS.md`.
 >
-> **🟡 On the plate now (Round 3) — only four, and two are drawing:**
+> **🟡 On the plate now (Round 4) — three, and one is drawing:**
 >
 > | | # | Question | Why it's here |
 > |---|---|---|---|
-> | 🐛 | **B26** | Name the new bugs | B11 asked for new bugs; naming creatures is his job. All ten caves share three bugs |
-> | 🧪 | **B27** | What do blood, potions and fruits DO? | **Blocks the casino** — three names need three jobs |
-> | 🎨 | **B4** | Redraw the four bats | The game still shows the superseded goggled/caped pair |
-> | 🎨 | **B3/B4** | Draw the bugs and the Bee | They are all still coloured blobs |
+> | 🦂 | **B28** | Is "Desert Scorpion" the right name? | His B26 bug and the old Scorpion now have near-identical names for very different animals |
+> | 🎰 | **B29** | How do you *get* potions and fruit? | **The last thing blocking the casino.** They work; only earning them is missing |
+> | 🎨 | **B30** | Draw the three new bugs | All three are still coloured blobs |
+> | 🎨 | **B4** | Draw the Archer Bat | 3 of 4 bats are drawn; the Archer is the last |
+> | 🎨 | **B3/B4** | Draw the old bugs and the Bee | Still coloured blobs |
 >
-> **The bottleneck is now art, not design.** Nothing in M3 waits on Dad.
+> **The bottleneck is still art, not design.** Nothing in M3 waits on Dad.
 >
 > Written out in full in `HOMEWORK.md` — go there to answer them.
 
@@ -315,30 +317,79 @@ Right now it only raises **your** bats. Dead mosquitos stay dead.
 
 **If yes — what is it, and what's it called?** _(open)_ → `DESIGN.md` §4
 
-### 🔲 B26. INVENT: Name the new bugs of the later caves *(needed by M3 — ON THE PLATE)*
+### ✅ B26. INVENT: Name the new bugs of the later caves *(ANSWERED 2026-09-20 — all three built)*
 
-B11 asked for new bugs to be introduced as the caves get harder, and that is the
-right instinct - but all ten caves currently share the Mosquito, Spider and
-Scorpion, because naming creatures is Lewis's job and not Dad's.
+**Lewis's answer:** the **Desert Scorpion** (Sahara-hara + Forgotten Oasis) —
+*"fast, every attack has a chance to kill you or kill itself"*; the **Evil
+Butterfly** (Dream Land) — *"don't really move, they hover like a wall to
+protect the tower"*; the **Lightning Bug** (Abyss of Darkness) — *"slow and
+weak"*.
 
-Three more would spread nicely: one for the desert caves (Sahara-hara, Forgotten
-Oasis), one for Dream Land (a bug in a dream could be anything), one for the
-Abyss of Darkness. For each: **what it is called**, and **small and fast or big
-and slow?** Dad works out the numbers.
+He was asked for a name and a size and gave a **power** as well, so the Desert
+Scorpion is the second special ability in the game after the Necrobatcer's. All
+three are in their caves. → `DESIGN.md` §4, decision 24.
+
+Raised **B28** (the name clashes with the existing Scorpion) and **B30** (they
+are all still placeholder blobs).
+
+### ✅ B27. INVENT: What do blood, potions and fruits DO? *(ANSWERED 2026-09-20 — both built)*
+
+**Lewis's answer:** *"potions and fruit are different, they are not just
+currency. you can use potions during a battle to make the opponent weaker. fruit
+can heal your tower, but only slightly. blood is just currency."*
+
+He rejected the framing and was right to: two of the three goods became **battle
+actions** rather than things you trade, which is the first thing in this game a
+player can tap other than "send another bat". Both are built and playable on the
+Graveyard level. → `DESIGN.md` §8, decision 25.
+
+Raised **B29** — the goods work, but there is still no way to *earn* them, which
+is the last thing blocking the casino.
+
+### 🔲 B28. DECIDE: Is "Desert Scorpion" the right name? *(quick — ON THE PLATE)*
+
+Lewis said *"desert has scorpions"*, but Palopa already had a **Scorpion** — the
+slow armoured one that has been in every cave since the start. His is a
+different animal: fast (78 against 38), weaker (120 health against 190), and it
+gambles on every hit.
+
+Two bugs are now in the game under names that sound like the same creature. The
+placeholder is **Desert Scorpion**, which works but is plain, and this is a
+naming question, which makes it his.
+
+Options offered: leave it; a name about the sting (*Deathstalker*, *Last
+Sting*); a name about the gamble (*Coin-flip Scorpion*); or something that is
+not a scorpion at all.
 
 **Lewis's answer:** _(open)_ → `DESIGN.md` §4
 
-### 🔲 B27. INVENT: What do blood, potions and fruits DO? *(needed by M4 — ON THE PLATE, BLOCKING)*
+### 🔲 B29. DECIDE: How do you GET potions and fruit? *(needed by M4 — ON THE PLATE, BLOCKING)*
 
-B22 invented a two-step casino: suns buy **blood, potions and fruits**, and those
-are then traded or gambled for upgrades. Three named goods need three different
-jobs, or they are one thing with three labels.
+B27 is built: potions weaken the bugs for ten seconds, fruit heals the tower
+slightly. What does not exist is any way to **earn** them, so they currently
+live only on the Graveyard practice level, which hands out three of each.
 
-Some shapes that would work: one raises a bat's **damage** and another its
-**health**; one is the **gambling** good (drink it and find out); one is **rare**
-and only drops from a boss.
+Four things Dad will not guess, because they are the economy and the economy is
+Lewis's:
+
+1. **How many per cave won** — a fixed few, or bought at the casino with suns?
+2. **Do they carry between battles**, or does each cave start fresh?
+3. **Are they what you bet in the gamble?** B22's whole charm was that a bad
+   gamble costs you *stuff* rather than progress.
+4. **Is one of them rare** — fruit only from a boss, say?
 
 **Lewis's answer:** _(open)_ → `DESIGN.md` §8
+
+### 🔲 B30. DRAW: The three new bugs *(needed by M3 — ON THE PLATE)*
+
+All three of B26's bugs are still shapes the game paints itself, told apart only
+by colour: desert sand, dream magenta, firefly yellow-green.
+
+They are bugs rather than bats, so the "big circle, wings, ears, no legs" brief
+does not apply — they can look like whatever he thinks they look like. 64×64,
+facing east, black and white so the colour ladder can tint them.
+
+**Lewis's answer:** _(open)_ → `DESIGN.md` §9
 
 ### 🔲 B14. PICK ONE: A second lane? *(needed by M5)*
 
@@ -392,6 +443,13 @@ gets dull once you know you've won.
 | B16 | **D** — **grave markers** *(also settles B25)* | ✅ built |
 | B22 | Casino: suns → **blood/potions/fruits** → trade or gamble | 🔲 needs B27 |
 | B23 | **B** — four colours | ✅ in the data |
+
+**Round 3, 2026-09-20 — both, and both got built the same day.**
+
+| # | Answer | Built? |
+|---|---|---|
+| B26 | **Desert Scorpion** (fast, gambling sting), **Evil Butterfly** (never moves), **Lightning Bug** (slow and weak) | ✅ all three, in their caves |
+| B27 | Potion **weakens the bugs mid-battle**; fruit **heals the tower slightly**; blood is **just currency** | ✅ built, playable on the Graveyard |
 
 **Earlier, 2026-09-18:** B4 (the first answer, now superseded), B21 (Scout walk
 cycle). Full reasoning for every one is in `DECISIONS.md`.

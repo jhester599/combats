@@ -157,7 +157,7 @@ window.Unit.prototype.update = function (dt, world) {
   var target = window.Combat.findTarget(this, world);
 
   if (target) {
-    this.fight(dt, target);
+    this.fight(dt, target, world);
   } else {
     this.walk(dt, world);
   }
@@ -176,18 +176,30 @@ window.Unit.prototype.walk = function (dt, world) {
 };
 
 /* Stand still and hit the target on our own attack interval. */
-window.Unit.prototype.fight = function (dt, target) {
+window.Unit.prototype.fight = function (dt, target, world) {
   this.attackTimer -= dt;
 
   if (this.attackTimer <= 0) {
-    window.Combat.applyDamage(target, this.stats.attack);
-
     this.attackTimer = this.stats.attackInterval;
 
-    // 'true' here means "restart it", so every swing plays the full animation.
+    // The swing animation is started BEFORE the hit is worked out, and that
+    // order matters. A Desert Scorpion's sting can kill the scorpion itself
+    // (src/systems/sting.js), and startDying() sets the death animation - so
+    // playing the attack pose afterwards would wipe it out and leave a dead
+    // bug lunging for ever.
+    //
+    // 'true' means "restart it", so every swing plays the full animation.
     this.playAnim('attack', true);
-  } else if (this.currentAnim !== 'attack') {
-    // Between swings, wait in the idle pose.
+
+    // ONE place works out damage, for the game and the balance sim alike.
+    var hit = window.Combat.strike(this, target, world);
+
+    if (hit.instantKill || hit.backfire) {
+      this.scene.reportSting(this, target, hit);
+    }
+  } else if (this.currentAnim !== 'attack' && !this.isDying) {
+    // Between swings, wait in the idle pose - unless this bat is on its way
+    // out, in which case leave the death animation alone.
     this.playAnim('idle');
   }
 };
@@ -282,9 +294,13 @@ window.Unit.prototype.deactivate = function () {
   this.currentAnim = null;
 };
 
-/* The FIRST special power is the Necrobatcer's summon, and it is NOT written
-   in this file - it lives in src/systems/necro.js, because the headless
-   balance sim has to obey exactly the same rules as the browser does.
+/* THE SPECIAL POWERS ARE NOT WRITTEN IN THIS FILE. There are two so far:
+
+     src/systems/necro.js  the Necrobatcer raising your fallen bats  (B5)
+     src/systems/sting.js  the Desert Scorpion's gamble on every hit (B26)
+
+   Both live in src/systems/ because the headless balance sim has its own copy
+   of this brain and has to obey exactly the same rules as the browser does.
 
    Copy that pattern for the next power. TODO for Lewis, ideas:
      - a bat that EXPLODES when it dies and hurts everything nearby

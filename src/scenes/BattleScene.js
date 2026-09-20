@@ -75,6 +75,15 @@ window.BattleScene.prototype.create = function () {
     // src/systems/necro.js fills this and empties it.
     graves: [],
 
+    // Potions and fruit for this battle (homework B27). The stock comes from
+    // the level for now; it will come from the casino and your saved bag once
+    // those exist. src/systems/items.js owns everything about them.
+    items: window.Items.createState(this.level),
+
+    // src/systems/items.js refuses to spend an item after the battle ends, so
+    // it needs to be able to see that from the world.
+    battleOver: false,
+
     // How anything in the world creates a new unit. The Necrobatcer needs it
     // to bring a bat back, and handing it over like this keeps the summoning
     // rules free of any knowledge of Phaser or of this scene.
@@ -93,8 +102,10 @@ window.BattleScene.prototype.create = function () {
   }
 
   this.buildGraveMarkers();
+  this.buildFloatingTexts();
   this.buildEnergyBar();
   this.buildDeployButtons();
+  this.buildItemButtons();
   this.buildResultPanel();
 
   this.add.text(window.CONFIG.screen.width / 2, 22, this.level.name, {
@@ -159,8 +170,10 @@ window.BattleScene.prototype.update = function (time, delta) {
     this.accumulator -= step;
   }
 
-  // Drawing happens once per frame, after the brain has caught up.
-  this.syncView();
+  // Drawing happens once per frame, after the brain has caught up. The frame
+  // length goes with it because the floating messages fade in real time rather
+  // than in simulation steps - they are decoration, not part of the game.
+  this.syncView(frameSeconds);
 };
 
 /* -------------------------------------------------------------------------
@@ -173,6 +186,11 @@ window.BattleScene.prototype.stepSimulation = function (dt) {
 
   this.economy.update(dt);
   this.tickCooldowns(dt);
+
+  // Counts the potion down. Worth noting it is here and not inside the unit
+  // loop: a potion is one thing happening to the whole battle, not something
+  // each bug carries.
+  window.Items.update(dt, this.world);
 
   // Enemy waves.
   var self = this;
@@ -444,7 +462,7 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
 /* =========================================================================
    DRAWING - copy the simulation numbers onto the screen
    ========================================================================= */
-window.BattleScene.prototype.syncView = function () {
+window.BattleScene.prototype.syncView = function (frameSeconds) {
   var units = this.unitPool.active;
   var i;
 
@@ -457,7 +475,9 @@ window.BattleScene.prototype.syncView = function () {
 
   this.syncEnergyBar();
   this.syncButtons();
+  this.syncItemButtons();
   this.syncGraves();
+  this.syncFloatingTexts(frameSeconds || 0);
 };
 
 /* -------------------------------------------------------------------------
@@ -562,6 +582,295 @@ window.BattleScene.prototype.syncButtons = function () {
     button.costText.setAlpha(usable ? 1 : b.disabledTextAlpha);
     button.nameText.setAlpha(usable ? 1 : b.disabledTextAlpha);
     button.portrait.setAlpha(usable ? 1 : b.disabledTextAlpha);
+  }
+};
+
+/* =========================================================================
+   ITEM BUTTONS  (homework B27)
+   =========================================================================
+   Potions and fruit. A button is built only for an item you are actually
+   CARRYING at the start of the battle, so the ten caves - which start with
+   nothing until the casino exists - show no item buttons at all.
+
+   That is deliberate. A row of permanently empty buttons in every cave would
+   advertise something the game cannot yet give, and the Graveyard practice
+   level is where these are meant to be played with today.
+   ========================================================================= */
+window.BattleScene.prototype.buildItemButtons = function () {
+  var self = this;
+
+  this.itemButtons = [];
+
+  window.Items.battleItems().forEach(function (key) {
+    // Nothing in the bag at the start means no button all battle.
+    if (window.Items.stockOf(key, self.world) <= 0) {
+      return;
+    }
+
+    self.itemButtons.push(self.makeItemButton(key, self.itemButtons.length));
+  });
+
+  this.buildWeakenLabel();
+};
+
+window.BattleScene.prototype.makeItemButton = function (itemKey, index) {
+  var cfg = window.CONFIG;
+  var b = cfg.itemButtons;
+  var def = window.ITEMS[itemKey];
+
+  var x = b.startX + (index * (b.width + b.gap));
+  var y = b.y;
+
+  var box = this.add.rectangle(x, y, b.width, b.height, b.readyColor).setOrigin(0, 0);
+  box.setStrokeStyle(2, cfg.buttons.borderColor, cfg.buttons.borderAlpha);
+  box.setInteractive({ useHandCursor: true });
+
+  var icon = this.makeItemIcon(itemKey, x + (b.width / 2), y + 26);
+
+  var nameText = this.add.text(x + (b.width / 2), y + 44, def.name, {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: '13px',
+    color: cfg.text.color
+  }).setOrigin(0.5, 0);
+
+  var countText = this.add.text(x + (b.width / 2), y + 58, '', {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: b.countFontSize,
+    color: '#ffd24a'
+  }).setOrigin(0.5, 0);
+
+  var self = this;
+
+  box.on('pointerdown', function () {
+    self.useItem(itemKey);
+  });
+
+  return {
+    itemKey: itemKey,
+    box: box,
+    icon: icon,
+    nameText: nameText,
+    countText: countText
+  };
+};
+
+/* -------------------------------------------------------------------------
+   A little drawing for each item, made of plain shapes - the same
+   "the game paints its own art" approach as the placeholder bats and the
+   grave markers. Returns every piece, so they can be faded together.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.makeItemIcon = function (itemKey, centreX, centreY) {
+  var size = window.CONFIG.itemButtons.iconSize;
+  var color = window.ITEMS[itemKey].color;
+  var parts = [];
+
+  if (itemKey === 'potion') {
+    // A bottle: a round-ish body with a narrow neck and a cork.
+    parts.push(this.add.rectangle(centreX, centreY + 3, size * 0.8, size * 0.66, color));
+    parts.push(this.add.rectangle(centreX, centreY - 8, size * 0.32, size * 0.34, color));
+    parts.push(this.add.rectangle(centreX, centreY - 13, size * 0.44, size * 0.16, 0xd9c48a));
+
+  } else if (itemKey === 'fruit') {
+    // A berry with a stalk and a leaf.
+    parts.push(this.add.circle(centreX, centreY + 3, size * 0.4, color));
+    parts.push(this.add.rectangle(centreX, centreY - 10, size * 0.12, size * 0.3, 0x6b4a2a));
+    parts.push(this.add.rectangle(centreX + 6, centreY - 11, size * 0.34, size * 0.14, 0x62c46a));
+
+  } else {
+    parts.push(this.add.circle(centreX, centreY, size * 0.4, color));
+  }
+
+  return parts;
+};
+
+/* -------------------------------------------------------------------------
+   The player tapped an item. src/systems/items.js decides whether it is
+   allowed and what it does; this only reports it on screen.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.useItem = function (itemKey) {
+  var outcome = window.Items.use(itemKey, this.world);
+
+  if (!outcome) {
+    return false;     // none left, nothing to heal, or the battle is over
+  }
+
+  var f = window.CONFIG.floatingText;
+
+  // Over your own tower, because that is what both items are about: one heals
+  // it, the other takes the pressure off it.
+  this.floatText(this.playerBase.x, outcome.shout, f.itemColor);
+
+  return true;
+};
+
+window.BattleScene.prototype.syncItemButtons = function () {
+  if (!this.itemButtons) {
+    return;
+  }
+
+  var b = window.CONFIG.itemButtons;
+  var self = this;
+
+  this.itemButtons.forEach(function (button) {
+    var count = window.Items.stockOf(button.itemKey, self.world);
+    var usable = window.Items.canUse(button.itemKey, self.world);
+
+    button.countText.setText('x' + count);
+    button.box.fillColor = usable ? b.readyColor : b.emptyColor;
+
+    var alpha = usable ? 1 : window.CONFIG.buttons.disabledTextAlpha;
+
+    button.nameText.setAlpha(alpha);
+    button.countText.setAlpha(alpha);
+    button.icon.forEach(function (part) { part.setAlpha(alpha); });
+  });
+
+  this.syncWeakenLabel();
+};
+
+/* -------------------------------------------------------------------------
+   While a potion is running, say so and count it down. Without this the only
+   sign would be the bugs quietly doing less damage, which is invisible.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.buildWeakenLabel = function () {
+  var cfg = window.CONFIG;
+  var bar = cfg.energyBar;
+
+  this.weakenLabel = this.add.text(bar.x, bar.y + bar.height + 10, '', {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: '15px',
+    color: cfg.floatingText.itemColor
+  }).setOrigin(0, 0);
+};
+
+window.BattleScene.prototype.syncWeakenLabel = function () {
+  if (!this.weakenLabel) {
+    return;
+  }
+
+  if (!window.Items.isWeakened(this.world)) {
+    this.weakenLabel.setText('');
+    return;
+  }
+
+  var left = Math.ceil(window.Items.weakenRemaining(this.world));
+  var percent = Math.round((1 - window.ITEMS.potion.damageFactor) * 100);
+
+  this.weakenLabel.setText('Bugs hitting ' + percent + '% softer - ' + left + 's');
+};
+
+/* =========================================================================
+   FLOATING MESSAGES - so a coin flip does not look like a glitch
+   =========================================================================
+   The Desert Scorpion (homework B26) can kill a bat outright on any hit, and
+   can die doing it. Without a word on the screen, a Brute Bat you just paid 90
+   energy for would simply disappear at full health, which reads as the game
+   being broken rather than as the gamble Lewis designed.
+
+   POOLED like the grave markers: a fixed set, shown and hidden, never piling
+   up. They fade in REAL time rather than simulation steps, because they are
+   decoration - nothing about the fight depends on them.
+   ========================================================================= */
+window.BattleScene.prototype.buildFloatingTexts = function () {
+  var cfg = window.CONFIG;
+  var f = cfg.floatingText;
+  var i;
+
+  this.floaters = [];
+
+  for (i = 0; i < f.maxDrawn; i++) {
+    var text = this.add.text(0, 0, '', {
+      fontFamily: cfg.text.fontFamily,
+      fontSize: f.fontSize,
+      color: '#ffffff'
+    }).setOrigin(0.5, 1);
+
+    text.setVisible(false);
+    text.setDepth(1500);      // above the bats, below the result panel (2000)
+
+    this.floaters.push({ text: text, life: 0, x: 0, row: 0 });
+  }
+};
+
+/* Show a message above the lane at this x. Silently does nothing if every
+   floater is already busy - a dropped message is better than a stutter. */
+window.BattleScene.prototype.floatText = function (x, message, color) {
+  var f = window.CONFIG.floatingText;
+  var i;
+
+  // How many messages are already up near this spot? Each one lifts the next
+  // a line higher, so two things happening at once stay readable instead of
+  // printing over each other.
+  var row = 0;
+
+  for (i = 0; i < this.floaters.length; i++) {
+    if (this.floaters[i].life > 0 &&
+        Math.abs(this.floaters[i].x - x) < f.stackWithin) {
+      row++;
+    }
+  }
+
+  for (i = 0; i < this.floaters.length; i++) {
+    if (this.floaters[i].life <= 0) {
+      this.floaters[i].life = f.seconds;
+      this.floaters[i].x = x;
+      this.floaters[i].row = row;
+      this.floaters[i].text.setText(message);
+      this.floaters[i].text.setColor(color);
+      this.floaters[i].text.setVisible(true);
+      return;
+    }
+  }
+};
+
+window.BattleScene.prototype.syncFloatingTexts = function (frameSeconds) {
+  if (!this.floaters) {
+    return;
+  }
+
+  var cfg = window.CONFIG;
+  var f = cfg.floatingText;
+  var i;
+
+  for (i = 0; i < this.floaters.length; i++) {
+    var floater = this.floaters[i];
+
+    if (floater.life <= 0) {
+      continue;
+    }
+
+    floater.life -= frameSeconds;
+
+    if (floater.life <= 0) {
+      floater.text.setVisible(false);
+      continue;
+    }
+
+    // 0 when it has just appeared, 1 when it is about to go.
+    var gone = 1 - (floater.life / f.seconds);
+
+    floater.text.setPosition(
+      floater.x,
+      cfg.lane.y + f.yOffset - (f.rise * gone) - (floater.row * f.stackGap)
+    );
+    floater.text.setAlpha(1 - (gone * gone));   // hangs, then fades quickly
+  }
+};
+
+/* -------------------------------------------------------------------------
+   A sting happened. Called from src/entities/unit.js whenever a gambling bug's
+   attack came up heads or tails.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.reportSting = function (unit, target, hit) {
+  var f = window.CONFIG.floatingText;
+
+  if (hit.instantKill) {
+    // Named, so it is obvious WHICH of your bats you just lost.
+    this.floatText(target.x, target.stats.name + ' STUNG!', f.stungColor);
+  }
+
+  if (hit.backfire) {
+    this.floatText(unit.x, 'it stung itself!', f.burstColor);
   }
 };
 
@@ -704,6 +1013,7 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
 
   this.battleOver = true;
   this.playerWon = playerWon;
+  this.world.battleOver = true;    // no spending items on a finished battle
 
   // Remember it, which is what unlocks the next cave (homework B12/B13).
   // Practice levels are not part of Palopa, so they unlock nothing.

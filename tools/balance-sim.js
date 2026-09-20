@@ -25,6 +25,16 @@
    the level at several of them. A level is only really balanced if it holds up
    across the whole band, not just at a robot's zero.
 
+   ------------------- AND SOME CAVES ARE A COIN FLIP -------------------
+   The Desert Scorpion (homework B26) gambles on every attack, so a cave that
+   contains one does not have a single answer any more - it has a spread. One
+   lucky run proves nothing at all.
+
+   So the dice are SEEDED (same seed, same battle, every time), and a cave with
+   any gambling bug in it gets played on twenty different seeds. What matters
+   there is not "did it win" but "did it win EVERY time": a cave that beats a
+   nine-year-old one run in five is not hard, it is unfair.
+
    It is a TESTING TOOL ONLY. The game itself never loads this file, and the
    game runs perfectly without it.
    ========================================================================= */
@@ -44,11 +54,14 @@ global.window = global.window || {};
 require(path.join(root, 'data/config.js'));
 require(path.join(root, 'data/units.js'));
 require(path.join(root, 'data/levels.js'));
+require(path.join(root, 'data/items.js'));
 require(path.join(root, 'src/systems/economy.js'));
 require(path.join(root, 'src/systems/pool.js'));
 require(path.join(root, 'src/systems/combat.js'));
 require(path.join(root, 'src/systems/spawner.js'));
 require(path.join(root, 'src/systems/necro.js'));
+require(path.join(root, 'src/systems/sting.js'));
+require(path.join(root, 'src/systems/items.js'));
 
 var W = global.window;
 
@@ -98,8 +111,15 @@ SimUnit.prototype.update = function (dt, world) {
   if (target) {
     this.attackTimer -= dt;
     if (this.attackTimer <= 0) {
-      W.Combat.applyDamage(target, this.stats.attack);
       this.attackTimer = this.stats.attackInterval;
+
+      // Exactly the same one line the real game runs (src/entities/unit.js).
+      // Potions and stings are inside it, so the sim cannot disagree with the
+      // browser about them - which is the whole point of DECISIONS.md D11.
+      var hit = W.Combat.strike(this, target, world);
+
+      if (hit.instantKill) { world.stings.kills++; }
+      if (hit.backfire) { world.stings.backfires++; }
     }
   } else if (!W.Combat.isBlockedByFriend(this, world)) {
     this.x += this.stats.speed * this.direction * dt;
@@ -154,12 +174,20 @@ SimBase.prototype.takeDamage = function (amount) {
                  stream of 40hp Scouts, when what loses is the SPAMMING, not
                  the attention. Caves 2-10 were nearly tuned against that
                  mistake - see DECISIONS.md D22.
+     seed        the dice for the Desert Scorpion's sting (src/systems/sting.js).
+                 DEFAULTS TO 1, not to real randomness: a measuring tool whose
+                 answer changes every run cannot be used to tune anything. Pass
+                 different seeds to see the spread, which is what the report's
+                 COIN FLIP section does.
      maxSeconds  give up and call it a stalemate after this long
    ------------------------------------------------------------------------- */
 function playLevel(levelKey, options) {
   // Old callers passed a plain number of seconds here. Still works.
   if (typeof options === 'number') { options = { maxSeconds: options }; }
   options = options || {};
+
+  // Seeded by default - see 'seed' above.
+  W.Sting.useSeed(options.seed === undefined ? 1 : options.seed);
 
   var level = W.LEVELS[levelKey];
   var use = options.use || level.playerUnits;
@@ -200,6 +228,16 @@ function playLevel(levelKey, options) {
     enemyBase: enemyBase,
     graves: [],
 
+    // Potions and fruit (homework B27). The pretend player does NOT use them -
+    // see the note by the COIN FLIP report below - so this is the level's
+    // starting stock sitting untouched. It is here so the weakened-damage path
+    // in Combat.strike is the same code the browser runs.
+    items: W.Items.createState(level),
+
+    // Sim-only bookkeeping, so a gambling cave can be measured rather than
+    // guessed at.
+    stings: { kills: 0, backfires: 0 },
+
     // Only the summoning system uses world.spawn, so counting calls here is
     // an exact count of how many bats got raised from the dead.
     spawn: function (unitKey, x) {
@@ -226,6 +264,7 @@ function playLevel(levelKey, options) {
   while (t < maxSeconds) {
     var before = economy.energy;
     economy.update(dt);
+    W.Items.update(dt, world);
     wastedEnergy += (before + level.energyPerSecond * dt) - economy.energy;
 
     use.forEach(function (k) {
@@ -303,6 +342,8 @@ function playLevel(levelKey, options) {
       peakUnits: peakUnits,
       sent: sent,
       raised: raisedCount,
+      stingKills: world.stings.kills,
+      stingBackfires: world.stings.backfires,
       wastedEnergy: Math.round(wastedEnergy),
       firstBaseHitAt: firstBaseHit === null ? null : +firstBaseHit.toFixed(1),
       wavesUnspawned: spawner.schedule.length - spawner.nextIndex,
@@ -461,6 +502,56 @@ var hoarders = [8, 14].map(function (patience) {
   return res;
 });
 
+/* --- part 3b: the coin flip, for caves with a gambling bug ------------- */
+/* Which bugs in this level's waves gamble on every hit? */
+function gamblingBugsIn(lvl) {
+  var seen = {};
+
+  (lvl.waves || []).forEach(function (wave) {
+    if (W.Sting.hasSting(W.UNITS[wave.enemy])) { seen[wave.enemy] = true; }
+  });
+
+  return Object.keys(seen);
+}
+
+var gamblers = gamblingBugsIn(level);
+var seedRuns = [];
+
+if (gamblers.length) {
+  console.log('');
+  console.log('  THE COIN FLIP - this cave contains ' +
+    gamblers.map(function (k) { return W.UNITS[k].name; }).join(', ') + ',');
+  console.log('  which gambles on every attack. Same cave, same 0.3s thumb, 20 different');
+  console.log('  rolls of the dice. A cave has to win ALL of them, not most.');
+  console.log('  ' + pad('spending', 16) + pad('won', 10) + pad('quickest', 12) +
+    pad('slowest', 12) + 'bats stung dead / scorpions burst');
+
+  ['cheapest', 'priciest'].forEach(function (policy) {
+    var wins = 0;
+    var times = [];
+    var kills = 0;
+    var backfires = 0;
+    var s;
+
+    for (s = 1; s <= 20; s++) {
+      var res = playLevel(levelKey, {
+        reaction: 0.3, prefer: policy, seed: s, maxSeconds: 400
+      });
+
+      seedRuns.push(res);
+
+      if (res.outcome === 'WIN') { wins++; times.push(res.seconds); }
+      kills += res.stingKills;
+      backfires += res.stingBackfires;
+    }
+
+    console.log('  ' + pad(policy, 16) + pad(wins + '/20', 10) +
+      pad(times.length ? Math.min.apply(null, times) + 's' : '-', 12) +
+      pad(times.length ? Math.max.apply(null, times) + 's' : '-', 12) +
+      (kills / 20).toFixed(1) + ' / ' + (backfires / 20).toFixed(1) + ' per battle');
+  });
+}
+
 /* --- part 4: the verdict ---------------------------------------------- */
 var attentive = runs.filter(function (r) { return r.reaction > 0 && r.reaction <= 0.5; });
 var attentiveWins = attentive.length > 0 && attentive.every(function (r) { return r.outcome === 'WIN'; });
@@ -512,6 +603,16 @@ if (level.practice) {
   console.log('  [ok]  Patient play can also win, but it is slower - spending still pays');
 } else {
   console.log('  [ok]  Hoarding loses outright');
+}
+
+/* A gambling cave has to win on every roll of the dice, not most of them. */
+if (seedRuns.length) {
+  var seedLosses = seedRuns.filter(function (r) { return r.outcome !== 'WIN'; }).length;
+
+  console.log('  ' + (seedLosses === 0 ? '[ok]  ' : '[BAD] ') +
+    'The gambling bug: won ' + (seedRuns.length - seedLosses) + ' of ' + seedRuns.length +
+    ' rolls of the dice' +
+    (seedLosses === 0 ? '' : ' - a cave lost to bad luck is not a hard cave, it is an unfair one'));
 }
 
 /* And the tutorial's own, stricter promise, only where a level claims it. */

@@ -233,10 +233,88 @@ cave 10 because its bats die without landing a hit, against 66–73s for a mixed
 one. **The boss punishes pure melee without ever making the cave impossible** —
 which matters when the player is nine years old.
 
-**`[TO DECIDE]` — what do the new bugs of the later caves look like, and what
-are they called?** *(B26, new)* — Lewis's B11 asked for new bugs to be
-introduced; the ten caves currently draw on the Mosquito, Spider and Scorpion,
-because naming creatures is his job, not Dad's.
+**DECIDED (2026-09-20) — B26: three more bugs, one per cave that asked for
+one.** Lewis was asked only for a name and whether each was "small and fast or
+big and slow". He gave that, and then gave one of them a **power** — which makes
+the Desert Scorpion the second special ability in the game, after the
+Necrobatcer's summon.
+
+| Enemy | Where | HP | Attack | Interval | **DPS** | Range | Speed |
+|---|---|---|---|---|---|---|---|
+| **Desert Scorpion** | Sahara-hara, Forgotten Oasis | 120 | 12 | 1.0s | **12.0** | 42 | **78** |
+| **Evil Butterfly** | Dream Land | 190 | 9 | 1.3s | **6.9** | 40 | **0** |
+| **Lightning Bug** | Abyss of Darkness | 45 | 5 | 1.1s | **4.5** | 36 | 26 |
+
+### The Desert Scorpion — every attack is a coin flip
+
+> *"desert has scorpions (fast, every attack has a chance to kill you or kill
+> itself)"* — Lewis
+
+Each swing rolls twice: a **20%** chance to kill whatever it hit **outright**,
+whatever that thing's health, and a **30%** chance to kill **itself**. Bursting
+is the likelier of the two on purpose, so the sting usually costs the scorpion
+its life — each one expects to take about two-thirds of a bat with it.
+
+Its ordinary numbers are deliberately modest (12 dps is below a Spider's 13).
+You are not meant to fear its bite, you are meant to fear its luck.
+
+**What it does to your army is the interesting part.** An instant kill does not
+care whether it landed on a 40hp Scout or a 220hp Brute Bat, so the desert is
+the one place in Palopa where putting all your energy into one expensive bat is
+a bad idea, and a crowd of cheap ones is the safer answer. A cave that changes
+which army is *correct* is a cave with an identity.
+
+Three rules live in `src/systems/sting.js` rather than in the data, because they
+keep it fair rather than tune it: **a sting can never instantly kill a base**
+(one roll must not decide a cave), it cannot finish off something already dying,
+and the backfire is rolled on every attack — even against a building, so a
+scorpion that bursts while chewing your fortress has done you a favour.
+
+### The Evil Butterfly — a bug that does not walk
+
+> *"Dream Land has evil butterfly (don't really move, they hover like a wall to
+> protect the tower)"* — Lewis
+
+The whole thing is **one number: `speed: 0`**. Enemies spawn just in front of
+their own tower, so a butterfly that never advances *is* a door across it. While
+one is alive your melee bats stop at **it** and physically cannot reach the
+building behind.
+
+Measured in a real browser: a Brute Bat walked to x=790, spent **nine seconds**
+chewing one butterfly with the tower taking **zero** damage, then stepped
+forward to x=802 and started on the building. That is Lewis's description
+working exactly as written.
+
+Dream Land's fortress came **down** from 2100 to 1500 when they arrived — the
+butterflies are part of the tower's defence now, so the tower needs less of its
+own. Without that, adding 950hp of wall would have quietly undone D29.
+
+### The Lightning Bug — slow, weak, and still worth 14 seconds
+
+> *"abyss of darkness has lightning bugs (slow and weak)"* — Lewis
+
+No power, because he did not ask for one. A lightning bug is a firefly, so in
+the cave with no light these are the only things you can see: they are the
+brightest colour of any bug in Palopa.
+
+They are the gentlest bug in the game, so the Abyss gets **more** of them rather
+than nastier ones — and measured, the twenty of them make that cave take **71
+seconds instead of 57**. They manage it without ever piling up: at 45 health
+they die about as fast as they arrive, and rarely are more than three alive at
+once. So what they really are is **900 extra health fed to your front line in a
+trickle**, which is precisely what a slow weak bug should be.
+
+It is a finer edge than it looks — making each swarm four bigger lost **all 80**
+test runs.
+
+**`[TO DECIDE]` — is "Desert Scorpion" the right name?** *(B28, new)* — Lewis
+said "the desert has scorpions", but Palopa already had a Scorpion, and his is a
+different animal: fast and gambling where the old one is slow and armoured. They
+are both in the game under two names that sound like the same creature.
+
+**`[TO DECIDE]` — what do the three new bugs look like?** *(B30, new)* — all
+three are still art the game draws itself, in placeholder colours: desert sand,
+dream magenta and firefly yellow-green.
 
 ---
 
@@ -525,9 +603,55 @@ layer between, so a bad gamble costs you goods rather than your progress. That
 is a gentler shape than a straight slot machine, which matters in a game a child
 plays.
 
-**`[TO DECIDE]` — what do blood, potions and fruits each DO?** *(B27, new)* —
-three named goods need three different jobs, or they are the same thing with
-three labels.
+**DECIDED (2026-09-20) — B27: potions and fruit are NOT currency.**
+
+> *"potions and fruit are different, they are not just currency. you can use
+> potions during a battle to make the opponent weaker. fruit can heal your
+> tower, but only slightly. blood is just currency."* — Lewis
+
+He rejected the shape of the question, and was right to. Dad had offered three
+flavours of *thing you trade*; Lewis made two of them **battle actions**. That
+is a bigger idea, because it gives the player something to do with a tap other
+than send another bat — the first such thing in the game.
+
+| Good | What it is | What it does |
+|---|---|---|
+| **Blood** | money | nothing else. It never comes into a battle |
+| **Potion** | a battle action | for **10 seconds every bug hits for half** |
+| **Fruit** | a battle action | heals your tower **8% of its full health** |
+
+**BUILT 2026-09-20.** Both work, with their own buttons beside the bats. The
+numbers are in `data/items.js`, the rules in `src/systems/items.js`.
+
+Three rules live in the code rather than the data, because they stop the game
+being broken rather than tune how it feels:
+
+- **A potion sets its timer, it never adds to it.** Three potions give ten
+  weakened seconds, not thirty — otherwise a player who hoarded six could switch
+  a whole cave off.
+- **A potion only ever weakens the bugs**, never your own bats, and it is worked
+  out *at the moment of the hit*. Every bug of one kind shares a single stats
+  object, so weakening "the scorpions" by editing that object would weaken every
+  scorpion in the game for ever, including next battle.
+- **Fruit cannot be thrown at a full tower**, and cannot overheal.
+
+**Where they come from is still open.** The casino does not exist, so for now a
+level can hand you a starting stock, and exactly one does: the **Graveyard**
+practice level starts you with three of each so Lewis can play with his idea
+today. This is the same trick as the Necrobatcer (D14) — the thing itself is
+real and finished, only the way you *acquire* it is stubbed.
+
+**The ten caves deliberately start with none**, and are measured without them,
+so an item is always a bonus and never a requirement. A cave that needs a potion
+is a cave you can arrive at unable to win.
+
+Lewis's answer also narrows B22: "blood is just currency" means the trade-or-
+gamble step buys **upgrades with blood**, while potions and fruit are things you
+*spend in a fight*. So the casino has two kinds of output, not one.
+
+**`[TO DECIDE]` — how do you actually GET potions and fruit?** *(B29, new)* —
+how many does a cave's win buy, do they carry between battles, and can you lose
+them in the gamble? This is the last thing blocking the casino.
 
 ---
 
@@ -730,8 +854,11 @@ Full detail is in `README.md`; the design-relevant parts:
 | B23 | How many colour tiers, really? | §9 | ✅ **answered** — four |
 | B24 | Can the Necrobatcer raise the bugs too? | §3 | ✅ **answered** — bats only, longer reach |
 | B25 | Should graves be visible on the ground? | §9 | ✅ **answered by B16** — yes, built |
-| B26 | Name the new bugs of the later caves | §4 | 🔲 **new — on the plate** |
-| B27 | What do blood, potions and fruits do? | §8 | 🔲 **new — on the plate**, blocks M4 |
+| B26 | Name the new bugs of the later caves | §4 | ✅ **answered & built** — all three, in their caves |
+| B27 | What do blood, potions and fruits do? | §8 | ✅ **answered & built** — potion + fruit are battle actions |
+| B28 | Is "Desert Scorpion" the right name? | §4 | 🔲 **new — on the plate** |
+| B29 | How do you *get* potions and fruit? | §8 | 🔲 **new — on the plate**, blocks M4 |
+| B30 | What do the three new bugs look like? | §9 | 🔲 **new — on the plate** |
 
 ### Solved, mostly: the all-or-nothing ending (B9)
 

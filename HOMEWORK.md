@@ -1,4 +1,4 @@
-# Homework for Lewis — Round 3 🦇
+# Homework for Lewis — Round 4 🦇
 
 > **You're the creative director.** The *look*, the *feel*, and the
 > *what-even-is-this* calls are yours. Dad builds whatever you decide.
@@ -20,13 +20,13 @@
 |---|---|---|
 | 1 | **The Cave** | the easy one, where you learn to keep spending — **and Dad has just made it easier, because you were right** |
 | 2 | **Crystal Falls** | 🕸️ the **Spider** finally shows up |
-| 3 | **Dream Land** | ⚡ **no warm-up** — bugs from the very first second |
+| 3 | **Dream Land** | ⚡ no warm-up — **and now your 🦋 Evil Butterflies** |
 | 4 | **Pyramid** | 🧱 a **much tougher fortress** |
-| 5 | **Sahara-hara Desert** | 💰 **less energy** — every bat really counts |
+| 5 | **Sahara-hara Desert** | 💰 less energy — **and your 🦂 Desert Scorpions** |
 | 6 | **Wait Um** | ⏳ the **longest siege** in the whole game |
 | 7 | **Scarred Woods** | 🕸️ no warm-up **and** spiders everywhere |
-| 8 | **Abyss of Darkness** | 💀 **two** hard things at once |
-| 9 | **Forgotten Oasis** | 🦂 **scorpions**, and lots of them |
+| 8 | **Abyss of Darkness** | 💀 two hard things at once — **and your ✨ Lightning Bugs** |
+| 9 | **Forgotten Oasis** | 🦂 **both kinds of scorpion**, and lots of them |
 | 10 | **Final Stadium** | 👑 **THE COW KILLER BEE** |
 
 And the three other things you asked for:
@@ -115,56 +115,169 @@ and the fortress is big enough that she's definitely still there.
 
 ---
 
-## 🟡 Round 3 — four questions
+## 🎉 Round 3: both your answers are BUILT
 
-Much shorter this time, because you answered nearly everything. Two of these are
-**drawing**, which is the real bottleneck now.
+### ✅ B26 — your three bugs are all in the game 🐛
+
+You gave Dad a name and a size for each one. You also, without being asked, gave
+one of them a **power** — which makes your Desert Scorpion only the **second
+thing in the whole game** with a special ability, after your Necrobatcer.
+
+| Your bug | Where it lives | What it does |
+|---|---|---|
+| 🦂 **Desert Scorpion** | Sahara-hara + Forgotten Oasis | **every attack is a coin flip** |
+| 🦋 **Evil Butterfly** | Dream Land | **never moves** — a living wall |
+| ✨ **Lightning Bug** | Abyss of Darkness | slow, weak, and there are *loads* |
+
+#### 🦂 The Desert Scorpion — the gamble
+
+Every single time it hits one of your bats, two dice get rolled:
+
+- **1 in 5** — your bat **dies instantly**. Not damaged. *Dead.* Doesn't matter
+  if it's a 40-health Scout or a 220-health Brute Bat.
+- **3 in 10** — the scorpion **kills itself** instead.
+
+It kills itself more often than it kills you, on purpose. You'll see the words
+pop up: **"Scout Bat STUNG!"** in red, **"it stung itself!"** in yellow.
+
+**Here's the sneaky bit, and it's worth knowing before you play the desert:** an
+instant kill doesn't care how much your bat cost. So the desert is the one place
+in Palopa where saving up for one big Brute Bat is a **bad** idea — a cheap
+crowd is safer. Your bug changed which army is the right army. That's a proper
+piece of game design. 👏
+
+#### 🦋 The Evil Butterfly — one number, big idea
+
+"They don't really move" turned out to be the easiest thing you've ever asked
+for and one of the best. Its speed is just **0**. Bugs appear right in front of
+their own tower — so a butterfly that never walks forward **is a door**.
+
+Dad tested it: a Brute Bat walked all the way across, then spent **nine whole
+seconds** chewing one butterfly while the tower took **zero damage**. It
+couldn't get past. That's exactly what you described.
+
+*(Dream Land's fortress got **smaller** because of them — 2100 down to 1500. The
+butterflies are part of the tower's defence now, so the tower needs less.)*
+
+#### ✨ The Lightning Bug — the quiet one
+
+"Slow and weak" is exactly what they are — they die almost the second they reach
+your bats. But there are **twenty** of them, and Dad measured what they do:
+
+> **The Abyss takes 71 seconds with them. 57 seconds without.**
+
+They don't fight you, they just get **in the way**, over and over. And a
+lightning bug is a firefly — so in the cave with no light, they're the only
+things down there you can see. They're the brightest colour of any bug in the
+game. 🔦
+
+*(They're closer to the edge than they look. Dad tried making each swarm four
+bigger and **every single test run lost**.)*
 
 ---
 
-### 🔲 B26. INVENT: Name the new bugs 🐛 *(needed by M3)*
+### ✅ B27 — potions and fruit are BUILT, and you can use them today 🧪
 
-You said *"new bugs are introduced but not every level has a new bug"* — and
-you're right, that's how it should work. But Dad only has **three** bugs
-(Mosquito, Spider, Scorpion), so all ten caves currently use those three.
+You didn't answer the question Dad asked — you answered a better one. He offered
+you three flavours of *thing you trade*, and you turned two of them into things
+you **do in the middle of a fight**. That's the first time this game has given
+the player anything to tap other than "send another bat".
 
-**Naming creatures is your job, not his.** So: what new bugs live in the later
-caves? You don't need ten — even **three more** would spread nicely:
+| | What it does now |
+|---|---|
+| 🧪 **Potion** | for **10 seconds, every bug hits for HALF** |
+| 🍒 **Fruit** | heals your tower **a little** (8%) — you said "only slightly", so it is |
+| 🩸 **Blood** | just money, exactly as you said. It never comes into a battle |
 
-- something for the **desert** caves (Sahara-hara, Forgotten Oasis)
-- something for **Dream Land** (a bug in a dream could be anything at all)
-- something for the **Abyss of Darkness** (something that lives in the dark)
+**Go and try them right now:** play **The Graveyard** from the practice row on
+the title screen. You start with **3 potions and 3 fruit**, and there are two new
+buttons on the right-hand side next to your bats.
 
-For each one, Dad needs: **what it's called**, and **is it small and fast, or
-big and slow?** He'll work out the numbers.
+Things Dad made the rules do, so they can't be abused:
+
+- **Drinking 3 potions doesn't give you 30 seconds** — it gives you 10. Otherwise
+  you could save up six and switch a whole cave off.
+- **Your own bats never get weakened** by your own potion. Only bugs.
+- **You can't waste a fruit on a full-health tower** — the button just won't
+  work.
+
+**The ten real caves give you none of these on purpose.** You're supposed to
+*earn* them at the casino — and how you earn them is the next question. 👇
+
+---
+
+## 🟡 Round 4 — three questions
+
+Two quick ones and a drawing one.
+
+---
+
+### 🔲 B28. DECIDE: is "Desert Scorpion" the right name? 🦂 *(quick one)*
+
+Small problem, and it's Dad's fault for not spotting it when he wrote B26.
+
+You said *"desert has scorpions"* — but Palopa **already had** a bug called the
+**Scorpion**, the slow armoured one that's been in the game since the start.
+
+They're really not the same animal:
+
+| | The old **Scorpion** | Your new one |
+|---|---|---|
+| Speed | slow (38) | **fast (78)** |
+| Health | tough (190) | weaker (120) |
+| Special | none | **the killing sting** |
+
+Right now the game calls yours the **Desert Scorpion**, which works but is a bit
+plain — and two bugs with almost the same name is confusing.
+
+**So: what's yours actually called?** Some ideas, but "something else" wins as
+usual:
+
+- **A** — leave it as *Desert Scorpion*, it's fine
+- **B** — a name about the sting: *Deathstalker*, *Stinger*, *Last Sting*
+- **C** — a name about the gamble: *Coin-flip Scorpion*, *Unlucky*
+- **D** — something completely different that isn't a scorpion at all
 
 **Lewis's answer:** _(open)_
 
 ---
 
-### 🔲 B27. INVENT: What do blood, potions and fruits actually DO? 🧪 *(blocks the casino)*
+### 🔲 B29. DECIDE: how do you GET potions and fruit? 🎰 *(this is the last thing blocking the casino)*
 
-Your casino answer was better than either option Dad offered — you invented a
-middle step:
+Potions and fruit **work**. The only thing missing is how you get hold of them.
 
-```
-beat a cave  ->  SUNS  ->  at the casino  ->  BLOOD / POTIONS / FRUIT
-                                                      |
-                                       trade them  or  gamble them
-                                                      |
-                                                  UPGRADE a bat's colour
-```
+Right now they only exist on the practice level, because Dad won't guess this —
+it's your economy.
 
-That's genuinely clever, because a bad gamble costs you *stuff* instead of your
-progress. But three named things need **three different jobs**, or they're the
-same thing with three labels.
+So, after you beat a cave:
 
-So what's the difference?
+1. **How many do you get?** A fixed few every time (say 2 potions, 2 fruit)? Or
+   do you **buy** them at the casino with suns, and choose which?
+2. **Do they carry over?** If you win a cave holding 5 potions, do you still
+   have 5 in the next one — or does each battle start fresh?
+3. **Can you lose them in the gamble?** You invented the gamble so that a bad
+   bet costs you *stuff* instead of your progress. Are potions and fruit the
+   stuff you're betting?
+4. **Is one of them rare?** Should fruit only come from beating a **boss**, say?
 
-- Is **blood** the one that makes a bat hit harder, and **fruit** the one that
-  gives it more health? *(Bats do eat fruit.)*
-- Are **potions** the gambling ones — drink it and find out?
-- Is one of them **rare**, so you only get it from beating a boss?
+**Lewis's answer:** _(open)_
+
+---
+
+### 🔲 B30. DRAW: the three new bugs 🎨
+
+All three are still Dad's rubbish placeholder shapes — just coloured blobs.
+Right now they're:
+
+| | Placeholder colour | What it should feel like |
+|---|---|---|
+| 🦂 **Desert Scorpion** | sandy yellow | **fast and twitchy.** You should look at it and think "that one's dangerous" |
+| 🦋 **Evil Butterfly** | dream magenta | **wide**, so it reads as a wall. Pretty, but *evil* |
+| ✨ **Lightning Bug** | glowing yellow-green | tiny, and **glowing** — it's the only light in the Abyss |
+
+Same brief as always: hand-drawn, not realistic, **64×64**, facing **east**.
+These are bugs rather than bats, so the "big circle, wings, ears, no legs" rule
+doesn't apply — they can look like whatever you think they look like.
 
 **Lewis's answer:** _(open)_
 
@@ -244,6 +357,12 @@ Open `data/units.js`, change a number, save, refresh the browser. That's it.
 | Necrobatcer `summon.interval: 5.0` → `1.0` | The dead never stay dead 💀 |
 | In `data/config.js`: `maxGraves: 40` → `3` | Only the freshly fallen can be raised |
 | Any bat `speed: 90` → `300` | They sprint across the screen |
+| Desert Scorpion `sting.killChance: 0.20` → `0.9` | The desert becomes a horror film 🦂 |
+| Desert Scorpion `sting.backfireChance: 0.30` → `1` | Every scorpion dies on its first hit |
+| Evil Butterfly `speed: 0` → `60` | The wall gets up and walks at you 🦋 |
+| In `data/items.js`: potion `seconds: 10` → `120` | The bugs are soft for the whole battle 🧪 |
+| In `data/items.js`: fruit `healFraction: 0.08` → `1` | One fruit fully repairs your tower 🍒 |
+| In `data/levels.js`, add `startItems: { potion: 9, fruit: 9 }` to any cave | Carry nine of each into it |
 
 **Want to check a cave is still beatable after your changes?**
 
@@ -258,6 +377,29 @@ Swap in any cave's key: `level1`, `crystalFalls`, `dreamLand`, `pyramid`,
 It plays the whole cave instantly as **several different people** — a robot with
 a perfect thumb, someone sharp, someone relaxed, someone who spends carefully,
 and a hoarder who saves everything up. Read the **VERDICT** at the bottom.
+
+**On the two desert caves it does something extra.** Because your Desert
+Scorpion is a *coin flip*, one battle doesn't prove anything — so it plays the
+cave **20 times with 20 different rolls of the dice** and tells you how many it
+won. It has to win **all 20**. A cave you lose because you were unlucky isn't a
+hard cave, it's an unfair one.
+
+```
+THE COIN FLIP - this cave contains Desert Scorpion,
+which gambles on every attack. Same cave, same 0.3s thumb, 20 different
+rolls of the dice. A cave has to win ALL of them, not most.
+spending        won       quickest    slowest
+cheapest        20/20     41.3s       50.6s
+priciest        20/20     86.9s       156.4s
+```
+
+**And there are three little test programs** that check the rules can't break:
+
+```
+node tools/necro-test.js    the Necrobatcer's raising rules   (20 checks)
+node tools/sting-test.js    your Desert Scorpion's dice       (27 checks)
+node tools/items-test.js    your potions and fruit            (37 checks)
+```
 
 **Ignore the `0s (robot)` row.** That's the row that fooled us.
 

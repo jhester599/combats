@@ -139,3 +139,44 @@ window.Combat.applyDamage = function (target, amount) {
 
   target.takeDamage(amount);
 };
+
+/* -------------------------------------------------------------------------
+   ONE SWING - and the ONLY place in the game where damage is worked out.
+
+   Three things can change what a swing does, and they all meet here:
+
+     * the attacker's plain  attack  number            (data/units.js)
+     * a POTION, if the attacker is a bug and one is running (src/systems/items.js)
+     * a STING, if the attacker gambles on every hit     (src/systems/sting.js)
+
+   It matters that this is one function rather than a few lines repeated in
+   src/entities/unit.js and again in tools/balance-sim.js. Those two files each
+   have their own copy of the unit brain, and every rule written twice is a rule
+   that will eventually disagree with itself - which is exactly how this project
+   lost a level once (DECISIONS.md D10, D11). Both call this.
+
+   Returns what happened, so the screen can shout about it:
+     { damage, instantKill, backfire }
+   ------------------------------------------------------------------------- */
+window.Combat.strike = function (unit, target, world) {
+  var sting = window.Sting.resolve(unit, target);
+
+  var damage = unit.stats.attack * window.Items.attackFactorFor(unit, world);
+
+  if (sting.instantKill) {
+    // Whatever health is left, however much that is. An instant kill ignores
+    // health entirely - which is why src/systems/sting.js forbids it against a
+    // base, where one roll would otherwise decide a whole cave.
+    damage = target.hp;
+  }
+
+  window.Combat.applyDamage(target, damage);
+
+  if (sting.backfire) {
+    // It killed itself doing that. Straight through takeDamage() so it dies
+    // exactly like anything else does - death animation, grave, the lot.
+    unit.takeDamage(unit.hp);
+  }
+
+  return { damage: damage, instantKill: sting.instantKill, backfire: sting.backfire };
+};
