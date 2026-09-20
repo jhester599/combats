@@ -69,7 +69,7 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 |---|---|---|---|---|---|---|---|---|
 | **Scout Bat** | 25 | 1.4s | 40 | 8 | 0.6s | **13.3** | 40 | 90 |
 | **Brute Bat** | 90 | 6.0s | 220 | 30 | 1.4s | **21.4** | 46 | 45 |
-| **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | 60 | 70 |
+| **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **200** | 70 |
 | **Archer Bat** | 45 | 3.0s | 24 | 22 | 1.1s | **20.0** | **240** | 75 |
 
 `DPS = attack ÷ attackInterval`.
@@ -109,6 +109,28 @@ turns a single grave into an endless army. Both are checked by
 further.** Dead bugs stay dead. Summon range **320 → 460**, which Lewis asked
 for specifically — that is most of the way across the lane, so a Necrobatcer
 standing safely behind the line can still reach the front of it.
+
+**CHANGED (2026-09-20) — it casts from the back: attack reach 60 → 200.** Jeff:
+*"the Necrobatcer should have more of a range attack as a summoner, similar to
+the Archer Bat."*
+
+That fixed a genuine incoherence in the bat. Its **summon** reach was already
+460, but its **attack** reach was 60 — and a unit walks forward until something
+is inside its *attack* range, so the summoner was marching into the exact scrum
+it was supposed to be standing behind. The bat wanted to hang back and its own
+numbers dragged it forward.
+
+Measured, in a real battle played as a summoner build: across 138 samples it now
+averages **174px** from the nearest bug, ranging 106–448, and was **never once**
+inside the old 60px reach. Lined up against a single target, the four bats stop
+at 39 / 46 / **199** / 240 — the Necrobatcer now shares a back line with the
+Archer instead of dying next to the Scouts.
+
+**200, not the Archer's 240**, because being the longest reach in Palopa is the
+Archer's identity (B9) and the boss fight turns on it.
+
+**Its damage did not change.** 3.3 dps, a quarter of a Scout's. Standing safely
+is the reward; this bat still wins battles by raising the dead, not by shooting.
 
 **DECIDED (2026-09-19) — B9 = A: the fourth bat is the ARCHER BAT.** The first
 bat that does not walk into the fight. Reach **240** against a Scout's 40, and
@@ -223,7 +245,10 @@ in the last wave of cave 10, the Final Stadium.
 
 **The long stinger is the fight.** Taken literally, the stinger is *reach*: 130
 against a Scout Bat's 40 and a Brute's 46. So she kills your entire front line
-without any of it ever touching her. Only the **Archer Bat**, at 240, out-reaches
+without any of it ever touching her. Only the **Archer Bat**, at 240, both
+out-reaches her and hits hard enough for it to matter — the Necrobatcer's 200
+keeps it safe from the stinger too, but at 3.3 dps it would need twelve minutes
+alone. In practice the Archer is still the answer, and it out-reaches
 her — Lewis's two answers this round turned out to be the lock and the key, which
 was luck rather than planning but is exactly how it should read.
 

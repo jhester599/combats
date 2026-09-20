@@ -176,6 +176,13 @@ limited by **money**, not by its cooldown. If a cooldown is longer than the time
 it takes to afford the bat, the button sits lit waiting for your thumb and every
 late tap is a bat you never get.
 
+**On a cave that offers the Necrobatcer, it plays a SUMMONER BUILD too** — a
+Scout-spammer who also sends summoners. That row exists because neither of the
+two spending policies ever bought the bat: the cheapest-first player always takes
+the 25-energy Scout and the priciest-first always takes the 90-energy Brute, so
+the 60-energy Necrobatcer fell down the crack between them and every cave
+reported `0.00 bats raised`. Its balance had never actually been measured (D47).
+
 **On a cave with a gambling bug in it, it plays 20 different battles.** The
 Desert Scorpion can kill a bat outright on any hit, so one run proves nothing —
 the report gains a `THE COIN FLIP` section and the cave has to win **all

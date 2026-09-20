@@ -143,7 +143,30 @@ window.UNITS = {
     hp: 70,
     attack: 4,             // feeble on purpose - it is not here to fight
     attackInterval: 1.2,   // 3.3 dps, about a quarter of a Scout's
-    range: 60,             // hangs back a little further than the others
+
+    // ------------------- IT CASTS FROM THE BACK (2026-09-20) -------------------
+    // Jeff: "the necrobatcer should have more of a range attack as a summoner,
+    // similar to the archer bat."
+    //
+    // He was fixing a real incoherence. This bat's SUMMON reach is 460 - most of
+    // the lane - but its ATTACK reach used to be 60, barely more than a Scout's
+    // 40. A unit walks forward until something is within its attack range, so
+    // the old 60 marched the summoner right into the scrum it was supposed to be
+    // standing behind. The bat wanted to hang back and its own numbers dragged
+    // it forward.
+    //
+    // MEASURED: at 60 it stopped 59px from the nearest bug; at 200 it stops
+    // 200px away - 141 pixels further back, in the same line as the Archer.
+    //
+    // WHY 200 AND NOT THE ARCHER'S 240. The Archer's whole identity (Lewis's B9)
+    // is being the longest reach in Palopa, and the Cow Killer Bee's fight
+    // depends on it. 200 is plainly the same kind of bat without taking the
+    // Archer's crown.
+    //
+    // Its damage did NOT change. Being safe is the reward for standing back;
+    // 3.3 dps is still a quarter of a Scout's, because this bat wins battles by
+    // raising the dead and not by shooting anything.
+    range: 200,            // <-- TRY ME: 40 and it walks into the fight and dies
     speed: 70,
     color: '#8f7fd6',      // only used by placeholder art - this bat has real art now
     sprite: 'necroBat',
@@ -316,7 +339,10 @@ window.UNITS = {
      back and kills your whole front line without ever being touched by it.
      Brute Bats and Scout Bats simply cannot answer that.
 
-     The Archer Bat can - range 240 out-reaches the stinger's 130. That is not
+     The Archer Bat can - range 240 out-reaches the stinger's 130. (So does the
+     Necrobatcer's 200, since 2026-09-20, but at 3.3 dps it would need twelve
+     minutes on its own: standing safely out there is not the same as being able
+     to kill her.) That is not
      a coincidence, it is the point: Lewis's two answers this round happen to
      be the lock and the key, so the boss is the fight his Archer was invented
      for. Measured: the Final Stadium is winnable with Archers and a grind

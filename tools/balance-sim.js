@@ -489,6 +489,38 @@ var wellRuns = band.map(function (r) {
   return res;
 });
 
+/* --- part 2c: somebody who actually fields the Necrobatcer -------------
+   Found on 2026-09-20 while giving that bat a longer reach: NEITHER of the two
+   spending policies above ever buys one. The cheapest-first player always takes
+   the 25-energy Scout, and the priciest-first player always takes the 90-energy
+   Brute, so the 60-energy summoner falls down the crack between them and the
+   report showed 0.00 bats raised in every cave that offers it.
+
+   That means the Necrobatcer's balance had never actually been measured in a
+   real cave - only in the Graveyard, where it is the dearest thing on the menu
+   and so gets bought by accident. Exactly the D10/D22 mistake again: a tool that
+   silently does not model the thing you are changing.
+
+   So a cave that offers the summoner now gets a third player: a Scout-spammer
+   who also sends Necrobatcers. (A player who fields MOSTLY Necrobatcers loses
+   every time and is not modelled - 3.3 dps is not an army.)
+   ----------------------------------------------------------------------- */
+if (level.playerUnits.indexOf('necroBat') !== -1) {
+  console.log('');
+  console.log('  PLAYED AS A SUMMONER BUILD (spamming Scouts, but also sending');
+  console.log('  Necrobatcers - the only player here who uses the bat at all)');
+  console.log('  ' + pad('reaction', 11) + pad('outcome', 12) + pad('length', 10) +
+    pad('necros sent', 14) + 'bats raised from the dead');
+
+  band.forEach(function (r) {
+    var res = playLevel(levelKey, {
+      reaction: r, prefer: 'cheapest', use: ['scoutBat', 'necroBat'], maxSeconds: 400
+    });
+    console.log('  ' + pad(r === 0 ? '0s (robot)' : r + 's', 11) + pad(res.outcome, 12) +
+      pad(res.seconds + 's', 10) + pad(res.sent.necroBat || 0, 14) + res.raised);
+  });
+}
+
 /* --- part 3: the hoarder, who is supposed to lose --------------------- */
 console.log('');
 console.log('  PLAYED BY A HOARDER (saving energy instead of spending it)');

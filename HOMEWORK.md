@@ -44,10 +44,12 @@ And the three other things you asked for:
 You answered these two separately, but look what happened:
 
 - the Cow Killer Bee's stinger reaches **130**
-- Scout Bat reaches 40. Brute Bat 46. Necrobatcer 60. **All of them die without
-  ever touching her.**
-- **Archer Bat reaches 240.** It's the only bat in the game that can hit her
-  while she can't hit back.
+- Scout Bat reaches 40. Brute Bat 46. **Both die without ever touching her.**
+- **Archer Bat reaches 240.** It's the bat that can hit her while she can't hit
+  back — and it's the only one that can hurt her from out there. *(The
+  Necrobatcer now reaches 200 as well, so it's safe from her too, but at 3.3
+  damage a second it would take it about twelve minutes to finish her off on its
+  own. It's a summoner, not a sniper.)*
 
 You accidentally invented the boss *and* the only bat that properly answers her,
 in the same homework. 🎉
@@ -203,6 +205,35 @@ Things Dad made the rules do, so they can't be abused:
 
 **The ten real caves give you none of these on purpose.** You're supposed to
 *earn* them at the casino — and how you earn them is the next question. 👇
+
+---
+
+### 🦇 Dad changed your Necrobatcer: it now casts from the back
+
+Your summoner had a silly problem and nobody had spotted it.
+
+It could **raise** a fallen bat from **460 pixels** away — nearly the whole
+screen. But it could only **attack** from **60** pixels, barely further than a
+Scout Bat. And bats walk forward until something is close enough to hit… so your
+summoner kept marching into the middle of the fight, where it has 70 health and
+does almost no damage, and died.
+
+**It now attacks from 200 pixels**, so it stands back near the Archer Bat and
+does its actual job. Line all four of your bats up against one bug and they now
+stop like this:
+
+| Bat | Stops this far away |
+|---|---|
+| Scout Bat | 39px *(right in it — this one died)* |
+| Brute Bat | 46px |
+| **Necrobatcer** | **199px** ← was 60 |
+| Archer Bat | 240px |
+
+**Its damage did NOT change** — still 3.3 a second, a quarter of a Scout's.
+Standing somewhere safe is the reward. It's a summoner, not a sniper.
+
+*(Measured in a real Wait Um battle: it now sits about **174 pixels** from the
+nearest bug, and raised **7** bats from the dead.)*
 
 ---
 
