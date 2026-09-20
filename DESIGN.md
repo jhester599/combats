@@ -519,14 +519,18 @@ instead of mushy. All ten are built, and every number below is measured:
 |---|---|---|---|---|---|
 | 1 | **The Cave** | the tutorial: keep spending | 1900 | 13/s | Scout, Brute |
 | 2 | **Crystal Falls** | a new bug — the **Spider** arrives | 2100 | 13/s | + Archer |
-| 3 | **Dream Land** | **no warm-up** — bugs at second one | 2100 | 13/s | + Archer |
+| 3 | **Dream Land** | no warm-up, **and the Evil Butterfly wall** | **1500** | 13/s | + Archer |
 | 4 | **Pyramid** | a **tougher fortress** | 2800 | 15/s | + Necrobatcer |
-| 5 | **Sahara-hara Desert** | **less energy** | 2300 | 11/s | all four |
+| 5 | **Sahara-hara Desert** | less energy, **and the Desert Scorpion** | 2300 | 11/s | all four |
 | 6 | **Wait Um** | the **longest siege** in the game | 3800 | 15/s | all four |
 | 7 | **Scarred Woods** | no warm-up, and **spider country** | 2200 | 14/s | all four |
-| 8 | **Abyss of Darkness** | **two levers at once** | 2800 | 12/s | all four |
-| 9 | **Forgotten Oasis** | **scorpions**, and lots of them | 2800 | 13/s | all four |
+| 8 | **Abyss of Darkness** | two levers, **plus Lightning Bug swarms** | 2800 | 12/s | all four |
+| 9 | **Forgotten Oasis** | **both kinds of scorpion**, and lots of them | 2800 | 13/s | all four |
 | 10 | **Final Stadium** | the **boss** | 2500 | 16/s | all four |
+
+*(Dream Land's 1500 is the one cave that is not simply half its original: it came
+down again from 2100 when the Evil Butterflies arrived in B26, because the
+butterflies are part of that tower's defence now — see §4.)*
 
 **DECIDED (2026-09-19) — every fortress was HALVED.** The endgame dragged, and
 the measurement was blunt about why: **72% of all playing time across the ten
@@ -767,6 +771,12 @@ game produces every colour of it. Nobody draws five Scout Bats.
 **`[TO DECIDE]` — what should the *enemies* look like?** *(B4, and B3 says what
 they are: a mosquito, a spider and a scorpion)*
 **`[TO DECIDE]` — do the bats get animation frames, or stay as one pose?** *(B21)*
+Worth being plain about the current state: **nothing in the game animates.** The
+Scout Bat had a 16-frame walk cycle, but it belonged to the superseded 2026-09-18
+design and did not survive Lewis's redraw, so all four animations of every unit
+point at frame 0. Death is a half-second fade rather than a drawn animation. The
+machinery is all still there and reads its frames from `data/units.js` — it is
+waiting on drawings, not on code.
 **`[TO DECIDE]` — music and sound effects?** *(B15)*
 **DECIDED (2026-09-19) — B16 = D: a bat leaves a GRAVE MARKER where it fell.**
 A small headstone on the lane, cleared the instant a Necrobatcer raises it.
@@ -874,7 +884,7 @@ Full detail is in `README.md`; the design-relevant parts:
 | B18 | The base-breaking moment | §9 | 🔲 anytime |
 | B19 | Can you upgrade a bat? | §8 | ✅ **answered by B4 + B13** — yes, shown as colour |
 | B20 | A fast-forward button? | §5 | 🔲 anytime |
-| B21 | Animate the bats, or leave them as one pose? | §9 | ⚠️ Scout walks, but the **B4 redraw resets this** |
+| B21 | Animate the bats, or leave them as one pose? | §9 | ⚠️ **nothing animates now** — the B4 redraw replaced the Scout's walk cycle with a single pose |
 | B22 | Is the casino a shop or a gamble? | §8 | ✅ **answered** — both, with goods in between |
 | B23 | How many colour tiers, really? | §9 | ✅ **answered** — four |
 | B24 | Can the Necrobatcer raise the bugs too? | §3 | ✅ **answered** — bats only, longer reach |

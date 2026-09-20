@@ -214,6 +214,27 @@ that tune how it feels:
   never weakens your own bats, fruit can't overheal, and nothing writes on the
   shared stats object in `data/units.js`.
 
+### Check the documentation is still true
+
+```bash
+node tools/doc-check.js
+```
+
+The documents in this repo are not decoration — `DESIGN.md` and `DECISIONS.md`
+are the shared memory between Jeff, Lewis and whoever picks this up next. But
+they *quote the data*: fortress sizes, bat stats, which bug lives where. Change a
+number in `data/` and a sentence somewhere becomes a lie, silently, with nothing
+failing.
+
+So this reads the real data files and checks the prose against them — unit stats,
+cave HP, the README's own file map, that `index.html` loads every file that
+exists, that the homework numbering has no gaps, and that every `[TO DECIDE]`
+marker is also listed as open in `DESIGN.md` §13.
+
+It earned its keep the day it was written by finding a fortress documented as
+2100 that had been 1500 for hours, and a claim that the Scout Bat had a walk
+cycle long after the redraw removed it.
+
 ---
 
 ## How the game works (for Jeff, or a curious Lewis)
@@ -250,6 +271,7 @@ tools/
   necro-test.js       checks the summoning rules hold (testing only)
   sting-test.js       checks the gambling rules hold (testing only)
   items-test.js       checks the item rules hold (testing only)
+  doc-check.js        checks the DOCUMENTS still match the data (testing only)
   pack-spritesheet.js turns a folder of frames into one sprite sheet
   png.js              reads/writes PNG files, used by the packer
 assets/             empty for now - real art goes here
