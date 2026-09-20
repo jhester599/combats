@@ -441,7 +441,7 @@ gets dull once you know you've won.
 | B8 | **A** — one boss, the **Cow Killer Bee** | ✅ built, cave 10 |
 | B24 | **A** — bats only, and reach **320 → 460** | ✅ done |
 | B16 | **D** — **grave markers** *(also settles B25)* | ✅ built |
-| B22 | Casino: suns → **blood/potions/fruits** → trade or gamble | 🔲 needs B27 |
+| B22 | Casino: suns → **blood/potions/fruits** → trade or gamble | 🟡 B27 answered and the items are built; the casino itself now needs **B29** |
 | B23 | **B** — four colours | ✅ in the data |
 
 **Round 3, 2026-09-20 — both, and both got built the same day.**

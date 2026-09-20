@@ -820,19 +820,24 @@ B8 (a boss) and B18 (what the last moment looks like).
 |---|---|---|
 | **M1 — First playable** | One lane, two bats, two enemies, energy + cooldowns, bases, win/lose, Retry, placeholder art | ✅ **Done 2026-09-18** |
 | **M2 — Content** | **Ten caves** (B10 = C), a difficulty curve, a way to pick a cave | ✅ **Done 2026-09-19** — all ten built and measured, four bats, a boss, a cave picker |
-| **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, a wet-cave background, sound | 🔜 **Next** — and now the biggest gap: ten caves, one look. Needs the **B4 redraw**, **B26**, B15 |
-| **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | 🟡 **Started** — saved progress and cave unlocking ✅ built; suns, goods and upgrades need **B27** |
+| **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, a wet-cave background, sound | 🔜 **Next, and the biggest gap: ten caves, one look.** 3 of 4 bats drawn ✅. Still needs the **Archer**, the **seven bugs** (B30), backgrounds, animation (B21) and sound (B15) |
+| **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | 🟡 **Started** — saved progress, cave unlocking, and potions/fruit ✅ built; suns, the casino and upgrades need **B29** |
 | **M5 — Depth** | Maybe a second lane, more powers | Needs B14. *Both of its headline items arrived early* — the Necrobatcer's summon (B5) and the boss (B8) |
 
 Order is a plan, not a promise — if Lewis most wants a boss, we build the boss.
 
-**Two rounds of homework finished M2.** Palopa has all ten of its caves, four
-bats, a boss and a cave picker, and every cave is measured. Rounds 1 and 2
-answered 19 of the 27 questions.
+**Two rounds of homework finished M2**, and a third filled the caves out. Palopa
+has all ten of its caves, four bats, a boss, seven kinds of bug, a cave picker
+and two usable items, and every cave is measured. Three rounds have answered
+**21 of the 30** questions.
 
-**The gap is now art, not design.** Ten caves share one flat purple background,
-the bats are still the superseded goggled-and-caped pair, and the bugs are
-coloured blobs. Nothing in M3 is blocked on Dad — it is blocked on drawings.
+**The gap is art, not design.** Ten caves share one flat purple background, the
+**Archer Bat and all seven bugs are still coloured blobs**, and — since the B4
+redraw replaced the Scout's walk cycle with a single pose — **nothing in the game
+animates at all**. Three of the four bats are Lewis's real drawings, which is
+what the rest should look like.
+
+Almost nothing left in M3 is blocked on Dad. It is blocked on drawings.
 
 ---
 
