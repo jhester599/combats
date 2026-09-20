@@ -771,12 +771,26 @@ game produces every colour of it. Nobody draws five Scout Bats.
 **`[TO DECIDE]` — what should the *enemies* look like?** *(B4, and B3 says what
 they are: a mosquito, a spider and a scorpion)*
 **`[TO DECIDE]` — do the bats get animation frames, or stay as one pose?** *(B21)*
-Worth being plain about the current state: **nothing in the game animates.** The
-Scout Bat had a 16-frame walk cycle, but it belonged to the superseded 2026-09-18
-design and did not survive Lewis's redraw, so all four animations of every unit
-point at frame 0. Death is a half-second fade rather than a drawn animation. The
-machinery is all still there and reads its frames from `data/units.js` — it is
-waiting on drawings, not on code.
+
+The current state is worth stating exactly, because it is backwards. **The
+placeholder blobs animate and Lewis's real drawings do not.** Every unit the
+game paints itself — the Archer and all seven bugs — has a full 13-frame sheet
+and visibly flaps, lunges when it attacks and topples over when it dies. The
+three bats Lewis actually drew have a single pose each, so they slide across the
+lane frozen.
+
+That is because the Scout's 16-frame walk cycle belonged to the superseded
+2026-09-18 design and did not survive the redraw. So the better art is the only
+art that does not move.
+
+Two different fixes, and they are not exclusive:
+
+- **Lewis draws frames** — the real answer to B21. The machinery already reads
+  whatever `data/units.js` declares, so it is waiting on drawings, not on code.
+- **The game moves a single pose itself** — a bob while hovering, a lunge on the
+  swing, a topple on death, applied to any sprite with only one frame. That needs
+  no drawings at all and would un-freeze the three best-looking things in the
+  game today.
 **`[TO DECIDE]` — music and sound effects?** *(B15)*
 **DECIDED (2026-09-19) — B16 = D: a bat leaves a GRAVE MARKER where it fell.**
 A small headstone on the lane, cleared the instant a Necrobatcer raises it.
@@ -831,11 +845,11 @@ has all ten of its caves, four bats, a boss, seven kinds of bug, a cave picker
 and two usable items, and every cave is measured. Three rounds have answered
 **21 of the 30** questions.
 
-**The gap is art, not design.** Ten caves share one flat purple background, the
-**Archer Bat and all seven bugs are still coloured blobs**, and — since the B4
-redraw replaced the Scout's walk cycle with a single pose — **nothing in the game
-animates at all**. Three of the four bats are Lewis's real drawings, which is
-what the rest should look like.
+**The gap is art, not design.** Ten caves share one flat purple background and
+the **Archer Bat and all seven bugs are still coloured blobs**. And one thing is
+exactly backwards: since the redraw, **the placeholder blobs animate and Lewis's
+three real bats are frozen** — the good art is the only art that does not move
+(see B21 in §9).
 
 Almost nothing left in M3 is blocked on Dad. It is blocked on drawings.
 
