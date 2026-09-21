@@ -100,9 +100,27 @@ commercial use. Write the answer here once so nobody has to look it up again.
 
 ## ✅ THE DRAWING BRIEF (Lewis, homework B4) — three of four delivered
 
-**Done 2026-09-19:** the **Scout Bat**, **Brute Bat** and **Necrobatcer** are
-drawn to this brief and are in the game. The **Archer Bat** is still a
-placeholder, and so are all the bugs.
+**Done — ALL FOUR BATS ARE DRAWN.** Scout, Brute and Necrobatcer landed
+2026-09-19; the **Archer Bat** followed on 2026-09-21, with a bow and an arrow
+already nocked. Only the bugs are still placeholders.
+
+| Bat | Frame | `scale` | Drawn on screen |
+|---|---|---|---|
+| Scout Bat | 150×64 | 0.55 | 83×35 |
+| Brute Bat | 132×64 | 0.80 | 106×51 |
+| Necrobatcer | 100×64 | 0.70 | 70×45 |
+| **Archer Bat** | **106×64** | **0.60** | **64×38** |
+
+**A note for whoever wires up the colour ladder (B23).** A tint *multiplies*, so
+light pixels take the colour and grey ones come out muddy. Measured share of
+light pixels: the first three bats are **66–70%**, the Archer is **47%**. Its
+source is a finer line drawing, and shrinking 1536px down to a 64-tall frame
+blends the thin black lines into the white.
+
+It does not show today. If the Archer looks dull next to the others once
+upgrades exist, re-import it at a **128-tall frame with `scale: 0.3`** — same
+size on screen, 57% light. Rendered at 64/128/192 and compared: at today's size
+the three are indistinguishable, so consistency won.
 
 ### ✅ Cave backgrounds — ALL TEN, 2026-09-21
 
@@ -154,7 +172,6 @@ is trimmed and resized for the game. Keep the originals somewhere safe.
 
 | | Unit | Placeholder colour | Homework |
 |---|---|---|---|
-| 🏹 | Archer Bat | mint green | B4 |
 | 🦟 | Mosquito | pale insect green | B3/B4 |
 | 🕷️ | Spider | dusty purple | B3/B4 |
 | 🦂 | Scorpion | sandy brown | B3/B4 |

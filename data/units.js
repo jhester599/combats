@@ -246,17 +246,37 @@ window.UNITS = {
     attackInterval: 1.1,   // 20.0 dps
     range: 240,            // <-- THE WHOLE POINT. The Scout's is 40.
     speed: 75,
-    color: '#7ce0a8',      // placeholder art until Lewis draws it
+    color: '#7ce0a8',      // only used by placeholder art - this bat has real art now
     sprite: 'archerBat',
-    scale: 0.8,
 
+    // Drawn 64x38 on screen: between the Scout (83x35) and the Necrobatcer
+    // (70x45), which is right for the bat with 24 health. It should not look
+    // like a heavy.
+    scale: 0.6,
+
+    // REAL ART - Lewis's 2026-09-21 drawing, and the fourth and last bat. Drawn
+    // to his own B4 brief - big round body, wings, ears, no legs, black and
+    // white - and then given a BOW with an arrow already nocked, which nobody
+    // asked for and is exactly how you read "the bat that shoots from 240px".
+    //
+    // ONE THING WORTH KNOWING BEFORE THE COLOUR LADDER IS WIRED UP: the source
+    // is a fine line drawing at 1536px, and shrinking it to a 64-tall frame
+    // blends those thin black lines into the white. Measured: 64.7% light
+    // pixels in the original, 47% in the frame. The other three bats are 66-70%.
+    //
+    // That does not matter yet and matters later. A tint MULTIPLIES, so light
+    // areas take the colour and grey ones come out muddy. If the Archer looks
+    // dull next to the others once upgrades exist (B23), re-import it at a
+    // 128-tall frame with scale 0.3 - same size on screen, 57% light. It was
+    // measured at 64/128/192 and at today's size the three are
+    // indistinguishable, so consistency won.
     anims: {
-      frameWidth: 48,
-      frameHeight: 48,
-      idle:   { start: 0,  end: 1,  frameRate: 4,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 10, repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 12, repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 9,  repeat: 0  }
+      frameWidth: 106,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 

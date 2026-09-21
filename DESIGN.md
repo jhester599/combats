@@ -900,7 +900,7 @@ B8 (a boss) and B18 (what the last moment looks like).
 |---|---|---|
 | **M1 — First playable** | One lane, two bats, two enemies, energy + cooldowns, bases, win/lose, Retry, placeholder art | ✅ **Done 2026-09-18** |
 | **M2 — Content** | **Ten caves** (B10 = C), a difficulty curve, a way to pick a cave | ✅ **Done 2026-09-19** — all ten built and measured, four bats, a boss, a cave picker |
-| **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, cave backgrounds, sound | 🟡 **Nearly there.** **All 10 caves ✅**, **both fortresses ✅**, 3 of 4 bats ✅. Still needs the **Archer**, the **seven bugs** (B30), animation (B21) and sound (B15) |
+| **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, cave backgrounds, sound | 🟡 **Nearly there.** **All 10 caves ✅**, **both fortresses ✅**, **all 4 bats ✅**. Still needs the **seven bugs** (B30), animation (B21) and sound (B15) |
 | **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | 🟡 **Started** — saved progress, cave unlocking, and potions/fruit ✅ built; suns, the casino and upgrades need **B29** |
 | **M5 — Depth** | Maybe a second lane, more powers | Needs B14. *Both of its headline items arrived early* — the Necrobatcer's summon (B5) and the boss (B8) |
 
@@ -911,10 +911,10 @@ has all ten of its caves, four bats, a boss, seven kinds of bug, a cave picker
 and two usable items, and every cave is measured. Three rounds have answered
 **21 of the 30** questions.
 
-**The gap is art, not design**, and it has closed a long way. **All ten caves
-are painted and both fortresses are real** (§9); three of the four bats are
-Lewis's drawings. What is left is the **units**: the Archer Bat and all seven
-bugs are still coloured blobs the game paints itself.
+**The gap is art, not design**, and it has nearly closed. **All ten caves are
+painted, both fortresses are real, and all four bats are Lewis's drawings**
+(§9). What is left is the **seven bugs**, still coloured blobs the game paints
+itself — and animation, since nothing moves yet.
 
 One thing is also exactly backwards: since the redraw, **the placeholder blobs
 animate and Lewis's three real bats are frozen** — the good art is the only art

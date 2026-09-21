@@ -225,6 +225,22 @@ No more flat purple anywhere, and no more blue box versus red box.
 | 9 | **Forgotten Oasis** | a glowing green pool under a big moon |
 | 10 | **Final Stadium** | the boss arena, under a red eclipse |
 
+### 🏹 THE ARCHER BAT IS DRAWN — all four of your bats are real now
+
+You gave it a **bow with the arrow already pulled back**. Nobody asked for
+that, and it is exactly how you show "this is the bat that shoots from far
+away" without a single word of explanation. 🎯
+
+That is **all four bats done**: Scout, Brute, Necrobatcer and Archer. The only
+things still drawn by the computer are the seven bugs.
+
+*(One small thing Dad measured and wrote down for later: your Archer is drawn
+with thinner lines than the other three, so when it gets shrunk down to bat
+size a lot of the white turns grey — 47% white against 66-70% for the others.
+It looks completely fine now. It only matters when the colour upgrades get
+built, because colouring works by tinting the WHITE bits. There's a note in the
+code saying exactly how to fix it if it ever looks dull.)*
+
 ### 🏰 Your castle and the enemy's castle
 
 **Yours** is a crystal keep with **bat banners** flying off it. **Theirs** is a

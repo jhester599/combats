@@ -47,6 +47,10 @@ window.BootScene.prototype.preload = function () {
     frameWidth: 100, frameHeight: 64
   });
 
+  this.load.spritesheet('archerBat', 'assets/sprites/archerBat.png', {
+    frameWidth: 106, frameHeight: 64
+  });
+
   /* THE TWO FORTRESSES. Loaded here rather than per-battle (the way cave
      paintings are) because both appear in every single battle and together
      they are only ~145KB. */
