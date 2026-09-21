@@ -85,6 +85,12 @@ window.Base.prototype.build = function () {
     color: cfg.text.color
   }).setOrigin(0.5);
 
+  // This one mattered most: over Dream Land's clouds it was white on white and
+  // could not be read at all. The scene owns the styling so the HUD matches.
+  if (this.scene.makeReadable) {
+    this.scene.makeReadable(this.hpText);
+  }
+
   this.refresh();
 };
 

@@ -208,6 +208,43 @@ Things Dad made the rules do, so they can't be abused:
 
 ---
 
+### 🎨 FIVE OF YOUR CAVES HAVE REAL BACKGROUNDS NOW
+
+No more flat purple. Go and look at these five:
+
+| | Cave | What you'll see |
+|---|---|---|
+| 2 | **Crystal Falls** | waterfalls, giant blue and purple crystals, a mine |
+| 3 | **Dream Land** | castles floating in the clouds |
+| 8 | **Abyss of Darkness** | a huge black whirlpool in the sky 😱 |
+| 9 | **Forgotten Oasis** | a glowing green pool under a big moon |
+| 10 | **Final Stadium** | the boss arena, under a red eclipse |
+
+Your bats stand on the ground properly in each one, which took a bit of
+fiddling — **every painting has its ground in a different place.** Crystal
+Falls has a stone floor, Dream Land has a shelf of cloud, the Abyss has a strip
+of rubble. The game has to slide each picture up or down until its ground lines
+up with the line your bats walk along.
+
+**If a cave ever looks wrong, you can fix it yourself.** Open
+`data/backgrounds.js` and find that cave's `ground` number:
+
+- bats **floating above** the ground → make the number **bigger** (0.78 → 0.80)
+- bats **sunk into** the ground → make it **smaller** (0.78 → 0.76)
+
+Save, refresh. 0.01 is about six pixels.
+
+*(Two things it broke, both fixed: your fortress health numbers went
+**white-on-white** in Dream Land and were completely invisible — all the text
+has a dark outline now. And the first version drew the pictures **behind** the
+background colour, so every cave was a plain navy rectangle and nothing even
+errored.)*
+
+**Still flat purple:** The Cave, Pyramid, Sahara-hara Desert, Scarred Woods and
+Wait Um — their paintings haven't arrived yet.
+
+---
+
 ### 🦇 Dad changed your Necrobatcer: it now casts from the back
 
 Your summoner had a silly problem and nobody had spotted it.

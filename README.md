@@ -214,6 +214,26 @@ that tune how it feels:
   never weakens your own bats, fruit can't overheal, and nothing writes on the
   shared stats object in `data/units.js`.
 
+### Add a cave painting
+
+```bash
+node tools/import-background.js some-picture.webp --cave pyramid
+```
+
+Resizes the picture, re-encodes it, saves it as `assets/bg/pyramid.webp` and
+prints the block to paste into `data/backgrounds.js`.
+
+The one number that matters is **`ground`** — where in the picture the bats
+should stand, as a fraction of its height. Every painting puts its ground
+somewhere different; the game slides the picture until that line meets
+`CONFIG.lane.y`. The tool guesses it, and the guess is *often wrong by enough to
+see*, so play the cave and nudge the number (bigger = bats stand lower down the
+picture).
+
+Unlike every other tool here it needs a browser, because decoding a painted
+image without an image library isn't sensible. That's fine — it's a one-off
+import step, and the **game** still depends on nothing.
+
 ### Check the documentation is still true
 
 ```bash
@@ -247,6 +267,7 @@ data/               EVERY tuning number lives here
   units.js            all unit stats (yours and the enemy's)
   levels.js           base HP, economy, and the wave schedule
   items.js            potions, fruit and blood (the casino goods)
+  backgrounds.js      each cave's painting, and where its ground line is
 src/
   main.js             starts Phaser, lists the scenes
   scenes/
@@ -272,9 +293,12 @@ tools/
   sting-test.js       checks the gambling rules hold (testing only)
   items-test.js       checks the item rules hold (testing only)
   doc-check.js        checks the DOCUMENTS still match the data (testing only)
+  import-background.js  puts a cave painting into assets/bg (needs a browser)
   pack-spritesheet.js turns a folder of frames into one sprite sheet
   png.js              reads/writes PNG files, used by the packer
-assets/             empty for now - real art goes here
+assets/
+  sprites/            the bats, and the sprite sheets they are packed into
+  bg/                 one painting per cave, named after its cave key
 ```
 
 ### The rules this project sticks to

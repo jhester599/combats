@@ -104,6 +104,23 @@ commercial use. Write the answer here once so nobody has to look it up again.
 drawn to this brief and are in the game. The **Archer Bat** is still a
 placeholder, and so are all the bugs.
 
+### ✅ Cave backgrounds — five of ten, added 2026-09-21
+
+| Cave | File | `ground` |
+|---|---|---|
+| Crystal Falls | `assets/bg/crystalFalls.webp` | 0.800 |
+| Dream Land | `assets/bg/dreamLand.webp` | 0.810 |
+| Abyss of Darkness | `assets/bg/abyssOfDarkness.webp` | 0.745 |
+| Forgotten Oasis | `assets/bg/forgottenOasis.webp` | 0.780 |
+| Final Stadium | `assets/bg/finalStadium.webp` | 0.780 |
+
+All 1280×569 webp, 50–170KB each. `ground` is where in each picture the bats
+stand — see `assets/bg/README.md`. **Still flat purple:** The Cave, Pyramid,
+Sahara-hara Desert, Scarred Woods, Wait Um.
+
+The full-resolution originals (1881×836) are **not** in the repo; what is stored
+is resized for the game. Keep the originals somewhere safe.
+
 ### What is still a coloured blob the game paints itself
 
 | | Unit | Placeholder colour | Homework |
@@ -116,6 +133,16 @@ placeholder, and so are all the bugs.
 | 🦂 | **Desert Scorpion** | bright desert sand | **B30** *(new)* |
 | 🦋 | **Evil Butterfly** | dream magenta | **B30** *(new)* |
 | ✨ | **Lightning Bug** | firefly yellow-green | **B30** *(new)* |
+
+And two things that are not units at all, drawn as **plain rectangles**:
+
+| | Thing | Drawn as | Size |
+|---|---|---|---|
+| 🏰 | Your fortress | a blue box with a slab on top | 74×150 (+92×20 roof) |
+| 🏰 | The enemy fortress | the same box in red | 74×150 (+92×20 roof) |
+
+These are the thing a player spends most of a battle attacking, and they look
+especially out of place now the caves are painted.
 
 The three new ones arrived with homework B26 on 2026-09-20. Note that the **bugs
 are not bats**, so the "large circle, wings, ears, no legs" brief below does not

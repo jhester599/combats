@@ -347,7 +347,20 @@ window.CONFIG = {
      --------------------------------------------------------------------- */
   text: {
     fontFamily: 'Verdana, Geneva, sans-serif',
-    color: '#ffffff'
+    color: '#ffffff',
+
+    // ------------------- READING TEXT OVER A PAINTING -------------------
+    // Every number on screen used to sit on the same flat purple, so plain
+    // white was fine. The cave paintings broke that in one go: Dream Land is
+    // pale cloud and Crystal Falls is bright sky, and white-on-white is not
+    // text, it is a rumour. The fortress health readouts vanished completely.
+    //
+    // So anything drawn over the artwork gets a dark outline. It costs nothing
+    // on the dark caves and rescues the bright ones.
+    outlineColor: '#120c24',
+    outlineThickness: 4,
+    shadowColor: '#000000',
+    shadowBlur: 5
   },
 
   /* ---------------------------------------------------------------------

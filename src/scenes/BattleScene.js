@@ -41,6 +41,31 @@ window.BattleScene.prototype.init = function (data) {
   this.playerWon = false;
 };
 
+/* -------------------------------------------------------------------------
+   Load this cave's painting, and ONLY this cave's.
+
+   The ten backgrounds come to about 1.2MB between them, which is a lot to make
+   somebody download on a phone to play one cave. Loading here instead of in
+   BootScene means a battle fetches the one picture it needs (~50-170KB) and the
+   browser caches it, so the second visit is instant.
+
+   Phaser skips a key it has already loaded, so replaying a cave costs nothing.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.preload = function () {
+  var bg = window.BACKGROUNDS ? window.BACKGROUNDS[this.levelKey] : null;
+
+  if (!bg || this.textures.exists(this.backgroundKey())) {
+    return;
+  }
+
+  this.load.image(this.backgroundKey(), 'assets/bg/' + bg.file);
+};
+
+/* The texture name for a cave's painting. */
+window.BattleScene.prototype.backgroundKey = function () {
+  return 'bg_' + this.levelKey;
+};
+
 /* ------------------------------------------------------------------------- */
 window.BattleScene.prototype.create = function () {
   var self = this;
@@ -108,19 +133,60 @@ window.BattleScene.prototype.create = function () {
   this.buildItemButtons();
   this.buildResultPanel();
 
-  this.add.text(window.CONFIG.screen.width / 2, 22, this.level.name, {
-    fontFamily: window.CONFIG.text.fontFamily,
-    fontSize: '18px',
-    color: '#b9a9e8'
-  }).setOrigin(0.5, 0);
+  this.makeReadable(
+    this.add.text(window.CONFIG.screen.width / 2, 22, this.level.name, {
+      fontFamily: window.CONFIG.text.fontFamily,
+      fontSize: '18px',
+      color: '#d8cbff'
+    }).setOrigin(0.5, 0)
+  );
 };
 
 /* -------------------------------------------------------------------------
-   The lane and the sky. Placeholder art: flat colours.
-   TODO: swap the ground rectangle for a real background image from
-         /assets/bg once we pick one.
+   Make a piece of text readable wherever it lands.
+
+   Before the cave paintings arrived, every number on screen sat on the same
+   flat purple, so plain white was fine. Now the same white text can land on a
+   bright sky or a bank of cloud and simply vanish - in Dream Land the fortress
+   health readouts became white-on-white and could not be read at all.
+
+   A dark outline fixes every case at once. It costs nothing on the dark caves.
+   The bases call this through their scene, so buildings and HUD match.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.makeReadable = function (textObject) {
+  var t = window.CONFIG.text;
+
+  textObject.setStroke(t.outlineColor, t.outlineThickness);
+  textObject.setShadow(0, 2, t.shadowColor, t.shadowBlur, false, true);
+
+  return textObject;
+};
+
+/* -------------------------------------------------------------------------
+   THE CAVE ITSELF.
+
+   If this cave has a painting (data/backgrounds.js) it is drawn here, slid up
+   or down so the picture's own ground line lands exactly on CONFIG.lane.y -
+   which is the line the bats walk along. That is the whole trick: every
+   painting puts its ground in a different place, and one number per picture
+   reconciles them.
+
+   A cave with no painting falls back to the flat purple the game shipped with,
+   so a missing file is a plain-looking cave rather than a broken one.
    ------------------------------------------------------------------------- */
 window.BattleScene.prototype.drawBackground = function () {
+  var bg = window.BACKGROUNDS ? window.BACKGROUNDS[this.levelKey] : null;
+
+  if (bg && this.textures.exists(this.backgroundKey())) {
+    this.drawPaintedBackground(bg);
+    return;
+  }
+
+  this.drawFlatBackground();
+};
+
+/* The original look: flat colours. Still used by any cave without a painting. */
+window.BattleScene.prototype.drawFlatBackground = function () {
   var cfg = window.CONFIG;
 
   this.add.rectangle(
@@ -142,6 +208,55 @@ window.BattleScene.prototype.drawBackground = function () {
   this.add.rectangle(
     cfg.screen.width / 2, cfg.lane.y, cfg.screen.width, 3, cfg.lane.edgeColor
   );
+};
+
+/* ------------------------------------------------------------------------- */
+window.BattleScene.prototype.drawPaintedBackground = function (bg) {
+  var cfg = window.CONFIG;
+  var key = this.backgroundKey();
+
+  // The game is PIXEL ART, so Phaser is told globally not to smooth anything -
+  // which is right for a 64px bat and quite wrong for a painting, where it
+  // makes every edge crunchy. Paintings are switched back to smooth scaling.
+  var texture = this.textures.get(key);
+
+  if (texture && texture.setFilter && Phaser.Textures.FilterMode) {
+    texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+  }
+
+  var source = this.textures.get(key).getSourceImage();
+  var drawWidth = cfg.screen.width;
+  var drawHeight = source.height * (drawWidth / source.width);
+
+  // Slide the picture so ITS ground sits on OUR lane.
+  var top = cfg.lane.y - (drawHeight * bg.ground);
+
+  // The paintings are wider than the screen's shape, so scaled to fill the
+  // width they leave a strip bare at the top or the bottom. Fill those with the
+  // picture's own edge colours rather than cropping somebody's artwork.
+  //
+  // THE DEPTHS MATTER, and getting them wrong is invisible until you look: a
+  // Phaser object added without a depth sits at 0, so the first version of this
+  // put the painting at -1000 and then drew these two fills straight over the
+  // top of it. The cave rendered as a flat navy rectangle and nothing errored.
+  // Everything here is stacked explicitly, well below the units at ~340-365.
+  var floor = this.add.rectangle(
+    cfg.screen.width / 2, cfg.screen.height / 2,
+    cfg.screen.width, cfg.screen.height,
+    bg.floorColor
+  );
+  floor.setDepth(-1002);
+
+  if (top > 0) {
+    var sky = this.add.rectangle(
+      cfg.screen.width / 2, top / 2, cfg.screen.width, top, bg.skyColor
+    );
+    sky.setDepth(-1001);
+  }
+
+  var image = this.add.image(0, top, key).setOrigin(0, 0);
+  image.setDisplaySize(drawWidth, drawHeight);
+  image.setDepth(-1000);
 };
 
 /* =========================================================================
@@ -342,12 +457,12 @@ window.BattleScene.prototype.buildEnergyBar = function () {
   border.setFillStyle();
 
   // Sits beside the bar (not on it) so it is readable when energy is low.
-  this.energyText = this.add.text(
+  this.energyText = this.makeReadable(this.add.text(
     bar.x + bar.width + bar.labelGap, bar.y + (bar.height / 2), '', {
       fontFamily: cfg.text.fontFamily,
       fontSize: '16px',
       color: '#ffd24a'
-    }).setOrigin(0, 0.5);
+    }).setOrigin(0, 0.5));
 };
 
 /* -------------------------------------------------------------------------
@@ -736,11 +851,13 @@ window.BattleScene.prototype.buildWeakenLabel = function () {
   var cfg = window.CONFIG;
   var bar = cfg.energyBar;
 
-  this.weakenLabel = this.add.text(bar.x, bar.y + bar.height + 10, '', {
-    fontFamily: cfg.text.fontFamily,
-    fontSize: '15px',
-    color: cfg.floatingText.itemColor
-  }).setOrigin(0, 0);
+  this.weakenLabel = this.makeReadable(
+    this.add.text(bar.x, bar.y + bar.height + 10, '', {
+      fontFamily: cfg.text.fontFamily,
+      fontSize: '15px',
+      color: cfg.floatingText.itemColor
+    }).setOrigin(0, 0)
+  );
 };
 
 window.BattleScene.prototype.syncWeakenLabel = function () {
@@ -779,11 +896,11 @@ window.BattleScene.prototype.buildFloatingTexts = function () {
   this.floaters = [];
 
   for (i = 0; i < f.maxDrawn; i++) {
-    var text = this.add.text(0, 0, '', {
+    var text = this.makeReadable(this.add.text(0, 0, '', {
       fontFamily: cfg.text.fontFamily,
       fontSize: f.fontSize,
       color: '#ffffff'
-    }).setOrigin(0.5, 1);
+    }).setOrigin(0.5, 1));
 
     text.setVisible(false);
     text.setDepth(1500);      // above the bats, below the result panel (2000)

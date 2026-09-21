@@ -686,6 +686,54 @@ them in the gamble? This is the last thing blocking the casino.
 
 ## 9. Look & Sound
 
+**BUILT (2026-09-21) — five caves have real paintings.** Crystal Falls, Dream
+Land, Abyss of Darkness, Forgotten Oasis and the Final Stadium each have their
+own artwork instead of the flat purple every cave shared. `data/backgrounds.js`
+holds them; `assets/bg/` holds the pictures.
+
+### The one number per painting: `ground`
+
+Every painting has a flat surface the bats are meant to stand on, and it is
+somewhere different in each — a wet stone floor in Crystal Falls, a shelf of
+cloud in Dream Land, a strip of rubble in the Abyss. The game, meanwhile, walks
+its bats along one fixed line, `CONFIG.lane.y`.
+
+So each picture declares its own ground as a **fraction of its height**, and the
+game slides the picture up or down until that line meets the lane. Bigger means
+the bats stand lower down the picture; about 0.01 is six pixels on screen.
+
+**Detecting it automatically was tried and abandoned.** The obvious approach —
+find the sharpest darkening in the lower half — worked on the Abyss and then
+found completely the wrong edge on Crystal Falls: the *back* of the stone floor
+rather than its front lip, a hundred pixels out. `tools/import-background.js`
+still prints a guess, because a guess to nudge beats a blank, but every cave is
+checked by eye against the real game framing.
+
+### Fitted, never cropped
+
+The paintings are about 2.25:1 and the screen is 1.78:1, so something has to
+give. Rather than crop — these compositions put their framing at the edges, so
+cropping costs the best of them — the picture is scaled to the screen's width
+and the strips left bare at top and bottom are filled with flat colour **taken
+from the painting's own edges**. On the dark caves the join is invisible.
+
+### What the paintings broke
+
+Two things, both worth recording because neither failed loudly:
+
+- **The layering.** The picture was put at depth −1000 to sit behind the bats,
+  and then the two edge-fills were drawn at the default depth of 0, straight
+  over the top of it. The cave rendered as a flat navy rectangle, no error, no
+  warning. Everything is stacked explicitly now.
+- **Text contrast.** Every number on screen used to sit on the same flat purple,
+  so plain white was fine — an assumption nobody had written down. Over Dream
+  Land's clouds the fortress health readouts became white on white and could not
+  be read at all. All HUD text now carries a dark outline (`CONFIG.text`).
+
+**`[TO DECIDE]` — the five caves still without a painting:** The Cave, Pyramid,
+Sahara-hara Desert, Scarred Woods and Wait Um. They fall back to the flat purple
+until their pictures land, so the game works either way.
+
 **DECIDED (2026-09-18) — the player bats have real art.** Lewis made both in
 PixelLab: the **Scout Bat** is a small brown bat in blue flight goggles, the
 **Brute Bat** a heavier one in a cape. They are one 64×64 pose each, drawn at
@@ -834,7 +882,7 @@ B8 (a boss) and B18 (what the last moment looks like).
 |---|---|---|
 | **M1 — First playable** | One lane, two bats, two enemies, energy + cooldowns, bases, win/lose, Retry, placeholder art | ✅ **Done 2026-09-18** |
 | **M2 — Content** | **Ten caves** (B10 = C), a difficulty curve, a way to pick a cave | ✅ **Done 2026-09-19** — all ten built and measured, four bats, a boss, a cave picker |
-| **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, a wet-cave background, sound | 🔜 **Next, and the biggest gap: ten caves, one look.** 3 of 4 bats drawn ✅. Still needs the **Archer**, the **seven bugs** (B30), backgrounds, animation (B21) and sound (B15) |
+| **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, cave backgrounds, sound | 🟡 **Well under way.** 3 of 4 bats ✅, **5 of 10 cave paintings ✅**. Still needs the **Archer**, the **seven bugs** (B30), the **two fortresses**, five more caves, animation (B21) and sound (B15) |
 | **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | 🟡 **Started** — saved progress, cave unlocking, and potions/fruit ✅ built; suns, the casino and upgrades need **B29** |
 | **M5 — Depth** | Maybe a second lane, more powers | Needs B14. *Both of its headline items arrived early* — the Necrobatcer's summon (B5) and the boss (B8) |
 
@@ -845,11 +893,14 @@ has all ten of its caves, four bats, a boss, seven kinds of bug, a cave picker
 and two usable items, and every cave is measured. Three rounds have answered
 **21 of the 30** questions.
 
-**The gap is art, not design.** Ten caves share one flat purple background and
-the **Archer Bat and all seven bugs are still coloured blobs**. And one thing is
-exactly backwards: since the redraw, **the placeholder blobs animate and Lewis's
-three real bats are frozen** — the good art is the only art that does not move
-(see B21 in §9).
+**The gap is art, not design**, and it is closing. **Five of the ten caves now
+have real paintings** (§9), and three of the four bats are Lewis's drawings.
+Still outstanding: the **Archer Bat and all seven bugs are coloured blobs**, the
+**two fortresses are plain rectangles**, and five caves are still flat purple.
+
+One thing is also exactly backwards: since the redraw, **the placeholder blobs
+animate and Lewis's three real bats are frozen** — the good art is the only art
+that does not move (see B21 in §9).
 
 Almost nothing left in M3 is blocked on Dad. It is blocked on drawings.
 
