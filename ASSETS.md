@@ -104,22 +104,51 @@ commercial use. Write the answer here once so nobody has to look it up again.
 drawn to this brief and are in the game. The **Archer Bat** is still a
 placeholder, and so are all the bugs.
 
-### ✅ Cave backgrounds — five of ten, added 2026-09-21
+### ✅ Cave backgrounds — ALL TEN, 2026-09-21
 
-| Cave | File | `ground` |
+| # | Cave | File | `ground` |
+|---|---|---|---|
+| 1 | The Cave | `assets/bg/level1.webp` | 0.780 |
+| 2 | Crystal Falls | `assets/bg/crystalFalls.webp` | 0.800 |
+| 3 | Dream Land | `assets/bg/dreamLand.webp` | 0.810 |
+| 4 | Pyramid | `assets/bg/pyramid.webp` | 0.780 |
+| 5 | Sahara-hara Desert | `assets/bg/saharaDesert.webp` | 0.780 |
+| 6 | Wait Um | `assets/bg/waitUm.webp` | 0.780 |
+| 7 | Scarred Woods | `assets/bg/scarredWoods.webp` | 0.780 |
+| 8 | Abyss of Darkness | `assets/bg/abyssOfDarkness.webp` | 0.745 |
+| 9 | Forgotten Oasis | `assets/bg/forgottenOasis.webp` | 0.780 |
+| 10 | Final Stadium | `assets/bg/finalStadium.webp` | 0.780 |
+
+All 1280×569 webp, 50–170KB each, 1.3MB together — and a battle downloads only
+the one cave it needs. `ground` is where in each picture the bats stand; see
+`assets/bg/README.md`.
+
+The second batch all landed on **0.780** and that is not laziness: those five
+were drawn to one composition with the walkable surface in the same place. The
+first five genuinely differ, 0.745 to 0.810.
+
+The Graveyard is a practice level and keeps the flat purple, which suits it —
+it is a workshop, not a place.
+
+### ✅ The two fortresses, 2026-09-21
+
+| Side | File | Drawn as |
 |---|---|---|
-| Crystal Falls | `assets/bg/crystalFalls.webp` | 0.800 |
-| Dream Land | `assets/bg/dreamLand.webp` | 0.810 |
-| Abyss of Darkness | `assets/bg/abyssOfDarkness.webp` | 0.745 |
-| Forgotten Oasis | `assets/bg/forgottenOasis.webp` | 0.780 |
-| Final Stadium | `assets/bg/finalStadium.webp` | 0.780 |
+| Yours | `assets/bases/batFortress.webp` | a crystal keep flying bat banners |
+| The enemy's | `assets/bases/beeFortress.webp` | a fortified beehive dripping honey |
 
-All 1280×569 webp, 50–170KB each. `ground` is where in each picture the bats
-stand — see `assets/bg/README.md`. **Still flat purple:** The Cave, Pyramid,
-Sahara-hara Desert, Scarred Woods, Wait Um.
+350×512 and 363×512 webp, 88KB and 56KB, drawn 185px tall in game.
 
-The full-resolution originals (1881×836) are **not** in the repo; what is stored
-is resized for the game. Keep the originals somewhere safe.
+**The hive is a happy accident worth recording:** the boss of the entire game is
+Lewis's **Cow Killer Bee**, and nobody briefed a beehive. The bugs turn out to
+have been defending her hive in every cave all along.
+
+Both arrived already transparent. The bat keep measures 66% "partial alpha",
+which looked alarming and is nothing: the body sits at alpha 251–253 — about 1%
+see-through — a lossy-webp artefact, not a real translucency.
+
+The full-resolution originals (1024×1536) are **not** in the repo; what is stored
+is trimmed and resized for the game. Keep the originals somewhere safe.
 
 ### What is still a coloured blob the game paints itself
 
@@ -134,15 +163,8 @@ is resized for the game. Keep the originals somewhere safe.
 | 🦋 | **Evil Butterfly** | dream magenta | **B30** *(new)* |
 | ✨ | **Lightning Bug** | firefly yellow-green | **B30** *(new)* |
 
-And two things that are not units at all, drawn as **plain rectangles**:
-
-| | Thing | Drawn as | Size |
-|---|---|---|---|
-| 🏰 | Your fortress | a blue box with a slab on top | 74×150 (+92×20 roof) |
-| 🏰 | The enemy fortress | the same box in red | 74×150 (+92×20 roof) |
-
-These are the thing a player spends most of a battle attacking, and they look
-especially out of place now the caves are painted.
+Everything that is *not* a unit now has real art: both fortresses and all ten
+cave paintings. The list above is what is left.
 
 The three new ones arrived with homework B26 on 2026-09-20. Note that the **bugs
 are not bats**, so the "large circle, wings, ears, no legs" brief below does not

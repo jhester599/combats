@@ -39,9 +39,47 @@ window.Base = function (scene, team, maxHp) {
 };
 
 /* -------------------------------------------------------------------------
-   Draw the building and its health bar (placeholder art: simple blocks).
+   THE PAINTED FORTRESS.
+
+   Anchored by the side that gets ATTACKED, not by its centre: the inner edge
+   sits exactly on faceX - the line bats stop at - and the building grows
+   outwards from there, off the screen edge if it needs to. Centring it instead
+   would drift the painted doorway away from where the fighting actually is.
    ------------------------------------------------------------------------- */
-window.Base.prototype.build = function () {
+window.Base.prototype.buildArt = function (artKey) {
+  var cfg = window.CONFIG;
+  var isPlayer = (this.team === 'player');
+
+  var source = this.scene.textures.get(artKey).getSourceImage();
+  var height = cfg.bases.artHeight;
+  var width = source.width * (height / source.height);
+
+  // These are paintings, not pixel art, and the game turns smoothing off
+  // globally for the bats. Switch it back on for these or the edges crunch.
+  var texture = this.scene.textures.get(artKey);
+
+  if (texture && texture.setFilter && window.Phaser && Phaser.Textures.FilterMode) {
+    texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+  }
+
+  // Origin on the attacked side, sitting on the lane: the player's fortress
+  // grows left from its face, the enemy's grows right.
+  this.body = this.scene.add.image(this.faceX, cfg.lane.y, artKey);
+  this.body.setOrigin(isPlayer ? 1 : 0, 1);
+  this.body.setDisplaySize(width, height);
+
+  // Behind the bats (which sit at about 340-365) but well in front of the cave
+  // painting, so a bat standing at the door is drawn over the building.
+  this.body.setDepth(100);
+
+  this.topY = cfg.lane.y - height;
+};
+
+/* -------------------------------------------------------------------------
+   The original blocks. Still used whenever a fortress picture is missing, so
+   a missing file is a plain-looking base rather than a broken game.
+   ------------------------------------------------------------------------- */
+window.Base.prototype.buildBlocks = function () {
   var cfg = window.CONFIG;
   var color = (this.team === 'player') ? cfg.bases.playerColor : cfg.bases.enemyColor;
 
@@ -62,8 +100,29 @@ window.Base.prototype.build = function () {
     cfg.bases.roofColor
   );
 
-  // Health bar, floating above the tower.
-  var barY = bodyY + cfg.healthBar.baseOffsetY;
+  this.topY = bodyY - (cfg.bases.height / 2) - 20;
+};
+
+/* -------------------------------------------------------------------------
+   Draw the building and its health bar.
+
+   Either Lewis's painted fortress, or - if the picture is missing - the plain
+   coloured boxes the game shipped with. Both paths end up setting this.topY,
+   which is where the health bar hangs from.
+   ------------------------------------------------------------------------- */
+window.Base.prototype.build = function () {
+  var cfg = window.CONFIG;
+
+  var artKey = (this.team === 'player') ? cfg.bases.playerArt : cfg.bases.enemyArt;
+
+  if (artKey && this.scene.textures.exists(artKey)) {
+    this.buildArt(artKey);
+  } else {
+    this.buildBlocks();
+  }
+
+  // Health bar, floating above whatever was drawn.
+  var barY = this.topY - cfg.bases.artBarGap;
 
   this.barBack = this.scene.add.rectangle(
     this.x, barY, cfg.healthBar.baseWidth, cfg.healthBar.baseHeight,
@@ -90,6 +149,13 @@ window.Base.prototype.build = function () {
   if (this.scene.makeReadable) {
     this.scene.makeReadable(this.hpText);
   }
+
+  // A fortress is drawn at depth 100, so anything that must stay readable over
+  // it has to be told to sit higher. The bar happens to float above the
+  // building today, but "happens to" is not a thing to leave load-bearing.
+  this.barBack.setDepth(200);
+  this.barFill.setDepth(200);
+  this.hpText.setDepth(200);
 
   this.refresh();
 };

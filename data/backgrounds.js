@@ -79,10 +79,54 @@ window.BACKGROUNDS = {
     ground: 0.780,        // the dirt floor of the arena, under the eclipse
     skyColor: 0x261321,
     floorColor: 0x0f0d10
+  },
+
+  /* ------------------- THE SECOND FIVE, 2026-09-21 -------------------
+     These all sat at 0.780 once they were checked in the game. That is not
+     laziness - the five were drawn to one composition, with the walkable
+     surface in the same place each time, so they genuinely share a number.
+     The first five did not, and range from 0.745 to 0.810. */
+
+  level1: {
+    file: 'level1.webp',
+    // The Cave, and Lewis's B2 answer finally has a picture: a real cave, lit
+    // only by the crystals growing out of its walls.
+    ground: 0.780,
+    skyColor: 0x13152b,
+    floorColor: 0x0f1020
+  },
+
+  pyramid: {
+    file: 'pyramid.webp',
+    ground: 0.780,
+    skyColor: 0x5479ac,
+    floorColor: 0x805636
+  },
+
+  saharaDesert: {
+    file: 'saharaDesert.webp',
+    ground: 0.780,
+    skyColor: 0x946897,
+    floorColor: 0x995223
+  },
+
+  scarredWoods: {
+    file: 'scarredWoods.webp',
+    ground: 0.780,
+    skyColor: 0x1a2c42,
+    floorColor: 0x151b18
+  },
+
+  waitUm: {
+    file: 'waitUm.webp',
+    // The best joke in the whole game: "Wait Um" is a sky full of QUESTION
+    // MARKS. Nobody briefed that - it came back from the name itself.
+    ground: 0.780,
+    skyColor: 0x5496f1,
+    floorColor: 0xaabdf3
   }
 
-  /* STILL TO COME - these caves fall back to the flat purple until their
-     painting lands in assets/bg/:
-       level1 (The Cave), pyramid, saharaDesert, scarredWoods, waitUm
-     and the Graveyard, which is a practice level and may never need one. */
+  /* All ten caves of Palopa now have a painting. The Graveyard is a practice
+     level rather than a real cave and falls back to the flat purple, which
+     suits it - it is a workshop, not a place. */
 };

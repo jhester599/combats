@@ -299,6 +299,7 @@ tools/
 assets/
   sprites/            the bats, and the sprite sheets they are packed into
   bg/                 one painting per cave, named after its cave key
+  bases/              the two fortresses
 ```
 
 ### The rules this project sticks to

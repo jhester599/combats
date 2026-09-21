@@ -208,17 +208,33 @@ Things Dad made the rules do, so they can't be abused:
 
 ---
 
-### 🎨 FIVE OF YOUR CAVES HAVE REAL BACKGROUNDS NOW
+### 🎨 ALL TEN CAVES HAVE REAL BACKGROUNDS — AND BOTH CASTLES ARE REAL
 
-No more flat purple. Go and look at these five:
+No more flat purple anywhere, and no more blue box versus red box.
 
 | | Cave | What you'll see |
 |---|---|---|
-| 2 | **Crystal Falls** | waterfalls, giant blue and purple crystals, a mine |
+| 1 | **The Cave** | a real cave, lit only by crystals 💎 |
+| 2 | **Crystal Falls** | waterfalls, giant crystals, a mine |
 | 3 | **Dream Land** | castles floating in the clouds |
+| 4 | **Pyramid** | pyramids and jackal statues at sunset |
+| 5 | **Sahara-hara Desert** | dunes under an orange sunset |
+| 6 | **Wait Um** | a sky full of **QUESTION MARKS** — nobody asked for that, it just came from the name, and it is perfect 😂 |
+| 7 | **Scarred Woods** | dead mossy trees, a full moon, something with glowing eyes watching you from a trunk |
 | 8 | **Abyss of Darkness** | a huge black whirlpool in the sky 😱 |
 | 9 | **Forgotten Oasis** | a glowing green pool under a big moon |
 | 10 | **Final Stadium** | the boss arena, under a red eclipse |
+
+### 🏰 Your castle and the enemy's castle
+
+**Yours** is a crystal keep with **bat banners** flying off it. **Theirs** is a
+giant **BEEHIVE** with honey pouring down the steps, spikes everywhere, and red
+flags with a bee on them.
+
+And here is the best bit, which nobody planned: **the boss of the whole game is
+your Cow Killer Bee.** Nobody asked for a beehive castle. It just turned up —
+which means the bugs have been defending *her hive* in every single cave the
+whole time. 🐝
 
 Your bats stand on the ground properly in each one, which took a bit of
 fiddling — **every painting has its ground in a different place.** Crystal

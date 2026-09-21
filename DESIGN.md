@@ -686,10 +686,29 @@ them in the gamble? This is the last thing blocking the casino.
 
 ## 9. Look & Sound
 
-**BUILT (2026-09-21) — five caves have real paintings.** Crystal Falls, Dream
-Land, Abyss of Darkness, Forgotten Oasis and the Final Stadium each have their
-own artwork instead of the flat purple every cave shared. `data/backgrounds.js`
-holds them; `assets/bg/` holds the pictures.
+**BUILT (2026-09-21) — all ten caves are painted, and both fortresses are real.**
+Every cave in Palopa has its own artwork instead of the flat purple they all
+shared, and the two buildings are no longer a blue box and a red box.
+`data/backgrounds.js` and `assets/bg/` hold the caves; `assets/bases/` holds the
+fortresses.
+
+### The two fortresses
+
+Yours is a **crystal keep flying bat banners**. The enemy's is a **fortified
+beehive dripping honey behind spiked palisades** — which is a lovely accident,
+because the boss of the whole game is Lewis's **Cow Killer Bee**. The bugs turn
+out to have been defending her hive in every cave all along, and nobody had
+drawn it.
+
+A fortress is anchored by **the side that gets attacked**: its inner edge sits
+exactly on `faceX`, the line bats stop at, and the building grows outwards from
+there — off the screen edge if it must. Centring it on the base's x instead
+would drift the painted doorway away from where the fighting happens. No
+gameplay geometry changed: bats stop exactly where they always did.
+
+The height, 185px, was measured rather than guessed — rendered at 150, 185 and
+220 against a real cave with bats for scale. 150 read as a hut in the corner;
+220 cropped the bat banners and the hive's right tower off the screen.
 
 ### The one number per painting: `ground`
 
@@ -730,9 +749,8 @@ Two things, both worth recording because neither failed loudly:
   Land's clouds the fortress health readouts became white on white and could not
   be read at all. All HUD text now carries a dark outline (`CONFIG.text`).
 
-**`[TO DECIDE]` — the five caves still without a painting:** The Cave, Pyramid,
-Sahara-hara Desert, Scarred Woods and Wait Um. They fall back to the flat purple
-until their pictures land, so the game works either way.
+The Graveyard keeps the flat purple, which suits it — it is a practice level, a
+workshop rather than a place in Palopa.
 
 **DECIDED (2026-09-18) — the player bats have real art.** Lewis made both in
 PixelLab: the **Scout Bat** is a small brown bat in blue flight goggles, the
@@ -882,7 +900,7 @@ B8 (a boss) and B18 (what the last moment looks like).
 |---|---|---|
 | **M1 — First playable** | One lane, two bats, two enemies, energy + cooldowns, bases, win/lose, Retry, placeholder art | ✅ **Done 2026-09-18** |
 | **M2 — Content** | **Ten caves** (B10 = C), a difficulty curve, a way to pick a cave | ✅ **Done 2026-09-19** — all ten built and measured, four bats, a boss, a cave picker |
-| **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, cave backgrounds, sound | 🟡 **Well under way.** 3 of 4 bats ✅, **5 of 10 cave paintings ✅**. Still needs the **Archer**, the **seven bugs** (B30), the **two fortresses**, five more caves, animation (B21) and sound (B15) |
+| **M3 — Look & feel** | Hand-drawn black-and-white bats, the bugs, cave backgrounds, sound | 🟡 **Nearly there.** **All 10 caves ✅**, **both fortresses ✅**, 3 of 4 bats ✅. Still needs the **Archer**, the **seven bugs** (B30), animation (B21) and sound (B15) |
 | **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | 🟡 **Started** — saved progress, cave unlocking, and potions/fruit ✅ built; suns, the casino and upgrades need **B29** |
 | **M5 — Depth** | Maybe a second lane, more powers | Needs B14. *Both of its headline items arrived early* — the Necrobatcer's summon (B5) and the boss (B8) |
 
@@ -893,10 +911,10 @@ has all ten of its caves, four bats, a boss, seven kinds of bug, a cave picker
 and two usable items, and every cave is measured. Three rounds have answered
 **21 of the 30** questions.
 
-**The gap is art, not design**, and it is closing. **Five of the ten caves now
-have real paintings** (§9), and three of the four bats are Lewis's drawings.
-Still outstanding: the **Archer Bat and all seven bugs are coloured blobs**, the
-**two fortresses are plain rectangles**, and five caves are still flat purple.
+**The gap is art, not design**, and it has closed a long way. **All ten caves
+are painted and both fortresses are real** (§9); three of the four bats are
+Lewis's drawings. What is left is the **units**: the Archer Bat and all seven
+bugs are still coloured blobs the game paints itself.
 
 One thing is also exactly backwards: since the redraw, **the placeholder blobs
 animate and Lewis's three real bats are frozen** — the good art is the only art

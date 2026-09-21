@@ -46,6 +46,12 @@ window.BootScene.prototype.preload = function () {
   this.load.spritesheet('necroBat', 'assets/sprites/necroBat.png', {
     frameWidth: 100, frameHeight: 64
   });
+
+  /* THE TWO FORTRESSES. Loaded here rather than per-battle (the way cave
+     paintings are) because both appear in every single battle and together
+     they are only ~145KB. */
+  this.load.image('batFortress', 'assets/bases/batFortress.webp');
+  this.load.image('beeFortress', 'assets/bases/beeFortress.webp');
 };
 
 /* -------------------------------------------------------------------------

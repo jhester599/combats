@@ -82,7 +82,36 @@ window.CONFIG = {
 
     // The "face" of a base is the side that gets attacked. Units stop this
     // far in from the base centre.
-    faceInset: 34
+    faceInset: 34,
+
+    /* ------------------- REAL FORTRESS ART (2026-09-21) -------------------
+       The two buildings were a blue box and a red box until now, which is a
+       poor showing for the thing a player spends most of a battle hitting.
+
+       Lewis's are a CRYSTAL BAT KEEP with bat banners, and a fortified BEEHIVE
+       dripping honey behind spiked palisades - which is a lovely accident,
+       because the boss of the whole game is the Cow Killer Bee. The bugs have
+       been defending her hive the entire time and nobody had drawn it.
+
+       HOW THEY ARE PLACED, and why it is not simply "centred on the base":
+       a fortress is anchored by the side that gets ATTACKED. Its inner edge
+       sits exactly on faceX - the line bats stop at - and it grows outwards
+       from there, off the edge of the screen if it must. Centring instead
+       would drift the painted door away from the place the fighting happens.
+
+       None of the gameplay geometry above changed. Bats still stop where they
+       always did; the building behind that line just looks like something now.
+
+       If either file is missing the game draws the old boxes, so the art is an
+       improvement rather than a dependency. */
+    playerArt: 'batFortress',
+    enemyArt: 'beeFortress',
+
+    // MEASURED against the real caves at 150, 185 and 220. 150 read as a hut
+    // tucked in the corner; 220 cropped the bat banners and the hive's right
+    // tower off the screen. 185 has presence and keeps both whole.
+    artHeight: 185,
+    artBarGap: 16        // between the top of the fortress and its health bar
   },
 
   /* ---------------------------------------------------------------------
