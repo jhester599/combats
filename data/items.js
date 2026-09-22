@@ -1,5 +1,5 @@
 /* =========================================================================
-   BATTLE BATS - THE CASINO GOODS
+   COMBATS - THE CASINO GOODS
    =========================================================================
    Lewis's homework B22 invented a two-step economy, and B27 gave each of the
    three goods a different job:

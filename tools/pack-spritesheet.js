@@ -4,7 +4,7 @@
                          sheet the game can use
    =========================================================================
    Art tools (PixelLab, Aseprite, itch.io packs...) hand you frames in all
-   sorts of shapes. Battle Bats wants ONE png per unit: every frame in a
+   sorts of shapes. ComBats wants ONE png per unit: every frame in a
    single row, left to right, all the same size, in this order:
 
        idle ... walk ... attack ... death

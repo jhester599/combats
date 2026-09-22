@@ -1,5 +1,5 @@
 /* =========================================================================
-   BATTLE BATS - START HERE
+   COMBATS - START HERE
    =========================================================================
    This file turns the engine on. It is the last script index.html loads, so
    by the time it runs every other file has already put its part on the

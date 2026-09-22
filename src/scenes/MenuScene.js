@@ -26,7 +26,8 @@ window.MenuScene.prototype.create = function () {
 
   this.drawBackdrop();
 
-  this.add.text(centreX, 120, 'BATTLE BATS', {
+  // "ComBats" - the capital B is the whole joke, so this one is NOT all-caps.
+  this.add.text(centreX, 120, 'ComBats', {
     fontFamily: cfg.text.fontFamily,
     fontSize: '64px',
     color: '#ffd24a'

@@ -1,6 +1,6 @@
 # Assets & Credits
 
-Every asset in Battle Bats is listed here with its author, licence and a link.
+Every asset in ComBats is listed here with its author, licence and a link.
 This file is the project's record of what we are allowed to use and what we
 have to say thank you for.
 
@@ -168,15 +168,24 @@ see-through — a lossy-webp artefact, not a real translucency.
 The full-resolution originals (1024×1536) are **not** in the repo; what is stored
 is trimmed and resized for the game. Keep the originals somewhere safe.
 
-### ✅ Five of the seven bugs are drawn, 2026-09-22
+### ✅ ALL SEVEN BUGS ARE DRAWN, 2026-09-22 — every unit in the game is now Lewis's
 
 | | Bug | Frame | `scale` | Drawn | Where it appears |
 |---|---|---|---|---|---|
-| 🦟 | Mosquito | 90×64 | 0.72 | 65×46 | every cave |
-| 🦂 | Scorpion | 92×64 | 0.91 | 84×58 | every cave |
-| 🦋 | Evil Butterfly | 82×64 | 1.03 | 84×66 | Dream Land |
-| ✨ | Lightning Bug | 95×64 | 0.59 | 56×38 | Abyss of Darkness |
-| 👑 | **Cow Killer Bee** | **196×128** | 0.82 | **161×105** | Final Stadium |
+| 🦟 | Mosquito | 90×64 | 0.72 | 87×62 | every cave |
+| 🕷️ | Spider | 103×64 | 0.78 | 108×67 | most caves |
+| 🦂 | Scorpion | 92×64 | 0.91 | 113×79 | every cave |
+| 🦂 | Desert Scorpion | 90×64 | 0.81 | 98×70 | Sahara-hara, Forgotten Oasis |
+| 🦋 | Evil Butterfly | 82×64 | 1.03 | 114×89 | Dream Land |
+| ✨ | Lightning Bug | 95×64 | 0.59 | 76×51 | Abyss of Darkness |
+| 👑 | **Cow Killer Bee** | **196×128** | 0.82 | **217×142** | Final Stadium |
+
+*"Drawn" includes `CONFIG.units.sizeBoost` (1.35), which zooms every unit in the
+game together without touching the relationships between them.*
+
+The two scorpions are deliberately different animals: the **Desert Scorpion**
+(98×70, fast, gambles) is the lighter of the two against the armoured **Scorpion**
+(113×79, slow, hits like a hammer).
 
 **The boss is the only unit in the game with a 128-tall frame.** She is drawn
 105px on screen, so a 64-tall frame would have had to be scaled *up* and would
@@ -194,15 +203,15 @@ longer than her body (his B8 — "a queen bee with a very long stinger"), the
 Lightning Bug has **glowing** antennae and tail, and the Evil Butterfly has
 **angry eyes patterned into its wings**, so it glares at you twice over.
 
-### What is still a coloured blob the game paints itself
+### Nothing is a coloured blob any more
 
-| | Unit | Placeholder colour | Homework |
-|---|---|---|---|
-| 🕷️ | Spider | dusty purple | B3/B4 |
-| 🦂 | **Desert Scorpion** | bright desert sand | **B30** |
+Every single thing on screen is now real artwork: **ten cave paintings, two
+fortresses, four bats and seven bugs.** The placeholder painter in
+`BootScene.drawPlaceholderSheet()` still exists and still works — it draws any
+unit that has no picture — but as of 2026-09-22 it never runs.
 
-Everything that is *not* a unit now has real art: both fortresses and all ten
-cave paintings. Two bugs are all that is left.
+Keep it. The next bat or bug Lewis invents will be a blob for a day or two
+before it is drawn, exactly as every one of these was.
 
 The **bugs are not bats**, so the "large circle, wings, ears, no legs" brief
 below does not apply to them — and they do **not** need to be black and white

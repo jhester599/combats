@@ -1,5 +1,5 @@
 /* =========================================================================
-   BATTLE BATS - ALL THE UNITS
+   COMBATS - ALL THE UNITS
    =========================================================================
    This is THE most important file for balancing the game. Every bat and
    every monster is described here as a simple list of numbers.
@@ -429,16 +429,23 @@ window.UNITS = {
     attackInterval: 1.0,   // 13 dps - between the other two
     range: 40,
     speed: 50,
-    color: '#7a5f8f',      // placeholder: dusty purple
+    color: '#7a5f8f',      // only used by placeholder art - this bug has real art now
     sprite: 'spider',
-    scale: 1,
+
+    // Drawn 80x50, which puts it between the Mosquito (65x46) and the Scorpion
+    // (84x58) - exactly where its numbers sit. All those legs make it wide.
+    scale: 0.78,
+
+    // REAL ART - Lewis's 2026-09-22 drawing, and THE LAST ONE. Every unit in
+    // the game is now his: eight bristled legs, a fat spiked abdomen and a
+    // pair of fangs. Flipped at import to face east.
     anims: {
-      frameWidth: 48,
-      frameHeight: 48,
-      idle:   { start: 0,  end: 1,  frameRate: 4,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 9,  repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 11, repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 8,  repeat: 0  }
+      frameWidth: 103,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -494,9 +501,14 @@ window.UNITS = {
     attackInterval: 1.0,   // 12 dps - deliberately less than a Spider's 13
     range: 42,
     speed: 78,             // <-- FAST, as Lewis asked. A Mosquito does 62.
-    color: '#e8b44a',      // placeholder: bright desert sand
+    color: '#e8b44a',      // only used by placeholder art - this bug has real art now
     sprite: 'desertScorpion',
-    scale: 1,
+
+    // Drawn 73x52, against the plain Scorpion's 84x58. Deliberately the lighter
+    // of the two: this one is the fast gambler (120 health, speed 78), that one
+    // is the armoured hammer (190 health, speed 38). They should not read as the
+    // same animal, which is also what homework B28 is about.
+    scale: 0.81,
 
     // ------------------- THE GAMBLING STING -------------------
     // Rolled fresh on EVERY attack. Both can happen on the same swing: it
@@ -533,13 +545,17 @@ window.UNITS = {
       //   * the backfire is rolled on every attack, even against a building
     },
 
+    // REAL ART - Lewis's 2026-09-22 drawing. Spikier and hairier than the plain
+    // Scorpion, with its fangs out and its tail already cocked - which suits the
+    // bug whose whole idea is that every swing is a coin flip. Drawn in profile
+    // facing west and flipped at import, like all the bugs.
     anims: {
-      frameWidth: 48,
-      frameHeight: 48,
-      idle:   { start: 0,  end: 1,  frameRate: 5,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 12, repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 13, repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 9,  repeat: 0  }
+      frameWidth: 90,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 

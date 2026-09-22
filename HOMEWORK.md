@@ -225,6 +225,39 @@ No more flat purple anywhere, and no more blue box versus red box.
 | 9 | **Forgotten Oasis** | a glowing green pool under a big moon |
 | 10 | **Final Stadium** | the boss arena, under a red eclipse |
 
+### 🎉 THE GAME IS CALLED **ComBats** NOW
+
+Your pun. **Com*Bats*** — combat, with bats. It's on the title screen, the
+loading screen, the browser tab and every single document.
+
+Funny thing: the folder this game lives in has been called `combats` since the
+very first day, before anyone thought of the name. 😄
+
+*(It's written "ComBats" and not "COMBATS" on purpose — the big **B** in the
+middle is the joke, and shouting it in capitals hides it.)*
+
+### 🔍 EVERYONE IS BIGGER NOW
+
+Dad made every bat and every bug **35% bigger** so you can actually see what
+you drew — the Bee's crown, the Butterfly's eye-wings, the Lightning Bug's glow.
+All of them grew by exactly the same amount, so a Brute Bat still looms over a
+Scout by exactly as much as it did before.
+
+*(He tried 60% bigger too. The lane turned into a traffic jam.)*
+
+It changes **nothing** about how hard the game is — it's only how big they're
+drawn, not how far they can reach or how hard they hit.
+
+### 🕷️ AND THAT'S EVERY MONSTER DRAWN — the Spider and Desert Scorpion are in
+
+**There is nothing left in the game that the computer drew.** Ten caves, two
+castles, four bats, seven bugs — all yours.
+
+Your two scorpions came out looking like genuinely different animals, which was
+the tricky bit: the **Desert Scorpion** is spikier and lighter on its feet (it's
+the fast one that gambles), and the plain **Scorpion** is the heavy armoured one.
+You can tell them apart instantly on screen.
+
 ### 👑 THE COW KILLER BEE IS REAL, and four more monsters with her
 
 Five of your seven bugs are drawn: the **Mosquito**, the **Scorpion**, your

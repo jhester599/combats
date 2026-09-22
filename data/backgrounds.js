@@ -1,5 +1,5 @@
 /* =========================================================================
-   BATTLE BATS - THE CAVE BACKGROUNDS
+   COMBATS - THE CAVE BACKGROUNDS
    =========================================================================
    One painting per cave, and the one number that matters for each: WHERE THE
    GROUND IS.

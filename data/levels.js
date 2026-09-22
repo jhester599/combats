@@ -1,5 +1,5 @@
 /* =========================================================================
-   BATTLE BATS - ALL THE LEVELS
+   COMBATS - ALL THE LEVELS
    =========================================================================
    A level says: how tough the two bases are, how fast your energy fills up,
    which bats you are allowed to use, and exactly when the enemies come out.

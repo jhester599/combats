@@ -51,8 +51,7 @@ window.BootScene.prototype.preload = function () {
     frameWidth: 106, frameHeight: 64
   });
 
-  /* THE BUGS. Five of the seven are drawn; the Spider and the Desert Scorpion
-     are still painted by the game. */
+  /* THE BUGS - all seven of them, every one drawn by Lewis. */
   this.load.spritesheet('mosquito', 'assets/sprites/mosquito.png', {
     frameWidth: 90, frameHeight: 64
   });
@@ -67,6 +66,14 @@ window.BootScene.prototype.preload = function () {
 
   this.load.spritesheet('lightningBug', 'assets/sprites/lightningBug.png', {
     frameWidth: 95, frameHeight: 64
+  });
+
+  this.load.spritesheet('desertScorpion', 'assets/sprites/desertScorpion.png', {
+    frameWidth: 90, frameHeight: 64
+  });
+
+  this.load.spritesheet('spider', 'assets/sprites/spider.png', {
+    frameWidth: 103, frameHeight: 64
   });
 
   // The boss, and the only unit whose frame is 128 tall - she is drawn bigger
@@ -91,7 +98,7 @@ window.BootScene.prototype.showLoadingBar = function () {
   var centreX = cfg.screen.width / 2;
   var centreY = cfg.screen.height / 2;
 
-  this.add.text(centreX, centreY - 50, 'BATTLE BATS', {
+  this.add.text(centreX, centreY - 50, 'ComBats', {
     fontFamily: cfg.text.fontFamily,
     fontSize: '34px',
     color: '#ffd24a'

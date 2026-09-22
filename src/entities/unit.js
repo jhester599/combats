@@ -33,9 +33,23 @@ window.Unit = function (scene) {
   this.buildView();
 };
 
-/* A unit's draw size from data/units.js. Missing means "actual size". */
+/* -------------------------------------------------------------------------
+   How big to draw this unit.
+
+   Two numbers multiplied: the unit's OWN scale from data/units.js, which says
+   how big it is relative to everything else, and CONFIG.units.sizeBoost, which
+   zooms the whole cast at once. Keeping them separate means the size of the
+   game can be changed without disturbing a single one of the relationships
+   between units, each of which was set by eye against the real artwork.
+
+   Note for anyone changing this: BattleScene.portraitScaleFor() uses this as a
+   RATIO between units, so the boost cancels out there and the deploy-button
+   portraits are not affected. That is intended - they fit a fixed box.
+   ------------------------------------------------------------------------- */
 window.Unit.scaleOf = function (stats) {
-  return (stats.scale === undefined) ? 1 : stats.scale;
+  var own = (stats.scale === undefined) ? 1 : stats.scale;
+
+  return own * window.CONFIG.units.sizeBoost;
 };
 
 /* -------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /* =========================================================================
-   BATTLE BATS - GLOBAL CONFIG
+   COMBATS - GLOBAL CONFIG
    =========================================================================
    Every "how the game feels" number that is NOT about a single unit or a
    single level lives in this file.
@@ -45,7 +45,7 @@ window.CONFIG = {
 
   /* ---------------------------------------------------------------------
      THE LANE
-     Battle Bats happens on one horizontal line. Everything walks along it.
+     ComBats happens on one horizontal line. Everything walks along it.
      --------------------------------------------------------------------- */
   lane: {
     y: 352,              // how far DOWN the screen the lane sits
@@ -112,6 +112,28 @@ window.CONFIG = {
     // tower off the screen. 185 has presence and keeps both whole.
     artHeight: 185,
     artBarGap: 16        // between the top of the fortress and its health bar
+  },
+
+  /* ---------------------------------------------------------------------
+     HOW BIG EVERYTHING IS DRAWN
+     ---------------------------------------------------------------------
+     Every bat and every bug is drawn this much bigger than the "scale" in its
+     own block in data/units.js.
+
+     ONE NUMBER FOR THE LOT, on purpose. Each unit's own scale says how big it
+     is RELATIVE to the others - a Brute Bat looms over a Scout, a Lightning Bug
+     is the littlest thing in the game - and those relationships were set one at
+     a time against the real artwork. This number zooms all of them together,
+     so none of that work is disturbed.
+
+     Raised to 1.35 on 2026-09-22 because Lewis's drawings have real detail in
+     them now (the Bee's crown, the Butterfly's eye-patterned wings, the
+     Lightning Bug's glow) and at the old size you simply could not see it.
+
+     FOR LEWIS: 2 makes everyone enormous and the lane very silly. Try it.
+     --------------------------------------------------------------------- */
+  units: {
+    sizeBoost: 1.35       // <-- TRY ME
   },
 
   /* ---------------------------------------------------------------------

@@ -1,4 +1,7 @@
-# 🦇 Battle Bats
+# 🦇 ComBats
+
+*Com**Bats**. Combat, with bats. Lewis named it, and the repository had
+quietly been called `combats` the whole time anyway.*
 
 A 2D lane auto-battler for the browser, in the style of *The Battle Cats*.
 Send bats down a lane, they fight on their own, smash the enemy base.
@@ -32,7 +35,7 @@ Phaser engine, loaded by `<script>` tags in `index.html`.
 
 ## Design docs
 
-Battle Bats is designed the same way Fakeamon Spark is — Lewis makes the
+ComBats is designed the same way Fakeamon Spark is — Lewis makes the
 creative calls, and there's a paper trail so nothing gets lost between sessions:
 
 | File | What it's for |
@@ -381,7 +384,7 @@ sheet just means different numbers. **Record every new asset in `ASSETS.md`.**
 **Live site:** https://jhester599.github.io/combats/
 
 The site is served straight from the `main` branch — GitHub Pages is set to
-**Deploy from a branch** (`main`, `/ (root)`). Because Battle Bats is plain
+**Deploy from a branch** (`main`, `/ (root)`). Because ComBats is plain
 static files with no build step, there is nothing to compile: **push to `main`
 and the site updates by itself** a minute or so later.
 
