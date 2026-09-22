@@ -225,6 +225,33 @@ No more flat purple anywhere, and no more blue box versus red box.
 | 9 | **Forgotten Oasis** | a glowing green pool under a big moon |
 | 10 | **Final Stadium** | the boss arena, under a red eclipse |
 
+### 👑 THE COW KILLER BEE IS REAL, and four more monsters with her
+
+Five of your seven bugs are drawn: the **Mosquito**, the **Scorpion**, your
+**Evil Butterfly**, your **Lightning Bug**, and the boss herself.
+
+**You hit your own brief exactly.** Back in B8 you said the boss should be *"a
+queen bee with a very long stinger"* — and she has a **CROWN** on her head and a
+stinger longer than the rest of her body. Now anyone can look at her and
+instantly understand why a Scout Bat can't reach her. 🐝
+
+Two other things you put in that nobody asked for:
+
+- the **Lightning Bug's antennae and tail actually GLOW** — little bursts of
+  light drawn around them, which is the whole reason fireflies belong in the
+  cave with no light
+- the **Evil Butterfly has angry EYES patterned into its wings**, so it glares
+  at you twice at once 😠
+
+*(One thing Dad had to fix: you drew them all facing LEFT, which makes complete
+sense because that's the way they walk. But the game automatically mirrors
+every bug — so if he'd put them in as drawn, every single monster would have
+walked **backwards**. They get flipped when they're imported, so it all works
+out.)*
+
+**Still to draw: the Spider and the Desert Scorpion.** Those two are the last
+things in the whole game that the computer is still drawing.
+
 ### 🏹 THE ARCHER BAT IS DRAWN — all four of your bats are real now
 
 You gave it a **bow with the arrow already pulled back**. Nobody asked for

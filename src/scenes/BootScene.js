@@ -51,6 +51,30 @@ window.BootScene.prototype.preload = function () {
     frameWidth: 106, frameHeight: 64
   });
 
+  /* THE BUGS. Five of the seven are drawn; the Spider and the Desert Scorpion
+     are still painted by the game. */
+  this.load.spritesheet('mosquito', 'assets/sprites/mosquito.png', {
+    frameWidth: 90, frameHeight: 64
+  });
+
+  this.load.spritesheet('scorpion', 'assets/sprites/scorpion.png', {
+    frameWidth: 92, frameHeight: 64
+  });
+
+  this.load.spritesheet('evilButterfly', 'assets/sprites/evilButterfly.png', {
+    frameWidth: 82, frameHeight: 64
+  });
+
+  this.load.spritesheet('lightningBug', 'assets/sprites/lightningBug.png', {
+    frameWidth: 95, frameHeight: 64
+  });
+
+  // The boss, and the only unit whose frame is 128 tall - she is drawn bigger
+  // than everything else, so a 64-tall frame would be scaled up and go soft.
+  this.load.spritesheet('cowKillerBee', 'assets/sprites/cowKillerBee.png', {
+    frameWidth: 196, frameHeight: 128
+  });
+
   /* THE TWO FORTRESSES. Loaded here rather than per-battle (the way cave
      paintings are) because both appear in every single battle and together
      they are only ~145KB. */

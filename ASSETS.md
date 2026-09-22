@@ -168,25 +168,46 @@ see-through — a lossy-webp artefact, not a real translucency.
 The full-resolution originals (1024×1536) are **not** in the repo; what is stored
 is trimmed and resized for the game. Keep the originals somewhere safe.
 
+### ✅ Five of the seven bugs are drawn, 2026-09-22
+
+| | Bug | Frame | `scale` | Drawn | Where it appears |
+|---|---|---|---|---|---|
+| 🦟 | Mosquito | 90×64 | 0.72 | 65×46 | every cave |
+| 🦂 | Scorpion | 92×64 | 0.91 | 84×58 | every cave |
+| 🦋 | Evil Butterfly | 82×64 | 1.03 | 84×66 | Dream Land |
+| ✨ | Lightning Bug | 95×64 | 0.59 | 56×38 | Abyss of Darkness |
+| 👑 | **Cow Killer Bee** | **196×128** | 0.82 | **161×105** | Final Stadium |
+
+**The boss is the only unit in the game with a 128-tall frame.** She is drawn
+105px on screen, so a 64-tall frame would have had to be scaled *up* and would
+have come out soft. Everything else is 64 because everything else is drawn
+smaller than that.
+
+**All five were drawn in profile facing WEST, and are flipped at import** so the
+stored sprite faces east like everything else in the repo —
+`src/entities/unit.js` mirrors anything with `enemy: true`, which turns them
+back to face your bats. Imported as drawn, every bug would have walked
+backwards.
+
+Lewis hit his own briefs exactly: the Bee wears a **crown** and has a stinger
+longer than her body (his B8 — "a queen bee with a very long stinger"), the
+Lightning Bug has **glowing** antennae and tail, and the Evil Butterfly has
+**angry eyes patterned into its wings**, so it glares at you twice over.
+
 ### What is still a coloured blob the game paints itself
 
 | | Unit | Placeholder colour | Homework |
 |---|---|---|---|
-| 🦟 | Mosquito | pale insect green | B3/B4 |
 | 🕷️ | Spider | dusty purple | B3/B4 |
-| 🦂 | Scorpion | sandy brown | B3/B4 |
-| 👑 | Cow Killer Bee | queen-bee yellow | B3/B4 |
-| 🦂 | **Desert Scorpion** | bright desert sand | **B30** *(new)* |
-| 🦋 | **Evil Butterfly** | dream magenta | **B30** *(new)* |
-| ✨ | **Lightning Bug** | firefly yellow-green | **B30** *(new)* |
+| 🦂 | **Desert Scorpion** | bright desert sand | **B30** |
 
 Everything that is *not* a unit now has real art: both fortresses and all ten
-cave paintings. The list above is what is left.
+cave paintings. Two bugs are all that is left.
 
-The three new ones arrived with homework B26 on 2026-09-20. Note that the **bugs
-are not bats**, so the "large circle, wings, ears, no legs" brief below does not
-apply to them — they can look like whatever Lewis thinks they look like. Only
-the size, the facing and the black-and-white rule carry over.
+The **bugs are not bats**, so the "large circle, wings, ears, no legs" brief
+below does not apply to them — and they do **not** need to be black and white
+either, because only bats get tinted by the colour ladder. Only the size and the
+facing rule carry over.
 
 The brief, for whatever **bat** is drawn next:
 

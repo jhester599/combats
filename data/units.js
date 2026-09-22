@@ -308,16 +308,21 @@ window.UNITS = {
     attackInterval: 0.8,
     range: 38,
     speed: 62,
-    color: '#a8c88a',      // placeholder: pale insect green
+    color: '#a8c88a',      // only used by placeholder art - this bug has real art now
     sprite: 'mosquito',
-    scale: 1,              // still placeholder art, drawn at its natural size
+    scale: 0.72,           // drawn 65x46: smaller than a Scout Bat, as it should be
+
+    // REAL ART - Lewis's 2026-09-22 drawing. All that proboscis and a mouthful
+    // of teeth. Drawn in PROFILE facing west, then flipped at import so the
+    // stored sprite faces east like everything else in the repo - the game
+    // mirrors anything with enemy: true, which turns it back to face your bats.
     anims: {
-      frameWidth: 48,
-      frameHeight: 48,
-      idle:   { start: 0,  end: 1,  frameRate: 4,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 10, repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 12, repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 9,  repeat: 0  }
+      frameWidth: 90,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -332,16 +337,20 @@ window.UNITS = {
     attackInterval: 1.5,
     range: 44,
     speed: 38,
-    color: '#c8873f',      // placeholder: sandy brown
+    color: '#c8873f',      // only used by placeholder art - this bug has real art now
     sprite: 'scorpion',
-    scale: 1,              // still placeholder art, drawn at its natural size
+    scale: 0.91,           // drawn 84x58: bulkier than any of your bats but the Brute
+
+    // REAL ART - Lewis's 2026-09-22 drawing: armour plating, spikes down the
+    // tail and two enormous claws, which is exactly the "hits like a hammer"
+    // this bug has always been in the numbers. Flipped at import to face east.
     anims: {
-      frameWidth: 64,
+      frameWidth: 92,
       frameHeight: 64,
-      idle:   { start: 0,  end: 1,  frameRate: 3,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 7,  repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 9,  repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 7,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -378,16 +387,25 @@ window.UNITS = {
     attackInterval: 1.8,   // 30.6 dps - three times a Scorpion's
     range: 130,            // <-- THE LONG STINGER. Out-reaches every melee bat.
     speed: 26,             // a queen does not hurry
-    color: '#e8c33f',      // placeholder: queen-bee yellow
+    color: '#e8c33f',      // only used by placeholder art - the boss has real art now
     sprite: 'cowKillerBee',
-    scale: 1.6,            // <-- looms over everything else on the screen
+    scale: 0.82,           // <-- drawn 161x105, and still looms over everything
+
+    // REAL ART - Lewis's 2026-09-22 drawing, and he delivered on his own brief
+    // exactly: a QUEEN (she is wearing a crown) with a VERY LONG STINGER. The
+    // stinger is most of her length, which is the fight made visible - you can
+    // see why a Scout Bat at reach 40 never touches her.
+    //
+    // HER FRAME IS 128 TALL, NOT 64. She is drawn 105px on screen, so a 64-tall
+    // frame would have to be scaled UP and would come out soft. Every other
+    // unit is 64 because every other unit is drawn smaller than that.
     anims: {
-      frameWidth: 64,
-      frameHeight: 64,
-      idle:   { start: 0,  end: 1,  frameRate: 2,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 5,  repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 7,  repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 5,  repeat: 0  }
+      frameWidth: 196,
+      frameHeight: 128,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -559,16 +577,20 @@ window.UNITS = {
     attackInterval: 1.3,   // 6.9 dps - the weakest attack in the game
     range: 40,
     speed: 0,              // <-- THE WHOLE POINT. It hovers and never advances.
-    color: '#d98ae0',      // placeholder: dream-ish magenta
+    color: '#d98ae0',      // only used by placeholder art - this bug has real art now
     sprite: 'evilButterfly',
-    scale: 1.1,            // wide, so the wall reads as a wall
+    scale: 1.03,           // drawn 84x66: the tallest ordinary bug, so the wall reads
+
+    // REAL ART - Lewis's 2026-09-22 drawing, and the best joke in the set: the
+    // wings have ANGRY EYES patterned into them, so the thing glares at you
+    // twice over. Flipped at import to face east.
     anims: {
-      frameWidth: 64,
+      frameWidth: 82,
       frameHeight: 64,
-      idle:   { start: 0,  end: 1,  frameRate: 3,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 6,  repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 8,  repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 6,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -607,16 +629,20 @@ window.UNITS = {
     attackInterval: 1.1,   // 4.5 dps
     range: 36,
     speed: 26,             // <-- SLOW. The same crawl as the boss.
-    color: '#d8f05a',      // placeholder: firefly glow, the brightest in Palopa
+    color: '#d8f05a',      // only used by placeholder art - this bug has real art now
     sprite: 'lightningBug',
-    scale: 0.8,            // little
+    scale: 0.59,           // drawn 56x38: the smallest thing in the game, as promised
+
+    // REAL ART - Lewis's 2026-09-22 drawing. He gave it GLOWING antennae and a
+    // GLOWING tail, drawn as little bursts of light - which is the one thing
+    // that actually justifies putting fireflies in the cave with no light.
     anims: {
-      frameWidth: 48,
-      frameHeight: 48,
-      idle:   { start: 0,  end: 1,  frameRate: 6,  repeat: -1 },
-      walk:   { start: 2,  end: 5,  frameRate: 7,  repeat: -1 },
-      attack: { start: 6,  end: 8,  frameRate: 9,  repeat: 0  },
-      death:  { start: 9,  end: 12, frameRate: 8,  repeat: 0  }
+      frameWidth: 95,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   }
 };
