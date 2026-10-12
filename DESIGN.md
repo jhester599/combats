@@ -71,6 +71,7 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 | **Brute Bat** | 90 | 6.0s | 220 | 30 | 1.4s | **21.4** | 46 | 45 |
 | **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **200** | 70 |
 | **Archer Bat** | 45 | 3.0s | 24 | 22 | 1.1s | **20.0** | **240** | 75 |
+| **Bat Bros** | 35 | 2.0s | 2 × 40 | 2 × 8 | 0.6s | **2 × 13.3** | 40 | 90 |
 
 `DPS = attack ÷ attackInterval`.
 
@@ -152,6 +153,31 @@ safe", it is just a bad bat, and the balance sim showed the whole army getting
 
 Stronger per bat, weaker per coin — you are paying a premium for a bat nothing
 can reach.
+
+**DECIDED (2026-10-12) — the fifth bat is the BAT BROS.** Jeff: *"Bat Bros will
+be 2 scout bats for the price of 35."*
+
+One button, **two real Scout Bats**. Each brother is a Scout in every way — the
+same numbers, the same art, a Scout's grave when he falls, raised as a Scout by
+the Necrobatcer — which is why the row above is "2 ×" the Scout's and the bat has
+no fighting numbers of its own in `data/units.js`. What it owns is a price, a
+cooldown and a `squad` block (`{ unit: 'scoutBat', count: 2 }`); the rule that
+reads it is `src/systems/squad.js`, and the game and the balance sim both deploy
+through that one file (D11).
+
+| | per tap | per energy |
+|---|---|---|
+| **Scout Bat** | 13.3 dps, 40 hp | 0.53 dps, 1.6 hp |
+| **Bat Bros** | **26.7 dps, 80 hp** | **0.76 dps, 2.3 hp** |
+
+**It is a straight discount, and that is worth saying plainly:** two Scouts for
+35 instead of 50. Per energy it is the strongest bat in the game on both damage
+and health. The single Scout's only remaining edge is that 25 lights up sooner
+than 35 on an empty wallet. See §7 for what that did to the Final Stadium.
+
+Cooldown 2.0s keeps it inside the D9 rule in every cave it appears in: 35 energy
+takes 2.19s to earn even at the Final Stadium's 16/s, the richest cave that has
+it, so money is the limit and a slow thumb costs nothing.
 
 **DECIDED (2026-09-19) — B6 follows from B5: yes, bats get special powers.**
 Lewis's choice of a summoner settles this by implication, since a summoner
@@ -541,10 +567,72 @@ the Cow Killer Bee still lands well before the Final Stadium ends. Relative
 sizes are kept, so "Wait Um is the longest siege" and "Pyramid has a tough
 fortress" both remain true.
 
-**DECIDED (2026-09-19) — bats arrive cave by cave.** B12 said bats unlock by
-winning, but unlocking needs saved progress (M4). A cave's `playerUnits` list
-gives the same feeling today with no guesswork, and becomes the unlock table
-later.
+**DECIDED (2026-09-19) — bats arrive cave by cave.** ⚠️ *Superseded 2026-10-12
+by the unlock chain below* — the per-cave `playerUnits` lists did become the
+unlock table, as this said they would.
+
+**DECIDED (2026-10-12) — beat a cave, earn a bat.** Jeff: *"introduce a new bat
+with every successful level completed."*
+
+| Beat... | ...and you earn | bats from the next cave on |
+|---|---|---|
+| *(start)* | Scout Bat, Brute Bat | 2 |
+| 1. The Cave | **Archer Bat** | 3 |
+| 2. Crystal Falls | **Bat Bros** | 4 |
+| 3. Dream Land | **Necrobatcer** | 5 |
+| 4 and up | *nothing yet — more bats are coming* | 5 |
+
+In the data it is **one line per cave**: `unlocks: 'archerBat'`. Cave 1 lists the
+starting bats in `playerUnits`; caves 2–10 list nothing, and
+`src/systems/caves.js` fills each one in at load with everything earned before
+it. So a bat for cave 4 is a single line, and caves 5–10 pick it up by
+themselves. `node tools/roster-test.js` pins the order.
+
+It goes by a cave's **place in the list**, not by the saved progress — and the
+two are the same thing, because a cave only opens once every cave before it is
+beaten. Going by place keeps every cave identical for every player, which is
+what lets the balance sim measure it. It also means **replaying The Cave puts you
+back to two bats**: it is still the tutorial, and its "keep spending" lesson (D8,
+D12) was measured with two.
+
+Two small pieces of UI go with it: the first win of a cave that gives a bat says
+**NEW BAT EARNED: …!** on the victory panel, and that bat's button wears a
+**NEW!** tag in the cave where it first appears.
+
+**Changes from before:** the Archer still arrives in cave 2 and the Necrobatcer
+in cave 4, exactly as they did. The only new thing on the lane is the Bat Bros,
+from cave 3 on.
+
+**The button row holds five.** `24 + 5×168 + 4×18 = 936` of the 960-pixel screen,
+and caves 4–10 now use all five. A sixth bat needs a new idea first — most
+likely choosing a team of five before each cave, the way *The Battle Cats* does
+— and `roster-test.js` fails if a cave is given more than fit. *(The item buttons
+also sit where a fifth bat now goes; only the Graveyard has items today, and it
+has three bats, so nothing overlaps yet. The casino will have to solve it.)*
+
+### ⚠️ The Bat Bros let you skip the Cow Killer Bee (open, 2026-10-12)
+
+The Final Stadium's whole design is that you **meet her**: its first draft was
+won before she arrived, and that was called a bug and fixed (she arrives at 40s,
+fortress 2500). The Bat Bros undo that fix.
+
+| Final Stadium, 0.2–0.5s thumb | before the Bat Bros | with them |
+|---|---|---|
+| the usual Scout-spamming player | 56–65s — **meets her** | 38–53s — mostly **misses her** |
+| a player who taps Bat Bros first | — | **about 30s — never meets her** |
+
+The balance sim now checks this and reports **[BAD]** for the Final Stadium.
+Nothing was retuned, because the obvious levers all cost something real:
+
+- **bring her in earlier** — at 30s or less the cave starts **losing** (10–11 of
+  24 test runs), because she lands on top of her own retinue;
+- **a bigger fortress** — even 4000 only pushes the Bat Bros player to 37s, and
+  it makes the slow Brute-saving player's 200-second grind longer still;
+- **a dearer Bat Bros** — the price is Jeff's call, and it is the root of it.
+
+Every other cave still passes everything. For the usual player most are 4–10
+seconds quicker; Dream Land and the Abyss did not change, because that player
+rarely reaches past the Scout button.
 
 ### What is measured, and what is not
 
@@ -608,6 +696,8 @@ So M4 is now three connected things:
 
 **DECIDED (2026-09-19) — B12 = A, by implication:** the option Lewis picked in
 B13 says "you unlock bats by winning", so bats come from beating caves.
+**BUILT 2026-10-12** — caves 1, 2 and 3 earn the Archer, the Bat Bros and the
+Necrobatcer; the table and the rules are in §7.
 
 **DECIDED (2026-09-19) — B19 = A, by implication:** both B4 and B13 have Lewis
 spending suns to upgrade bats, so upgrading is in. **An upgrade shows as a
@@ -965,7 +1055,7 @@ Full detail is in `README.md`; the design-relevant parts:
 | B9 | A long-range bat? | §6 | ✅ **answered & built** — the Archer Bat |
 | B10 | How many levels? | §7 | ✅ **answered** — C, ten or more caves |
 | B11 | What makes each cave different? | §7 | ✅ **answered & built** — one lever per cave |
-| B12 | How do you unlock bats? | §8 | ✅ **answered by B13** — by winning caves |
+| B12 | How do you unlock bats? | §8 | ✅ **answered by B13 & built 2026-10-12** — caves 1–3 each earn a bat |
 | B13 | Does progress save? | §8 | ✅ **answered** — B: saves, plus suns and the casino |
 | B14 | A second lane? | §6 | 🔲 M5 |
 | B15 | Music and sound | §9 | 🔲 M3 |
@@ -984,6 +1074,7 @@ Full detail is in `README.md`; the design-relevant parts:
 | B28 | Is "Desert Scorpion" the right name? | §4 | 🔲 **new — on the plate** |
 | B29 | How do you *get* potions and fruit? | §8 | 🔲 **new — on the plate**, blocks M4 |
 | B30 | What do the three new bugs look like? | §9 | 🔲 **new — on the plate** |
+| B31 | Which bats do caves 4–9 earn? | §3, §7 | 🔲 **new — on the plate** (and a team of five once there are six) |
 
 ### Solved, mostly: the all-or-nothing ending (B9)
 

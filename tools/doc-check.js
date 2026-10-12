@@ -17,7 +17,8 @@
    So this reads the REAL data files and checks the documents against them.
 
    What it checks:
-     1. every unit's stats row in DESIGN.md matches data/units.js
+     1. every unit's stats row in DESIGN.md matches data/units.js (for a
+        squad like the Bat Bros: its cost and cooldown)
      2. every cave's fortress and base HP quoted anywhere matches data/levels.js
      3. every .js file in the project is mentioned in README.md's file map
      4. index.html actually loads every data/ and src/ file that exists
@@ -98,13 +99,19 @@ Object.keys(W.UNITS).forEach(function (key) {
     return;
   }
 
-  [['hp', unit.hp], ['attack', unit.attack], ['range', unit.range], ['speed', unit.speed]]
-    .forEach(function (pair) {
-      if (mostNumbers.indexOf(pair[1]) === -1) {
-        flag('DESIGN.md', unit.name + ': ' + pair[0] + ' should be ' + pair[1] +
-          '  (row reads:' + best.replace(/\s+/g, ' ').replace(/\s*$/, '') + ')');
-      }
-    });
+  // A squad (the Bat Bros) has no fighting numbers of its own - its members
+  // use their own unit's - so its row is checked for what it DOES own: the
+  // price and the cooldown.
+  var claims = unit.squad
+    ? [['cost', unit.cost], ['cooldown', unit.cooldown]]
+    : [['hp', unit.hp], ['attack', unit.attack], ['range', unit.range], ['speed', unit.speed]];
+
+  claims.forEach(function (pair) {
+    if (mostNumbers.indexOf(pair[1]) === -1) {
+      flag('DESIGN.md', unit.name + ': ' + pair[0] + ' should be ' + pair[1] +
+        '  (row reads:' + best.replace(/\s+/g, ' ').replace(/\s*$/, '') + ')');
+    }
+  });
 });
 
 /* --- 2. cave HP quoted in any document -------------------------------- */

@@ -137,6 +137,17 @@ window.CONFIG = {
   },
 
   /* ---------------------------------------------------------------------
+     SQUADS - a button that sends out more than one bat (the Bat Bros)
+     ---------------------------------------------------------------------
+     The first brother comes out of the door and each one after it this many
+     pixels further back, so they walk out side by side rather than drawn on
+     top of each other. The rule is in src/systems/squad.js.
+     --------------------------------------------------------------------- */
+  squad: {
+    spacing: 24
+  },
+
+  /* ---------------------------------------------------------------------
      COMBAT RULES
      --------------------------------------------------------------------- */
   combat: {
@@ -281,7 +292,13 @@ window.CONFIG = {
     // How much of the size difference between bats survives into the buttons.
     // 0 = every portrait the same size, 1 = the full difference (which would
     // overflow again). 0.25 is a hint, not a shout.
-    portraitSizeStory: 0.25
+    portraitSizeStory: 0.25,
+
+    // A squad button (the Bat Bros) draws one little bat per member. They are
+    // spread this many pixels apart and shrunk by this much so two of them
+    // still fit in the space one portrait uses.
+    squadPortraitSpread: 16,
+    squadPortraitShrink: 0.72
   },
 
   /* ---------------------------------------------------------------------
@@ -290,6 +307,10 @@ window.CONFIG = {
      Potions and fruit get their own small buttons to the RIGHT of the bats,
      in the gap after the fourth deploy button (24 + 4x168 + 3x18 = 750, so
      there are 210 pixels of room and these use 186 of them).
+
+     CAREFUL (2026-10-12): caves 4-10 now have FIVE bats, and the fifth button
+     sits exactly here. Today only the Graveyard has items and it has three
+     bats, so nothing overlaps - but the casino (B29) will need to move these.
 
      A button is only built for an item you are actually CARRYING - see
      buildItemButtons() in src/scenes/BattleScene.js. The ten caves start with

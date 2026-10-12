@@ -62,6 +62,8 @@ require(path.join(root, 'src/systems/spawner.js'));
 require(path.join(root, 'src/systems/necro.js'));
 require(path.join(root, 'src/systems/sting.js'));
 require(path.join(root, 'src/systems/items.js'));
+require(path.join(root, 'src/systems/squad.js'));
+require(path.join(root, 'src/systems/caves.js'));
 
 var W = global.window;
 
@@ -301,7 +303,11 @@ function playLevel(levelKey, options) {
         cooldowns[k] = W.UNITS[k].cooldown;
         litSince[k] = null;
         sent[k]++;
-        pool.obtain().spawn(k, playerBase.spawnX);
+
+        // The same file the game uses, so a Bat Bros tap sends two here too.
+        W.Squad.deploy(k, playerBase.spawnX, function (memberKey, x) {
+          pool.obtain().spawn(memberKey, x);
+        });
       }
     });
 
@@ -521,6 +527,39 @@ if (level.playerUnits.indexOf('necroBat') !== -1) {
   });
 }
 
+/* -----------------------------------------------------------------------
+   The SQUAD BUILD - a player who leans on the Bat Bros (2026-10-12).
+
+   Same crack as the Necrobatcer above, the other way round: the Bat Bros sit
+   after the Scout on the button row, and the Scout is always affordable first,
+   so the person above barely buys them. But two Scouts for 35 is the cheapest
+   damage in Palopa, and a real player who notices that will tap it first.
+
+   So a cave that offers a squad gets one more player: the same thumb, with
+   the squad button looked at FIRST. This is the fastest army in the game, and
+   it is the one to watch when a cave's numbers change.
+   ----------------------------------------------------------------------- */
+var squadKeys = level.playerUnits.filter(function (k) { return !!W.UNITS[k].squad; });
+var squadRuns = [];
+
+squadKeys.forEach(function (squadKey) {
+  var use = [squadKey].concat(level.playerUnits.filter(function (k) { return k !== squadKey; }));
+
+  console.log('');
+  console.log('  PLAYED AS A ' + W.UNITS[squadKey].name.toUpperCase() + ' BUILD (the same person, but ' +
+    W.UNITS[squadKey].name + ' is the first');
+  console.log('  button they reach for)');
+  console.log('  ' + pad('reaction', 11) + pad('outcome', 12) + pad('length', 10) +
+    pad('your base', 12) + 'bats sent');
+
+  band.forEach(function (r) {
+    var res = playLevel(levelKey, { reaction: r, use: use, maxSeconds: 400 });
+    squadRuns.push(res);
+    console.log('  ' + pad(r === 0 ? '0s (robot)' : r + 's', 11) + pad(res.outcome, 12) +
+      pad(res.seconds + 's', 10) + pad(res.playerBasePct + '%', 12) + describeSent(res.sent));
+  });
+});
+
 /* --- part 3: the hoarder, who is supposed to lose --------------------- */
 console.log('');
 console.log('  PLAYED BY A HOARDER (saving energy instead of spending it)');
@@ -645,6 +684,30 @@ if (seedRuns.length) {
     'The gambling bug: won ' + (seedRuns.length - seedLosses) + ' of ' + seedRuns.length +
     ' rolls of the dice' +
     (seedLosses === 0 ? '' : ' - a cave lost to bad luck is not a hard cave, it is an unfair one'));
+}
+
+/* Does the boss actually turn up? (2026-10-12)
+
+   The Final Stadium has been here before: its first draft was won by 44-52s
+   and the Cow Killer Bee was due at 58s, so the boss of the whole game never
+   met the player. Nothing in this report caught it - it had to be noticed by
+   hand. Now it is checked: any wave whose bug has  boss: true  in
+   data/units.js, against every attentive win, the squad build's included. */
+var bossTimes = (level.waves || []).filter(function (w) { return W.UNITS[w.enemy].boss; })
+  .map(function (w) { return w.time; });
+
+if (bossTimes.length) {
+  var bossAt = Math.min.apply(null, bossTimes);
+  var attentiveWinsAll = attentive.concat(squadRuns.filter(function (r) {
+    return r.reaction > 0 && r.reaction <= 0.5;
+  })).filter(function (r) { return r.outcome === 'WIN'; });
+  var skipped = attentiveWinsAll.filter(function (r) { return r.seconds <= bossAt; });
+
+  console.log('  ' + (skipped.length ? '[BAD] ' : '[ok]  ') + 'The boss (due at ' + bossAt + 's) ' +
+    (skipped.length
+      ? 'NEVER APPEARS in ' + skipped.length + ' of ' + attentiveWinsAll.length +
+        ' attentive wins - the cave is over first'
+      : 'is met in every attentive win'));
 }
 
 /* And the tutorial's own, stricter promise, only where a level claims it. */

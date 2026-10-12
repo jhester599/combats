@@ -39,6 +39,7 @@ window.BattleScene.prototype.init = function (data) {
 
   this.battleOver = false;
   this.playerWon = false;
+  this.earnedBat = null;      // the bat this win just earned, if any
 };
 
 /* -------------------------------------------------------------------------
@@ -420,7 +421,12 @@ window.BattleScene.prototype.deploy = function (unitKey) {
   this.economy.spend(stats.cost);
   this.cooldowns[unitKey] = stats.cooldown;
 
-  this.spawnUnit(unitKey, this.playerBase.spawnX);
+  // Usually one bat. The Bat Bros button sends two - see src/systems/squad.js.
+  var self = this;
+
+  window.Squad.deploy(unitKey, this.playerBase.spawnX, function (memberKey, x) {
+    self.spawnUnit(memberKey, x);
+  });
 
   return true;
 };
@@ -523,10 +529,30 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
   box.setInteractive({ useHandCursor: true });
 
   // A little portrait of the bat so you can tell the buttons apart at a glance.
-  var portrait = this.add.sprite(x + 34, y + (b.height / 2) + 12, stats.sprite);
-  portrait.setOrigin(0.5, 1);
-  portrait.setScale(this.portraitScaleFor(stats));
-  portrait.play(unitKey + '_idle');
+  //
+  // A squad button (the Bat Bros) draws one bat per member, overlapped and a
+  // bit smaller, so the button itself says "you get more than one". The
+  // brother behind is drawn first so the front one sits on top of him.
+  var members = window.Squad.membersOf(unitKey).length;
+  var portraits = [];
+  var spread = b.squadPortraitSpread;
+  var shrink = (members > 1) ? b.squadPortraitShrink : 1;
+  var m;
+
+  // A pair sits 2px left of a lone bat's spot, so the front brother stays
+  // clear of the name and cost.
+  var centre = x + ((members > 1) ? 32 : 34);
+
+  for (m = members - 1; m >= 0; m--) {
+    var offset = (members > 1) ? (m - ((members - 1) / 2)) * spread : 0;
+    var picture = this.add.sprite(
+      centre - offset, y + (b.height / 2) + 12 - (m * 3), stats.sprite
+    );
+    picture.setOrigin(0.5, 1);
+    picture.setScale(this.portraitScaleFor(stats) * shrink);
+    picture.play(unitKey + '_idle');
+    portraits.push(picture);
+  }
 
   var nameText = this.add.text(x + 62, y + 14, stats.name, {
     fontFamily: cfg.text.fontFamily,
@@ -554,6 +580,15 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
     color: '#ffffff'
   }).setOrigin(1, 0.5);
 
+  // NEW! on the bat you just earned, in the first cave you can use it.
+  if (window.Caves.newBatIn(this.levelKey) === unitKey) {
+    this.add.text(x + b.width - 6, y + 5, 'NEW!', {
+      fontFamily: cfg.text.fontFamily,
+      fontSize: '12px',
+      color: '#ffd24a'
+    }).setOrigin(1, 0);
+  }
+
   var self = this;
 
   box.on('pointerdown', function () {
@@ -566,7 +601,7 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
   return {
     unitKey: unitKey,
     box: box,
-    portrait: portrait,
+    portraits: portraits,
     nameText: nameText,
     costText: costText,
     shade: shade,
@@ -696,7 +731,9 @@ window.BattleScene.prototype.syncButtons = function () {
 
     button.costText.setAlpha(usable ? 1 : b.disabledTextAlpha);
     button.nameText.setAlpha(usable ? 1 : b.disabledTextAlpha);
-    button.portrait.setAlpha(usable ? 1 : b.disabledTextAlpha);
+    button.portraits.forEach(function (picture) {
+      picture.setAlpha(usable ? 1 : b.disabledTextAlpha);
+    });
   }
 };
 
@@ -1014,6 +1051,17 @@ window.BattleScene.prototype.buildResultPanel = function () {
     color: '#ffffff'
   }).setOrigin(0.5);
 
+  // "NEW BAT EARNED: Bat Bros!" - only ever filled in on the first win of a
+  // cave that hands out a bat. A picture of the bat sits to its left.
+  var earnedText = this.add.text(centreX + 22, centreY + 24, '', {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: '19px',
+    color: '#ffd24a'
+  }).setOrigin(0.5);
+
+  var earnedPicture = this.add.sprite(centreX, centreY + 36, '__DEFAULT');
+  earnedPicture.setOrigin(0.5, 1);
+
   var self = this;
 
   // Three buttons get BUILT, but only some are shown - see showResultPanel().
@@ -1041,6 +1089,8 @@ window.BattleScene.prototype.buildResultPanel = function () {
     panel: panel,
     title: title,
     subtitle: subtitle,
+    earnedText: earnedText,
+    earnedPicture: earnedPicture,
     next: next,
     retry: retry,
     menu: menu
@@ -1113,6 +1163,11 @@ window.BattleScene.prototype.showResultPanel = function (visible) {
     always[i].setDepth(2000);
   }
 
+  // The earned-bat line only shows when showEarnedBat() has filled it in.
+  var earned = visible && !!this.earnedBat;
+  r.earnedText.setVisible(earned).setDepth(2000);
+  r.earnedPicture.setVisible(earned).setDepth(2000);
+
   [r.next, r.retry, r.menu].forEach(function (button) {
     var on = visible && (shown.indexOf(button) !== -1);
     button.box.setVisible(on);
@@ -1134,14 +1189,48 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
 
   // Remember it, which is what unlocks the next cave (homework B12/B13).
   // Practice levels are not part of Palopa, so they unlock nothing.
+  //
+  // Asked BEFORE marking it beaten: a bat is only announced as new the first
+  // time you win the cave that gives it. Win it again and it is old news.
+  var firstWin = playerWon && !this.level.practice &&
+    !window.Progress.hasBeaten(this.levelKey);
+
   if (playerWon && !this.level.practice) {
     window.Progress.markBeaten(this.levelKey);
   }
 
+  this.earnedBat = firstWin ? window.Caves.earnedBy(this.levelKey) : null;
+
   this.resultPanel.title.setText(playerWon ? 'VICTORY!' : 'DEFEAT');
   this.resultPanel.subtitle.setText(this.resultMessage(playerWon));
+  this.showEarnedBat(this.earnedBat);
 
   this.showResultPanel(true);
+};
+
+/* -------------------------------------------------------------------------
+   Beat a cave, earn a bat. Puts "NEW BAT EARNED: Archer Bat!" on the victory
+   panel with a picture of the bat beside it. Which bat each cave gives is the
+   unlocks: line in data/levels.js.
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.showEarnedBat = function (unitKey) {
+  var r = this.resultPanel;
+
+  if (!unitKey) {
+    return;
+  }
+
+  var stats = window.UNITS[unitKey];
+  r.earnedText.setText('NEW BAT EARNED: ' + stats.name + '!');
+
+  // Stand the picture just left of the words, sized like a deploy button's.
+  r.earnedPicture.setTexture(stats.sprite);
+  r.earnedPicture.play(unitKey + '_idle');
+  r.earnedPicture.setScale(Math.min(
+    window.CONFIG.buttons.portraitMaxWidth / stats.anims.frameWidth,
+    window.CONFIG.buttons.portraitMaxHeight / stats.anims.frameHeight
+  ));
+  r.earnedPicture.x = r.earnedText.x - (r.earnedText.width / 2) - 32;
 };
 
 /* TODO for Lewis, once this all feels good:

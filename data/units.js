@@ -280,6 +280,54 @@ window.UNITS = {
     }
   },
 
+  /* =====================================================================
+     BAT BROS - the bat you earn for beating Crystal Falls (2026-10-12)
+     =====================================================================
+     "Bat Bros will be 2 scout bats for the price of 35"  - Jeff
+
+     One button, TWO real Scout Bats. Each brother is an ordinary Scout in
+     every way - same health, same bite, same art - so when one dies it leaves
+     a Scout's grave, and a Necrobatcer raises it as a Scout. That is why this
+     block has no hp or attack of its own: the brothers use the Scout's.
+
+     THE DEAL: two Scouts bought one at a time cost 50. The Bros cost 35, so
+     it is the cheapest damage in Palopa (0.76 dps per energy against a single
+     Scout's 0.53). The catch is that you pay 35 in one go, so it lights up
+     later than a Scout on an empty wallet.
+
+     The "squad" block is the whole power. src/systems/squad.js reads it, and
+     both the game and tools/balance-sim.js send the bats through that one
+     file, so the sim measures exactly what you play.
+     ===================================================================== */
+
+  batBros: {
+    name: 'Bat Bros',
+    cost: 35,              // <-- TRY ME: 50 and it is just two Scouts
+    // Below cost / energyPerSecond (35 / 13 = 2.69s), so money is the limit
+    // and a slow tap costs nothing. See the Scout's note above.
+    cooldown: 2.0,
+
+    // WHO comes out when you tap the button, and how many of them.
+    squad: {
+      unit: 'scoutBat',    // any of your bats from this file
+      count: 2             // <-- TRY ME: 3 and it is the Bat Bros AND a cousin
+    },
+
+    // Only used for the picture on the button - the brothers are Scouts, so
+    // they show up on the lane as Scouts.
+    color: '#6fd3ff',
+    sprite: 'scoutBat',
+    scale: 0.55,
+    anims: {
+      frameWidth: 150,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
+    }
+  },
+
   /* TODO for Lewis - fun bats to invent later:
      - healerBat:  needs a new "heal" power in the code, ask Dad
      - ghostBat:   walks past enemies without fighting until it reaches the base
@@ -380,6 +428,9 @@ window.UNITS = {
   cowKillerBee: {
     name: 'Cow Killer Bee',
     enemy: true,
+    // Marks her as THE boss. tools/balance-sim.js checks that a cave holding a
+    // boss is not routinely won before she even arrives.
+    boss: true,
     cost: 0,
     cooldown: 0,
     hp: 2400,              // <-- TRY ME: the whole cave is balanced round this

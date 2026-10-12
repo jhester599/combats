@@ -21,11 +21,31 @@
    shows it separately. Today that is the Graveyard, which exists so Lewis can
    play the Necrobatcer.
 
-   ------------------- WHAT THIS IS NOT -------------------
-   There is no unlocking and nothing is saved: every cave can be picked from
-   the menu. Remembering what you have beaten, earning suns and spending them
-   is homework B12/B13 (milestone M4), and inventing what a cave *is* needs
-   B11 and B17. This file only stops the game being a dead end.
+   ------------------- WHICH BATS EACH CAVE GIVES YOU -------------------
+   Beat a cave, earn a bat (homework B12 = A, "you unlock bats by winning").
+   Cave 1 lists the bats you start with in its  playerUnits , and a cave that
+   hands out a bat says so with one line:
+
+       unlocks: 'archerBat',      // beat this cave and the Archer joins you
+
+   Every later cave then gets the starting bats plus everything earned before
+   it, in the order you earned them - worked out here, once, when the game
+   loads. So adding a bat for cave 4 is one  unlocks  line on cave 4, and caves
+   5-10 all pick it up by themselves.
+
+   It goes by a cave's PLACE rather than by your saved progress, and that is
+   the same thing: a cave only opens once every cave before it is beaten (see
+   src/systems/progress.js), so by the time you can play cave 5 you have
+   earned exactly the bats caves 1-4 give out. Going by place keeps every cave
+   the same for every player, which is what lets tools/balance-sim.js measure
+   it. It also means going back to The Cave later puts you back down to two
+   bats - it is still the tutorial.
+
+   A practice level (the Graveyard) is not part of the chain. It keeps the
+   playerUnits it lists, because a practice level is for trying one thing out.
+
+   Remembering what you have beaten lives in src/systems/progress.js; earning
+   suns and spending them is still homework (milestone M4).
    ========================================================================= */
 
 window.Caves = {};
@@ -76,3 +96,57 @@ window.Caves.label = function (levelKey) {
 
   return (number === null) ? name : (number + '. ' + name);
 };
+
+/* -------------------------------------------------------------------------
+   The bat you EARN by beating this cave, or null if it gives none.
+   ------------------------------------------------------------------------- */
+window.Caves.earnedBy = function (levelKey) {
+  var level = window.LEVELS[levelKey];
+
+  if (!level || level.practice || !level.unlocks) {
+    return null;
+  }
+
+  return level.unlocks;
+};
+
+/* The bat that is new in this cave - the one the cave before it gave you.
+   The battle screen puts a NEW! tag on its button. */
+window.Caves.newBatIn = function (levelKey) {
+  var caves = window.Caves.all();
+  var index = caves.indexOf(levelKey);
+
+  return (index <= 0) ? null : window.Caves.earnedBy(caves[index - 1]);
+};
+
+/* -------------------------------------------------------------------------
+   Give every cave its bats: cave 1's own list, then each cave inherits the
+   one before it plus whatever that cave hands out.
+
+   Runs once, as soon as this file loads, and writes the answer into each
+   cave's  playerUnits  - so the battle screen and the balance sim, which
+   both read playerUnits, need to know nothing about unlocking.
+
+   A cave AFTER the first that writes its own playerUnits keeps them, and the
+   chain carries on from there. That is an escape hatch for an odd cave, not
+   the normal way: leave them out and the cave gets what you have earned.
+   ------------------------------------------------------------------------- */
+window.Caves.fillRosters = function () {
+  var bats = [];
+
+  window.Caves.all().forEach(function (key) {
+    var level = window.LEVELS[key];
+
+    if (level.playerUnits) {
+      bats = level.playerUnits.slice();
+    } else {
+      level.playerUnits = bats.slice();
+    }
+
+    if (level.unlocks && bats.indexOf(level.unlocks) === -1) {
+      bats.push(level.unlocks);
+    }
+  });
+};
+
+window.Caves.fillRosters();
