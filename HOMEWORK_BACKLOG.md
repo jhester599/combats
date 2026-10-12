@@ -391,6 +391,18 @@ facing east, black and white so the colour ladder can tint them.
 
 **Lewis's answer:** _(open)_ → `DESIGN.md` §9
 
+### 🔲 B31. INVENT: The bats you earn from caves 4 to 9 *(needed by M2/M4 — ON THE PLATE)*
+
+Beat a cave, earn a bat is built (D62): caves 1, 2 and 3 give the Archer, the
+Bat Bros and the Necrobatcer. Caves 4–9 give nothing yet. For each new bat: a
+name, what makes it different (numbers, or a power), and which cave earns it.
+
+Rides along with it: **the button row holds five** and there are five bats
+already, so a sixth needs a way to choose a team of five before a cave. Ask
+whether that is fine or whether he has a better idea.
+
+**Lewis's answer:** _(open)_ → `DESIGN.md` §3, §7
+
 ### 🔲 B14. PICK ONE: A second lane? *(needed by M5)*
 
 One lane means one fight. Two lanes would mean splitting your bats and

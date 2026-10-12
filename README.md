@@ -91,9 +91,32 @@ you double its damage; if you *halve* `attackInterval` you also double it.
 2. Rename it, e.g. `ninjaBat:`.
 3. Change the numbers, the `name` and the `color`.
 4. Set `sprite: 'ninjaBat'` to match the new name.
-5. In `data/levels.js`, add `'ninjaBat'` to that level's `playerUnits` list.
+5. Decide which cave **earns** it. In `data/levels.js`, give that cave the line
+   `unlocks: 'ninjaBat',` — beat that cave and the Ninja Bat gets a button in
+   every cave after it.
 
 A button for it appears automatically. No code changes needed.
+
+### Beat a cave, earn a bat
+
+You start with two bats, and every cave you beat early on gives you another:
+
+| Beat... | ...and you earn | so from then on you have |
+|---|---|---|
+| *(start)* | Scout Bat, Brute Bat | 2 bats |
+| 1. The Cave | **Archer Bat** | 3 |
+| 2. Crystal Falls | **Bat Bros** | 4 |
+| 3. Dream Land | **Necrobatcer** | 5 — all of them |
+
+The first time you win one of those caves the victory screen says **NEW BAT
+EARNED**, and the new bat's button wears a **NEW!** tag in the next cave. Caves 4
+and up don't hand out a bat yet; that is one `unlocks:` line each when they do.
+The chain is worked out in `src/systems/caves.js`, so caves 2–10 never list their
+own bats.
+
+**Bat Bros** is one button that sends out **two real Scout Bats for 35 energy**
+(two Scouts bought one at a time would cost 50). Its `squad` block in
+`data/units.js` says who comes out and how many — try `count: 3`.
 
 ### The ten caves of Palopa
 
@@ -194,12 +217,19 @@ twenty**. A cave lost to bad luck isn't a hard cave, it's an unfair one.
 The dice are **seeded**, so the same seed always gives the same battle. A
 measuring tool whose answer changes every run can't tune anything.
 
+A cave that offers the **Bat Bros** gets one more pretend player, who reaches
+for that button first — two Scouts for 35 is the cheapest damage in the game,
+so this is the fastest army there is. And a cave with a **boss** in it
+(`boss: true` in `data/units.js`) is checked for whether the boss actually
+turns up before the cave is won.
+
 ### Check the rules still hold
 
 ```bash
 node tools/necro-test.js    # 20 checks - the Necrobatcer's summoning
 node tools/sting-test.js    # 27 checks - the Desert Scorpion's gamble
 node tools/items-test.js    # 37 checks - potions and fruit
+node tools/roster-test.js   # 21 checks - which cave earns which bat, and the Bat Bros
 ```
 
 Each covers the rules that stop the game quietly breaking, rather than the ones
@@ -216,6 +246,10 @@ that tune how it feels:
 - **items** — three potions give ten weakened seconds and not thirty, a potion
   never weakens your own bats, fruit can't overheal, and nothing writes on the
   shared stats object in `data/units.js`.
+- **roster** — cave 1 starts you with Scout + Brute, caves 1–3 earn the Archer,
+  Bat Bros and Necrobatcer in that order, every cave has exactly the bats earned
+  before it, no cave has more bats than fit on the button row, and one Bat Bros
+  tap really sends two Scouts.
 
 ### Add a cave painting
 
@@ -285,7 +319,8 @@ src/
     necro.js          the Necrobatcer's summoning: graves, and raising them
     sting.js          the Desert Scorpion's gamble, and its seeded dice
     items.js          potions and fruit: what they do and what they refuse
-    caves.js          what caves exist, and which one comes next
+    caves.js          what caves exist, which one comes next, which bats each has
+    squad.js          one button, several bats (the Bat Bros)
     progress.js       which caves you have beaten, saved in localStorage
   entities/
     unit.js           one bat: walk, fight, die
@@ -295,6 +330,7 @@ tools/
   necro-test.js       checks the summoning rules hold (testing only)
   sting-test.js       checks the gambling rules hold (testing only)
   items-test.js       checks the item rules hold (testing only)
+  roster-test.js      checks which cave earns which bat, and the Bat Bros (testing only)
   doc-check.js        checks the DOCUMENTS still match the data (testing only)
   import-background.js  puts a cave painting into assets/bg (needs a browser)
   pack-spritesheet.js turns a folder of frames into one sprite sheet

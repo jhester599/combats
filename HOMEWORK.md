@@ -10,6 +10,33 @@
 
 ---
 
+## 🆕 NEW: beat a cave, EARN A BAT — and meet the Bat Bros 👊
+
+You start Palopa with just **two** bats now, and you win the rest:
+
+| Beat... | ...and you earn |
+|---|---|
+| *(at the start)* | 🦇 Scout Bat and 💪 Brute Bat |
+| **1. The Cave** | 🏹 **Archer Bat** |
+| **2. Crystal Falls** | 👊 **Bat Bros** — brand new! |
+| **3. Dream Land** | 💀 **Necrobatcer** |
+
+When you win one of those for the first time, the victory screen says **NEW BAT
+EARNED!**, and in the next cave the new bat's button has a little **NEW!** on it.
+
+### 👊 The Bat Bros
+
+Dad invented this one. **One button, TWO Scout Bats, for 35 energy.** Two
+Scouts bought one at a time would cost 50 — so the Bros are a bargain. They're
+real Scouts, so if one falls your Necrobatcer can raise him.
+
+*(They're such a bargain that a Bat Bros army can win the Final Stadium before
+the Cow Killer Bee even turns up. Dad is working out what to do about that.)*
+
+**Caves 4 to 10 don't give you a bat yet — that's question B31 below.** 👇
+
+---
+
 ## 🎉 EVERYTHING YOU ASKED FOR IS BUILT. Go and play it.
 
 **https://jhester599.github.io/combats/**
@@ -366,9 +393,9 @@ nearest bug, and raised **7** bats from the dead.)*
 
 ---
 
-## 🟡 Round 4 — three questions
+## 🟡 Round 4 — four questions
 
-Two quick ones and a drawing one.
+Two quick ones, a drawing one, and a big inventing one.
 
 ---
 
@@ -438,6 +465,30 @@ Right now they're:
 Same brief as always: hand-drawn, not realistic, **64×64**, facing **east**.
 These are bugs rather than bats, so the "big circle, wings, ears, no legs" rule
 doesn't apply — they can look like whatever you think they look like.
+
+**Lewis's answer:** _(open)_
+
+---
+
+### 🔲 B31. INVENT: the bats you earn from caves 4 to 9 🦇 *(the big one)*
+
+Beating caves 1, 2 and 3 each gives you a bat now. **Caves 4 to 9 don't give you
+anything yet** — and that's six bats waiting to be invented. *(Cave 10 is the
+last one, so there's no cave after it to use a bat in.)*
+
+For each one, tell Dad:
+
+- **its name**
+- **what makes it different** — is it fast? tough? far-reaching? does it have a
+  **power**, like your Necrobatcer raising the dead?
+- **which cave earns it**
+
+You don't have to do all six at once. One is great.
+
+**⚠️ One thing to know first:** only **five** buttons fit along the bottom of the
+screen, and you already have five bats. So once there's a sixth, you'll need to
+**pick your team of five** before each cave (like in *The Battle Cats*). Is that
+OK, or do you have a better idea?
 
 **Lewis's answer:** _(open)_
 

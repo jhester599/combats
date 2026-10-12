@@ -26,8 +26,14 @@
    startEnergy     energy you begin with
    energyPerSecond how fast energy refills
    maxEnergy       the most energy you can hold at once
-   playerUnits     which units from units.js get a deploy button, in order
-                   (max 4 fit on screen nicely)
+   playerUnits     CAVE 1 ONLY: the bats you start the game with, in button
+                   order. Later caves leave it out - they get every bat you
+                   have earned so far (see "unlocks"). A practice level lists
+                   its own. (max 5 fit on screen nicely)
+   unlocks         OPTIONAL. the bat you EARN by beating this cave, e.g.
+                   unlocks: 'archerBat'. It gets a button in every cave after
+                   this one, and the victory screen announces it the first
+                   time you win. The chain is worked out in src/systems/caves.js.
    waves           the enemy spawn schedule - see below
    practice        OPTIONAL. true = this is a try-things-out level, not a real
                    cave. tools/balance-sim.js then stops failing it for letting
@@ -59,9 +65,9 @@
    The list does NOT have to be in time order - the game sorts it for you.
 
    ------------------- HOW TO ADD A WHOLE NEW LEVEL -------------------
-   Copy the entire  level1: { ... },  block, rename it to  level2:, and
-   change the numbers. Then in src/main.js set STARTING_LEVEL to 'level2'
-   to play it.
+   Copy a whole cave block, rename it, and change the numbers. Leave out
+   playerUnits - it gets every bat earned before it. A button for it appears
+   on the title screen by itself, in the position you wrote it.
    ========================================================================= */
 
 window.LEVELS = {
@@ -100,8 +106,9 @@ window.LEVELS = {
     energyPerSecond: 13,   // <-- TRY ME: 40 makes you rich and the game silly
     maxEnergy: 300,
 
-    // Which bats you get buttons for. Must be keys from data/units.js.
-    // Max 4 fit on screen nicely.
+    // The bats you START the game with. Must be keys from data/units.js.
+    // Every other cave works out its own list from these plus what you have
+    // earned (see "unlocks" just below), so this is the only cave that says.
     //
     // The NECROBATCER IS DELIBERATELY NOT HERE, even though it is built and
     // ready. Level 1 teaches one thing - keep spending, hoarding loses - and
@@ -112,6 +119,17 @@ window.LEVELS = {
     //
     // Play with it in the 'graveyard' test level below instead.
     playerUnits: ['scoutBat', 'bruteBat'],
+
+    // ------------------- BEAT A CAVE, EARN A BAT (2026-10-12) -------------------
+    // Jeff: "introduce a new bat with every successful level completed. First
+    // level has scout bat and brute bat, then you earn archer after clearing
+    // level 1. After level 2 you earn bat bros. After level 3 you earn
+    // necrobatcer."
+    //
+    // So each of the first three caves hands out one bat. Caves 4 and up do not
+    // give one YET - more bats are coming, and adding one is a single
+    // unlocks: line on that cave.
+    unlocks: 'archerBat',  // <-- beat The Cave and the Archer joins you
 
     // The one cave that must teach "keep spending, hoarding loses". From cave 2
     // on you have the Archer and the Necrobatcer, and patient play becomes a
@@ -166,10 +184,8 @@ window.LEVELS = {
      where the Spider finally appears - it has existed in data/units.js since
      Round 1 and has never been in a level.
 
-     It is also where the ARCHER BAT arrives. Until progress saving exists
-     (homework B12/B13) a cave's playerUnits list is how a new bat gets
-     introduced, so the bats arrive cave by cave the way winning would unlock
-     them.
+     It is also where the ARCHER BAT arrives - you earned it by beating The
+     Cave. Beat this one and you earn the BAT BROS.
      ======================================================================= */
   crystalFalls: {
     name: 'Crystal Falls',
@@ -178,7 +194,7 @@ window.LEVELS = {
     startEnergy: 40,
     energyPerSecond: 13,
     maxEnergy: 300,
-    playerUnits: ['scoutBat', 'bruteBat', 'archerBat'],
+    unlocks: 'batBros',    // Scout, Brute, Archer here - and the Bros next
     waves: [
       { time: 3,  enemy: 'mosquito', count: 2, gap: 0.8 },
       { time: 11, enemy: 'spider',   count: 2, gap: 0.9 },
@@ -217,6 +233,9 @@ window.LEVELS = {
      The second wall at 46s is the clever bit, and it is Lewis's idea working:
      you break through, you start on the tower, and then a new door grows in
      front of you while the late waves catch up from behind.
+
+     The BAT BROS arrive here (earned in Crystal Falls), and beating Dream Land
+     earns the NECROBATCER.
      ======================================================================= */
   dreamLand: {
     name: 'Dream Land',
@@ -225,7 +244,7 @@ window.LEVELS = {
     startEnergy: 75,       // <-- the compensation for having no warm-up
     energyPerSecond: 13,
     maxEnergy: 300,
-    playerUnits: ['scoutBat', 'bruteBat', 'archerBat'],
+    unlocks: 'necroBat',
     waves: [
       { time: 1,  enemy: 'mosquito',      count: 3, gap: 0.5 },   // straight in
       { time: 8,  enemy: 'spider',        count: 2, gap: 0.7 },
@@ -254,8 +273,9 @@ window.LEVELS = {
      CAVE 4 - PYRAMID                  lever: A TOUGHER FORTRESS
      =======================================================================
      Half again as much fortress to chew through, so this one is a siege. It is
-     also where the NECROBATCER arrives - a long cave is exactly where raising
-     your fallen bats pays off.
+     also where the NECROBATCER arrives (earned in Dream Land) - a long cave is
+     exactly where raising your fallen bats pays off. From here on you have all
+     five bats.
      ======================================================================= */
   pyramid: {
     name: 'Pyramid',
@@ -269,7 +289,6 @@ window.LEVELS = {
     // turtle 31 seconds behind. A siege still has to reward pressing on.
     energyPerSecond: 15,
     maxEnergy: 320,
-    playerUnits: ['scoutBat', 'bruteBat', 'archerBat', 'necroBat'],
     waves: [
       { time: 4,  enemy: 'mosquito', count: 3, gap: 0.7 },
       { time: 13, enemy: 'spider',   count: 2, gap: 0.8 },
@@ -316,7 +335,6 @@ window.LEVELS = {
     startEnergy: 60,
     energyPerSecond: 11,   // <-- the lever. Cave 1's is 13.
     maxEnergy: 300,
-    playerUnits: ['scoutBat', 'bruteBat', 'archerBat', 'necroBat'],
     waves: [
       { time: 4,  enemy: 'mosquito',       count: 2, gap: 0.8 },
       { time: 13, enemy: 'spider',         count: 2, gap: 0.9 },
@@ -350,7 +368,6 @@ window.LEVELS = {
     startEnergy: 55,
     energyPerSecond: 15,
     maxEnergy: 340,
-    playerUnits: ['scoutBat', 'bruteBat', 'archerBat', 'necroBat'],
     waves: [
       { time: 4,   enemy: 'mosquito', count: 3, gap: 0.7 },
       { time: 14,  enemy: 'spider',   count: 3, gap: 0.8 },
@@ -385,7 +402,6 @@ window.LEVELS = {
     startEnergy: 140,
     energyPerSecond: 14,
     maxEnergy: 320,
-    playerUnits: ['scoutBat', 'bruteBat', 'archerBat', 'necroBat'],
     waves: [
       { time: 1,  enemy: 'spider',   count: 2, gap: 0.6 },   // straight in
       { time: 9,  enemy: 'spider',   count: 3, gap: 0.7 },
@@ -433,7 +449,6 @@ window.LEVELS = {
     startEnergy: 70,
     energyPerSecond: 12,   // <-- lever two
     maxEnergy: 320,
-    playerUnits: ['scoutBat', 'bruteBat', 'archerBat', 'necroBat'],
 
     // MEASURED, and this one needed a rethink rather than a nudge: the first
     // draft was spider-and-scorpion the whole way down and lost at EVERY
@@ -483,7 +498,6 @@ window.LEVELS = {
     startEnergy: 60,
     energyPerSecond: 13,
     maxEnergy: 340,
-    playerUnits: ['scoutBat', 'bruteBat', 'archerBat', 'necroBat'],
     // MEASURED, and this cave was the one thing today's work genuinely broke.
     // The first attempt ADDED Desert Scorpions on top of the plain ones, and the
     // cave went from 0 losses in 160 runs to 52 - all of them suffered by the
@@ -544,7 +558,6 @@ window.LEVELS = {
     startEnergy: 130,
     energyPerSecond: 16,
     maxEnergy: 400,
-    playerUnits: ['scoutBat', 'bruteBat', 'archerBat', 'necroBat'],
     waves: [
       { time: 4,  enemy: 'mosquito', count: 3, gap: 0.6 },
       { time: 13, enemy: 'spider',   count: 3, gap: 0.7 },
