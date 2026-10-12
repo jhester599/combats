@@ -2,10 +2,9 @@
    UNIT - one bat (or one monster)
    =========================================================================
    A unit is built entirely from a definition in data/units.js. This file
-   contains NO stats at all - it just knows how to *behave*:
-
-       walk forward  ->  something in range?  ->  stop and hit it
-       out of health ->  play the death animation  ->  go back in the pool
+   contains NO stats and, since 2026-10-12, NO behaviour either: what a unit
+   DOES each step is src/systems/brain.js, shared with the balance sim. This
+   file is the drawing - a sprite and a health bar that follow the numbers.
 
    Units are POOLED (see src/systems/pool.js): when one dies its object is
    reused for the next unit instead of being thrown away. That is why the
@@ -95,25 +94,14 @@ window.Unit.prototype.spawn = function (unitKey, startX) {
   this.direction = this.stats.enemy ? -1 : 1;
 
   this.x = startX;
-  this.hp = this.stats.hp;
-  this.attackTimer = 0;       // ready to swing the moment it meets someone
-  this.isDying = false;
-  this.dyingTimer = 0;
-  this.active = true;
   this.currentAnim = null;
 
-  // Summoning state (graves, raise timers). Units are pooled, so this MUST be
-  // reset for every new bat - see the note in src/systems/necro.js.
-  window.Necro.resetUnit(this);
+  // Health, timers and every power's state (graves, freezing, flying...).
+  // Units are pooled, so ALL of it is reset for every new bat, in one place.
+  window.Brain.reset(this);
 
-  // How long the death animation lasts, worked out from the frame data so
-  // nobody has to keep two numbers in sync.
-  var death = this.stats.anims.death;
-  this.deathDuration = (death.end - death.start + 1) / death.frameRate;
-
-  // Enemies are the same drawing, just mirrored to face left.
-  this.sprite.setFlipX(this.stats.enemy === true);
   this.sprite.setAlpha(1);
+  this.sprite.clearTint();
 
   // How big to draw it. Two units can be the same size in the art tool and
   // still look big and small in the game - that is what "scale" is for.
@@ -139,106 +127,38 @@ window.Unit.prototype.spawn = function (unitKey, startX) {
 };
 
 /* -------------------------------------------------------------------------
-   THE BRAIN. Called once per fixed simulation step.
+   Called once per fixed simulation step. The thinking is shared with the
+   balance sim, so it lives in src/systems/brain.js.
    ------------------------------------------------------------------------- */
 window.Unit.prototype.update = function (dt, world) {
-  if (!this.active) {
-    return;
-  }
-
-  // Already dying? Just count down the death animation, then bow out.
-  if (this.isDying) {
-    this.dyingTimer -= dt;
-
-    if (this.dyingTimer <= 0) {
-      // Leave a grave BEFORE going inactive, while this.x is still the spot
-      // where it fell. A Necrobatcer can raise it later.
-      window.Necro.recordDeath(this, world);
-
-      this.active = false;     // the battle scene will pool it next sweep
-    }
-
-    return;
-  }
-
-  // A Necrobatcer raises a fallen friend. Every other bat ignores this.
-  if (window.Necro.update(this, dt, world)) {
-    // It just summoned - show the attack pose as the "casting" move. There is
-    // no summon animation drawn yet; that is homework B21 territory.
-    this.playAnim('attack', true);
-  }
-
-  var target = window.Combat.findTarget(this, world);
-
-  if (target) {
-    this.fight(dt, target, world);
-  } else {
-    this.walk(dt, world);
-  }
+  window.Brain.step(this, dt, world);
 };
 
-/* Walk forward, unless a friend is already standing in the way. */
-window.Unit.prototype.walk = function (dt, world) {
-  if (window.Combat.isBlockedByFriend(this, world)) {
-    // Wait our turn in the queue instead of walking into a friend's back.
-    this.playAnim('idle');
-    return;
-  }
-
-  this.x += this.stats.speed * this.direction * dt;
-  this.playAnim('walk');
-};
-
-/* Stand still and hit the target on our own attack interval. */
-window.Unit.prototype.fight = function (dt, target, world) {
-  this.attackTimer -= dt;
-
-  if (this.attackTimer <= 0) {
-    this.attackTimer = this.stats.attackInterval;
-
-    // The swing animation is started BEFORE the hit is worked out, and that
-    // order matters. A Desert Scorpion's sting can kill the scorpion itself
-    // (src/systems/sting.js), and startDying() sets the death animation - so
-    // playing the attack pose afterwards would wipe it out and leave a dead
-    // bug lunging for ever.
-    //
-    // 'true' means "restart it", so every swing plays the full animation.
-    this.playAnim('attack', true);
-
-    // ONE place works out damage, for the game and the balance sim alike.
-    var hit = window.Combat.strike(this, target, world);
-
-    if (hit.instantKill || hit.backfire) {
-      this.scene.reportSting(this, target, hit);
-    }
-  } else if (this.currentAnim !== 'attack' && !this.isDying) {
-    // Between swings, wait in the idle pose - unless this bat is on its way
-    // out, in which case leave the death animation alone.
-    this.playAnim('idle');
-  }
+window.Unit.prototype.takeDamage = function (amount) {
+  window.Brain.takeDamage(this, amount);
 };
 
 /* -------------------------------------------------------------------------
-   Take a hit. Called by the combat system.
+   The brain telling the drawing what happened.
+
+   show(): 'restart' replays an animation from the start (every swing).
+   'unlessSwinging' is for the pause between swings - go idle, but do not cut
+   a swing short that is still playing.
    ------------------------------------------------------------------------- */
-window.Unit.prototype.takeDamage = function (amount) {
-  if (this.isDying) {
+window.Unit.prototype.show = function (animName, restart, unlessSwinging) {
+  if (this.isDying && animName !== 'death') {
+    return;               // never let anything wipe out the death animation
+  }
+
+  if (unlessSwinging && this.currentAnim === 'attack') {
     return;
   }
 
-  this.hp -= amount;
-
-  if (this.hp <= 0) {
-    this.hp = 0;
-    this.startDying();
-  }
+  this.playAnim(animName, restart);
 };
 
-/* Begin the death animation. The unit stops fighting immediately. */
-window.Unit.prototype.startDying = function () {
-  this.isDying = true;
-  this.dyingTimer = this.deathDuration;
-
+/* Begin the death animation. The brain has already stopped the unit. */
+window.Unit.prototype.onStartDying = function () {
   this.setBarsVisible(false);
   this.playAnim('death', true);
 };
@@ -268,8 +188,21 @@ window.Unit.prototype.refresh = function () {
   var cfg = window.CONFIG;
 
   // Note the drawing offsets: the simulation uses this.x, the picture is
-  // nudged a few pixels so overlapping units stay readable.
-  this.view.setPosition(this.x + this.drawOffsetX, cfg.lane.y + this.laneOffset);
+  // nudged a few pixels so overlapping units stay readable. A Bomb Bat on its
+  // run is drawn up in the air, over everyone's heads.
+  var lift = this.flying ? cfg.units.flyHeight : 0;
+  this.view.setPosition(this.x + this.drawOffsetX, cfg.lane.y + this.laneOffset - lift);
+
+  // Face the way it is going. Bugs walk left, so they are mirrored; a Bomb Bat
+  // flying home turns round.
+  this.sprite.setFlipX(this.direction < 0);
+
+  // Frozen bugs go icy blue (homework-free: Jeff's Frost Bat, 2026-10-12).
+  if (window.Frost.isFrozen(this)) {
+    this.sprite.setTint(cfg.units.frozenTint);
+  } else {
+    this.sprite.clearTint();
+  }
 
   // Units nearer the front of the screen draw on top. Keeps the pile readable.
   this.view.setDepth(cfg.lane.y + this.laneOffset);
@@ -308,17 +241,8 @@ window.Unit.prototype.deactivate = function () {
   this.currentAnim = null;
 };
 
-/* THE SPECIAL POWERS ARE NOT WRITTEN IN THIS FILE. There are two so far:
-
-     src/systems/necro.js  the Necrobatcer raising your fallen bats  (B5)
-     src/systems/sting.js  the Desert Scorpion's gamble on every hit (B26)
-
-   Both live in src/systems/ because the headless balance sim has its own copy
-   of this brain and has to obey exactly the same rules as the browser does.
-
-   Copy that pattern for the next power. TODO for Lewis, ideas:
-     - a bat that EXPLODES when it dies and hurts everything nearby
-     - a bat that HEALS the bat in front of it
-     - a bat that FREEZES whatever it hits for a second
-   Each one is: a block of numbers in data/units.js, a rules file in
-   src/systems/, and two lines here and in tools/balance-sim.js. */
+/* THE SPECIAL POWERS ARE NOT WRITTEN IN THIS FILE. Each is a rules file in
+   src/systems/ and a block of numbers in data/units.js, and
+   src/systems/brain.js decides when to ask it - see the list at the top of
+   that file. The balance sim runs the same brain, so a new power needs no
+   wiring here or in tools/balance-sim.js at all. */

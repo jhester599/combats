@@ -63,13 +63,21 @@ require(path.join(root, 'src/systems/necro.js'));
 require(path.join(root, 'src/systems/sting.js'));
 require(path.join(root, 'src/systems/items.js'));
 require(path.join(root, 'src/systems/squad.js'));
+require(path.join(root, 'src/systems/cheer.js'));
+require(path.join(root, 'src/systems/frost.js'));
+require(path.join(root, 'src/systems/bomb.js'));
+require(path.join(root, 'src/systems/rabies.js'));
+require(path.join(root, 'src/systems/engineer.js'));
+require(path.join(root, 'src/systems/brain.js'));
 require(path.join(root, 'src/systems/caves.js'));
+require(path.join(root, 'src/systems/team.js'));
 
 var W = global.window;
 
 /* -------------------------------------------------------------------------
-   A unit with no pictures. It copies the real unit's behaviour exactly, but
-   skips everything to do with drawing.
+   A unit with no pictures. Since 2026-10-12 it has no brain of its own
+   either: it runs src/systems/brain.js, the very same code the browser runs,
+   so the sim cannot disagree with the game about how any bat behaves.
    ------------------------------------------------------------------------- */
 function SimUnit() {
   this.active = false;
@@ -81,62 +89,15 @@ SimUnit.prototype.spawn = function (unitKey, startX) {
   this.team = this.stats.enemy ? 'enemy' : 'player';
   this.direction = this.stats.enemy ? -1 : 1;
   this.x = startX;
-  this.hp = this.stats.hp;
-  this.attackTimer = 0;
-  this.isDying = false;
-  this.active = true;
-
-  // Same pooled-state reset as the real Unit does. Without this the sim would
-  // quietly disagree with the game about who can be raised.
-  W.Necro.resetUnit(this);
-
-  var death = this.stats.anims.death;
-  this.deathDuration = (death.end - death.start + 1) / death.frameRate;
+  W.Brain.reset(this);
 };
 
-SimUnit.prototype.update = function (dt, world) {
-  if (!this.active) { return; }
+SimUnit.prototype.update = function (dt, world) { W.Brain.step(this, dt, world); };
+SimUnit.prototype.takeDamage = function (amount) { W.Brain.takeDamage(this, amount); };
 
-  if (this.isDying) {
-    this.dyingTimer -= dt;
-    if (this.dyingTimer <= 0) {
-      W.Necro.recordDeath(this, world);   // leave a grave where it fell
-      this.active = false;
-    }
-    return;
-  }
-
-  W.Necro.update(this, dt, world);        // Necrobatcers raise a fallen friend
-
-  var target = W.Combat.findTarget(this, world);
-
-  if (target) {
-    this.attackTimer -= dt;
-    if (this.attackTimer <= 0) {
-      this.attackTimer = this.stats.attackInterval;
-
-      // Exactly the same one line the real game runs (src/entities/unit.js).
-      // Potions and stings are inside it, so the sim cannot disagree with the
-      // browser about them - which is the whole point of DECISIONS.md D11.
-      var hit = W.Combat.strike(this, target, world);
-
-      if (hit.instantKill) { world.stings.kills++; }
-      if (hit.backfire) { world.stings.backfires++; }
-    }
-  } else if (!W.Combat.isBlockedByFriend(this, world)) {
-    this.x += this.stats.speed * this.direction * dt;
-  }
-};
-
-SimUnit.prototype.takeDamage = function (amount) {
-  if (this.isDying) { return; }
-  this.hp -= amount;
-  if (this.hp <= 0) {
-    this.hp = 0;
-    this.isDying = true;
-    this.dyingTimer = this.deathDuration;
-  }
-};
+// Nothing to draw.
+SimUnit.prototype.show = function () {};
+SimUnit.prototype.onStartDying = function () {};
 
 /* A base with no pictures. */
 function SimBase(team, maxHp) {
@@ -171,6 +132,9 @@ SimBase.prototype.takeDamage = function (amount) {
                       the list this is a Scout-spammer and nothing else.
                    'priciest' - puts the money into the best bat it can afford,
                       so Brutes and Archers actually get sent.
+                   'balanced' - always buys the team bat it has spent the
+                      least on, so every button gets used (2026-10-12).
+                   'listed' - in the order given in 'use', no sorting.
                  This matters more than it sounds. Measuring only 'cheapest'
                  says "attentive play loses" about any cave that punishes a
                  stream of 40hp Scouts, when what loses is the SPAMMING, not
@@ -192,7 +156,9 @@ function playLevel(levelKey, options) {
   W.Sting.useSeed(options.seed === undefined ? 1 : options.seed);
 
   var level = W.LEVELS[levelKey];
-  var use = options.use || level.playerUnits;
+  // Which bats this player brought. Default: the team the Locker opens with
+  // for someone with no saved team (src/systems/team.js).
+  var use = options.use || W.Team.defaultFor(levelKey, null);
   var reaction = options.reaction || 0;
   var maxSeconds = options.maxSeconds || 300;
 
@@ -201,6 +167,15 @@ function playLevel(levelKey, options) {
   // Brute instead of being nibbled away by Scouts.
   var order = use.slice();
   var reserve = 0;
+
+  // 'cheapest' really means cheapest-first. It used to mean "in button order",
+  // which was the same thing while the Scout was always the first button - but
+  // a Locker team can be in any order (2026-10-12), and a team listed Bomb Bat
+  // first turned the "cheap spammer" into someone spending everything on bombs.
+  // 'listed' keeps the order you gave, for the builds that want a bat first.
+  if (!options.prefer || options.prefer === 'cheapest') {
+    order.sort(function (a, b) { return W.UNITS[a].cost - W.UNITS[b].cost; });
+  }
 
   if (options.prefer === 'priciest') {
     order.sort(function (a, b) { return W.UNITS[b].cost - W.UNITS[a].cost; });
@@ -240,13 +215,20 @@ function playLevel(levelKey, options) {
     // guessed at.
     stings: { kills: 0, backfires: 0 },
 
-    // Only the summoning system uses world.spawn, so counting calls here is
-    // an exact count of how many bats got raised from the dead.
     spawn: function (unitKey, x) {
       var u = pool.obtain();
       u.spawn(unitKey, x);
-      raisedCount++;
       return u;
+    },
+
+    // What the game shows as floating words, the sim counts.
+    report: function (kind, details) {
+      if (kind === 'sting') {
+        if (details.hit.instantKill) { world.stings.kills++; }
+        if (details.hit.backfire) { world.stings.backfires++; }
+      } else if (kind === 'raised') {
+        raisedCount++;
+      }
     }
   };
 
@@ -255,7 +237,8 @@ function playLevel(levelKey, options) {
   var cooldowns = {};
   var litSince = {};   // when each button BECAME tappable (null = it is dark)
   var sent = {};
-  use.forEach(function (k) { cooldowns[k] = 0; litSince[k] = null; sent[k] = 0; });
+  var spentOn = {};     // energy put into each bat so far (the balanced player)
+  use.forEach(function (k) { cooldowns[k] = 0; litSince[k] = null; sent[k] = 0; spentOn[k] = 0; });
 
   var dt = 1 / W.CONFIG.sim.stepsPerSecond;
   var t = 0;
@@ -265,9 +248,12 @@ function playLevel(levelKey, options) {
 
   while (t < maxSeconds) {
     var before = economy.energy;
+
+    // An Engineer Bat speeds the income up - the same line the game runs.
+    economy.energyPerSecond = level.energyPerSecond * W.Engineer.incomeFactor(world);
     economy.update(dt);
     W.Items.update(dt, world);
-    wastedEnergy += (before + level.energyPerSecond * dt) - economy.energy;
+    wastedEnergy += (before + economy.energyPerSecond * dt) - economy.energy;
 
     use.forEach(function (k) {
       if (cooldowns[k] > 0) {
@@ -280,7 +266,27 @@ function playLevel(levelKey, options) {
     // exactly what BattleScene.canDeploy() checks. Our pretend thumb lands
     // 'reaction' seconds after that, which is the whole point of this tool.
     // We walk the buttons in spending-policy order (see 'prefer' above).
+    // The BALANCED player (2026-10-12) only ever reaches for ONE button: the
+    // bat in the team they have spent the least on so far that is off its
+    // cooldown. So every bat in a Locker team really gets used, instead of the
+    // cheapest soaking up the money - which is the only fair way to ask "is
+    // this bat any good?". The other two players never buy a Bomb Bat at all.
+    var wanted = null;
+
+    if (options.prefer === 'balanced') {
+      order.forEach(function (k) {
+        if (cooldowns[k] <= 0 && (wanted === null || spentOn[k] < spentOn[wanted])) {
+          wanted = k;
+        }
+      });
+    }
+
     order.forEach(function (k) {
+      if (wanted !== null && k !== wanted) {
+        litSince[k] = null;
+        return;
+      }
+
       var lit = (cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost));
 
       if (!lit) {
@@ -303,6 +309,7 @@ function playLevel(levelKey, options) {
         cooldowns[k] = W.UNITS[k].cooldown;
         litSince[k] = null;
         sent[k]++;
+        spentOn[k] += W.UNITS[k].cost;
 
         // The same file the game uses, so a Bat Bros tap sends two here too.
         W.Squad.deploy(k, playerBase.spawnX, function (memberKey, x) {
@@ -404,7 +411,12 @@ function checkTapEconomy(levelKey) {
    - if another script requires this file, it just gets the functions.
    ------------------------------------------------------------------------- */
 
-module.exports = { playLevel: playLevel, checkTapEconomy: checkTapEconomy };
+module.exports = {
+  playLevel: playLevel,
+  checkTapEconomy: checkTapEconomy,
+  SimUnit: SimUnit,        // for tools/powers-test.js
+  SimBase: SimBase
+};
 
 if (require.main !== module) {
   return;
@@ -434,6 +446,86 @@ var level = W.LEVELS[levelKey];
 
 console.log('');
 console.log('  Level: ' + levelKey + '  (' + level.name + ')');
+
+/* --- part 3c: THE LOCKER - every team you could bring (2026-10-12) ------
+   You take three bats into a cave and choose them in the Locker, so "is this
+   cave winnable?" became "which TEAMS can win it?". Every possible team is
+   played at a 0.3s thumb by all three players - cheap-spammer, saver and
+   balanced - and counts as able to win if any one of them does. (The
+   balanced player is the one who actually uses all three buttons; the other
+   two never buy a Bomb Bat at all.)
+
+   What has to stay true:
+     * most teams can win - the Locker is a choice, not a puzzle with one key;
+     * teams WITH the bat this cave just gave you win about as often as the
+       rest, or the new bat is a trap;
+     * and, in a cave with a boss, you meet her in nearly every win.
+   ----------------------------------------------------------------------- */
+function teamsOf(list, k) {
+  if (k === 0) { return [[]]; }
+  if (list.length < k) { return []; }
+  var first = list[0];
+  var rest = list.slice(1);
+  return teamsOf(rest, k - 1).map(function (t) { return [first].concat(t); })
+    .concat(teamsOf(rest, k));
+}
+
+var lockerReport = null;
+
+// The team the rest of this report plays with. With no Locker it is simply
+// every bat you have. With one, it is the NEW bat plus the two partners that
+// win quickest with it - "the best way to use what you just earned" - and
+// the sections below then ask whether THAT team holds up for a slow thumb, a
+// saver, a hoarder. The Locker section itself covers every other team.
+var cliTeam = W.Team.defaultFor(levelKey, null);
+var bestNewTeam = null;
+var bestNewTime = Infinity;
+
+if (!level.practice && W.Team.needsLocker(levelKey)) {
+  var lockerTeams = teamsOf(level.playerUnits, W.Team.size());
+  var newBat = W.Caves.newBatIn(levelKey);
+  var lockerBossAt = (level.waves || []).filter(function (w) { return W.UNITS[w.enemy].boss; })
+    .map(function (w) { return w.time; })[0];
+
+  lockerReport = { teams: 0, wins: 0, newTeams: 0, newWins: 0, bossWins: 0, bossMet: 0, losers: [] };
+
+  lockerTeams.forEach(function (team) {
+    var won = false;
+    var fastest = Infinity;
+
+    ['cheapest', 'priciest', 'balanced'].forEach(function (policy) {
+      var res = playLevel(levelKey, { reaction: 0.3, use: team, prefer: policy, maxSeconds: 300 });
+
+      if (res.outcome === 'WIN') {
+        won = true;
+        fastest = Math.min(fastest, res.seconds);
+        if (lockerBossAt !== undefined) {
+          lockerReport.bossWins++;
+          if (res.seconds > lockerBossAt) { lockerReport.bossMet++; }
+        }
+      }
+    });
+
+    lockerReport.teams++;
+    if (won) { lockerReport.wins++; } else { lockerReport.losers.push(team); }
+
+    if (newBat && team.indexOf(newBat) !== -1) {
+      lockerReport.newTeams++;
+      if (won) { lockerReport.newWins++; }
+
+      if (fastest < bestNewTime) { bestNewTime = fastest; bestNewTeam = team; }
+    }
+  });
+
+  lockerReport.newBat = newBat;
+  lockerReport.bossAt = lockerBossAt;
+
+}
+
+if (bestNewTeam) { cliTeam = bestNewTeam; }
+
+console.log('  Team played below: ' + cliTeam.map(function (k) { return W.UNITS[k].name; }).join(' + ') +
+  (lockerReport ? '  (the new bat\'s best team - see THE LOCKER for the rest)' : ''));
 
 /* --- part 1: the tap-economy check ------------------------------------- */
 console.log('');
@@ -473,7 +565,7 @@ console.log('  ' + pad('reaction', 11) + pad('outcome', 12) + pad('length', 10) 
   pad('your base', 12) + pad('enemy base', 12) + 'bats sent');
 
 var runs = band.map(function (r) {
-  var res = playLevel(levelKey, { reaction: r, maxSeconds: 400 });
+  var res = playLevel(levelKey, { reaction: r, use: cliTeam, maxSeconds: 400 });
   console.log('  ' + pad(r === 0 ? '0s (robot)' : r + 's', 11) + pad(res.outcome, 12) +
     pad(res.seconds + 's', 10) + pad(res.playerBasePct + '%', 12) +
     pad(res.enemyBasePct + '%', 12) + describeSent(res.sent) +
@@ -488,7 +580,7 @@ console.log('  of dribbling it away on the cheap one)');
 console.log('  ' + pad('reaction', 11) + pad('outcome', 12) + pad('length', 10) + 'bats sent');
 
 var wellRuns = band.map(function (r) {
-  var res = playLevel(levelKey, { reaction: r, prefer: 'priciest', maxSeconds: 400 });
+  var res = playLevel(levelKey, { reaction: r, use: cliTeam, prefer: 'priciest', maxSeconds: 400 });
   console.log('  ' + pad(r === 0 ? '0s (robot)' : r + 's', 11) + pad(res.outcome, 12) +
     pad(res.seconds + 's', 10) + describeSent(res.sent) +
     (res.raised ? '  (+' + res.raised + ' raised)' : ''));
@@ -539,11 +631,11 @@ if (level.playerUnits.indexOf('necroBat') !== -1) {
    the squad button looked at FIRST. This is the fastest army in the game, and
    it is the one to watch when a cave's numbers change.
    ----------------------------------------------------------------------- */
-var squadKeys = level.playerUnits.filter(function (k) { return !!W.UNITS[k].squad; });
+var squadKeys = cliTeam.filter(function (k) { return !!W.UNITS[k].squad; });
 var squadRuns = [];
 
 squadKeys.forEach(function (squadKey) {
-  var use = [squadKey].concat(level.playerUnits.filter(function (k) { return k !== squadKey; }));
+  var use = [squadKey].concat(cliTeam.filter(function (k) { return k !== squadKey; }));
 
   console.log('');
   console.log('  PLAYED AS A ' + W.UNITS[squadKey].name.toUpperCase() + ' BUILD (the same person, but ' +
@@ -553,7 +645,7 @@ squadKeys.forEach(function (squadKey) {
     pad('your base', 12) + 'bats sent');
 
   band.forEach(function (r) {
-    var res = playLevel(levelKey, { reaction: r, use: use, maxSeconds: 400 });
+    var res = playLevel(levelKey, { reaction: r, use: use, prefer: 'listed', maxSeconds: 400 });
     squadRuns.push(res);
     console.log('  ' + pad(r === 0 ? '0s (robot)' : r + 's', 11) + pad(res.outcome, 12) +
       pad(res.seconds + 's', 10) + pad(res.playerBasePct + '%', 12) + describeSent(res.sent));
@@ -567,7 +659,7 @@ console.log('  ' + pad('waits', 11) + pad('outcome', 12) + pad('length', 10) +
   pad('your base', 12) + pad('energy wasted', 15) + 'bats sent');
 
 var hoarders = [8, 14].map(function (patience) {
-  var res = playLevel(levelKey, { reaction: patience, maxSeconds: 300 });
+  var res = playLevel(levelKey, { reaction: patience, use: cliTeam, maxSeconds: 300 });
   console.log('  ' + pad(patience + 's', 11) + pad(res.outcome, 12) + pad(res.seconds + 's', 10) +
     pad(res.playerBasePct + '%', 12) + pad(res.wastedEnergy + '', 15) + describeSent(res.sent));
   return res;
@@ -606,7 +698,7 @@ if (gamblers.length) {
 
     for (s = 1; s <= 20; s++) {
       var res = playLevel(levelKey, {
-        reaction: 0.3, prefer: policy, seed: s, maxSeconds: 400
+        reaction: 0.3, use: cliTeam, prefer: policy, seed: s, maxSeconds: 400
       });
 
       seedRuns.push(res);
@@ -621,6 +713,22 @@ if (gamblers.length) {
       pad(times.length ? Math.max.apply(null, times) + 's' : '-', 12) +
       (kills / 20).toFixed(1) + ' / ' + (backfires / 20).toFixed(1) + ' per battle');
   });
+}
+
+if (lockerReport) {
+  console.log('');
+  console.log('  THE LOCKER - every team of ' + W.Team.size() + ' from your ' + level.playerUnits.length +
+    ' bats, 0.3s thumb, any of three ways of spending');
+  console.log('  ' + lockerReport.wins + ' of ' + lockerReport.teams + ' teams can win' +
+    (newBat ? ';  with the new ' + W.UNITS[newBat].name + ': ' + lockerReport.newWins + ' of ' +
+      lockerReport.newTeams : ''));
+
+  if (lockerReport.losers.length) {
+    console.log('  teams that lose every way:');
+    lockerReport.losers.forEach(function (team) {
+      console.log('    ' + team.map(function (k) { return W.UNITS[k].name; }).join(' + '));
+    });
+  }
 }
 
 /* --- part 4: the verdict ---------------------------------------------- */
@@ -641,9 +749,14 @@ var wellWins = wellAttentive.length > 0 && wellAttentive.every(function (r) { re
 
 console.log('');
 console.log('  VERDICT');
-console.log('  ' + (wellWins ? '[ok]  ' : '[BAD] ') +
+// With a Locker the dearest bat in the team may be a Bomb Bat or a Cheer
+// Bat, and "save up for it" stops being a sensible way to play. THE LOCKER
+// verdict below already tries that player on every team, so here it is
+// information only.
+console.log('  ' + (lockerReport ? '[--]  ' : (wellWins ? '[ok]  ' : '[BAD] ')) +
   'Spending well (saving for the dear bat) ' + (wellWins ? 'also WINS' : 'LOSES') +
-  ' - a cave should not demand one exact way of playing');
+  (lockerReport ? ' with this team - see THE LOCKER for every team' :
+    ' - a cave should not demand one exact way of playing'));
 console.log('  ' + (attentiveWins ? '[ok]  ' : '[BAD] ') +
   'Tapping attentively (0.2s - 0.5s late) ' + (attentiveWins ? 'WINS' : 'DOES NOT always win') +
   (lengths.length ? ', taking ' + Math.min.apply(null, lengths) + '-' + Math.max.apply(null, lengths) + 's' : ''));
@@ -708,6 +821,29 @@ if (bossTimes.length) {
       ? 'NEVER APPEARS in ' + skipped.length + ' of ' + attentiveWinsAll.length +
         ' attentive wins - the cave is over first'
       : 'is met in every attentive win'));
+}
+
+if (lockerReport) {
+  var teamShare = lockerReport.wins / lockerReport.teams;
+  var newShare = lockerReport.newTeams ? lockerReport.newWins / lockerReport.newTeams : 1;
+
+  console.log('  ' + (teamShare >= 0.6 ? '[ok]  ' : '[BAD] ') + 'The Locker: ' +
+    Math.round(teamShare * 100) + '% of teams can win (want 60% or more)');
+
+  if (lockerReport.newBat) {
+    // The new bat may be a little weaker than average - it is one bat in
+    // three - but not much: 15 points of slack.
+    console.log('  ' + (newShare >= teamShare - 0.15 ? '[ok]  ' : '[BAD] ') + 'The new ' +
+      W.UNITS[lockerReport.newBat].name + ': ' + Math.round(newShare * 100) +
+      '% of teams with it can win' + (newShare >= teamShare - 0.15 ? '' :
+        ' - a new bat that drags its team down is a trap'));
+  }
+
+  if (lockerReport.bossAt !== undefined && lockerReport.bossWins) {
+    var met = lockerReport.bossMet / lockerReport.bossWins;
+    console.log('  ' + (met >= 0.9 ? '[ok]  ' : '[BAD] ') + 'Across every team, the boss is met in ' +
+      lockerReport.bossMet + ' of ' + lockerReport.bossWins + ' wins');
+  }
 }
 
 /* And the tutorial's own, stricter promise, only where a level claims it. */

@@ -34,6 +34,13 @@ window.BattleScene.prototype.init = function (data) {
   this.levelKey = (data && data.levelKey) ? data.levelKey : window.STARTING_LEVEL;
   this.level = window.LEVELS[this.levelKey];
 
+  // The bats you brought, picked in the Locker (src/systems/team.js). Arriving
+  // without a valid team - straight from a link, say - gets the team the
+  // Locker would have opened with.
+  this.team = (data && window.Team.isValid(data.team, this.levelKey))
+    ? data.team.slice()
+    : window.Team.defaultFor(this.levelKey, window.Progress.lastTeam());
+
   // Leftover time waiting to be turned into simulation steps.
   this.accumulator = 0;
 
@@ -115,6 +122,13 @@ window.BattleScene.prototype.create = function () {
     // rules free of any knowledge of Phaser or of this scene.
     spawn: function (unitKey, x) {
       return self.spawnUnit(unitKey, x);
+    },
+
+    // Something worth shouting about happened (a sting, a bomb, a big bite).
+    // src/systems/brain.js and the power files call this; the balance sim
+    // has its own version that counts instead of shouting.
+    report: function (kind, details) {
+      self.reportEvent(kind, details);
     }
   };
 
@@ -123,8 +137,8 @@ window.BattleScene.prototype.create = function () {
 
   var i;
 
-  for (i = 0; i < this.level.playerUnits.length; i++) {
-    this.cooldowns[this.level.playerUnits[i]] = 0;
+  for (i = 0; i < this.team.length; i++) {
+    this.cooldowns[this.team[i]] = 0;
   }
 
   this.buildGraveMarkers();
@@ -300,6 +314,10 @@ window.BattleScene.prototype.stepSimulation = function (dt) {
     return;
   }
 
+  // An Engineer Bat speeds your income up (src/systems/engineer.js) - the
+  // same line the balance sim runs.
+  this.economy.energyPerSecond =
+    this.level.energyPerSecond * window.Engineer.incomeFactor(this.world);
   this.economy.update(dt);
   this.tickCooldowns(dt);
 
@@ -472,8 +490,7 @@ window.BattleScene.prototype.buildEnergyBar = function () {
 };
 
 /* -------------------------------------------------------------------------
-   One button per unit listed in the level's "playerUnits".
-   Add a unit key there and a button appears automatically - no code changes.
+   One button per bat in the team you brought (picked in the Locker).
    ------------------------------------------------------------------------- */
 window.BattleScene.prototype.buildDeployButtons = function () {
   var cfg = window.CONFIG;
@@ -482,8 +499,8 @@ window.BattleScene.prototype.buildDeployButtons = function () {
 
   var i;
 
-  for (i = 0; i < this.level.playerUnits.length; i++) {
-    this.buttons.push(this.makeDeployButton(this.level.playerUnits[i], i));
+  for (i = 0; i < this.team.length; i++) {
+    this.buttons.push(this.makeDeployButton(this.team[i], i));
   }
 };
 
@@ -503,8 +520,8 @@ window.BattleScene.prototype.portraitScaleFor = function (stats) {
     b.portraitMaxHeight / stats.anims.frameHeight
   );
 
-  // The biggest bat on THIS level's button row is the yardstick.
-  var biggest = this.level.playerUnits.reduce(function (most, key) {
+  // The biggest bat on THIS button row is the yardstick.
+  var biggest = this.team.reduce(function (most, key) {
     return Math.max(most, window.Unit.scaleOf(window.UNITS[key]));
   }, 0);
 
@@ -1012,19 +1029,33 @@ window.BattleScene.prototype.syncFloatingTexts = function (frameSeconds) {
 };
 
 /* -------------------------------------------------------------------------
-   A sting happened. Called from src/entities/unit.js whenever a gambling bug's
-   attack came up heads or tails.
+   Something happened that is baffling without words: a random sting, a bomb
+   from the sky, a bat eating everyone round it. Everything reaches here
+   through world.report(), from src/systems/.
    ------------------------------------------------------------------------- */
-window.BattleScene.prototype.reportSting = function (unit, target, hit) {
+window.BattleScene.prototype.reportEvent = function (kind, d) {
   var f = window.CONFIG.floatingText;
 
-  if (hit.instantKill) {
-    // Named, so it is obvious WHICH of your bats you just lost.
-    this.floatText(target.x, target.stats.name + ' STUNG!', f.stungColor);
-  }
+  if (kind === 'sting') {
+    if (d.hit.instantKill) {
+      // Named, so it is obvious WHICH of your bats you just lost.
+      this.floatText(d.target.x, d.target.stats.name + ' STUNG!', f.stungColor);
+    }
 
-  if (hit.backfire) {
-    this.floatText(unit.x, 'it stung itself!', f.burstColor);
+    if (d.hit.backfire) {
+      this.floatText(d.unit.x, 'it stung itself!', f.burstColor);
+    }
+  } else if (kind === 'bomb') {
+    this.floatText(this.enemyBase.faceX, 'BOOM! -' + d.damage, f.burstColor);
+  } else if (kind === 'landed') {
+    this.floatText(d.x, 'back as a Scout!', f.friendColor);
+  } else if (kind === 'freeze') {
+    this.floatText(d.unit.x, 'FROZEN', f.frostColor);
+  } else if (kind === 'rabiesWindup') {
+    this.floatText(d.unit.x, 'GRRRR...', f.stungColor);
+  } else if (kind === 'rabies') {
+    this.floatText(d.unit.x,
+      'CHOMP! ' + d.eaten.enemy + ' bugs, ' + d.eaten.player + ' bats', f.stungColor);
   }
 };
 
@@ -1072,13 +1103,15 @@ window.BattleScene.prototype.buildResultPanel = function () {
 
     // Winning recorded this cave a moment ago, so the next one is unlocked by
     // the time this button can be pressed. Checked anyway rather than assumed.
+    // Via the Locker, where you can fit your new bat into the team.
     if (nextKey && window.Progress.isUnlocked(nextKey)) {
-      self.scene.start('BattleScene', { levelKey: nextKey });
+      window.Team.startCave(self, nextKey);
     }
   });
 
+  // Same cave, same team - straight back in.
   var retry = this.makePanelButton('RETRY', function () {
-    self.scene.restart({ levelKey: self.levelKey });
+    self.scene.restart({ levelKey: self.levelKey, team: self.team });
   });
 
   var menu = this.makePanelButton('MENU', function () {

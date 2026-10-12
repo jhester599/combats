@@ -391,7 +391,7 @@ facing east, black and white so the colour ladder can tint them.
 
 **Lewis's answer:** _(open)_ → `DESIGN.md` §9
 
-### 🔲 B31. INVENT: The bats you earn from caves 4 to 9 *(needed by M2/M4 — ON THE PLATE)*
+### ✅ B31. INVENT: The bats you earn from caves 4 to 9 *(ANSWERED by Jeff & BUILT 2026-10-12 — six bats, team of 3)*
 
 Beat a cave, earn a bat is built (D62): caves 1, 2 and 3 give the Archer, the
 Bat Bros and the Necrobatcer. Caves 4–9 give nothing yet. For each new bat: a

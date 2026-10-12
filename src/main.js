@@ -45,6 +45,7 @@ window.GAME_CONFIG = {
   scene: [
     window.BootScene,     // makes the art, then ->
     window.MenuScene,     // title screen, then ->
+    window.LockerScene,   // pick your team (only when there is a choice), then ->
     window.BattleScene    // the game
   ]
 };

@@ -35,6 +35,9 @@ require(path.join(root, 'data/items.js'));
 require(path.join(root, 'src/systems/sting.js'));
 require(path.join(root, 'src/systems/items.js'));
 require(path.join(root, 'src/systems/combat.js'));
+require(path.join(root, 'src/systems/cheer.js'));   // Combat.strike asks both of these
+require(path.join(root, 'src/systems/frost.js'));
+require(path.join(root, 'src/systems/brain.js'));
 
 var W = global.window;
 

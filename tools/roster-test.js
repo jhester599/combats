@@ -32,6 +32,7 @@ require(path.join(root, 'data/units.js'));
 require(path.join(root, 'data/levels.js'));
 require(path.join(root, 'src/systems/squad.js'));
 require(path.join(root, 'src/systems/caves.js'));
+require(path.join(root, 'src/systems/team.js'));
 
 var W = global.window;
 
@@ -61,6 +62,10 @@ check('beating cave 3 earns the Necrobatcer', W.Caves.earnedBy(caves[2]), 'necro
 check('so cave 4 has all five, in the order you earned them',
   W.LEVELS[caves[3]].playerUnits.join(','),
   'scoutBat,bruteBat,archerBat,batBros,necroBat');
+check('caves 4-9 each earn one of Jeff\'s six new bats, in order',
+  caves.slice(3, 9).map(W.Caves.earnedBy).join(','),
+  'cheerBat,bombBat,skeletonBat,engineerBat,frostBat,rabiesBat');
+check('so the Final Stadium offers all eleven', W.LEVELS[caves[9]].playerUnits.length, 11);
 
 console.log('');
 console.log('  THE CHAIN HOLDS FOR EVERY CAVE');
@@ -93,12 +98,12 @@ var badUnlocks = caves.filter(function (k) {
 });
 check('every unlocks: names one of YOUR bats in data/units.js', badUnlocks.join(','), '');
 
-// 24 + 5 x 168 + 4 x 18 = 936 of the 960-pixel screen. A sixth will not fit
-// without a new idea (picking a team before a cave, like The Battle Cats).
+// The Locker (2026-10-12): you take CONFIG.team.size bats in, and that many
+// buttons must fit across the bottom of the screen.
 var b = W.CONFIG.buttons;
 var fit = Math.floor((W.CONFIG.screen.width - b.startX + b.gap) / (b.width + b.gap));
-var tooMany = caves.filter(function (k) { return W.LEVELS[k].playerUnits.length > fit; });
-check('no cave has more bats than fit on the button row (' + fit + ')', tooMany.join(','), '');
+check('a full team fits on the button row (' + W.CONFIG.team.size + ' of ' + fit + ')',
+  W.CONFIG.team.size <= fit, true);
 
 check('the bat new in cave 2 is the Archer', W.Caves.newBatIn(caves[1]), 'archerBat');
 check('cave 1 has no NEW! bat', W.Caves.newBatIn(caves[0]), null);
@@ -108,12 +113,31 @@ check('a practice level keeps its own bats (the Graveyard)',
   practice.every(function (k) { return W.Caves.earnedBy(k) === null; }), true);
 
 console.log('');
+console.log('  THE LOCKER - TEAMS OF ' + W.CONFIG.team.size);
+
+check('caves 1 and 2 need no Locker - nothing to choose',
+  W.Team.needsLocker(caves[0]) || W.Team.needsLocker(caves[1]), false);
+check('cave 3 does', W.Team.needsLocker(caves[2]), true);
+check('the Graveyard (practice) does not', W.Team.needsLocker('graveyard'), false);
+check('with no saved team, the Locker opens with the NEW bat in it',
+  W.Team.defaultFor('pyramid', null).indexOf('necroBat'), 0);
+check('...and a full team', W.Team.defaultFor('pyramid', null).length, W.CONFIG.team.size);
+check('a saved team is kept', W.Team.defaultFor('finalStadium', ['frostBat', 'archerBat', 'bombBat']).join(','),
+  'frostBat,archerBat,bombBat');
+check('a saved bat this cave does not have yet is dropped',
+  W.Team.defaultFor('pyramid', ['frostBat', 'archerBat']).indexOf('frostBat'), -1);
+check('a team of four is not allowed', W.Team.isValid(['scoutBat', 'bruteBat', 'archerBat', 'batBros'], 'pyramid'), false);
+check('the same bat twice is not allowed', W.Team.isValid(['scoutBat', 'scoutBat'], 'pyramid'), false);
+check('a bat you have not earned is not allowed', W.Team.isValid(['rabiesBat'], 'pyramid'), false);
+check('one bat on its own is allowed', W.Team.isValid(['archerBat'], 'pyramid'), true);
+
+console.log('');
 console.log('  THE BAT BROS');
 
 var members = W.Squad.membersOf('batBros');
 check('one tap sends two bats', members.length, 2);
 check('and both of them are Scout Bats', members.join(','), 'scoutBat,scoutBat');
-check('for 35 energy', W.UNITS.batBros.cost, 35);
+check('for 55 energy (Jeff, 2026-10-12)', W.UNITS.batBros.cost, 55);
 check('a plain bat is a squad of one: itself', W.Squad.membersOf('archerBat').join(','), 'archerBat');
 
 var spawned = [];

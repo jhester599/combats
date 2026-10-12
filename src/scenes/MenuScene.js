@@ -94,8 +94,9 @@ window.MenuScene.prototype.buildCavePicker = function () {
       label = label + '  \u2713';
     }
 
+    // Through the Locker if you have more bats than fit in a team.
     self.makeButton(x, y, m.caveWidth, m.caveHeight, label, function () {
-      self.scene.start('BattleScene', { levelKey: key });
+      window.Team.startCave(self, key);
     });
   });
 };
@@ -156,7 +157,7 @@ window.MenuScene.prototype.buildPracticeRow = function () {
 
     self.makeButton(x, m.practiceY, m.practiceWidth, m.practiceHeight,
       window.LEVELS[key].name, function () {
-        self.scene.start('BattleScene', { levelKey: key });
+        window.Team.startCave(self, key);
       });
   });
 };
