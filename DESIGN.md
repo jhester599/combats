@@ -695,9 +695,15 @@ It is the one bat to judge by playing it, not by numbers.
 
 **Next (Jeff, 2026-10-12):** *"the level of difficulty also should ramp faster
 between levels. Level 1 easy for a beginner, but the final levels should require
-actual strategy and working with all of the different bat types."* Today every
-cave from 3 to 9 is won by 74–100% of teams — far too forgiving for the end of
-the game. Being worked on while the bats are play-tested.
+actual strategy and working with all of the different bat types."*
+
+- **Cave 1: done (D70)** — wins even with a thumb 3 seconds late.
+- **The late caves: measured, not yet changed.** Simply adding bugs does make
+  them harder (x1.25–1.85 more bugs per wave hits a ramp from 75% of teams down
+  to 25%), but it makes the game about ONE bat, not all of them: in a ramped
+  Forgotten Oasis or Final Stadium, **83–84% of Archer teams win and every other
+  bat sits at 11–25%**. Plain teams survive best; the powered bats fall away.
+  So the ramp waits on a design call — see the open question in the PR.
 
 ### ✅ The Bat Bros let you skip the Cow Killer Bee (fixed, 2026-10-12)
 

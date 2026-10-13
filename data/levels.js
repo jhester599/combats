@@ -143,9 +143,9 @@ window.LEVELS = {
     // NOTE: these numbers are MEASURED (DECISIONS.md D8). If you change them,
     // run  node tools/balance-sim.js  and check the VERDICT still passes.
     // Spiders exist in data/units.js but are deliberately not in this level.
-    // 26 bugs, down from 30 - the later waves each lost one, so the cave still
-    // builds but the back half no longer piles on faster than two bats can
-    // answer.
+    // 24 bugs, down from 30 - the later waves each lost one (and on 2026-10-13
+    // two scorpion pairs became singles), so the cave still builds but the back
+    // half no longer piles on faster than two bats can answer.
     waves: [
       // --- Warm up: a couple of mosquitos drift over. ---
       { time: 3,  enemy: 'mosquito', count: 2, gap: 0.8 },
@@ -163,11 +163,16 @@ window.LEVELS = {
       { time: 40, enemy: 'scorpion', count: 2, gap: 1.0 },
       { time: 46, enemy: 'mosquito', count: 3, gap: 0.4 },
 
-      { time: 54, enemy: 'scorpion', count: 2, gap: 0.8 },
+      // EASED AGAIN 2026-10-13 - Jeff: "make level 1 easy for a beginner". The
+      // two late scorpion PAIRS below became singles. MEASURED: a beginner whose
+      // thumb is THREE seconds late now wins whichever way they spend (it lost
+      // before), and both hoarders still lose - so the lesson survives. Thinning
+      // the 40s pair as well let an 8-second hoarder win, so that one stays.
+      { time: 54, enemy: 'scorpion', count: 1 },
       { time: 60, enemy: 'mosquito', count: 3, gap: 0.4 },
 
       // --- Final push. Survive this and the cave is yours. ---
-      { time: 68, enemy: 'scorpion', count: 2, gap: 0.8 },
+      { time: 68, enemy: 'scorpion', count: 1 },
       { time: 76, enemy: 'mosquito', count: 4, gap: 0.3 }
     ]
   },
