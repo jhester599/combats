@@ -10,6 +10,7 @@
 
    ------------------- WHAT EACH NUMBER MEANS -------------------
    name           the words shown on the deploy button
+   blurb          one line about what it does, shown in the Locker (bats only)
    cost           energy you pay to send this unit out
    cooldown       seconds you must wait before sending ANOTHER of this unit
    hp             hit points - how much damage it can take before dying
@@ -45,6 +46,7 @@ window.UNITS = {
 
   scoutBat: {
     name: 'Scout Bat',
+    blurb: 'Cheap and quick. Spam them.',   // shown in the Locker
     cost: 25,              // <-- TRY ME: make it cheaper to spam more bats
 
     // THE SPAMMABLE-BAT RULE: keep this number BELOW  cost / energyPerSecond.
@@ -96,6 +98,7 @@ window.UNITS = {
 
   bruteBat: {
     name: 'Brute Bat',
+    blurb: 'Slow, tough and hits hard. Soaks up the bites.',   // shown in the Locker
     cost: 90,
     cooldown: 6.0,
     hp: 220,
@@ -136,6 +139,7 @@ window.UNITS = {
 
   necroBat: {
     name: 'Necrobatcer',
+    blurb: 'Raises your fallen bats where they fell. A rubbish fighter.',   // shown in the Locker
     cost: 60,
     // Below cost / energyPerSecond (60 / 13 = 4.6s), so money is the limit
     // and being a slow tapper costs you nothing. See the Scout's note above.
@@ -226,6 +230,7 @@ window.UNITS = {
 
   archerBat: {
     name: 'Archer Bat',
+    blurb: 'Shoots from 240 away - the only answer to the Cow Killer Bee. Paper-thin.',   // shown in the Locker
     cost: 45,
     // Below cost / energyPerSecond (45 / 13 = 3.46s), so money is the limit
     // and a slow tap costs nothing. See the Scout's note above.
@@ -284,16 +289,19 @@ window.UNITS = {
      BAT BROS - the bat you earn for beating Crystal Falls (2026-10-12)
      =====================================================================
      "Bat Bros will be 2 scout bats for the price of 35"  - Jeff
+     "can we make bat bros cost 55"  - Jeff, 2026-10-12, once teams of three
+                                        arrived
 
      One button, TWO real Scout Bats. Each brother is an ordinary Scout in
      every way - same health, same bite, same art - so when one dies it leaves
      a Scout's grave, and a Necrobatcer raises it as a Scout. That is why this
      block has no hp or attack of its own: the brothers use the Scout's.
 
-     THE DEAL: two Scouts bought one at a time cost 50. The Bros cost 35, so
-     it is the cheapest damage in Palopa (0.76 dps per energy against a single
-     Scout's 0.53). The catch is that you pay 35 in one go, so it lights up
-     later than a Scout on an empty wallet.
+     THE DEAL, since the Locker: two Scouts bought one at a time cost 50; the
+     Bros cost 55. You are NOT paying for cheaper Scouts any more - at 35 it
+     was the cheapest damage in Palopa and it let you skip the Cow Killer Bee.
+     You are paying 5 extra for two Scouts in ONE of your three team places,
+     which leaves two places free for something cleverer.
 
      The "squad" block is the whole power. src/systems/squad.js reads it, and
      both the game and tools/balance-sim.js send the bats through that one
@@ -302,9 +310,10 @@ window.UNITS = {
 
   batBros: {
     name: 'Bat Bros',
-    cost: 35,              // <-- TRY ME: 50 and it is just two Scouts
-    // Below cost / energyPerSecond (35 / 13 = 2.69s), so money is the limit
-    // and a slow tap costs nothing. See the Scout's note above.
+    blurb: 'Two Scout Bats in one tap - and in one team place.',   // shown in the Locker
+    cost: 55,              // <-- TRY ME: 35 was the old bargain price
+    // Below cost / energyPerSecond (55 / 16 = 3.4s even in the richest cave),
+    // so money is the limit and a slow tap costs nothing.
     cooldown: 2.0,
 
     // WHO comes out when you tap the button, and how many of them.
@@ -325,6 +334,245 @@ window.UNITS = {
       walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
       attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
       death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
+    }
+  },
+
+  /* =====================================================================
+     THE SIX BATS OF CAVES 4-9 (Jeff, 2026-10-12)
+     =====================================================================
+     One for each cave from Pyramid to Forgotten Oasis - beat the cave, earn
+     the bat (see the unlocks: lines in data/levels.js). Every one of them has
+     a POWER, so each has a block of numbers below and a rules file in
+     src/systems/. Their first numbers are Dad's guesses, then measured with
+     tools/balance-sim.js.
+
+     All six are PLACEHOLDER art: the colour is the only thing telling them
+     apart until Lewis draws them.
+
+     FOR LEWIS: a bat whose attack is 0 does not fight at all. Its "range"
+     then only decides how far back it stands.
+     ===================================================================== */
+
+  /* ---------------------------------------------------------------------
+     CHEER BAT - earned by beating Pyramid (cave 4)
+     "passive, improves attack power for all the other bats, but with very
+      low HP"  - Jeff.   Rules: src/systems/cheer.js
+     --------------------------------------------------------------------- */
+  cheerBat: {
+    name: 'Cheer Bat',
+    blurb: 'Every other bat hits harder while it lives. Tiny health.',   // shown in the Locker
+    cost: 60,
+    cooldown: 3.5,
+    hp: 18,                // <-- very low, as asked. Keep it at the back.
+    attack: 0,             // it cheers, it does not fight
+    attackInterval: 1.0,
+    range: 150,            // stands this far behind the front line
+    speed: 70,
+    color: '#ff9fd6',
+    sprite: 'cheerBat',
+    scale: 0.75,
+
+    cheer: {
+      attackBonus: 0.3     // <-- TRY ME: +30% attack for every other bat of yours
+      // Two Cheer Bats do NOT stack - see src/systems/cheer.js.
+    },
+
+    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
+    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    anims: {
+      frameWidth: 64,
+      frameHeight: 64,
+      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
+      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
+      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
+      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+    }
+  },
+
+  /* ---------------------------------------------------------------------
+     BOMB BAT - earned by beating Sahara-hara Desert (cave 5)
+     "flies over the other bats, can drop 1 bomb on the enemy tower, then
+      returns to your tower and transforms into a scout bat. only has one
+      bomb"  - Jeff.   Rules: src/systems/bomb.js
+     --------------------------------------------------------------------- */
+  bombBat: {
+    name: 'Bomb Bat',
+    blurb: 'Flies over everyone, bombs their tower once, comes home as a Scout.',   // shown in the Locker
+    // MEASURED: at 100 the balanced player's Bomb Bat teams won only half as
+    // often as the rest of Wait Um's teams; at 80 they win as often as any.
+    cost: 80,
+    cooldown: 4.5,
+    hp: 30,                // nothing can reach it while it flies anyway
+    attack: 0,
+    attackInterval: 1.0,
+    range: 0,
+    speed: 120,            // flying speed, there and back
+    color: '#ff8a3d',
+    sprite: 'bombBat',
+    scale: 0.75,
+
+    bomb: {
+      damage: 300,         // <-- TRY ME: what its ONE bomb does to the tower
+      dropReach: 20,       // how close to the tower it gets before dropping
+      becomes: 'scoutBat'  // what it turns into when it gets home
+    },
+
+    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
+    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    anims: {
+      frameWidth: 64,
+      frameHeight: 64,
+      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
+      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
+      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
+      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+    }
+  },
+
+  /* ---------------------------------------------------------------------
+     SKELETON BAT - earned by beating Wait Um (cave 6)
+     "supports the Necrobatcer, when the Necrobatcer summons they come back
+      to full health instead of half, can attack but very low HP"  - Jeff.
+     Rules: the top of src/systems/necro.js
+     --------------------------------------------------------------------- */
+  skeletonBat: {
+    name: 'Skeleton Bat',
+    blurb: 'Necrobatcer raises bats at FULL health while it lives. Weak.',   // shown in the Locker
+    cost: 40,
+    cooldown: 2.4,
+    hp: 28,                // <-- very low, as asked
+    attack: 10,
+    attackInterval: 0.8,   // 12.5 dps - it CAN fight, a bit
+    range: 42,
+    speed: 80,
+    color: '#e8e4d0',
+    sprite: 'skeletonBat',
+    scale: 0.7,
+
+    boostsSummons: {
+      hpFactor: 1.0        // raised bats come back at FULL health (normally 0.6)
+    },
+
+    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
+    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    anims: {
+      frameWidth: 64,
+      frameHeight: 64,
+      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
+      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
+      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
+      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+    }
+  },
+
+  /* ---------------------------------------------------------------------
+     ENGINEER BAT - earned by beating Scarred Woods (cave 7)
+     "makes energy grow faster"  - Jeff.   Rules: src/systems/engineer.js
+     --------------------------------------------------------------------- */
+  engineerBat: {
+    name: 'Engineer Bat',
+    blurb: 'Stays at your door. Energy fills faster while it lives.',   // shown in the Locker
+    cost: 80,
+    cooldown: 4.5,
+    hp: 60,
+    attack: 0,             // it builds, it does not fight
+    attackInterval: 1.0,
+    range: 0,
+    speed: 0,              // <-- stays at your door and works
+    color: '#f2c94c',
+    sprite: 'engineerBat',
+    scale: 0.75,
+
+    engineer: {
+      incomeBonus: 0.35    // <-- TRY ME: +35% energy per second while it lives
+      // Two Engineer Bats do NOT stack - see src/systems/engineer.js.
+    },
+
+    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
+    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    anims: {
+      frameWidth: 64,
+      frameHeight: 64,
+      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
+      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
+      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
+      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+    }
+  },
+
+  /* ---------------------------------------------------------------------
+     FROST BAT - earned by beating Abyss of Darkness (cave 8)
+     "freezes the enemy when they touch for x seconds, will need to tune x"
+     - Jeff.   Rules: src/systems/frost.js
+     --------------------------------------------------------------------- */
+  frostBat: {
+    name: 'Frost Bat',
+    blurb: 'Bugs it hits - or that hit it - freeze solid for a moment.',   // shown in the Locker
+    cost: 55,
+    cooldown: 3.0,
+    hp: 70,
+    attack: 8,
+    attackInterval: 1.0,
+    range: 40,
+    speed: 75,
+    color: '#7fd6ff',
+    sprite: 'frostBat',
+    scale: 0.75,
+
+    frost: {
+      freezeSeconds: 2.0,  // <-- THIS IS JEFF'S "x". How long a touch freezes a bug.
+      thawSeconds: 1.5     // after thawing, a bug can't be frozen again for this long
+    },
+
+    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
+    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    anims: {
+      frameWidth: 64,
+      frameHeight: 64,
+      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
+      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
+      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
+      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+    }
+  },
+
+  /* ---------------------------------------------------------------------
+     RABIES BAT - earned by beating Forgotten Oasis (cave 9)
+     "walks into a random place of the map, then consumes everything within
+      a certain distance, both bats and enemy" - and it is used up doing it.
+     - Jeff.   Rules: src/systems/rabies.js
+     --------------------------------------------------------------------- */
+  rabiesBat: {
+    name: 'Rabies Bat',
+    blurb: 'Runs to a random spot and eats EVERYTHING near it. Bats too.',   // shown in the Locker
+    cost: 100,
+    cooldown: 6.0,
+    hp: 60,                // bugs CAN hit it on the way there
+    attack: 0,
+    attackInterval: 1.0,
+    range: 0,
+    speed: 85,
+    color: '#9be15d',
+    sprite: 'rabiesBat',
+    scale: 0.8,
+
+    rabies: {
+      radius: 90,          // <-- TRY ME: how far its bite reaches, both ways
+      windup: 1.2,         // seconds it shakes before biting - time to see it coming
+      minFromHome: 150,    // the random spot is at least this far from your door
+      minFromEnemy: 60,    // ...and this far short of their tower
+      bossDamage: 500      // a boss is too big to swallow - it takes this instead
+    },
+
+    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
+    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    anims: {
+      frameWidth: 64,
+      frameHeight: 64,
+      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
+      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
+      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
+      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
     }
   },
 

@@ -56,8 +56,9 @@ window.Combat.findTarget = function (unit, world) {
   for (i = 0; i < world.units.length; i++) {
     other = world.units[i];
 
-    // Skip my own team, and skip anything already playing its death animation.
-    if (other.team === unit.team || other.isDying) {
+    // Skip my own team, anything already playing its death animation, and
+    // anything out of reach entirely (a Bomb Bat flying overhead).
+    if (other.team === unit.team || other.isDying || other.untargetable) {
       continue;
     }
 
@@ -111,8 +112,9 @@ window.Combat.isBlockedByFriend = function (unit, world) {
   for (i = 0; i < world.units.length; i++) {
     other = world.units[i];
 
-    // Only friends block us, and only ones that are still standing.
-    if (other === unit || other.team !== unit.team || other.isDying) {
+    // Only friends block us, and only ones that are still standing on the
+    // ground - a Bomb Bat flying overhead blocks nobody.
+    if (other === unit || other.team !== unit.team || other.isDying || other.untargetable) {
       continue;
     }
 
@@ -143,11 +145,13 @@ window.Combat.applyDamage = function (target, amount) {
 /* -------------------------------------------------------------------------
    ONE SWING - and the ONLY place in the game where damage is worked out.
 
-   Three things can change what a swing does, and they all meet here:
+   Everything that changes what a swing does meets here:
 
      * the attacker's plain  attack  number            (data/units.js)
      * a POTION, if the attacker is a bug and one is running (src/systems/items.js)
+     * a CHEER, if the attacker is a bat and a Cheer Bat is alive (src/systems/cheer.js)
      * a STING, if the attacker gambles on every hit     (src/systems/sting.js)
+     * a FREEZE, if either side is a Frost Bat           (src/systems/frost.js)
 
    It matters that this is one function rather than a few lines repeated in
    src/entities/unit.js and again in tools/balance-sim.js. Those two files each
@@ -161,7 +165,9 @@ window.Combat.applyDamage = function (target, amount) {
 window.Combat.strike = function (unit, target, world) {
   var sting = window.Sting.resolve(unit, target);
 
-  var damage = unit.stats.attack * window.Items.attackFactorFor(unit, world);
+  var damage = unit.stats.attack *
+    window.Items.attackFactorFor(unit, world) *
+    window.Cheer.attackFactorFor(unit, world);
 
   if (sting.instantKill) {
     // Whatever health is left, however much that is. An instant kill ignores
@@ -171,6 +177,9 @@ window.Combat.strike = function (unit, target, world) {
   }
 
   window.Combat.applyDamage(target, damage);
+
+  // Touching a Frost Bat, or being hit by one, freezes the bug.
+  window.Frost.afterHit(unit, target, world);
 
   if (sting.backfire) {
     // It killed itself doing that. Straight through takeDamage() so it dies

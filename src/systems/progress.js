@@ -24,8 +24,8 @@
 
    ------------------- WHAT IS NOT HERE YET -------------------
    Suns, the casino, goods and bat upgrades (B13, B22, B27, milestone M4). This
-   file deliberately stores only the list of caves beaten, so adding those later
-   means adding fields, not rewriting this.
+   file stores the list of caves beaten and the last team you picked in the
+   Locker, so adding those later means adding fields, not rewriting this.
    ========================================================================= */
 
 window.Progress = {};
@@ -35,7 +35,7 @@ window.Progress.STORAGE_KEY = 'battleBats.progress.v1';
 /* What we keep. Kept flat and boring on purpose - it has to survive being
    loaded by a future version of the game. */
 window.Progress.blank = function () {
-  return { beaten: [] };
+  return { beaten: [], team: [] };
 };
 
 /* In-memory copy, so a blocked localStorage still works for this visit. */
@@ -63,6 +63,14 @@ window.Progress.load = function () {
       if (parsed && Object.prototype.toString.call(parsed.beaten) === '[object Array]') {
         state.beaten = parsed.beaten.filter(function (key) {
           return typeof key === 'string';
+        });
+      }
+
+      // The last team picked in the Locker (2026-10-12). Older saves do not
+      // have one, which is fine - the Locker just opens with a fresh team.
+      if (parsed && Object.prototype.toString.call(parsed.team) === '[object Array]') {
+        state.team = parsed.team.filter(function (key) {
+          return typeof key === 'string' && !!window.UNITS[key];
         });
       }
     }
@@ -96,6 +104,16 @@ window.Progress.markBeaten = function (levelKey) {
     state.beaten.push(levelKey);
     window.Progress.save();
   }
+};
+
+/* The team you last took into a cave, so the Locker can open with it. */
+window.Progress.lastTeam = function () {
+  return window.Progress.load().team.slice();
+};
+
+window.Progress.saveTeam = function (team) {
+  window.Progress.load().team = team.slice();
+  window.Progress.save();
 };
 
 window.Progress.hasBeaten = function (levelKey) {

@@ -71,7 +71,17 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 | **Brute Bat** | 90 | 6.0s | 220 | 30 | 1.4s | **21.4** | 46 | 45 |
 | **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **200** | 70 |
 | **Archer Bat** | 45 | 3.0s | 24 | 22 | 1.1s | **20.0** | **240** | 75 |
-| **Bat Bros** | 35 | 2.0s | 2 × 40 | 2 × 8 | 0.6s | **2 × 13.3** | 40 | 90 |
+| **Bat Bros** | 55 | 2.0s | 2 × 40 | 2 × 8 | 0.6s | **2 × 13.3** | 40 | 90 |
+| **Cheer Bat** | 60 | 3.5s | 18 | 0 | 1.0s | **0** | 150 | 70 |
+| **Bomb Bat** | 80 | 4.5s | 30 | 0 | 1.0s | **0** | 0 | 120 |
+| **Skeleton Bat** | 40 | 2.4s | 28 | 10 | 0.8s | **12.5** | 42 | 80 |
+| **Engineer Bat** | 80 | 4.5s | 60 | 0 | 1.0s | **0** | 0 | 0 |
+| **Frost Bat** | 55 | 3.0s | 70 | 8 | 1.0s | **8.0** | 40 | 75 |
+| **Rabies Bat** | 100 | 6.0s | 60 | 0 | 1.0s | **0** | 0 | 85 |
+
+*The last six all have powers that the table can't show — see "The six bats of
+caves 4–9" below. A 0 attack means the bat does not fight at all; its range then
+only decides where it stands.*
 
 `DPS = attack ÷ attackInterval`.
 
@@ -155,7 +165,8 @@ Stronger per bat, weaker per coin — you are paying a premium for a bat nothing
 can reach.
 
 **DECIDED (2026-10-12) — the fifth bat is the BAT BROS.** Jeff: *"Bat Bros will
-be 2 scout bats for the price of 35."*
+be 2 scout bats for the price of 35."* **CHANGED the same day to 55** (*"can we
+make bat bros cost 55"*) once teams of three arrived — see below.
 
 One button, **two real Scout Bats**. Each brother is a Scout in every way — the
 same numbers, the same art, a Scout's grave when he falls, raised as a Scout by
@@ -170,14 +181,44 @@ through that one file (D11).
 | **Scout Bat** | 13.3 dps, 40 hp | 0.53 dps, 1.6 hp |
 | **Bat Bros** | **26.7 dps, 80 hp** | **0.76 dps, 2.3 hp** |
 
-**It is a straight discount, and that is worth saying plainly:** two Scouts for
-35 instead of 50. Per energy it is the strongest bat in the game on both damage
-and health. The single Scout's only remaining edge is that 25 lights up sooner
-than 35 on an empty wallet. See §7 for what that did to the Final Stadium.
+**At 35 it was a straight discount** — two Scouts for 35 instead of 50, the
+strongest bat per energy in the game — and it let a Bat Bros army win the Final
+Stadium before the Cow Killer Bee arrived. **At 55 it is a premium**: you pay 5
+more than two separate Scouts for fitting both into ONE of your three Locker
+places. The table above is the 35 version's per-energy maths, kept as the record
+of why it changed.
 
 Cooldown 2.0s keeps it inside the D9 rule in every cave it appears in: 35 energy
 takes 2.19s to earn even at the Final Stadium's 16/s, the richest cave that has
 it, so money is the limit and a slow thumb costs nothing.
+
+**DECIDED (2026-10-12) — the six bats of caves 4–9.** Jeff gave all six at once,
+in order, one earned per cave:
+
+| Earned by beating | Bat | Jeff's brief | How it was built |
+|---|---|---|---|
+| 4. Pyramid | **Cheer Bat** | *"passive, improves attack power for all the other bats, but with very low HP"* | +30% attack to every other bat while it lives; stands 150 back; 18 hp. **Two don't stack.** `src/systems/cheer.js` |
+| 5. Sahara-hara | **Bomb Bat** | *"flies over the other bats, can drop 1 bomb on the enemy tower, then returns to your tower and transforms into a scout bat. only has one bomb"* | Untouchable while it flies; one 300 bomb on the tower; turns into a fresh Scout at your door. `src/systems/bomb.js` |
+| 6. Wait Um | **Skeleton Bat** | *"supports the Necrobatcer, when the Necrobatcer summons they come back to full health instead of half, can attack but very low HP"* | While it lives, raised bats come back at 100% instead of 60%. 12.5 dps, 28 hp. Top of `src/systems/necro.js` |
+| 7. Scarred Woods | **Engineer Bat** | *"makes energy grow faster"* | Stays at your door (speed 0); +35% energy per second while it lives. **Two don't stack.** `src/systems/engineer.js` |
+| 8. Abyss | **Frost Bat** | *"freezes the enemy when they touch for x seconds, will need to tune x"* | A touch either way freezes a bug for **x = 2.0s**; after thawing it can't be refrozen for 1.5s. `src/systems/frost.js` |
+| 9. Forgotten Oasis | **Rabies Bat** | *"walks into a random place of the map, then consumes everything within a certain distance, both bats and enemy"* — used up doing it | Walks to a random spot, shakes for 1.2s, eats everything within 90px. Eaten things leave no grave. `src/systems/rabies.js` |
+
+**Rules that are not numbers**, each chosen so nothing snowballs or decides a
+cave on one tap: Cheer and Engineer don't stack (a second one is a spare);
+nothing can freeze a bug forever (the thaw window); a Rabies Bat never eats a
+building, and a **boss is too big to swallow** — she takes 500 damage instead,
+or one tap would skip the Final Stadium's whole fight.
+
+**All six are placeholder art** — coloured bats the game draws itself until
+Lewis draws them.
+
+**The brain moved (2026-10-12).** Five of the six change how a unit *moves* or
+*acts*, not just how hard it hits, and the unit brain used to be written twice
+(`unit.js` for the game, `balance-sim.js` for the tester). It now lives once in
+`src/systems/brain.js` and both call it. Proved safe the strict way: every cave's
+full sim report was **byte-identical** before and after the move. `node
+tools/powers-test.js` (38 checks) tests each power on its own.
 
 **DECIDED (2026-09-19) — B6 follows from B5: yes, bats get special powers.**
 Lewis's choice of a summoner settles this by implication, since a summoner
@@ -552,7 +593,7 @@ instead of mushy. All ten are built, and every number below is measured:
 | 7 | **Scarred Woods** | no warm-up, and **spider country** | 2200 | 14/s | all four |
 | 8 | **Abyss of Darkness** | two levers, **plus Lightning Bug swarms** | 2800 | 12/s | all four |
 | 9 | **Forgotten Oasis** | **both kinds of scorpion**, and lots of them | 2800 | 13/s | all four |
-| 10 | **Final Stadium** | the **boss** | 2500 | 16/s | all four |
+| 10 | **Final Stadium** | the **boss** | 3500 | 16/s | all eleven, pick 3 |
 
 *(Dream Land's 1500 is the one cave that is not simply half its original: it came
 down again from 2100 when the Evil Butterflies arrived in B26, because the
@@ -603,14 +644,66 @@ Two small pieces of UI go with it: the first win of a cave that gives a bat says
 in cave 4, exactly as they did. The only new thing on the lane is the Bat Bros,
 from cave 3 on.
 
-**The button row holds five.** `24 + 5×168 + 4×18 = 936` of the 960-pixel screen,
-and caves 4–10 now use all five. A sixth bat needs a new idea first — most
-likely choosing a team of five before each cave, the way *The Battle Cats* does
-— and `roster-test.js` fails if a cave is given more than fit. *(The item buttons
-also sit where a fifth bat now goes; only the Graveyard has items today, and it
-has three bats, so nothing overlaps yet. The casino will have to solve it.)*
+**Caves 4–9 each earn one more bat** (the six above), so the Final Stadium offers
+all eleven.
 
-### ⚠️ The Bat Bros let you skip the Cow Killer Bee (open, 2026-10-12)
+**DECIDED (2026-10-12) — THE LOCKER: you take a team of three.** Jeff: *"pick a
+team of 3, you will choose from a 'locker' between levels on what you want the
+team to be for the next level."*
+
+- Before any cave where you have more than three bats, the **Locker** screen
+  (`src/scenes/LockerScene.js`) shows your team across the top and every bat
+  you've earned underneath. Tap to put a bat in or take it out; **FIGHT!** goes
+  in. A full team refuses a fourth bat and says why, rather than silently
+  swapping one out.
+- Caves 1 and 2 (three bats or fewer) and the Graveyard skip it.
+- It **remembers your team** (saved with your progress). It opens with your last
+  team, minus anything this cave doesn't have, and fills any gaps with the
+  **new** bat first so you get to try it.
+- RETRY keeps the team; NEXT CAVE and the menu go through the Locker.
+- The rules are `src/systems/team.js`; the size is one number,
+  `CONFIG.team.size`.
+
+Three buttons also ends the "button row holds five" problem, and leaves the item
+buttons plenty of room.
+
+**How a cave is measured now.** "Is it winnable?" became "which teams can win
+it?". The balance sim plays **every** possible team at a 0.3s thumb with three
+kinds of player — the cheap-spammer, the saver, and a new **balanced** player
+who always buys the team bat they've spent least on (the other two never buy a
+Bomb Bat, so without it the sim couldn't judge one). It wants 60%+ of teams able
+to win, teams with the **new** bat winning nearly as often as the rest, and in a
+boss cave the boss met in 90%+ of wins.
+
+| Cave | teams that can win | with the new bat |
+|---|---|---|
+| 3. Dream Land | 4 of 4 | Bat Bros 3 of 3 |
+| 4. Pyramid | 10 of 10 | Necrobatcer 6 of 6 |
+| 5. Sahara-hara | 20 of 20 | Cheer 10 of 10 |
+| 6. Wait Um | 30 of 35 | Bomb 11 of 15 |
+| 7. Scarred Woods | 45 of 56 | Skeleton 16 of 21 |
+| 8. Abyss | 71 of 84 | Engineer 21 of 28 |
+| 9. Forgotten Oasis | 104 of 120 | Frost 33 of 36 |
+| 10. Final Stadium | 110 of 165 | **Rabies 20 of 45** ⚠️ |
+
+Tuning that got there: Bomb Bat 100 → **80** energy (at 100 its teams won half
+as often as the rest), bomb 250 → **300**, Rabies Bat 120 → **100**.
+
+**⚠️ The Rabies Bat still reads as a trap**, and that is partly the sim's
+limit: it eats your own front line too, and a pretend player can't *time* it.
+It is the one bat to judge by playing it, not by numbers.
+
+**Next (Jeff, 2026-10-12):** *"the level of difficulty also should ramp faster
+between levels. Level 1 easy for a beginner, but the final levels should require
+actual strategy and working with all of the different bat types."* Today every
+cave from 3 to 9 is won by 74–100% of teams — far too forgiving for the end of
+the game. Being worked on while the bats are play-tested.
+
+### ✅ The Bat Bros let you skip the Cow Killer Bee (fixed, 2026-10-12)
+
+*Fixed the same day two ways: Bat Bros went 35 → 55, and the Final Stadium's
+fortress 2500 → 3500. Across every team the Bee is now met in 177 of 186 wins.
+What follows is the record of the problem.*
 
 The Final Stadium's whole design is that you **meet her**: its first draft was
 won before she arrived, and that was called a bug and fixed (she arrives at 40s,
@@ -1074,7 +1167,7 @@ Full detail is in `README.md`; the design-relevant parts:
 | B28 | Is "Desert Scorpion" the right name? | §4 | 🔲 **new — on the plate** |
 | B29 | How do you *get* potions and fruit? | §8 | 🔲 **new — on the plate**, blocks M4 |
 | B30 | What do the three new bugs look like? | §9 | 🔲 **new — on the plate** |
-| B31 | Which bats do caves 4–9 earn? | §3, §7 | 🔲 **new — on the plate** (and a team of five once there are six) |
+| B31 | Which bats do caves 4–9 earn? | §3, §7 | ✅ **answered by Jeff & built 2026-10-12** — six bats, team of 3 |
 
 ### Solved, mostly: the all-or-nothing ending (B9)
 

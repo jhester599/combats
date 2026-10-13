@@ -38,6 +38,32 @@
 
 window.Necro = {};
 
+/* -------------------------------------------------------------------------
+   THE SKELETON BAT (2026-10-12) - "supports the Necrobatcer, when the
+   Necrobatcer summons they come back to full health instead of half."
+
+   While any Skeleton Bat of yours is alive, a raised bat comes back with the
+   Skeleton's  boostsSummons.hpFactor  (1.0 = full health) instead of the
+   Necrobatcer's own. It does nothing at all without a Necrobatcer - which is
+   the point of a support bat. Two Skeletons are no better than one.
+   ------------------------------------------------------------------------- */
+window.Necro.hpFactorFor = function (summon, world) {
+  var best = summon.hpFactor;
+  var units = (world && world.units) || [];
+  var i;
+  var u;
+
+  for (i = 0; i < units.length; i++) {
+    u = units[i];
+
+    if (u.active && !u.isDying && u.team === 'player' && u.stats.boostsSummons) {
+      best = Math.max(best, u.stats.boostsSummons.hpFactor);
+    }
+  }
+
+  return best;
+};
+
 /* Does this unit definition have the summoning power at all? */
 window.Necro.isSummoner = function (stats) {
   return !!(stats && stats.summon);
@@ -162,7 +188,7 @@ window.Necro.update = function (unit, dt, world) {
   }
 
   raised.wasRaised = true;
-  raised.hp = raised.stats.hp * summon.hpFactor;
+  raised.hp = raised.stats.hp * window.Necro.hpFactorFor(summon, world);
 
   if (raised.hp < 1) {
     raised.hp = 1;        // never raise something that is already dead

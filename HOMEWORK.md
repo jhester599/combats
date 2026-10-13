@@ -33,7 +33,7 @@ real Scouts, so if one falls your Necrobatcer can raise him.
 *(They're such a bargain that a Bat Bros army can win the Final Stadium before
 the Cow Killer Bee even turns up. Dad is working out what to do about that.)*
 
-**Caves 4 to 10 don't give you a bat yet — that's question B31 below.** 👇
+**Caves 4 to 9 give you a bat too now — six brand-new ones. See B31 below.** 👇
 
 ---
 
@@ -470,7 +470,16 @@ doesn't apply — they can look like whatever you think they look like.
 
 ---
 
-### 🔲 B31. INVENT: the bats you earn from caves 4 to 9 🦇 *(the big one)*
+### ✅ B31. ANSWERED by Dad — six new bats, and a team of 3 🦇
+
+Dad invented all six: **Cheer Bat, Bomb Bat, Skeleton Bat, Engineer Bat, Frost
+Bat** and **Rabies Bat** — one for beating each of caves 4 to 9. And you now take
+a **team of 3** into each cave, picked in **the Locker**. They're all coloured
+blobs for now — **want to draw them?** 🎨
+
+*(The original question is kept below.)*
+
+#### The question was:
 
 Beating caves 1, 2 and 3 each gives you a bat now. **Caves 4 to 9 don't give you
 anything yet** — and that's six bats waiting to be invented. *(Cave 10 is the

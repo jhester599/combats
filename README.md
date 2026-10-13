@@ -106,17 +106,28 @@ You start with two bats, and every cave you beat early on gives you another:
 | *(start)* | Scout Bat, Brute Bat | 2 bats |
 | 1. The Cave | **Archer Bat** | 3 |
 | 2. Crystal Falls | **Bat Bros** | 4 |
-| 3. Dream Land | **Necrobatcer** | 5 — all of them |
+| 3. Dream Land | **Necrobatcer** | 5 |
+| 4. Pyramid | **Cheer Bat** — every other bat hits harder | 6 |
+| 5. Sahara-hara Desert | **Bomb Bat** — one bomb on their tower, comes home a Scout | 7 |
+| 6. Wait Um | **Skeleton Bat** — raised bats come back at full health | 8 |
+| 7. Scarred Woods | **Engineer Bat** — energy fills faster | 9 |
+| 8. Abyss of Darkness | **Frost Bat** — freezes bugs it touches | 10 |
+| 9. Forgotten Oasis | **Rabies Bat** — eats everything near a random spot | 11 |
 
 The first time you win one of those caves the victory screen says **NEW BAT
-EARNED**, and the new bat's button wears a **NEW!** tag in the next cave. Caves 4
-and up don't hand out a bat yet; that is one `unlocks:` line each when they do.
-The chain is worked out in `src/systems/caves.js`, so caves 2–10 never list their
-own bats.
+EARNED**, and the new bat wears a **NEW!** tag. The chain is worked out in
+`src/systems/caves.js`, so caves 2–10 never list their own bats.
 
-**Bat Bros** is one button that sends out **two real Scout Bats for 35 energy**
-(two Scouts bought one at a time would cost 50). Its `squad` block in
-`data/units.js` says who comes out and how many — try `count: 3`.
+**Bat Bros** is one button that sends out **two real Scout Bats for 55 energy**.
+Its `squad` block in `data/units.js` says who comes out and how many — try
+`count: 3`.
+
+### The Locker — pick a team of three
+
+You only take **three** bats into a cave. Before any cave where you have more
+than three, the **Locker** opens: tap bats to put them in your team, then
+**FIGHT!**. It remembers your last team. Change `team: { size: 3 }` in
+`data/config.js` to take more.
 
 ### The ten caves of Palopa
 
@@ -229,7 +240,8 @@ turns up before the cave is won.
 node tools/necro-test.js    # 20 checks - the Necrobatcer's summoning
 node tools/sting-test.js    # 27 checks - the Desert Scorpion's gamble
 node tools/items-test.js    # 37 checks - potions and fruit
-node tools/roster-test.js   # 21 checks - which cave earns which bat, and the Bat Bros
+node tools/roster-test.js   # 34 checks - which cave earns which bat, the Locker, the Bat Bros
+node tools/powers-test.js   # 38 checks - Cheer, Bomb, Skeleton, Engineer, Frost, Rabies
 ```
 
 Each covers the rules that stop the game quietly breaking, rather than the ones
@@ -310,6 +322,7 @@ src/
   scenes/
     BootScene.js      draws the placeholder art, builds the animations
     MenuScene.js      title, Start button, credits
+    LockerScene.js    pick your team of three before a cave
     BattleScene.js    the battle, the UI, win/lose
   systems/
     economy.js        energy goes up, spending takes it down
@@ -321,6 +334,13 @@ src/
     items.js          potions and fruit: what they do and what they refuse
     caves.js          what caves exist, which one comes next, which bats each has
     squad.js          one button, several bats (the Bat Bros)
+    brain.js          what every unit does each step - shared by game AND sim
+    cheer.js          the Cheer Bat's attack boost
+    bomb.js           the Bomb Bat's flight, bomb and trip home
+    frost.js          the Frost Bat's freeze
+    rabies.js         the Rabies Bat's walk and big bite
+    engineer.js       the Engineer Bat's faster energy
+    team.js           the Locker's rules: which teams you may take in
     progress.js       which caves you have beaten, saved in localStorage
   entities/
     unit.js           one bat: walk, fight, die
@@ -330,7 +350,8 @@ tools/
   necro-test.js       checks the summoning rules hold (testing only)
   sting-test.js       checks the gambling rules hold (testing only)
   items-test.js       checks the item rules hold (testing only)
-  roster-test.js      checks which cave earns which bat, and the Bat Bros (testing only)
+  roster-test.js      checks which cave earns which bat, the Locker, the Bat Bros (testing only)
+  powers-test.js      checks each of the six new bats' powers (testing only)
   doc-check.js        checks the DOCUMENTS still match the data (testing only)
   import-background.js  puts a cave painting into assets/bg (needs a browser)
   pack-spritesheet.js turns a folder of frames into one sprite sheet

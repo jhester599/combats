@@ -133,7 +133,14 @@ window.CONFIG = {
      FOR LEWIS: 2 makes everyone enormous and the lane very silly. Try it.
      --------------------------------------------------------------------- */
   units: {
-    sizeBoost: 1.35       // <-- TRY ME
+    sizeBoost: 1.35,      // <-- TRY ME
+
+    // How far above the lane a Bomb Bat is drawn while it flies. Draw-only:
+    // the fight never looks at it.
+    flyHeight: 120,
+
+    // The colour a bug is washed with while a Frost Bat has it frozen.
+    frozenTint: 0x8fd0ff
   },
 
   /* ---------------------------------------------------------------------
@@ -145,6 +152,19 @@ window.CONFIG = {
      --------------------------------------------------------------------- */
   squad: {
     spacing: 24
+  },
+
+  /* ---------------------------------------------------------------------
+     THE TEAM - how many bats you take into a cave (Jeff, 2026-10-12)
+     ---------------------------------------------------------------------
+     "pick a team of 3, you will choose from a 'locker' between levels"
+
+     You choose them in the Locker (src/scenes/LockerScene.js) before each
+     cave where you have more bats than this. The rules are in
+     src/systems/team.js.
+     --------------------------------------------------------------------- */
+  team: {
+    size: 3               // <-- TRY ME: 5 and you take five bats in
   },
 
   /* ---------------------------------------------------------------------
@@ -362,6 +382,8 @@ window.CONFIG = {
 
     stungColor: '#ff6b6b',    // your bat was stung dead
     burstColor: '#ffd24a',    // the scorpion killed itself
+    friendColor: '#9ff0b0',   // good news for your side (a Bomb Bat landing)
+    frostColor: '#9fd8ff',    // a bug frozen by a Frost Bat
     itemColor: '#66e0b8'      // a potion or a fruit was used
   },
 
@@ -412,6 +434,25 @@ window.CONFIG = {
     lockedColor: 0x241d3d,
     lockedTextAlpha: 0.42,
     lockedBorderAlpha: 0.18
+  },
+
+  /* ---------------------------------------------------------------------
+     THE LOCKER - where you pick your team between caves (2026-10-12)
+     --------------------------------------------------------------------- */
+  locker: {
+    slotY: 128,            // the row of team places across the top
+    slotWidth: 150,
+    slotHeight: 84,
+    slotGap: 18,
+
+    gridY: 262,            // centre line of the first row of bats to pick from
+    cardWidth: 138,
+    cardHeight: 92,
+    cardGap: 12,
+    cardsPerRow: 6,        // 6 x 2 rows holds every bat in Palopa so far
+
+    pickedColor: 0x5a4790, // a bat that is in your team
+    emptySlotColor: 0x1b1433
   },
 
   /* ---------------------------------------------------------------------

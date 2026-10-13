@@ -279,6 +279,7 @@ window.LEVELS = {
      ======================================================================= */
   pyramid: {
     name: 'Pyramid',
+    unlocks: 'cheerBat',
     playerBaseHp: 1100,
     enemyBaseHp: 2800,     // <-- the lever. Cave 1's is 1900.
     startEnergy: 50,
@@ -327,6 +328,7 @@ window.LEVELS = {
      ======================================================================= */
   saharaDesert: {
     name: 'Sahara-hara Desert',
+    unlocks: 'bombBat',
     playerBaseHp: 1100,
     enemyBaseHp: 2300,
     // MEASURED: eps 10 with 45 starting energy was unwinnable past a 0.4s
@@ -363,6 +365,7 @@ window.LEVELS = {
      ======================================================================= */
   waitUm: {
     name: 'Wait Um',
+    unlocks: 'skeletonBat',
     playerBaseHp: 1200,
     enemyBaseHp: 3800,     // <-- the lever, and the biggest number in the game
     startEnergy: 55,
@@ -393,6 +396,7 @@ window.LEVELS = {
      ======================================================================= */
   scarredWoods: {
     name: 'Scarred Woods',
+    unlocks: 'engineerBat',
     playerBaseHp: 1200,
     enemyBaseHp: 2200,
     // MEASURED, twice. 80 lost at a 0.4s thumb; 95 fixed that but a player who
@@ -444,6 +448,7 @@ window.LEVELS = {
      ======================================================================= */
   abyssOfDarkness: {
     name: 'Abyss of Darkness',
+    unlocks: 'frostBat',
     playerBaseHp: 1200,
     enemyBaseHp: 2800,     // <-- lever one
     startEnergy: 70,
@@ -493,6 +498,7 @@ window.LEVELS = {
      ======================================================================= */
   forgottenOasis: {
     name: 'Forgotten Oasis',
+    unlocks: 'rabiesBat',
     playerBaseHp: 1300,
     enemyBaseHp: 2800,
     startEnergy: 60,
@@ -547,7 +553,11 @@ window.LEVELS = {
     // 3400 and the bee arrived at 58s, but the cave was already WON by 44-52s.
     // The boss of the whole game was never even meeting the player. A fortress
     // this size has to outlast her entrance, not fall before it.
-    enemyBaseHp: 2500,
+    //
+    // 2500 -> 3500 (2026-10-12), for the same reason again. With eleven bats
+    // and a team of three, the quickest teams won before her 40s entrance in a
+    // third of all wins. At 3500 she is met in 177 of 186.
+    enemyBaseHp: 3500,     // <-- 2500 until 2026-10-12, see below
 
     // MEASURED: at 90 a player saving for Brute Bats lost at a 0.5s thumb, and
     // losing the last cave of the game to a knife-edge is a rotten ending. 130
