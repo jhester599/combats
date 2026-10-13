@@ -33,6 +33,15 @@ Phaser engine, loaded by `<script>` tags in `index.html`.
 
 ---
 
+## Which version am I playing?
+
+The title screen shows a small version number in the bottom-right corner, e.g.
+**v1.05**. The number after the dot is the last pull request merged into the
+game, so v1.05 is everything up to PR #5. It lives in one line in
+`data/config.js` (`version:`); bump it in each PR.
+
+---
+
 ## Design docs
 
 ComBats is designed the same way Fakeamon Spark is — Lewis makes the

@@ -13,6 +13,16 @@
 window.CONFIG = {
 
   /* ---------------------------------------------------------------------
+     VERSION - shown small in the corner of the title screen, so it is easy
+     to tell which build you are playing.
+
+     The number after the dot is the last pull request that went into the
+     game: v1.05 = everything up to and including PR #5. Bump it as part of
+     each PR (PR #6 makes it v1.06).
+     --------------------------------------------------------------------- */
+  version: 'v1.05',
+
+  /* ---------------------------------------------------------------------
      SCREEN
      The game is drawn at this size, then scaled to fit any phone or laptop
      screen. Think of it as the size of the "stage".

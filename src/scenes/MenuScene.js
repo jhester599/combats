@@ -48,6 +48,14 @@ window.MenuScene.prototype.create = function () {
   }.bind(this));
 
   this.buildCredits();
+
+  // Which build this is (CONFIG.version), tucked in the bottom-right corner so
+  // it is there when you look for it and invisible when you don't.
+  this.add.text(cfg.screen.width - 10, cfg.screen.height - 8, cfg.version, {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: '12px',
+    color: '#6f6496'
+  }).setOrigin(1, 1);
 };
 
 /* -------------------------------------------------------------------------
@@ -113,7 +121,7 @@ window.MenuScene.prototype.makeLockedButton = function (x, y, w, h, label) {
   var box = this.add.rectangle(x, y, w, h, m.lockedColor);
   box.setStrokeStyle(2, cfg.buttons.borderColor, m.lockedBorderAlpha);
 
-  var text = this.add.text(x, y, '\U0001f512 ' + label, {
+  var text = this.add.text(x, y, '\u{1F512} ' + label, {
     fontFamily: cfg.text.fontFamily,
     fontSize: '15px',
     color: cfg.text.color,
