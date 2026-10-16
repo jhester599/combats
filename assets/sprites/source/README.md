@@ -15,7 +15,15 @@ cheerBat/idle_01.png   141x64   a single pose  (2026-10-16)
 engineerBat/idle_01.png 111x64  a single pose  (2026-10-16)
 frostBat/idle_01.png   129x64   a single pose  (2026-10-16)
 rabiesBat/idle_01.png  127x64   a single pose  (2026-10-16)
+skeletonBat/idle_01.png 152x64  a single pose  (2026-10-16)
+bombBat/idle_01.png    194x128  holding the bomb - out, and in the Locker
+bombBat/home_01.png    194x128  empty-handed - the flight home (mirrored)
+bomb/bomb.png          55x52    the bomb it drops; also copied to ../bomb.png
 ```
+
+The two Bomb Bat frames were drawn separately and lined up by matching the
+heads, on a canvas centred on the head. `bomb.png` is shrunk so its ball is
+the same size as the one the bat holds. Re-pack with `--order idle,home`.
 
 Frames are **wide, not square**, since Lewis's 2026-09-19 bats are drawn with
 their wings out. They share a 64px height so every bat stands on the same

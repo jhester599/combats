@@ -210,9 +210,10 @@ nothing can freeze a bug forever (the thaw window); a Rabies Bat never eats a
 building, and a **boss is too big to swallow** — she takes 500 damage instead,
 or one tap would skip the Final Stadium's whole fight.
 
-**Four of the six are drawn (2026-10-16):** Cheer, Engineer, Frost and Rabies,
-by Lewis & Jeff, one pose each. The **Bomb Bat** and **Skeleton Bat** are still
-coloured bats the game draws itself. Sizes and measurements: `ASSETS.md`.
+**All six are drawn (2026-10-16)**, by Lewis & Jeff, one pose each. The
+**Bomb Bat** has three pictures: it flies out holding its bomb, the bomb falls
+onto their tower on its own, and it flies home empty-handed and mirrored (D71).
+Sizes and measurements: `ASSETS.md`.
 
 **The brain moved (2026-10-12).** Five of the six change how a unit *moves* or
 *acts*, not just how hard it hits, and the unit brain used to be written twice

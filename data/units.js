@@ -412,9 +412,12 @@ window.UNITS = {
     attackInterval: 1.0,
     range: 0,
     speed: 120,            // flying speed, there and back
-    color: '#ff8a3d',
+    color: '#ff8a3d',      // only used by placeholder art - this bat has real art now
     sprite: 'bombBat',
-    scale: 0.75,
+    // A 128-TALL FRAME, like the boss: the bat plus the bomb hanging under it.
+    // At 0.5 the bat itself is Scout-sized (80 wide), which matters because it
+    // comes home and turns INTO a Scout - it should not visibly shrink or grow.
+    scale: 0.5,
 
     bomb: {
       damage: 300,         // <-- TRY ME: what its ONE bomb does to the tower
@@ -422,15 +425,39 @@ window.UNITS = {
       becomes: 'scoutBat'  // what it turns into when it gets home
     },
 
-    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
-    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    // REAL ART - 2026-10-16, Lewis & Jeff: a bat in flying goggles, hugging a
+    // bomb with its fuse already lit. THREE pictures, all drawn by them:
+    //
+    //   frame 0  holding the bomb - out to their tower (and in the Locker)
+    //   frame 1  the same bat with empty hands - the flight home. The game
+    //            mirrors it, because home is right-to-left (src/entities/unit.js)
+    //   bomb     the bomb on its own, which falls onto their tower when it lets
+    //            go (BattleScene.dropBomb)
+    //
+    // Frames 0 and 1 were drawn separately, so they were lined up by matching
+    // the HEADS: when it lets go, the bat stays put and only the bomb leaves.
+    // The canvas is centred on the head too, so turning round does not jump.
     anims: {
-      frameWidth: 64,
-      frameHeight: 64,
-      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
-      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
-      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
-      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+      frameWidth: 194,
+      frameHeight: 128,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      home:   { start: 1, end: 1, frameRate: 1, repeat: -1 },   // empty-handed
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
+    },
+
+    // DRAW-ONLY - the fight never reads this. Where the bomb it is holding sits
+    // in frame 0, in frame pixels from the frame's bottom-centre (the point the
+    // game stands a unit on), so the bomb that falls starts exactly there.
+    // bomb.png is shrunk to the same size as the one in its hands.
+    bombPicture: {
+      sprite: 'bomb',
+      x: -12.7,
+      y: -19.1,
+      // the middle of the ball, as a fraction of bomb.png (the fuse sticks out)
+      originX: 0.335,
+      originY: 0.66
     }
   },
 
@@ -450,23 +477,28 @@ window.UNITS = {
     attackInterval: 0.8,   // 12.5 dps - it CAN fight, a bit
     range: 42,
     speed: 80,
-    color: '#e8e4d0',
+    color: '#e8e4d0',      // only used by placeholder art - this bat has real art now
     sprite: 'skeletonBat',
-    scale: 0.7,
+    scale: 0.6,
 
     boostsSummons: {
       hpFactor: 1.0        // raised bats come back at FULL health (normally 0.6)
     },
 
-    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
-    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    // REAL ART - 2026-10-16, Lewis & Jeff: a bat skull with cracked bone,
+    // fangs and torn, bony wings. Drawn 91x38 on screen, Cheer-sized - it has
+    // 28 health and should look like it would fall apart if you hit it.
+    //
+    // One pose for now, so all four animations share frame 0. When frames
+    // arrive, drop them in assets/sprites/source/skeletonBat/ and re-run
+    // tools/pack-spritesheet.js.
     anims: {
-      frameWidth: 64,
+      frameWidth: 152,
       frameHeight: 64,
-      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
-      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
-      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
-      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 

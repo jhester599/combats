@@ -66,9 +66,10 @@ window.Bomb.step = function (unit, dt, world) {
     return true;
   }
 
-  // HOME: fly back, and become a Scout at the door.
+  // HOME: fly back, and become a Scout at the door. 'home' is the picture of
+  // it with empty hands - the bomb is gone.
   unit.x -= move;
-  unit.show('walk');
+  unit.show('home');
 
   if (unit.x <= world.playerBase.spawnX) {
     var x = world.playerBase.spawnX;

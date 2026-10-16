@@ -149,6 +149,10 @@ window.CONFIG = {
     // the fight never looks at it.
     flyHeight: 120,
 
+    // How long the Bomb Bat's bomb takes to fall onto their tower. Draw-only
+    // too: the damage is done the moment it lets go, as it always was.
+    bombFallSeconds: 0.45,
+
     // The colour a bug is washed with while a Frost Bat has it frozen.
     frozenTint: 0x8fd0ff
   },
