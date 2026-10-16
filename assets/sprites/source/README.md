@@ -10,6 +10,11 @@ One folder per unit, one file per animation:
 scoutBat/idle_01.png   150x64   a single pose
 bruteBat/idle_01.png   132x64   a single pose
 necroBat/idle_01.png   100x64   a single pose
+archerBat/idle_01.png  106x64   a single pose
+cheerBat/idle_01.png   141x64   a single pose  (2026-10-16)
+engineerBat/idle_01.png 111x64  a single pose  (2026-10-16)
+frostBat/idle_01.png   129x64   a single pose  (2026-10-16)
+rabiesBat/idle_01.png  127x64   a single pose  (2026-10-16)
 ```
 
 Frames are **wide, not square**, since Lewis's 2026-09-19 bats are drawn with

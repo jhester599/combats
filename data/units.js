@@ -368,24 +368,29 @@ window.UNITS = {
     attackInterval: 1.0,
     range: 150,            // stands this far behind the front line
     speed: 70,
-    color: '#ff9fd6',
+    color: '#ff9fd6',      // only used by placeholder art - this bat has real art now
     sprite: 'cheerBat',
-    scale: 0.75,
+    scale: 0.6,
 
     cheer: {
       attackBonus: 0.3     // <-- TRY ME: +30% attack for every other bat of yours
       // Two Cheer Bats do NOT stack - see src/systems/cheer.js.
     },
 
-    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
-    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    // REAL ART - 2026-10-16, Lewis & Jeff: a grinning bat shaking a pom-pom on
+    // each wing. Drawn 85x38 on screen, Scout-sized - it is the most fragile
+    // bat you own (18 health) and should not look like it can take a hit.
+    //
+    // One pose for now, so all four animations share frame 0. When frames
+    // arrive, drop them in assets/sprites/source/cheerBat/ and re-run
+    // tools/pack-spritesheet.js.
     anims: {
-      frameWidth: 64,
+      frameWidth: 141,
       frameHeight: 64,
-      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
-      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
-      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
-      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -479,24 +484,29 @@ window.UNITS = {
     attackInterval: 1.0,
     range: 0,
     speed: 0,              // <-- stays at your door and works
-    color: '#f2c94c',
+    color: '#f2c94c',      // only used by placeholder art - this bat has real art now
     sprite: 'engineerBat',
-    scale: 0.75,
+    scale: 0.7,
 
     engineer: {
       incomeBonus: 0.35    // <-- TRY ME: +35% energy per second while it lives
       // Two Engineer Bats do NOT stack - see src/systems/engineer.js.
     },
 
-    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
-    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    // REAL ART - 2026-10-16, Lewis & Jeff: a welding mask pushed up, a
+    // screwdriver in one hand and a tool belt. Drawn 78x45 on screen. It never
+    // moves, so one pose is all it will ever need.
+    //
+    // One pose for now, so all four animations share frame 0. When frames
+    // arrive, drop them in assets/sprites/source/engineerBat/ and re-run
+    // tools/pack-spritesheet.js.
     anims: {
-      frameWidth: 64,
+      frameWidth: 111,
       frameHeight: 64,
-      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
-      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
-      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
-      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -515,24 +525,29 @@ window.UNITS = {
     attackInterval: 1.0,
     range: 40,
     speed: 75,
-    color: '#7fd6ff',
+    color: '#7fd6ff',      // only used by placeholder art - this bat has real art now
     sprite: 'frostBat',
-    scale: 0.75,
+    scale: 0.7,
 
     frost: {
       freezeSeconds: 2.0,  // <-- THIS IS JEFF'S "x". How long a touch freezes a bug.
       thawSeconds: 1.5     // after thawing, a bug can't be frozen again for this long
     },
 
-    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
-    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    // REAL ART - 2026-10-16, Lewis & Jeff: icicles dripping off its ears and
+    // wings, and a bat who is plainly freezing. Drawn 90x45 on screen, the
+    // size of the Necrobatcer - it is a front-line fighter with 70 health.
+    //
+    // One pose for now, so all four animations share frame 0. When frames
+    // arrive, drop them in assets/sprites/source/frostBat/ and re-run
+    // tools/pack-spritesheet.js.
     anims: {
-      frameWidth: 64,
+      frameWidth: 129,
       frameHeight: 64,
-      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
-      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
-      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
-      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -552,9 +567,9 @@ window.UNITS = {
     attackInterval: 1.0,
     range: 0,
     speed: 85,
-    color: '#9be15d',
+    color: '#9be15d',      // only used by placeholder art - this bat has real art now
     sprite: 'rabiesBat',
-    scale: 0.8,
+    scale: 0.75,
 
     rabies: {
       radius: 90,          // <-- TRY ME: how far its bite reaches, both ways
@@ -564,15 +579,20 @@ window.UNITS = {
       bossDamage: 500      // a boss is too big to swallow - it takes this instead
     },
 
-    // PLACEHOLDER ART until Lewis draws it: the game paints a bat in "color"
-    // at start-up (src/scenes/BootScene.js), with real frames that flap.
+    // REAL ART - 2026-10-16, Lewis & Jeff: wild eyes, every fang showing and a
+    // drooling tongue. Drawn 95x48 on screen - the biggest of the new bats,
+    // because it is the one you should be a bit scared to let out.
+    //
+    // One pose for now, so all four animations share frame 0. When frames
+    // arrive, drop them in assets/sprites/source/rabiesBat/ and re-run
+    // tools/pack-spritesheet.js.
     anims: {
-      frameWidth: 64,
+      frameWidth: 127,
       frameHeight: 64,
-      idle:   { start: 0,  end: 3,  frameRate: 4,  repeat: -1 },
-      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
-      attack: { start: 8,  end: 10, frameRate: 12, repeat: 0  },
-      death:  { start: 11, end: 13, frameRate: 8,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
