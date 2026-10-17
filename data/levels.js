@@ -562,7 +562,11 @@ window.LEVELS = {
     // 2500 -> 3500 (2026-10-12), for the same reason again. With eleven bats
     // and a team of three, the quickest teams won before her 40s entrance in a
     // third of all wins. At 3500 she is met in 177 of 186.
-    enemyBaseHp: 3500,     // <-- 2500 until 2026-10-12, see below
+    //
+    // 3500 -> 4200 (2026-10-17, D75), a third time: once the Bomb Bat's bomb
+    // was made worth having, a team of bombers could flatten 3500 before she
+    // arrived. At 4200 every win in the sim meets her.
+    enemyBaseHp: 4200,     // <-- 2500 until 2026-10-12, 3500 until 2026-10-17
 
     // MEASURED: at 90 a player saving for Brute Bats lost at a 0.5s thumb, and
     // losing the last cave of the game to a knife-edge is a rotten ending. 130

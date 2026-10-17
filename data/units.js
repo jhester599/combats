@@ -170,7 +170,12 @@ window.UNITS = {
     // Its damage did NOT change. Being safe is the reward for standing back;
     // 3.3 dps is still a quarter of a Scout's, because this bat wins battles by
     // raising the dead and not by shooting anything.
-    range: 200,            // <-- TRY ME: 40 and it walks into the fight and dies
+    //
+    // 200 -> 150 on 2026-10-17 (D75), when the Archer's reach came down to 160:
+    // the Archer keeps the longest reach in Palopa, and 150 still out-reaches
+    // every bug, the Cow Killer Bee's 130 stinger included. Measured: it does
+    // as well as it did at 200.
+    range: 150,            // <-- TRY ME: 40 and it walks into the fight and dies
     speed: 70,
     color: '#8f7fd6',      // only used by placeholder art - this bat has real art now
     sprite: 'necroBat',
@@ -230,10 +235,11 @@ window.UNITS = {
 
   archerBat: {
     name: 'Archer Bat',
-    blurb: 'Shoots from 240 away - the only answer to the Cow Killer Bee. Paper-thin.',   // shown in the Locker
-    cost: 45,
-    // Below cost / energyPerSecond (45 / 13 = 3.46s), so money is the limit
-    // and a slow tap costs nothing. See the Scout's note above.
+    blurb: 'Shoots from 160 away - the only answer to the Cow Killer Bee. Paper-thin.',   // shown in the Locker
+    // 45 -> 55 on 2026-10-17 (D75), with the range cut below. Still below
+    // cost / energyPerSecond (55 / 16 = 3.44s even in the richest cave), so
+    // money is the limit and a slow tap costs nothing. See the Scout's note.
+    cost: 55,
     cooldown: 3.0,
     hp: 24,                // <-- paper. One scorpion sting and it is gone.
 
@@ -249,7 +255,12 @@ window.UNITS = {
     // trade it was invented to offer.
     attack: 22,
     attackInterval: 1.1,   // 20.0 dps
-    range: 240,            // <-- THE WHOLE POINT. The Scout's is 40.
+    // <-- THE WHOLE POINT. The Scout's is 40. 240 until 2026-10-17 (D75): the
+    // play-tester found the Archer too strong, and the sim agreed - EVERY team
+    // with an Archer won EVERY cave, the Final Stadium 100% against 68%. Price
+    // and damage barely moved that; RANGE is what does it. At 160 (four
+    // Scouts' reach) it is still one of the best bats, not an automatic pick.
+    range: 160,
     speed: 75,
     color: '#7ce0a8',      // only used by placeholder art - this bat has real art now
     sprite: 'archerBat',
@@ -420,10 +431,12 @@ window.UNITS = {
     scale: 0.5,
 
     bomb: {
-      // <-- TRY ME: what its ONE bomb does to the tower. Doubled 300 -> 600
-      // on 2026-10-17 for play-testing ("the bomb bat needs to be more
-      // powerful" - Jeff); the sim is looking for the right number (D73).
-      damage: 600,
+      // <-- TRY ME: what its ONE bomb does to the tower. 300 was a trap (Bomb
+      // teams won the Final Stadium 47% of the time, 73% without). Doubled to
+      // 600 for play-testing (D73), which was too much: Bomb teams won caves
+      // in half the time, Scarred Woods in 23s. 500 measured best (D75) -
+      // its teams win more often than any other bat's, with no walkovers.
+      damage: 500,
       dropReach: 20,       // how close to the tower it gets before dropping
       becomes: 'scoutBat'  // what it turns into when it gets home
     },
@@ -473,8 +486,11 @@ window.UNITS = {
   skeletonBat: {
     name: 'Skeleton Bat',
     blurb: 'Necrobatcer raises bats at FULL health while it lives. Weak.',   // shown in the Locker
-    cost: 40,
-    cooldown: 2.4,
+    // 40 -> 30 on 2026-10-17 (D75): teams with it won 21% less often than
+    // teams without; at 30, 6%. The cooldown came down with it (2.4 -> 1.8)
+    // to stay under cost / energyPerSecond (30 / 16 = 1.88s) - see the Scout.
+    cost: 30,
+    cooldown: 1.8,
     hp: 28,                // <-- very low, as asked
     attack: 10,
     attackInterval: 0.8,   // 12.5 dps - it CAN fight, a bit
@@ -512,8 +528,11 @@ window.UNITS = {
   engineerBat: {
     name: 'Engineer Bat',
     blurb: 'Stays at your door. Energy fills faster while it lives.',   // shown in the Locker
-    cost: 80,
-    cooldown: 4.5,
+    // 80 -> 60 on 2026-10-17 (D75): teams with it won 11% less often than
+    // teams without; at 60, 7%. Cooldown 4.5 -> 3.5 to stay under
+    // cost / energyPerSecond (60 / 16 = 3.75s) - see the Scout.
+    cost: 60,
+    cooldown: 3.5,
     hp: 60,
     attack: 0,             // it builds, it does not fight
     attackInterval: 1.0,

@@ -63,7 +63,7 @@ And the three other things you asked for:
 
 | Your answer | What happened |
 |---|---|
-| **B9** — the Archer Bat 🏹 | **Built.** It shoots from **240 pixels** away. A Scout Bat has to get within 40. You get it from cave 2 onwards. |
+| **B9** — the Archer Bat 🏹 | **Built.** It shoots from **160 pixels** away (240 until 2026-10-17 — it was too strong). A Scout Bat has to get within 40. You get it from cave 2 onwards. |
 | **B8** — the Cow Killer Bee 👑 | **Built.** 2400 health, and her stinger reaches **130** — further than any of your other bats can hit back from. |
 | **B16** — grave markers 🗿 | **Built.** Every bat that falls leaves a little headstone, and it disappears when your Necrobatcer raises it. |
 | **B24** — Necrobatcer reaches further | **Done.** 320 → **460**. |
@@ -75,9 +75,9 @@ You answered these two separately, but look what happened:
 
 - the Cow Killer Bee's stinger reaches **130**
 - Scout Bat reaches 40. Brute Bat 46. **Both die without ever touching her.**
-- **Archer Bat reaches 240.** It's the bat that can hit her while she can't hit
+- **Archer Bat reaches 160** (240 until 2026-10-17). It's the bat that can hit her while she can't hit
   back — and it's the only one that can hurt her from out there. *(The
-  Necrobatcer now reaches 200 as well, so it's safe from her too, but at 3.3
+  Necrobatcer now reaches 150 (200 until 2026-10-17), so it's safe from her too, but at 3.3
   damage a second it would take it about twelve minutes to finish her off on its
   own. It's a summoner, not a sniper.)*
 
@@ -386,7 +386,7 @@ stop like this:
 | Scout Bat | 39px *(right in it — this one died)* |
 | Brute Bat | 46px |
 | **Necrobatcer** | **199px** ← was 60 |
-| Archer Bat | 240px |
+| Archer Bat | 160px |
 
 **Its damage did NOT change** — still 3.3 a second, a quarter of a Scout's.
 Standing somewhere safe is the reward. It's a summoner, not a sniper.
@@ -578,7 +578,7 @@ Open `data/units.js`, change a number, save, refresh the browser. That's it.
 
 | Try this | What happens |
 |---|---|
-| Archer Bat `range: 240` → `700` | It shoots the fortress from your own base 🏹 |
+| Archer Bat `range: 160` → `700` | It shoots the fortress from your own base 🏹 |
 | Cow Killer Bee `hp: 2400` → `200` | The boss is a pushover |
 | Cow Killer Bee `scale: 1.6` → `4` | She fills the entire screen 😱 |
 | Scout Bat `cost: 25` → `5` | You can spam a *hundred* Scout Bats 😄 |
