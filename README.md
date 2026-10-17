@@ -277,8 +277,9 @@ node tools/difficulty-ladder.js
 
 Plays every cave as a **beginner** - someone who taps a random bat they can
 afford every 2-6 seconds instead of watching the buttons - with every team the
-Locker allows, and prints how often they win. Cave 1 must be easy (90%+) and
-every cave after it harder. Each cave's `waveStretch` in `data/levels.js` is
+Locker allows, and prints how often they win. Cave 1 must be easy (97%+), caves
+2-5 may each be at most 6 points harder than the one before, and every cave
+after that harder still. Each cave's `waveStretch` in `data/levels.js` is
 what puts it on the ladder.
 
 Each covers the rules that stop the game quietly breaking, rather than the ones
