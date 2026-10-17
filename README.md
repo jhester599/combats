@@ -10,6 +10,21 @@ Made by **Jeff** (code) and **Lewis** (creative director — units, stats, level
 
 ### ▶ [Play it in your browser](https://jhester599.github.io/combats/)
 
+### 📱 On a phone or tablet
+
+Open the link above and **turn the phone sideways**. For the best fit, install
+it so it opens full screen like an app, with no browser bars:
+
+- **iPhone / iPad (Safari):** Share → **Add to Home Screen**
+- **Android (Chrome):** ⋮ menu → **Add to Home screen** (or **Install app**)
+
+Not installed? Android phones and iPads also get a **Full screen** button on the
+title screen. iPhones don't allow that from a web page, so installing is the
+way there.
+
+Every button reaches a little past its edges for fingers (`src/systems/touch.js`),
+and the game keeps clear of the notch and the home bar.
+
 ---
 
 ## Run it on your own machine
@@ -320,6 +335,7 @@ cycle long after the redraw removed it.
 
 ```
 index.html          loads the engine, then the data, then the code
+manifest.webmanifest  lets a phone install it: name, icon, full screen, sideways
 vendor/             Phaser 4.2.1, committed so we never depend on the internet
 data/               EVERY tuning number lives here
   config.js           screen, lane, bars, buttons, timing
@@ -352,6 +368,7 @@ src/
     engineer.js       the Engineer Bat's faster energy
     team.js           the Locker's rules: which teams you may take in
     progress.js       which caves you have beaten, saved in localStorage
+    touch.js          bigger tap areas for fingers on phones and tablets
   entities/
     unit.js           one bat: walk, fight, die
     base.js           a building with HP

@@ -17,10 +17,11 @@ window.CONFIG = {
      to tell which build you are playing.
 
      The number after the dot is the last pull request that went into the
-     game: v1.05 = everything up to and including PR #5. Bump it as part of
-     each PR (PR #6 makes it v1.06).
+     game: v1.08 = everything up to and including PR #8. Bump it as part of
+     each PR (PR #9 makes it v1.09). PRs #6 and #7 forgot to, so it went
+     straight from v1.05 to v1.08.
      --------------------------------------------------------------------- */
-  version: 'v1.05',
+  version: 'v1.08',
 
   /* ---------------------------------------------------------------------
      SCREEN
@@ -155,6 +156,19 @@ window.CONFIG = {
 
     // The colour a bug is washed with while a Frost Bat has it frozen.
     frozenTint: 0x8fd0ff
+  },
+
+  /* ---------------------------------------------------------------------
+     TOUCH - how far past its edges a button still counts as tapped
+     ---------------------------------------------------------------------
+     On a phone the game is shrunk to fit, so buttons get small under a
+     fingertip. Each one's tap area reaches past its picture (src/systems/
+     touch.js). Buttons in a row reach HALF the gap to their neighbour - those
+     numbers come from each row's own "gap" setting, so they can never
+     overlap. This one is for buttons with open space all round them.
+     --------------------------------------------------------------------- */
+  touch: {
+    freePad: 12
   },
 
   /* ---------------------------------------------------------------------

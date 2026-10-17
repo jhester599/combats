@@ -7,6 +7,19 @@
   <meta name="description" content="ComBats - a lane auto-battler by Jeff and Lewis" />
   <title>ComBats</title>
 
+  <!-- PLAY IT LIKE AN APP (2026-10-17). "Add to Home Screen" on a phone or
+       tablet installs ComBats with its own icon, and it then opens full
+       screen, sideways, with none of the browser's bars eating the picture.
+       The manifest says that for Android; the apple-* lines say it for iPhone
+       and iPad, which read these instead. -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#150f2b" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ComBats" />
+  <link rel="apple-touch-icon" href="assets/icons/icon-180.png" />
+
   <!-- A tiny inline bat icon, so the browser does not ask for /favicon.ico
        (which would be a harmless but noisy 404 in the console). -->
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='18' r='7' fill='%236fd3ff'/%3E%3Cpath d='M9 16 L1 10 L3 21 Z' fill='%236fd3ff'/%3E%3Cpath d='M23 16 L31 10 L29 21 Z' fill='%236fd3ff'/%3E%3Ccircle cx='13' cy='17' r='2' fill='%23fff'/%3E%3Ccircle cx='19' cy='17' r='2' fill='%23fff'/%3E%3C/svg%3E" />
@@ -18,15 +31,29 @@
       height: 100%;
       background: #150f2b;
       overflow: hidden;
-      /* Stop a finger-drag from scrolling or zooming the page while playing. */
+      /* Stop a finger-drag from scrolling or zooming the page while playing,
+         and a drag down from the top from reloading it (pull-to-refresh). */
       touch-action: none;
+      overscroll-behavior: none;
       -webkit-user-select: none;
       user-select: none;
+      /* No "Save Image" menu on a long press, and no grey flash on each tap. */
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
+    /* The game fills the screen MINUS the phone's safe areas: the notch or
+       camera cut-out, the rounded corners, and the home-indicator bar along
+       the bottom, which would otherwise sit on top of the bat buttons and
+       turn a tap into "go to the home screen". On a computer every inset is
+       0 and this is simply the whole window. Phaser sizes the game to fit
+       this box (Scale.FIT in src/main.js). */
     #game {
-      width: 100%;
-      height: 100%;
+      position: fixed;
+      top: env(safe-area-inset-top, 0px);
+      right: env(safe-area-inset-right, 0px);
+      bottom: env(safe-area-inset-bottom, 0px);
+      left: env(safe-area-inset-left, 0px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -131,6 +158,7 @@
   <script src="src/systems/caves.js"></script>
   <script src="src/systems/team.js"></script>
   <script src="src/systems/progress.js"></script>
+  <script src="src/systems/touch.js"></script>
 
   <!-- 4. Entities -->
   <script src="src/entities/unit.js"></script>
