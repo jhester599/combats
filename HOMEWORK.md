@@ -477,6 +477,11 @@ Bat** and **Rabies Bat** — one for beating each of caves 4 to 9. And you now t
 a **team of 3** into each cave, picked in **the Locker**. They're all coloured
 blobs for now — **want to draw them?** 🎨
 
+**All six are drawn (2026-10-16):** the Cheer Bat waving pom-poms, the
+Engineer in a welding mask, the shivering Frost Bat, the drooling Rabies Bat,
+the cracked-skull Skeleton Bat, and the Bomb Bat in flying goggles - whose bomb
+really falls on their tower now, and who flies home with empty hands. 💣
+
 *(The original question is kept below.)*
 
 #### The question was:

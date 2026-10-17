@@ -55,6 +55,13 @@ committed PNG.
 | `assets/sprites/scoutBat.png` — Scout Bat: big eyes, big ears, 1 pose (150×64) | Lewis | ⚠️ **tool not recorded** | 2026-09-19 |
 | `assets/sprites/bruteBat.png` — Brute Bat: the scowling one, 1 pose (132×64) | Lewis | ⚠️ **tool not recorded** | 2026-09-19 |
 | `assets/sprites/necroBat.png` — Necrobatcer: a bat skull with a flaming staff, 1 pose (100×64) | Lewis | ⚠️ **tool not recorded** | 2026-09-19 |
+| `assets/sprites/cheerBat.png` — Cheer Bat: a pom-pom on each wing, 1 pose (141×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
+| `assets/sprites/engineerBat.png` — Engineer Bat: welding mask, screwdriver, tool belt, 1 pose (111×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
+| `assets/sprites/frostBat.png` — Frost Bat: icicles on its ears and wings, 1 pose (129×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
+| `assets/sprites/rabiesBat.png` — Rabies Bat: wild eyes and a drooling tongue, 1 pose (127×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
+| `assets/sprites/skeletonBat.png` — Skeleton Bat: cracked skull, bony torn wings, 1 pose (152×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
+| `assets/sprites/bombBat.png` — Bomb Bat in flying goggles: holding its bomb, and empty-handed (2 frames of 194×128) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
+| `assets/sprites/bomb.png` — the bomb the Bomb Bat drops (55×52) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
 | *(superseded)* Scout Bat in goggles, Brute Bat in a cape | Lewis, via PixelLab (AI-generated) | ⚠️ see note below | 2026-09-18 |
 
 The 2026-09-18 pair were replaced by the redraw above (homework B4). Their
@@ -203,7 +210,52 @@ longer than her body (his B8 — "a queen bee with a very long stinger"), the
 Lightning Bug has **glowing** antennae and tail, and the Evil Butterfly has
 **angry eyes patterned into its wings**, so it glares at you twice over.
 
-### Nothing is a coloured blob any more
+### ✅ All six cave bats, 2026-10-16
+
+The bats you earn by beating caves 4 to 9 arrived as blobs on 2026-10-12. All
+six are drawn now, by Lewis & Jeff, all with transparent backgrounds and solid white
+bodies (checked: a see-through body would show the cave through the bat).
+
+| Bat | Frame | `scale` | Drawn on screen | Source | Light pixels in the frame |
+|---|---|---|---|---|---|
+| Cheer Bat | 141×64 | 0.60 | 85×38 | 1536×1024 | 54% |
+| Engineer Bat | 111×64 | 0.70 | 78×45 | 600×400 | 53% |
+| Frost Bat | 129×64 | 0.70 | 90×45 | 600×400 | 57% |
+| Rabies Bat | 127×64 | 0.75 | 95×48 | 600×400 | 56% |
+| Skeleton Bat | 152×64 | 0.60 | 91×38 | 600×400 | 52% |
+| **Bomb Bat** | **194×128** | 0.50 | 97×64 with its bomb | 473×400 + 533×400 | 57% empty-handed |
+
+*"Drawn on screen" is before `sizeBoost`, like the bat table above.*
+
+Sizes follow what each bat is for: the Cheer Bat has 18 health and is Scout-sized
+on purpose, the Frost Bat fights at the front and matches the Necrobatcer, and
+the Rabies Bat is the biggest of the four because it is the scary one.
+
+**Drawing smaller worked.** Three of the four were drawn at 600×400 instead of
+1536. With the same pen, that makes every line about 2.5 times thicker compared
+with the bat, so less of it blurs away when it is shrunk to 64 tall: 53–57%
+light pixels against the Archer's 47%. Keep drawing at roughly this size.
+
+**The Bomb Bat is three pictures**, the first unit with more than one:
+
+- **holding the bomb** — frame 0, flying out (and in the Locker);
+- **empty-handed** — frame 1 (`home`), flying back. The game mirrors it,
+  because home is right to left;
+- **the bomb on its own** — `bomb.png`, which falls onto their tower when the
+  bat lets go (`BattleScene.dropBomb`).
+
+The two bat pictures were drawn separately, so they were lined up by
+**matching the heads** (image 2 shrunk to 0.86 to match image 1): when it lets
+go, the bat stays put and only the bomb leaves. The canvas is centred on the
+head so turning round does not make it jump. The bomb's ball is 173px across in
+its own drawing and 105px in the bat's hands, so it is shrunk to match. It has
+a **128-tall frame** like the boss, because the bomb hangs below it. At scale
+0.5 the bat itself is Scout-sized, which matters because it turns into one.
+
+The falling bomb is decoration: the damage still happens the moment it lets go
+(D71).
+
+### Nothing is a coloured blob any more *(true 2026-09-22 to 2026-10-12)*
 
 Every single thing on screen is now real artwork: **ten cave paintings, two
 fortresses, four bats and seven bugs.** The placeholder painter in

@@ -51,6 +51,36 @@ window.BootScene.prototype.preload = function () {
     frameWidth: 106, frameHeight: 64
   });
 
+  /* The bats you earn by beating caves, drawn 2026-10-16. */
+  this.load.spritesheet('cheerBat', 'assets/sprites/cheerBat.png', {
+    frameWidth: 141, frameHeight: 64
+  });
+
+  this.load.spritesheet('engineerBat', 'assets/sprites/engineerBat.png', {
+    frameWidth: 111, frameHeight: 64
+  });
+
+  this.load.spritesheet('frostBat', 'assets/sprites/frostBat.png', {
+    frameWidth: 129, frameHeight: 64
+  });
+
+  this.load.spritesheet('rabiesBat', 'assets/sprites/rabiesBat.png', {
+    frameWidth: 127, frameHeight: 64
+  });
+
+  this.load.spritesheet('skeletonBat', 'assets/sprites/skeletonBat.png', {
+    frameWidth: 152, frameHeight: 64
+  });
+
+  // 128 tall, like the boss: the bat AND the bomb hanging under it. Frame 1 is
+  // the same bat empty-handed, for the flight home.
+  this.load.spritesheet('bombBat', 'assets/sprites/bombBat.png', {
+    frameWidth: 194, frameHeight: 128
+  });
+
+  // ...and the bomb it lets go of. One picture, not a unit.
+  this.load.image('bomb', 'assets/sprites/bomb.png');
+
   /* THE BUGS - all seven of them, every one drawn by Lewis. */
   this.load.spritesheet('mosquito', 'assets/sprites/mosquito.png', {
     frameWidth: 90, frameHeight: 64
@@ -151,9 +181,10 @@ window.BootScene.prototype.create = function () {
 /* -------------------------------------------------------------------------
    Turn one unit's "anims" block into real Phaser animations.
    Every animation is named  unitKey + '_' + animName,  e.g. 'scoutBat_walk'.
+   'home' is the Bomb Bat's alone: flying back empty-handed.
    ------------------------------------------------------------------------- */
 window.BootScene.prototype.createAnimations = function (unitKey, def) {
-  var animNames = ['idle', 'walk', 'attack', 'death'];
+  var animNames = ['idle', 'walk', 'attack', 'death', 'home'];
   var i;
   var name;
   var layout;

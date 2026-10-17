@@ -1046,7 +1046,7 @@ window.BattleScene.prototype.reportEvent = function (kind, d) {
       this.floatText(d.unit.x, 'it stung itself!', f.burstColor);
     }
   } else if (kind === 'bomb') {
-    this.floatText(this.enemyBase.faceX, 'BOOM! -' + d.damage, f.burstColor);
+    this.dropBomb(d.unit, d.damage);
   } else if (kind === 'landed') {
     this.floatText(d.x, 'back as a Scout!', f.friendColor);
   } else if (kind === 'freeze') {
@@ -1057,6 +1057,54 @@ window.BattleScene.prototype.reportEvent = function (kind, d) {
     this.floatText(d.unit.x,
       'CHOMP! ' + d.eaten.enemy + ' bugs, ' + d.eaten.player + ' bats', f.stungColor);
   }
+};
+
+/* -------------------------------------------------------------------------
+   THE BOMB BAT LETS GO. A picture of its bomb falls from where it was holding
+   it onto their tower, and says BOOM when it lands.
+
+   DECORATION ONLY. The damage was done the moment the bomb was let go
+   (src/systems/bomb.js), exactly as before the picture existed, so the fight
+   and the balance sim are untouched. Their health bar drops about half a
+   second before the bomb gets there (DECISIONS.md D71).
+   ------------------------------------------------------------------------- */
+window.BattleScene.prototype.dropBomb = function (bat, damage) {
+  var cfg = window.CONFIG;
+  var f = cfg.floatingText;
+  var pic = bat.stats.bombPicture;
+  var base = this.enemyBase;
+  var self = this;
+
+  if (!pic || !this.textures.exists(pic.sprite)) {
+    this.floatText(base.faceX, 'BOOM! -' + damage, f.burstColor);
+    return;
+  }
+
+  // Start exactly where the bomb in its hands was drawn, at the bat's size.
+  var scale = window.Unit.scaleOf(bat.stats);
+  var bomb = this.add.image(bat.view.x + (pic.x * scale), bat.view.y + (pic.y * scale),
+    pic.sprite);
+  bomb.setOrigin(pic.originX, pic.originY);
+  bomb.setScale(scale);
+  bomb.setDepth(1400);      // over the bats, under the floating words (1500)
+
+  // Land a little way into the tower, about a third of the way up it.
+  var landX = base.faceX + 24;
+  var landY = cfg.lane.y - ((cfg.lane.y - base.topY) * 0.35);
+
+  this.tweens.add({ targets: bomb, x: landX, duration: cfg.units.bombFallSeconds * 1000 });
+  this.tweens.add({
+    targets: bomb,
+    y: landY,
+    angle: 40,
+    ease: 'Quad.easeIn',    // falls faster and faster
+    duration: cfg.units.bombFallSeconds * 1000,
+    onComplete: function () {
+      bomb.destroy();
+      self.cameras.main.shake(180, 0.006);
+      self.floatText(base.faceX, 'BOOM! -' + damage, f.burstColor);
+    }
+  });
 };
 
 /* =========================================================================
