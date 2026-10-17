@@ -201,7 +201,7 @@ in order, one earned per cave:
 | Earned by beating | Bat | Jeff's brief | How it was built |
 |---|---|---|---|
 | 4. Pyramid | **Cheer Bat** | *"passive, improves attack power for all the other bats, but with very low HP"* | +30% attack to every other bat while it lives; stands 150 back; 18 hp. **Two don't stack.** `src/systems/cheer.js` |
-| 5. Sahara-hara | **Bomb Bat** | *"flies over the other bats, can drop 1 bomb on the enemy tower, then returns to your tower and transforms into a scout bat. only has one bomb"* | Untouchable while it flies; one 300 bomb on the tower; turns into a fresh Scout at your door. `src/systems/bomb.js` |
+| 5. Sahara-hara | **Bomb Bat** | *"flies over the other bats, can drop 1 bomb on the enemy tower, then returns to your tower and transforms into a scout bat. only has one bomb"* | Untouchable while it flies; one **600** bomb on the tower (doubled from 300 for play-testing, D73); turns into a fresh Scout at your door. `src/systems/bomb.js` |
 | 6. Wait Um | **Skeleton Bat** | *"supports the Necrobatcer, when the Necrobatcer summons they come back to full health instead of half, can attack but very low HP"* | While it lives, raised bats come back at 100% instead of 60%. 12.5 dps, 28 hp. Top of `src/systems/necro.js` |
 | 7. Scarred Woods | **Engineer Bat** | *"makes energy grow faster"* | Stays at your door (speed 0); +35% energy per second while it lives. **Two don't stack.** `src/systems/engineer.js` |
 | 8. Abyss | **Frost Bat** | *"freezes the enemy when they touch for x seconds, will need to tune x"* | A touch either way freezes a bug for **x = 2.0s**; after thawing it can't be refrozen for 1.5s. `src/systems/frost.js` |
@@ -692,7 +692,8 @@ boss cave the boss met in 90%+ of wins.
 | 10. Final Stadium | 110 of 165 | **Rabies 20 of 45** ⚠️ |
 
 Tuning that got there: Bomb Bat 100 → **80** energy (at 100 its teams won half
-as often as the rest), bomb 250 → **300**, Rabies Bat 120 → **100**.
+as often as the rest), bomb 250 → **300**, Rabies Bat 120 → **100**. *(Bomb
+doubled to **600** on 2026-10-17 for play-testing — D73.)*
 
 **⚠️ The Rabies Bat still reads as a trap**, and that is partly the sim's
 limit: it eats your own front line too, and a pretend player can't *time* it.

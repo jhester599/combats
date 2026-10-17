@@ -420,7 +420,10 @@ window.UNITS = {
     scale: 0.5,
 
     bomb: {
-      damage: 300,         // <-- TRY ME: what its ONE bomb does to the tower
+      // <-- TRY ME: what its ONE bomb does to the tower. Doubled 300 -> 600
+      // on 2026-10-17 for play-testing ("the bomb bat needs to be more
+      // powerful" - Jeff); the sim is looking for the right number (D73).
+      damage: 600,
       dropReach: 20,       // how close to the tower it gets before dropping
       becomes: 'scoutBat'  // what it turns into when it gets home
     },
