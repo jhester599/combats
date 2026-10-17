@@ -439,7 +439,9 @@ window.BattleScene.prototype.deploy = function (unitKey) {
   this.economy.spend(stats.cost);
   this.cooldowns[unitKey] = stats.cooldown;
 
-  // Usually one bat. The Bat Bros button sends two - see src/systems/squad.js.
+  // Usually one bat. A squad button sends its whole group - see
+  // src/systems/squad.js. (No bat is a squad today: the Bat Bros were, until
+  // they became one unit on 2026-10-17.)
   var self = this;
 
   window.Squad.deploy(unitKey, this.playerBase.spawnX, function (memberKey, x) {

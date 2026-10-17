@@ -311,7 +311,8 @@ function playLevel(levelKey, options) {
         sent[k]++;
         spentOn[k] += W.UNITS[k].cost;
 
-        // The same file the game uses, so a Bat Bros tap sends two here too.
+        // The same file the game uses, so a squad tap sends its whole group
+        // here too.
         W.Squad.deploy(k, playerBase.spawnX, function (memberKey, x) {
           pool.obtain().spawn(memberKey, x);
         });
@@ -630,8 +631,12 @@ if (level.playerUnits.indexOf('necroBat') !== -1) {
    So a cave that offers a squad gets one more player: the same thumb, with
    the squad button looked at FIRST. This is the fastest army in the game, and
    it is the one to watch when a cave's numbers change.
+
+   The Bat Bros stopped being a squad on 2026-10-17 - they are one unit now,
+   two Scouts' worth in one body - but they are still the bat this player was
+   invented to watch, so they keep it by name.
    ----------------------------------------------------------------------- */
-var squadKeys = cliTeam.filter(function (k) { return !!W.UNITS[k].squad; });
+var squadKeys = cliTeam.filter(function (k) { return !!W.UNITS[k].squad || k === 'batBros'; });
 var squadRuns = [];
 
 squadKeys.forEach(function (squadKey) {

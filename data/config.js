@@ -158,7 +158,8 @@ window.CONFIG = {
   },
 
   /* ---------------------------------------------------------------------
-     SQUADS - a button that sends out more than one bat (the Bat Bros)
+     SQUADS - a button that sends out more than one bat (none today: the Bat
+     Bros were one until 2026-10-17, and are a single unit now)
      ---------------------------------------------------------------------
      The first brother comes out of the door and each one after it this many
      pixels further back, so they walk out side by side rather than drawn on

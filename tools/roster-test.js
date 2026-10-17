@@ -1,5 +1,5 @@
 /* =========================================================================
-   ROSTER TEST - beat a cave, earn a bat; and the Bat Bros really are two
+   ROSTER TEST - beat a cave, earn a bat; and squads send out a group
    =========================================================================
    Run it with Node:
 
@@ -11,8 +11,11 @@
      * THE UNLOCK CHAIN (src/systems/caves.js). Each cave's bats are worked
        out from cave 1's starting list plus every  unlocks:  line before it.
        Get it wrong and a bat quietly turns up a cave early, or never.
-     * SQUADS (src/systems/squad.js). One Bat Bros tap must send TWO Scout
-       Bats, in the game and in the balance sim alike.
+     * SQUADS (src/systems/squad.js). One tap of a squad button must send
+       out the whole group, in the game and in the balance sim alike. The Bat
+       Bros were the squad until 2026-10-17, when they became ONE unit with
+       both brothers in its picture; the squad rule is now tested on a
+       stand-in, so it still works for the next squad somebody invents.
 
    It also pins the order Jeff asked for, so changing it is a decision
    somebody makes on purpose rather than an accident:
@@ -132,20 +135,40 @@ check('a bat you have not earned is not allowed', W.Team.isValid(['rabiesBat'], 
 check('one bat on its own is allowed', W.Team.isValid(['archerBat'], 'pyramid'), true);
 
 console.log('');
-console.log('  THE BAT BROS');
+console.log('  THE BAT BROS - one unit, two Scouts\' worth (2026-10-17)');
 
-var members = W.Squad.membersOf('batBros');
-check('one tap sends two bats', members.length, 2);
-check('and both of them are Scout Bats', members.join(','), 'scoutBat,scoutBat');
-check('for 55 energy (Jeff, 2026-10-12)', W.UNITS.batBros.cost, 55);
+var bros = W.UNITS.batBros;
+var scout = W.UNITS.scoutBat;
+check('one tap sends one unit: the Bros themselves', W.Squad.membersOf('batBros').join(','), 'batBros');
+check('with twice a Scout\'s health', bros.hp, scout.hp * 2);
+check('and twice its bite', bros.attack, scout.attack * 2);
+check('on a Scout\'s timing', bros.attackInterval, scout.attackInterval);
+check('at a Scout\'s speed and reach', [bros.speed, bros.range].join(','), [scout.speed, scout.range].join(','));
+check('for 55 energy (Jeff, 2026-10-12)', bros.cost, 55);
+check('drawn once on its button - the picture has both brothers in it', W.Squad.portraitCount('batBros'), 1);
+
+console.log('');
+console.log('  SQUADS - tested on a stand-in, since no bat is one today');
+
 check('a plain bat is a squad of one: itself', W.Squad.membersOf('archerBat').join(','), 'archerBat');
 
+W.UNITS.testPair = { name: 'Test Pair', sprite: 'scoutBat', squad: { unit: 'scoutBat', count: 2 } };
+
+var members = W.Squad.membersOf('testPair');
+check('one tap sends the whole squad', members.join(','), 'scoutBat,scoutBat');
+
 var spawned = [];
-var count = W.Squad.deploy('batBros', 200, function (key, x) { spawned.push({ key: key, x: x }); });
+var count = W.Squad.deploy('testPair', 200, function (key, x) { spawned.push({ key: key, x: x }); });
 check('deploy() reports how many it sent', count, 2);
-check('the first brother comes out of the door', spawned[0].x, 200);
-check('the second just behind him, not on top of him',
+check('the first one comes out of the door', spawned[0].x, 200);
+check('the second just behind it, not on top of it',
   spawned[1].x, 200 - W.CONFIG.squad.spacing);
+check('a squad showing its member\'s picture draws it once per member', W.Squad.portraitCount('testPair'), 2);
+
+W.UNITS.testPair.sprite = 'batBros';
+check('...and a squad with a picture of its own draws it once', W.Squad.portraitCount('testPair'), 1);
+
+delete W.UNITS.testPair;
 
 // A squad must be made of real, non-squad player bats - a squad of squads
 // would multiply every tap, and an enemy in it would fight for the bugs.

@@ -71,7 +71,7 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 | **Brute Bat** | 90 | 6.0s | 220 | 30 | 1.4s | **21.4** | 46 | 45 |
 | **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **200** | 70 |
 | **Archer Bat** | 45 | 3.0s | 24 | 22 | 1.1s | **20.0** | **240** | 75 |
-| **Bat Bros** | 55 | 2.0s | 2 × 40 | 2 × 8 | 0.6s | **2 × 13.3** | 40 | 90 |
+| **Bat Bros** | 55 | 2.0s | 80 | 16 | 0.6s | **26.7** | 40 | 90 |
 | **Cheer Bat** | 60 | 3.5s | 18 | 0 | 1.0s | **0** | 150 | 70 |
 | **Bomb Bat** | 80 | 4.5s | 30 | 0 | 1.0s | **0** | 0 | 120 |
 | **Skeleton Bat** | 40 | 2.4s | 28 | 10 | 0.8s | **12.5** | 42 | 80 |
@@ -168,13 +168,16 @@ can reach.
 be 2 scout bats for the price of 35."* **CHANGED the same day to 55** (*"can we
 make bat bros cost 55"*) once teams of three arrived — see below.
 
-One button, **two real Scout Bats**. Each brother is a Scout in every way — the
-same numbers, the same art, a Scout's grave when he falls, raised as a Scout by
-the Necrobatcer — which is why the row above is "2 ×" the Scout's and the bat has
-no fighting numbers of its own in `data/units.js`. What it owns is a price, a
-cooldown and a `squad` block (`{ unit: 'scoutBat', count: 2 }`); the rule that
-reads it is `src/systems/squad.js`, and the game and the balance sim both deploy
-through that one file (D11).
+**ONE UNIT since 2026-10-17 (D72)** — Jeff: *"make them one unit with the double
+drawing."* Lewis & Jeff drew the brothers as a pair, wing to wing, and that pair
+now walks the lane as one bat with **two Scouts' worth** of everything: 80 health,
+16 a bite on a Scout's 0.6s timing, a Scout's speed and reach. One health bar,
+one grave.
+
+Until then it was one button sending **two real Scout Bats**, each a Scout in
+every way, through a `squad` block (`{ unit: 'scoutBat', count: 2 }`) read by
+`src/systems/squad.js`. That rule is still there, tested on a stand-in, for the
+next squad.
 
 | | per tap | per energy |
 |---|---|---|

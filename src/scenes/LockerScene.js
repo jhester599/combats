@@ -178,7 +178,8 @@ window.LockerScene.prototype.buildCards = function () {
   });
 };
 
-/* A bat's little picture, sized like a deploy button's - two for the Bros. */
+/* A bat's little picture, sized like a deploy button's - one per member for a
+   squad that uses its member's picture (Squad.portraitCount). */
 window.LockerScene.prototype.drawPortrait = function (key, x, y) {
   var b = window.CONFIG.buttons;
   var stats = window.UNITS[key];
