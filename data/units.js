@@ -322,13 +322,19 @@ window.UNITS = {
       count: 2             // <-- TRY ME: 3 and it is the Bat Bros AND a cousin
     },
 
-    // Only used for the picture on the button - the brothers are Scouts, so
-    // they show up on the lane as Scouts.
-    color: '#6fd3ff',
-    sprite: 'scoutBat',
+    // Only used for the picture on the button and in the Locker - the brothers
+    // are Scouts, so they show up on the lane as Scouts.
+    //
+    // REAL ART - 2026-10-17, Lewis & Jeff: both brothers in ONE drawing, wing
+    // to wing, so it is drawn once rather than a Scout twice
+    // (Squad.portraitCount in src/systems/squad.js). scale only nudges how big
+    // the picture looks next to the others on the button row; it is the
+    // Scout's, because that is what they are.
+    color: '#6fd3ff',      // only used by placeholder art - the Bros have real art now
+    sprite: 'batBros',
     scale: 0.55,
     anims: {
-      frameWidth: 150,
+      frameWidth: 134,
       frameHeight: 64,
       idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
       walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },

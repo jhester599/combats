@@ -16,6 +16,7 @@ engineerBat/idle_01.png 111x64  a single pose  (2026-10-16)
 frostBat/idle_01.png   129x64   a single pose  (2026-10-16)
 rabiesBat/idle_01.png  127x64   a single pose  (2026-10-16)
 skeletonBat/idle_01.png 152x64  a single pose  (2026-10-16)
+batBros/idle_01.png    134x64   both brothers in one drawing  (2026-10-17)
 bombBat/idle_01.png    194x128  holding the bomb - out, and in the Locker
 bombBat/home_01.png    194x128  empty-handed - the flight home (mirrored)
 bomb/bomb.png          55x52    the bomb it drops; also copied to ../bomb.png
