@@ -31,6 +31,12 @@ window.Spawner.buildSchedule = function (level) {
   var n;
   var gap;
 
+  // DIFFICULTY (2026-10-17). A cave's waveStretch spreads its whole timetable
+  // out (1.3 = every bug arrives 30% later) or squeezes it (0.9 = 10% sooner),
+  // without touching what comes or in what order. It is the strongest single
+  // lever on how hard a cave is for a new player - see DECISIONS.md D76.
+  var stretch = level.waveStretch || 1;
+
   for (w = 0; w < level.waves.length; w++) {
     wave = level.waves[w];
 
@@ -39,7 +45,7 @@ window.Spawner.buildSchedule = function (level) {
 
     for (n = 0; n < wave.count; n++) {
       schedule.push({
-        time: wave.time + (n * gap),
+        time: (wave.time + (n * gap)) * stretch,
         unitKey: wave.enemy
       });
     }
