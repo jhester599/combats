@@ -97,6 +97,7 @@ window.LockerScene.prototype.buildSlots = function () {
       var box = self.add.rectangle(x, l.slotY, l.slotWidth, l.slotHeight, l.emptySlotColor);
       box.setStrokeStyle(2, 0xffd24a, 0.7);
       box.setInteractive({ useHandCursor: true });
+      window.Touch.pad(box, l.slotGap / 2);
 
       var portrait = self.add.sprite(x, l.slotY + 12, '__DEFAULT').setOrigin(0.5, 1);
       var label = self.add.text(x, l.slotY + 26, '', {
@@ -139,6 +140,7 @@ window.LockerScene.prototype.buildCards = function () {
     var box = self.add.rectangle(x, y, l.cardWidth, l.cardHeight, cfg.buttons.readyColor);
     box.setStrokeStyle(2, cfg.buttons.borderColor, cfg.buttons.borderAlpha);
     box.setInteractive({ useHandCursor: true });
+    window.Touch.pad(box, l.cardGap / 2);
 
     self.drawPortrait(key, x, y + 4);
 
@@ -286,6 +288,7 @@ window.LockerScene.prototype.makeButton = function (x, y, w, h, label, onClick) 
   var box = this.add.rectangle(x, y, w, h, cfg.buttons.readyColor);
   box.setStrokeStyle(2, cfg.buttons.borderColor, cfg.buttons.borderAlpha);
   box.setInteractive({ useHandCursor: true });
+  window.Touch.pad(box, cfg.touch.freePad);
 
   var text = this.add.text(x, y, label, {
     fontFamily: cfg.text.fontFamily,

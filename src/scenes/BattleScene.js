@@ -544,8 +544,10 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
   var box = this.add.rectangle(x, y, b.width, b.height, b.readyColor).setOrigin(0, 0);
   box.setStrokeStyle(2, b.borderColor, b.borderAlpha);
 
-  // setInteractive() handles mouse clicks AND finger taps - same events.
+  // setInteractive() handles mouse clicks AND finger taps - same events. The
+  // tap area reaches half-way to the next button (src/systems/touch.js).
   box.setInteractive({ useHandCursor: true });
+  window.Touch.pad(box, b.gap / 2, cfg.touch.freePad);
 
   // A little portrait of the bat so you can tell the buttons apart at a glance.
   //
@@ -796,6 +798,7 @@ window.BattleScene.prototype.makeItemButton = function (itemKey, index) {
   var box = this.add.rectangle(x, y, b.width, b.height, b.readyColor).setOrigin(0, 0);
   box.setStrokeStyle(2, cfg.buttons.borderColor, cfg.buttons.borderAlpha);
   box.setInteractive({ useHandCursor: true });
+  window.Touch.pad(box, b.gap / 2, cfg.touch.freePad);
 
   var icon = this.makeItemIcon(itemKey, x + (b.width / 2), y + 26);
 
@@ -1193,6 +1196,8 @@ window.BattleScene.prototype.makePanelButton = function (label, onClick) {
   var box = this.add.rectangle(0, 0, 160, 56, 0x3a2c66);
   box.setStrokeStyle(2, 0xffffff, 0.5);
   box.setInteractive({ useHandCursor: true });
+  // The panel spaces these 16 apart (layoutResultButtons), so reach 8.
+  window.Touch.pad(box, 8, cfg.touch.freePad);
 
   var text = this.add.text(0, 0, label, {
     fontFamily: cfg.text.fontFamily,

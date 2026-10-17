@@ -47,6 +47,8 @@ window.MenuScene.prototype.create = function () {
     this.toggleCredits();
   }.bind(this));
 
+  this.buildFullscreenButton();
+
   this.buildCredits();
 
   // Which build this is (CONFIG.version), tucked in the bottom-right corner so
@@ -105,7 +107,7 @@ window.MenuScene.prototype.buildCavePicker = function () {
     // Through the Locker if you have more bats than fit in a team.
     self.makeButton(x, y, m.caveWidth, m.caveHeight, label, function () {
       window.Team.startCave(self, key);
-    });
+    }, m.caveGap / 2);
   });
 };
 
@@ -166,7 +168,7 @@ window.MenuScene.prototype.buildPracticeRow = function () {
     self.makeButton(x, m.practiceY, m.practiceWidth, m.practiceHeight,
       window.LEVELS[key].name, function () {
         window.Team.startCave(self, key);
-      });
+      }, m.caveGap / 2);
   });
 };
 
@@ -211,12 +213,16 @@ window.MenuScene.prototype.drawBackdrop = function () {
    A reusable button that works with BOTH mouse and touch.
    Phaser's pointer events cover both, so there is nothing extra to do.
    ------------------------------------------------------------------------- */
-window.MenuScene.prototype.makeButton = function (x, y, w, h, label, onClick) {
+window.MenuScene.prototype.makeButton = function (x, y, w, h, label, onClick, pad) {
   var cfg = window.CONFIG;
 
   var box = this.add.rectangle(x, y, w, h, cfg.buttons.readyColor);
   box.setStrokeStyle(2, cfg.buttons.borderColor, cfg.buttons.borderAlpha);
   box.setInteractive({ useHandCursor: true });
+
+  // A bigger target for a finger (src/systems/touch.js). Buttons packed in a
+  // grid pass their own, smaller, pad so neighbours never overlap.
+  window.Touch.pad(box, pad === undefined ? cfg.touch.freePad : pad);
 
   // Long cave names have to fit inside the button, so the text shrinks with it
   // rather than spilling over the edges.
@@ -249,6 +255,57 @@ window.MenuScene.prototype.makeButton = function (x, y, w, h, label, onClick) {
   });
 
   return { box: box, text: text };
+};
+
+/* -------------------------------------------------------------------------
+   FULL SCREEN, for phones and tablets that allow it (2026-10-17).
+
+   A phone's browser keeps its address bar and buttons on screen, and held
+   sideways those can take a third of the height. Android phones and iPads let
+   a page go full screen from a tap; iPhones do not, so there the button is
+   simply not drawn - "Add to Home Screen" is the way to play full screen
+   there (see manifest.webmanifest and the apple-* lines in index.html).
+
+   Not drawn either when ComBats is already running as an installed app, which
+   is full screen already.
+   ------------------------------------------------------------------------- */
+window.MenuScene.prototype.buildFullscreenButton = function () {
+  var self = this;
+  var installed = false;
+
+  try {
+    installed = window.matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches;
+  } catch (err) {
+    installed = false;
+  }
+
+  if (!this.sys.game.device.fullscreen.available || installed) {
+    return;
+  }
+
+  var button = this.makeButton(100, 500, 160, 38,
+    this.scale.isFullscreen ? 'Exit full screen' : 'Full screen', function () {
+      // Phaser needs this to run from a tap (pointerup), which makeButton's
+      // onClick does - browsers refuse full screen that nobody asked for.
+      if (self.scale.isFullscreen) {
+        self.scale.stopFullscreen();
+        button.text.setText('Full screen');
+        return;
+      }
+
+      self.scale.startFullscreen();
+      button.text.setText('Exit full screen');
+
+      // And hold it sideways, where the phone allows that (Android does once
+      // the page is full screen; others quietly refuse, which is fine).
+      try {
+        if (window.screen.orientation && window.screen.orientation.lock) {
+          window.screen.orientation.lock('landscape').catch(function () {});
+        }
+      } catch (err) {
+        // Not allowed here. The "turn your phone sideways" screen still works.
+      }
+    });
 };
 
 /* -------------------------------------------------------------------------
@@ -285,6 +342,9 @@ window.MenuScene.prototype.buildCredits = function () {
     }).setOrigin(0.5);
 
   resetLabel.setInteractive({ useHandCursor: true });
+  // The words are small, so the tap area is generous - wide enough for the
+  // longer "Really? ..." wording it changes to.
+  window.Touch.pad(resetLabel, 60, cfg.touch.freePad);
   resetLabel.armed = false;
 
   resetLabel.on('pointerdown', function () {
