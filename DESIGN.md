@@ -510,6 +510,33 @@ A wave is one line: `{ time: 40, enemy: 'scorpion', count: 2, gap: 1.0 }` —
 *at 40 seconds, send 2 Scorpions, one second apart.* Waves can be written in any
 order; the game sorts them by time.
 
+### The difficulty ladder (2026-10-17, D76)
+
+Jeff: *"make the first level easier, then ramp the difficulty through the levels.
+The first level should be easy."* Each cave has a **`waveStretch`** that spreads
+its timetable out (1.2 = every bug arrives 20% later) or squeezes it. **Wave
+times written in this document are the times as written in the file, before the
+stretch.** How often a beginner (a random tap every 2-6 seconds) wins, measured
+by `node tools/difficulty-ladder.js`:
+
+| Cave | waveStretch | Beginner wins (before → after) |
+|---|---|---|
+| 1. The Cave | 1.2 | 73% → **94%** |
+| 2. Crystal Falls | 1.2 | 70% → **91%** |
+| 3. Dream Land | 1.5 | 53% → **85%** |
+| 4. Pyramid | 1.3 | 60% → **80%** |
+| 5. Sahara-hara Desert | 1.0 | 72% → **76%** |
+| 6. Wait Um | 1.4 | 43% → **65%** |
+| 7. Scarred Woods | 1.5 | 26% → **49%** |
+| 8. Abyss of Darkness | 1.1 | 34% → **42%** |
+| 9. Forgotten Oasis | 0.85 | 46% → **34%** |
+| 10. Final Stadium | 1.0 | 13% → **13%** |
+
+Before, it was lumpy: cave 3 was harder than caves 4 and 5, cave 5 as easy as
+cave 1, cave 7 harder than 8 and 9. **Sahara-hara stays at 1.0** because any
+squeeze let the Desert Scorpion's gamble lose it on luck alone. **The Final
+Stadium stays at 1.0** because stretching it delays the Cow Killer Bee.
+
 ### Level 1 — "First Cave" *(placeholder name)*
 
 | Setting | Value |

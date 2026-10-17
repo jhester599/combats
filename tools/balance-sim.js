@@ -135,6 +135,12 @@ SimBase.prototype.takeDamage = function (amount) {
                    'balanced' - always buys the team bat it has spent the
                       least on, so every button gets used (2026-10-12).
                    'listed' - in the order given in 'use', no sorting.
+                   'beginner' - (2026-10-17) does NOT watch the buttons. Every
+                      'tapEvery' seconds it taps ONE bat it can afford right
+                      then, picked at random, and otherwise looks away. Closer
+                      to a new player than any of the others, who all pounce
+                      the moment a button lights. The dice are the 'seed'.
+     tapEvery    for 'beginner': seconds between taps (default 3)
                  This matters more than it sounds. Measuring only 'cheapest'
                  says "attentive play loses" about any cave that punishes a
                  stream of 40hp Scouts, when what loses is the SPAMMING, not
@@ -240,6 +246,17 @@ function playLevel(levelKey, options) {
   var spentOn = {};     // energy put into each bat so far (the balanced player)
   use.forEach(function (k) { cooldowns[k] = 0; litSince[k] = null; sent[k] = 0; spentOn[k] = 0; });
 
+  // The BEGINNER's own dice - a separate stream from the sting's, so adding a
+  // beginner never changes how a Desert Scorpion's gamble lands.
+  var beginner = (options.prefer === 'beginner');
+  var tapEvery = options.tapEvery || 3;
+  var nextTap = tapEvery;
+  var dice = (options.seed === undefined ? 1 : options.seed) * 7919 + 17;
+  function roll() {
+    dice = (dice * 16807) % 2147483647;
+    return dice / 2147483647;
+  }
+
   var dt = 1 / W.CONFIG.sim.stepsPerSecond;
   var t = 0;
   var peakUnits = 0;
@@ -272,6 +289,21 @@ function playLevel(levelKey, options) {
     // cheapest soaking up the money - which is the only fair way to ask "is
     // this bat any good?". The other two players never buy a Bomb Bat at all.
     var wanted = null;
+
+    if (beginner) {
+      // Looking away until the next tap. Then: anything I can afford? Pick one.
+      wanted = '(none)';
+      if (t >= nextTap) {
+        var affordable = order.filter(function (k) {
+          return cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost);
+        });
+        if (affordable.length) {
+          wanted = affordable[Math.floor(roll() * affordable.length)];
+          litSince[wanted] = t - reaction;   // the tap lands now
+          nextTap = t + tapEvery;
+        }
+      }
+    }
 
     if (options.prefer === 'balanced') {
       order.forEach(function (k) {
@@ -486,7 +518,7 @@ if (!level.practice && W.Team.needsLocker(levelKey)) {
   var lockerTeams = teamsOf(level.playerUnits, W.Team.size());
   var newBat = W.Caves.newBatIn(levelKey);
   var lockerBossAt = (level.waves || []).filter(function (w) { return W.UNITS[w.enemy].boss; })
-    .map(function (w) { return w.time; })[0];
+    .map(function (w) { return w.time * (level.waveStretch || 1); })[0];   // when she really arrives
 
   lockerReport = { teams: 0, wins: 0, newTeams: 0, newWins: 0, bossWins: 0, bossMet: 0, losers: [] };
 
@@ -812,7 +844,7 @@ if (seedRuns.length) {
    hand. Now it is checked: any wave whose bug has  boss: true  in
    data/units.js, against every attentive win, the squad build's included. */
 var bossTimes = (level.waves || []).filter(function (w) { return W.UNITS[w.enemy].boss; })
-  .map(function (w) { return w.time; });
+  .map(function (w) { return w.time * (level.waveStretch || 1); });   // when she really arrives
 
 if (bossTimes.length) {
   var bossAt = Math.min.apply(null, bossTimes);

@@ -269,6 +269,18 @@ node tools/roster-test.js   # 34 checks - which cave earns which bat, the Locker
 node tools/powers-test.js   # 38 checks - Cheer, Bomb, Skeleton, Engineer, Frost, Rabies
 ```
 
+### Is every cave harder than the one before?
+
+```bash
+node tools/difficulty-ladder.js
+```
+
+Plays every cave as a **beginner** - someone who taps a random bat they can
+afford every 2-6 seconds instead of watching the buttons - with every team the
+Locker allows, and prints how often they win. Cave 1 must be easy (90%+) and
+every cave after it harder. Each cave's `waveStretch` in `data/levels.js` is
+what puts it on the ladder.
+
 Each covers the rules that stop the game quietly breaking, rather than the ones
 that tune how it feels:
 
@@ -380,6 +392,7 @@ tools/
   roster-test.js      checks which cave earns which bat, the Locker, the Bat Bros (testing only)
   powers-test.js      checks each of the six new bats' powers (testing only)
   doc-check.js        checks the DOCUMENTS still match the data (testing only)
+  difficulty-ladder.js  checks each cave is harder than the last, for a beginner (testing only)
   import-background.js  puts a cave painting into assets/bg (needs a browser)
   pack-spritesheet.js turns a folder of frames into one sprite sheet
   png.js              reads/writes PNG files, used by the packer

@@ -18,7 +18,8 @@ window.CONFIG = {
 
      The number after the dot is the last pull request that went into the
      game: v1.09 = everything up to and including PR #9. Bump it as part of
-     each PR (PR #10 makes it v1.10). PRs #6 and #7 forgot to, so it went
+     each PR (PR #10 makes it v1.10). PR #9 also carries the difficulty
+     ladder, so it is still v1.09. PRs #6 and #7 forgot to, so it went
      straight from v1.05 to v1.08.
      --------------------------------------------------------------------- */
   version: 'v1.09',

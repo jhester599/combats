@@ -35,6 +35,10 @@
                    this one, and the victory screen announces it the first
                    time you win. The chain is worked out in src/systems/caves.js.
    waves           the enemy spawn schedule - see below
+   waveStretch     how spread out that schedule is: 1 = as written, 1.3 =
+                   every bug arrives 30% later (EASIER), 0.85 = 15% sooner
+                   (HARDER). It is what puts each cave in its place on the
+                   difficulty ladder - see  node tools/difficulty-ladder.js
    practice        OPTIONAL. true = this is a try-things-out level, not a real
                    cave. tools/balance-sim.js then stops failing it for letting
                    a hoarder win, because being generous is the whole point of
@@ -75,6 +79,16 @@ window.LEVELS = {
   level1: {
     // Named by Lewis (homework B2): the world is PALOPA and this is The Cave.
     name: 'The Cave',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 1 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 94% of the games, and every one if they tap at
+    // least every 4 seconds (73% before). Both hoarders still lose, so the
+    // spending lesson survives; 1.3 let an 8-second hoarder win. More energy
+    // per second did NOT help a beginner at all, so Lewis's B7 'keep it strict'
+    // 13 stays. Check the whole ladder with: node tools/difficulty-ladder.js
+    waveStretch: 1.2,      // <-- TRY ME
 
     // The enemy base is a big fortress - that is the point. It should take a
     // sustained push to knock down, not one lucky bat.
@@ -194,6 +208,13 @@ window.LEVELS = {
      ======================================================================= */
   crystalFalls: {
     name: 'Crystal Falls',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 2 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 91% (70% before). Check the whole ladder with:
+    // node tools/difficulty-ladder.js
+    waveStretch: 1.2,      // <-- TRY ME
     playerBaseHp: 1000,
     enemyBaseHp: 2100,
     startEnergy: 40,
@@ -244,6 +265,13 @@ window.LEVELS = {
      ======================================================================= */
   dreamLand: {
     name: 'Dream Land',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 3 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 85%. It was HARDER than caves 4 and 5 (53%). Check
+    // the whole ladder with: node tools/difficulty-ladder.js
+    waveStretch: 1.5,      // <-- TRY ME
     playerBaseHp: 1000,
     enemyBaseHp: 1500,     // <-- lowered from 2100: the butterflies are the rest
     startEnergy: 75,       // <-- the compensation for having no warm-up
@@ -284,6 +312,13 @@ window.LEVELS = {
      ======================================================================= */
   pyramid: {
     name: 'Pyramid',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 4 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 80% (60% before). Check the whole ladder with:
+    // node tools/difficulty-ladder.js
+    waveStretch: 1.3,      // <-- TRY ME
     unlocks: 'cheerBat',
     playerBaseHp: 1100,
     enemyBaseHp: 2800,     // <-- the lever. Cave 1's is 1900.
@@ -333,6 +368,15 @@ window.LEVELS = {
      ======================================================================= */
   saharaDesert: {
     name: 'Sahara-hara Desert',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 5 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 76% - left at 1.0 on purpose. Any squeeze, even
+    // 0.95, let the Desert Scorpion's gamble lose it on bad luck alone, which
+    // the balance sim rightly calls unfair. So the caves before it were eased
+    // instead. Check the whole ladder with: node tools/difficulty-ladder.js
+    waveStretch: 1.0,      // <-- TRY ME
     unlocks: 'bombBat',
     playerBaseHp: 1100,
     enemyBaseHp: 2300,
@@ -370,6 +414,13 @@ window.LEVELS = {
      ======================================================================= */
   waitUm: {
     name: 'Wait Um',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 6 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 65% (43% before). Check the whole ladder with:
+    // node tools/difficulty-ladder.js
+    waveStretch: 1.4,      // <-- TRY ME
     unlocks: 'skeletonBat',
     playerBaseHp: 1200,
     enemyBaseHp: 3800,     // <-- the lever, and the biggest number in the game
@@ -401,6 +452,13 @@ window.LEVELS = {
      ======================================================================= */
   scarredWoods: {
     name: 'Scarred Woods',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 7 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 49%. It was HARDER than caves 8 and 9 (26%). Check
+    // the whole ladder with: node tools/difficulty-ladder.js
+    waveStretch: 1.5,      // <-- TRY ME
     unlocks: 'engineerBat',
     playerBaseHp: 1200,
     enemyBaseHp: 2200,
@@ -453,6 +511,13 @@ window.LEVELS = {
      ======================================================================= */
   abyssOfDarkness: {
     name: 'Abyss of Darkness',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 8 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 42% (34% before). Check the whole ladder with:
+    // node tools/difficulty-ladder.js
+    waveStretch: 1.1,      // <-- TRY ME
     unlocks: 'frostBat',
     playerBaseHp: 1200,
     enemyBaseHp: 2800,     // <-- lever one
@@ -503,6 +568,14 @@ window.LEVELS = {
      ======================================================================= */
   forgottenOasis: {
     name: 'Forgotten Oasis',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 9 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 34%. It was EASIER than caves 6-8 (46%), so its
+    // bugs now come 15% sooner. Check the whole ladder with: node
+    // tools/difficulty-ladder.js
+    waveStretch: 0.85,      // <-- TRY ME
     unlocks: 'rabiesBat',
     playerBaseHp: 1300,
     enemyBaseHp: 2800,
@@ -552,6 +625,14 @@ window.LEVELS = {
      ======================================================================= */
   finalStadium: {
     name: 'Final Stadium',
+
+    // DIFFICULTY LADDER (2026-10-17, D76): cave 10 of 10. waveStretch spreads
+    // this cave's timetable out (bigger = the bugs come later = easier) or
+    // squeezes it (under 1 = sooner = harder). A beginner tapping a random bat
+    // every 2-6 seconds wins 13%, the hardest. Left alone: stretching it would
+    // delay the Cow Killer Bee and let quick wins skip her again. Check the
+    // whole ladder with: node tools/difficulty-ladder.js
+    waveStretch: 1.0,      // <-- TRY ME
     playerBaseHp: 1400,
 
     // MEASURED, and the first draft had a real bug in it: the fortress was
