@@ -99,7 +99,7 @@ Object.keys(W.UNITS).forEach(function (key) {
     return;
   }
 
-  // A squad (the Bat Bros) has no fighting numbers of its own - its members
+  // A squad has no fighting numbers of its own - its members
   // use their own unit's - so its row is checked for what it DOES own: the
   // price and the cooldown.
   var claims = unit.squad

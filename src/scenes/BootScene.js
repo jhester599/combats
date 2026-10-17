@@ -51,6 +51,12 @@ window.BootScene.prototype.preload = function () {
     frameWidth: 106, frameHeight: 64
   });
 
+  // The Bat Bros' own picture: both brothers in one drawing. Used on buttons
+  // and in the Locker only - on the lane they are two ordinary Scouts.
+  this.load.spritesheet('batBros', 'assets/sprites/batBros.png', {
+    frameWidth: 134, frameHeight: 64
+  });
+
   /* The bats you earn by beating caves, drawn 2026-10-16. */
   this.load.spritesheet('cheerBat', 'assets/sprites/cheerBat.png', {
     frameWidth: 141, frameHeight: 64

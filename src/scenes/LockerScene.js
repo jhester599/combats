@@ -178,11 +178,12 @@ window.LockerScene.prototype.buildCards = function () {
   });
 };
 
-/* A bat's little picture, sized like a deploy button's - two for the Bros. */
+/* A bat's little picture, sized like a deploy button's - one per member for a
+   squad that uses its member's picture (Squad.portraitCount). */
 window.LockerScene.prototype.drawPortrait = function (key, x, y) {
   var b = window.CONFIG.buttons;
   var stats = window.UNITS[key];
-  var members = window.Squad.membersOf(key).length;
+  var members = window.Squad.portraitCount(key);
   var fit = Math.min(b.portraitMaxWidth / stats.anims.frameWidth,
     b.portraitMaxHeight / stats.anims.frameHeight);
   var shrink = (members > 1) ? b.squadPortraitShrink : 1;

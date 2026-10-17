@@ -33,6 +33,9 @@ real Scouts, so if one falls your Necrobatcer can raise him.
 *(They're such a bargain that a Bat Bros army can win the Final Stadium before
 the Cow Killer Bee even turns up. Dad is working out what to do about that.)*
 
+**Since 2026-10-17 they're ONE bat with your drawing of both brothers** — two
+Scouts' worth of health and bite in one body, for 55. 👊👊
+
 **Caves 4 to 9 give you a bat too now — six brand-new ones. See B31 below.** 👇
 
 ---

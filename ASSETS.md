@@ -62,6 +62,7 @@ committed PNG.
 | `assets/sprites/skeletonBat.png` — Skeleton Bat: cracked skull, bony torn wings, 1 pose (152×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
 | `assets/sprites/bombBat.png` — Bomb Bat in flying goggles: holding its bomb, and empty-handed (2 frames of 194×128) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
 | `assets/sprites/bomb.png` — the bomb the Bomb Bat drops (55×52) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
+| `assets/sprites/batBros.png` — the Bat Bros: both brothers wing to wing, 1 pose (134×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-17 |
 | *(superseded)* Scout Bat in goggles, Brute Bat in a cape | Lewis, via PixelLab (AI-generated) | ⚠️ see note below | 2026-09-18 |
 
 The 2026-09-18 pair were replaced by the redraw above (homework B4). Their
@@ -254,6 +255,14 @@ a **128-tall frame** like the boss, because the bomb hangs below it. At scale
 
 The falling bomb is decoration: the damage still happens the moment it lets go
 (D71).
+
+### ✅ The Bat Bros' own picture, 2026-10-17
+
+One drawing with **both brothers in it**, wing to wing: 600×400, trimmed and
+shrunk to 134×64, 59% light pixels. It is the Bat Bros everywhere: on the lane
+at scale 0.7 (94×45, Necrobatcer-sized, because it is two Scouts' worth), and on
+the button and in the Locker, drawn **once** where those used to draw a Scout
+twice. The Bros became **one unit** the same day (D72).
 
 ### Nothing is a coloured blob any more *(true 2026-09-22 to 2026-10-12)*
 

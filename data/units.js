@@ -292,43 +292,43 @@ window.UNITS = {
      "can we make bat bros cost 55"  - Jeff, 2026-10-12, once teams of three
                                         arrived
 
-     One button, TWO real Scout Bats. Each brother is an ordinary Scout in
-     every way - same health, same bite, same art - so when one dies it leaves
-     a Scout's grave, and a Necrobatcer raises it as a Scout. That is why this
-     block has no hp or attack of its own: the brothers use the Scout's.
+     ONE UNIT since 2026-10-17 ("make them one unit with the double drawing"
+     - Jeff). Lewis & Jeff drew the brothers as a pair, wing to wing, and the
+     pair now walks the lane as one bat: TWO SCOUTS' WORTH in one body - twice
+     a Scout's health, twice its bite, at a Scout's speed and reach. One health
+     bar, one grave, and a Necrobatcer raises the pair.
+
+     Until then they were a "squad": one tap sent two separate Scout Bats
+     (src/systems/squad.js, which stays for any future squad).
 
      THE DEAL, since the Locker: two Scouts bought one at a time cost 50; the
-     Bros cost 55. You are NOT paying for cheaper Scouts any more - at 35 it
-     was the cheapest damage in Palopa and it let you skip the Cow Killer Bee.
-     You are paying 5 extra for two Scouts in ONE of your three team places,
+     Bros cost 55. You are NOT paying for cheaper Scouts - at 35 it was the
+     cheapest damage in Palopa and it let you skip the Cow Killer Bee. You are
+     paying 5 extra for two Scouts' worth in ONE of your three team places,
      which leaves two places free for something cleverer.
-
-     The "squad" block is the whole power. src/systems/squad.js reads it, and
-     both the game and tools/balance-sim.js send the bats through that one
-     file, so the sim measures exactly what you play.
      ===================================================================== */
 
   batBros: {
     name: 'Bat Bros',
-    blurb: 'Two Scout Bats in one tap - and in one team place.',   // shown in the Locker
+    blurb: 'Two Scouts\' worth in one bat - and in one team place.',   // shown in the Locker
     cost: 55,              // <-- TRY ME: 35 was the old bargain price
     // Below cost / energyPerSecond (55 / 16 = 3.4s even in the richest cave),
     // so money is the limit and a slow tap costs nothing.
     cooldown: 2.0,
+    hp: 80,                // two Scouts' worth (a Scout has 40)
+    attack: 16,            // two Scouts' bite (a Scout hits for 8)...
+    attackInterval: 0.6,   // ...on a Scout's timing: 26.7 dps
+    range: 40,
+    speed: 90,             // they keep up with the Scouts
 
-    // WHO comes out when you tap the button, and how many of them.
-    squad: {
-      unit: 'scoutBat',    // any of your bats from this file
-      count: 2             // <-- TRY ME: 3 and it is the Bat Bros AND a cousin
-    },
-
-    // Only used for the picture on the button - the brothers are Scouts, so
-    // they show up on the lane as Scouts.
-    color: '#6fd3ff',
-    sprite: 'scoutBat',
-    scale: 0.55,
+    // REAL ART - 2026-10-17, Lewis & Jeff: both brothers in ONE drawing, wing
+    // to wing. Drawn 94x45 on screen: Necrobatcer-sized, a bit bigger than one
+    // Scout (83x35) because it is two of them.
+    color: '#6fd3ff',      // only used by placeholder art - the Bros have real art now
+    sprite: 'batBros',
+    scale: 0.7,
     anims: {
-      frameWidth: 150,
+      frameWidth: 134,
       frameHeight: 64,
       idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
       walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
@@ -420,7 +420,10 @@ window.UNITS = {
     scale: 0.5,
 
     bomb: {
-      damage: 300,         // <-- TRY ME: what its ONE bomb does to the tower
+      // <-- TRY ME: what its ONE bomb does to the tower. Doubled 300 -> 600
+      // on 2026-10-17 for play-testing ("the bomb bat needs to be more
+      // powerful" - Jeff); the sim is looking for the right number (D73).
+      damage: 600,
       dropReach: 20,       // how close to the tower it gets before dropping
       becomes: 'scoutBat'  // what it turns into when it gets home
     },

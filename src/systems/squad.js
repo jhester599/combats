@@ -41,6 +41,24 @@ window.Squad.membersOf = function (unitKey) {
 };
 
 /* -------------------------------------------------------------------------
+   How many copies of the picture a button or Locker card draws.
+
+   A squad shown with its MEMBER'S picture draws one per member, overlapped,
+   so the button itself says "you get more than one". A squad with a picture
+   of its own (the Bat Bros, 2026-10-17: both brothers in one drawing) already
+   shows everybody, so it is drawn once.
+   ------------------------------------------------------------------------- */
+window.Squad.portraitCount = function (unitKey) {
+  var stats = window.UNITS[unitKey];
+
+  if (stats.squad && stats.sprite !== window.UNITS[stats.squad.unit].sprite) {
+    return 1;
+  }
+
+  return window.Squad.membersOf(unitKey).length;
+};
+
+/* -------------------------------------------------------------------------
    Send out everyone one tap pays for.
 
    spawnFunction(memberKey, x) does the actual spawning - the game passes one

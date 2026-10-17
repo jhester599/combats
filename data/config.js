@@ -158,7 +158,8 @@ window.CONFIG = {
   },
 
   /* ---------------------------------------------------------------------
-     SQUADS - a button that sends out more than one bat (the Bat Bros)
+     SQUADS - a button that sends out more than one bat (none today: the Bat
+     Bros were one until 2026-10-17, and are a single unit now)
      ---------------------------------------------------------------------
      The first brother comes out of the door and each one after it this many
      pixels further back, so they walk out side by side rather than drawn on
@@ -328,9 +329,11 @@ window.CONFIG = {
     // overflow again). 0.25 is a hint, not a shout.
     portraitSizeStory: 0.25,
 
-    // A squad button (the Bat Bros) draws one little bat per member. They are
-    // spread this many pixels apart and shrunk by this much so two of them
-    // still fit in the space one portrait uses.
+    // A squad button that uses its MEMBER'S picture draws one little bat per
+    // member. They are spread this many pixels apart and shrunk by this much so
+    // two of them still fit in the space one portrait uses. (Since 2026-10-17
+    // the Bat Bros have a picture of their own with both brothers in it, so
+    // nothing uses these today - they are for the next squad.)
     squadPortraitSpread: 16,
     squadPortraitShrink: 0.72
   },

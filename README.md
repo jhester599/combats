@@ -127,9 +127,10 @@ The first time you win one of those caves the victory screen says **NEW BAT
 EARNED**, and the new bat wears a **NEW!** tag. The chain is worked out in
 `src/systems/caves.js`, so caves 2–10 never list their own bats.
 
-**Bat Bros** is one button that sends out **two real Scout Bats for 55 energy**.
-Its `squad` block in `data/units.js` says who comes out and how many — try
-`count: 3`.
+**Bat Bros** is **two Scouts' worth in one bat** for 55 energy: twice a Scout's
+health and bite, at a Scout's speed, drawn as both brothers wing to wing. (Until
+2026-10-17 it sent out two separate Scouts; the `squad` rule that did that is
+still in `src/systems/squad.js` for the next squad.)
 
 ### The Locker — pick a team of three
 
@@ -238,8 +239,8 @@ The dice are **seeded**, so the same seed always gives the same battle. A
 measuring tool whose answer changes every run can't tune anything.
 
 A cave that offers the **Bat Bros** gets one more pretend player, who reaches
-for that button first — two Scouts for 35 is the cheapest damage in the game,
-so this is the fastest army there is. And a cave with a **boss** in it
+for that button first — two Scouts' worth in one tap makes this the fastest
+army there is. And a cave with a **boss** in it
 (`boss: true` in `data/units.js`) is checked for whether the boss actually
 turns up before the cave is won.
 
@@ -269,8 +270,8 @@ that tune how it feels:
   shared stats object in `data/units.js`.
 - **roster** — cave 1 starts you with Scout + Brute, caves 1–3 earn the Archer,
   Bat Bros and Necrobatcer in that order, every cave has exactly the bats earned
-  before it, no cave has more bats than fit on the button row, and one Bat Bros
-  tap really sends two Scouts.
+  before it, no cave has more bats than fit on the button row, the Bat Bros are
+  exactly two Scouts' worth, and a squad tap sends its whole group.
 
 ### Add a cave painting
 
@@ -342,7 +343,7 @@ src/
     sting.js          the Desert Scorpion's gamble, and its seeded dice
     items.js          potions and fruit: what they do and what they refuse
     caves.js          what caves exist, which one comes next, which bats each has
-    squad.js          one button, several bats (the Bat Bros)
+    squad.js          one button, several bats (no bat uses it today)
     brain.js          what every unit does each step - shared by game AND sim
     cheer.js          the Cheer Bat's attack boost
     bomb.js           the Bomb Bat's flight, bomb and trip home
