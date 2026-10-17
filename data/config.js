@@ -17,11 +17,11 @@ window.CONFIG = {
      to tell which build you are playing.
 
      The number after the dot is the last pull request that went into the
-     game: v1.08 = everything up to and including PR #8. Bump it as part of
-     each PR (PR #9 makes it v1.09). PRs #6 and #7 forgot to, so it went
+     game: v1.09 = everything up to and including PR #9. Bump it as part of
+     each PR (PR #10 makes it v1.10). PRs #6 and #7 forgot to, so it went
      straight from v1.05 to v1.08.
      --------------------------------------------------------------------- */
-  version: 'v1.08',
+  version: 'v1.09',
 
   /* ---------------------------------------------------------------------
      SCREEN

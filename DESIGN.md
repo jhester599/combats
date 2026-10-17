@@ -69,13 +69,13 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 |---|---|---|---|---|---|---|---|---|
 | **Scout Bat** | 25 | 1.4s | 40 | 8 | 0.6s | **13.3** | 40 | 90 |
 | **Brute Bat** | 90 | 6.0s | 220 | 30 | 1.4s | **21.4** | 46 | 45 |
-| **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **200** | 70 |
-| **Archer Bat** | 45 | 3.0s | 24 | 22 | 1.1s | **20.0** | **240** | 75 |
+| **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **150** | 70 |
+| **Archer Bat** | 55 | 3.0s | 24 | 22 | 1.1s | **20.0** | **160** | 75 |
 | **Bat Bros** | 55 | 2.0s | 80 | 16 | 0.6s | **26.7** | 40 | 90 |
 | **Cheer Bat** | 60 | 3.5s | 18 | 0 | 1.0s | **0** | 150 | 70 |
 | **Bomb Bat** | 80 | 4.5s | 30 | 0 | 1.0s | **0** | 0 | 120 |
-| **Skeleton Bat** | 40 | 2.4s | 28 | 10 | 0.8s | **12.5** | 42 | 80 |
-| **Engineer Bat** | 80 | 4.5s | 60 | 0 | 1.0s | **0** | 0 | 0 |
+| **Skeleton Bat** | 30 | 1.8s | 28 | 10 | 0.8s | **12.5** | 42 | 80 |
+| **Engineer Bat** | 60 | 3.5s | 60 | 0 | 1.0s | **0** | 0 | 0 |
 | **Frost Bat** | 55 | 3.0s | 70 | 8 | 1.0s | **8.0** | 40 | 75 |
 | **Rabies Bat** | 100 | 6.0s | 60 | 0 | 1.0s | **0** | 0 | 85 |
 
@@ -138,7 +138,9 @@ at 39 / 46 / **199** / 240 — the Necrobatcer now shares a back line with the
 Archer instead of dying next to the Scouts.
 
 **200, not the Archer's 240**, because being the longest reach in Palopa is the
-Archer's identity (B9) and the boss fight turns on it.
+Archer's identity (B9) and the boss fight turns on it. *(Since 2026-10-17 it is
+**150**, under the Archer's new **160** — D75. Still past every bug's reach,
+the Bee's 130 included.)*
 
 **Its damage did not change.** 3.3 dps, a quarter of a Scout's. Standing safely
 is the reward; this bat still wins battles by raising the dead, not by shooting.
@@ -201,7 +203,7 @@ in order, one earned per cave:
 | Earned by beating | Bat | Jeff's brief | How it was built |
 |---|---|---|---|
 | 4. Pyramid | **Cheer Bat** | *"passive, improves attack power for all the other bats, but with very low HP"* | +30% attack to every other bat while it lives; stands 150 back; 18 hp. **Two don't stack.** `src/systems/cheer.js` |
-| 5. Sahara-hara | **Bomb Bat** | *"flies over the other bats, can drop 1 bomb on the enemy tower, then returns to your tower and transforms into a scout bat. only has one bomb"* | Untouchable while it flies; one **600** bomb on the tower (doubled from 300 for play-testing, D73); turns into a fresh Scout at your door. `src/systems/bomb.js` |
+| 5. Sahara-hara | **Bomb Bat** | *"flies over the other bats, can drop 1 bomb on the enemy tower, then returns to your tower and transforms into a scout bat. only has one bomb"* | Untouchable while it flies; one **500** bomb on the tower (300 → 600 for play-testing, D73, then measured at 500, D75); turns into a fresh Scout at your door. `src/systems/bomb.js` |
 | 6. Wait Um | **Skeleton Bat** | *"supports the Necrobatcer, when the Necrobatcer summons they come back to full health instead of half, can attack but very low HP"* | While it lives, raised bats come back at 100% instead of 60%. 12.5 dps, 28 hp. Top of `src/systems/necro.js` |
 | 7. Scarred Woods | **Engineer Bat** | *"makes energy grow faster"* | Stays at your door (speed 0); +35% energy per second while it lives. **Two don't stack.** `src/systems/engineer.js` |
 | 8. Abyss | **Frost Bat** | *"freezes the enemy when they touch for x seconds, will need to tune x"* | A touch either way freezes a bug for **x = 2.0s**; after thawing it can't be refrozen for 1.5s. `src/systems/frost.js` |
@@ -317,8 +319,9 @@ in the last wave of cave 10, the Final Stadium.
 
 **The long stinger is the fight.** Taken literally, the stinger is *reach*: 130
 against a Scout Bat's 40 and a Brute's 46. So she kills your entire front line
-without any of it ever touching her. Only the **Archer Bat**, at 240, both
-out-reaches her and hits hard enough for it to matter — the Necrobatcer's 200
+without any of it ever touching her. Only the **Archer Bat**, at 240 (**160**
+since D75), both out-reaches her and hits hard enough for it to matter — the
+Necrobatcer's 200 (**150** since D75)
 keeps it safe from the stinger too, but at 3.3 dps it would need twelve minutes
 alone. In practice the Archer is still the answer, and it out-reaches
 her — Lewis's two answers this round turned out to be the lock and the key, which
@@ -598,7 +601,7 @@ instead of mushy. All ten are built, and every number below is measured:
 | 7 | **Scarred Woods** | no warm-up, and **spider country** | 2200 | 14/s | all four |
 | 8 | **Abyss of Darkness** | two levers, **plus Lightning Bug swarms** | 2800 | 12/s | all four |
 | 9 | **Forgotten Oasis** | **both kinds of scorpion**, and lots of them | 2800 | 13/s | all four |
-| 10 | **Final Stadium** | the **boss** | 3500 | 16/s | all eleven, pick 3 |
+| 10 | **Final Stadium** | the **boss** | 4200 | 16/s | all eleven, pick 3 |
 
 *(Dream Land's 1500 is the one cave that is not simply half its original: it came
 down again from 2100 when the Evil Butterflies arrived in B26, because the
@@ -693,7 +696,7 @@ boss cave the boss met in 90%+ of wins.
 
 Tuning that got there: Bomb Bat 100 → **80** energy (at 100 its teams won half
 as often as the rest), bomb 250 → **300**, Rabies Bat 120 → **100**. *(Bomb
-doubled to **600** on 2026-10-17 for play-testing — D73.)*
+doubled to **600** on 2026-10-17 for play-testing — D73 — then measured at **500**, D75.)*
 
 **⚠️ The Rabies Bat still reads as a trap**, and that is partly the sim's
 limit: it eats your own front line too, and a pretend player can't *time* it.
