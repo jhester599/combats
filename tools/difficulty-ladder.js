@@ -24,7 +24,11 @@
    difficulty: 95% is a walk in the park, 20% is a real fight.
 
    What has to stay true (each is checked):
-     * cave 1 is EASY - a beginner wins it at least 90% of the time;
+     * cave 1 is EASY - a beginner wins it at least 97% of the time. Jeff:
+       "we want a beginner player to consistently win on level 1";
+     * the first few caves climb GENTLY - each of caves 2-5 at most 6 points
+       harder than the one before. Jeff: "we don't want the difficulty to
+       increase too fast for the first several levels";
      * every cave is harder than the one before it - or within 3 points of
        it, because a few rolls of the dice wobble that much;
      * the last cave is still winnable by a beginner now and then.
@@ -42,7 +46,9 @@ var W = global.window;
 var TAP_EVERY = [2, 3, 4, 5, 6];   // seconds between a beginner's taps
 var RUNS = 40;                     // games per tapping speed, per cave
 var WOBBLE = 3;                    // points a cave may sit above the one before
-var EASY = 90;                     // cave 1 must be at least this
+var EASY = 97;                     // cave 1 must be at least this
+var GENTLE_UNTIL = 5;              // caves 2..this climb gently...
+var GENTLE_STEP = 6;               // ...at most this many points per cave
 var NOT_HOPELESS = 5;              // the last cave must be at least this
 
 function teamsOf(list, k) {
@@ -105,6 +111,11 @@ caves.forEach(function (cave, i) {
     problems.push(level.name + ' is the first cave and should be easy: a beginner wins only ' +
       score + '% (want ' + EASY + '%+)');
   }
+  if (before !== null && i < GENTLE_UNTIL && score < before.score - GENTLE_STEP) {
+    problems.push(level.name + ' (' + score + '%) is a big jump harder than ' + before.name +
+      ' (' + before.score + '%) - caves 2-' + GENTLE_UNTIL + ' should climb at most ' +
+      GENTLE_STEP + ' points each');
+  }
   if (before !== null && score > before.score + WOBBLE) {
     problems.push(level.name + ' (' + score + '%) is EASIER than ' + before.name +
       ' before it (' + before.score + '%)');
@@ -120,7 +131,7 @@ console.log('');
 if (problems.length) {
   problems.forEach(function (p) { console.log('  [BAD] ' + p); });
 } else {
-  console.log('  [ok]  Cave 1 is easy, and every cave after it is harder.');
+  console.log('  [ok]  Cave 1 is easy, the first caves climb gently, and every cave after it is harder.');
 }
 console.log('');
 
