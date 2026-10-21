@@ -166,6 +166,10 @@ safe", it is just a bad bat, and the balance sim showed the whole army getting
 Stronger per bat, weaker per coin — you are paying a premium for a bat nothing
 can reach.
 
+**At most 5 Archers on the lane at once (2026-10-21, D78).** Lewis: *"the archer
+bat [should] have a limit of 5 at once."* Its button goes dark and shows **5/5**
+until one falls. Any bat can be given a limit with `maxAlive` in `data/units.js`.
+
 **DECIDED (2026-10-12) — the fifth bat is the BAT BROS.** Jeff: *"Bat Bros will
 be 2 scout bats for the price of 35."* **CHANGED the same day to 55** (*"can we
 make bat bros cost 55"*) once teams of three arrived — see below.
@@ -510,32 +514,39 @@ A wave is one line: `{ time: 40, enemy: 'scorpion', count: 2, gap: 1.0 }` —
 *at 40 seconds, send 2 Scorpions, one second apart.* Waves can be written in any
 order; the game sorts them by time.
 
-### The difficulty ladder (2026-10-17, D76)
+### The difficulty ladder (2026-10-17, D76 and D77)
 
 Jeff: *"make the first level easier, then ramp the difficulty through the levels.
-The first level should be easy."* Each cave has a **`waveStretch`** that spreads
-its timetable out (1.2 = every bug arrives 20% later) or squeezes it. **Wave
-times written in this document are the times as written in the file, before the
-stretch.** How often a beginner (a random tap every 2-6 seconds) wins, measured
-by `node tools/difficulty-ladder.js`:
+The first level should be easy."* Then, after play-testing the first ladder:
+*"We want a beginner player to consistently win on level 1. We don't want the
+difficulty to increase too fast for the first several levels."*
 
-| Cave | waveStretch | Beginner wins (before → after) |
+Each cave has a **`waveStretch`** that spreads its timetable out (1.5 = every bug
+arrives 50% later) or squeezes it. **Wave times written in this document are the
+times as written in the file, before the stretch.** How often a beginner (a
+random tap every 2-6 seconds) wins, measured by `node tools/difficulty-ladder.js`:
+
+| Cave | waveStretch | Beginner wins: originally → D76 → **now** |
 |---|---|---|
-| 1. The Cave | 1.2 | 73% → **94%** |
-| 2. Crystal Falls | 1.2 | 70% → **91%** |
-| 3. Dream Land | 1.5 | 53% → **85%** |
-| 4. Pyramid | 1.3 | 60% → **80%** |
-| 5. Sahara-hara Desert | 1.0 | 72% → **76%** |
-| 6. Wait Um | 1.4 | 43% → **65%** |
-| 7. Scarred Woods | 1.5 | 26% → **49%** |
-| 8. Abyss of Darkness | 1.1 | 34% → **42%** |
-| 9. Forgotten Oasis | 0.85 | 46% → **34%** |
-| 10. Final Stadium | 1.0 | 13% → **13%** |
+| 1. The Cave | 1.5 | 73% → 94% → **100%** |
+| 2. Crystal Falls | 1.4 | 70% → 91% → **98%** |
+| 3. Dream Land | 1.9 | 53% → 85% → **95%** |
+| 4. Pyramid | 1.6 | 60% → 80% → **91%** |
+| 5. Sahara-hara Desert | 1.4 | 72% → 76% → **87%** |
+| 6. Wait Um | 1.8 | 43% → 65% → **79%** |
+| 7. Scarred Woods | 2.0 | 26% → 49% → **69%** |
+| 8. Abyss of Darkness | 1.3 | 34% → 42% → **55%** |
+| 9. Forgotten Oasis | 1.0 | 46% → 34% → **45%** |
+| 10. Final Stadium | 1.0 | 13% → 13% → **13%** |
 
-Before, it was lumpy: cave 3 was harder than caves 4 and 5, cave 5 as easy as
-cave 1, cave 7 harder than 8 and 9. **Sahara-hara stays at 1.0** because any
-squeeze let the Desert Scorpion's gamble lose it on luck alone. **The Final
-Stadium stays at 1.0** because stretching it delays the Cow Killer Bee.
+The first five caves now climb 2-4 points at a time; the climb steepens from cave
+6, and the Final Stadium is the exam. **Sahara-hara must never go below 1.0**:
+squeezing it let the Desert Scorpion's gamble lose it on luck alone. **The Final
+Stadium stays at 1.0** because stretching it delays the Cow Killer Bee. **Scarred
+Woods sits at 2.0** because 1.7-1.9 let a patient hoarder win as fast as a
+spender. **In cave 1 an 8-second hoarder now wins** - a beginner tapping every
+6-7 seconds plays almost exactly like one, and the beginner had to win. The
+deliberate 14-second hoarder still loses (D77).
 
 ### Level 1 — "First Cave" *(placeholder name)*
 

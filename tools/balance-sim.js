@@ -295,7 +295,8 @@ function playLevel(levelKey, options) {
       wanted = '(none)';
       if (t >= nextTap) {
         var affordable = order.filter(function (k) {
-          return cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost);
+          return cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost) &&
+            !W.Squad.atLimit(k, pool.active);
         });
         if (affordable.length) {
           wanted = affordable[Math.floor(roll() * affordable.length)];
@@ -319,7 +320,10 @@ function playLevel(levelKey, options) {
         return;
       }
 
-      var lit = (cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost));
+      // The same three things BattleScene.canDeploy() checks: off cooldown,
+      // affordable, and not already at the bat's maxAlive (the Archer's 5).
+      var lit = (cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost) &&
+        !W.Squad.atLimit(k, pool.active));
 
       if (!lit) {
         litSince[k] = null;
@@ -885,9 +889,14 @@ if (lockerReport) {
 
 /* And the tutorial's own, stricter promise, only where a level claims it. */
 if (level.teachesSpending) {
-  console.log('  ' + (hoarderWins ? '[BAD] ' : '[ok]  ') +
-    'teachesSpending: a hoarder must lose outright here, and ' +
-    (hoarderWins ? 'DOES NOT' : 'does'));
+  // The DELIBERATE hoarder - the most patient one - must lose here. Since
+  // 2026-10-17 (D77) the 8s one may win: a beginner who taps every 6-7s plays
+  // almost exactly like an 8s hoarder, and Jeff asked that a beginner win
+  // cave 1 consistently. Both cannot be true, and the beginner won.
+  var deliberate = hoarders[hoarders.length - 1];
+  console.log('  ' + (deliberate.outcome === 'WIN' ? '[BAD] ' : '[ok]  ') +
+    'teachesSpending: the deliberate ' + deliberate.reaction + 's hoarder must lose outright here, and ' +
+    (deliberate.outcome === 'WIN' ? 'DOES NOT' : 'does'));
 }
 if (oneReaction !== null) {
   // Only one reaction time was played, so we cannot say anything about the band.
