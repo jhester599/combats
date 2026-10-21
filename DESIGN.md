@@ -166,6 +166,10 @@ safe", it is just a bad bat, and the balance sim showed the whole army getting
 Stronger per bat, weaker per coin — you are paying a premium for a bat nothing
 can reach.
 
+**At most 5 Archers on the lane at once (2026-10-21, D78).** Lewis: *"the archer
+bat [should] have a limit of 5 at once."* Its button goes dark and shows **5/5**
+until one falls. Any bat can be given a limit with `maxAlive` in `data/units.js`.
+
 **DECIDED (2026-10-12) — the fifth bat is the BAT BROS.** Jeff: *"Bat Bros will
 be 2 scout bats for the price of 35."* **CHANGED the same day to 55** (*"can we
 make bat bros cost 55"*) once teams of three arrived — see below.

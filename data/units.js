@@ -261,6 +261,12 @@ window.UNITS = {
     // and damage barely moved that; RANGE is what does it. At 160 (four
     // Scouts' reach) it is still one of the best bats, not an automatic pick.
     range: 160,
+
+    // <-- TRY ME. No more than this many Archers on the lane at once (Lewis,
+    // 2026-10-21: "the archer bat [should] have a limit of 5 at once"). The
+    // button goes dark and shows 5/5 until one falls. The rule is in
+    // src/systems/squad.js, and any bat can have one - leave it out for none.
+    maxAlive: 5,
     speed: 75,
     color: '#7ce0a8',      // only used by placeholder art - this bat has real art now
     sprite: 'archerBat',

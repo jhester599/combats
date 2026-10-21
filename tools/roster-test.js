@@ -170,6 +170,25 @@ check('...and a squad with a picture of its own draws it once', W.Squad.portrait
 
 delete W.UNITS.testPair;
 
+console.log('');
+console.log('  HOW MANY AT ONCE - the Archer\'s limit of 5 (Lewis, 2026-10-21)');
+
+function fakeUnit(key, extra) {
+  return Object.assign({ unitKey: key, team: 'player', active: true, isDying: false }, extra || {});
+}
+var lane = [];
+var a;
+for (a = 0; a < 4; a++) { lane.push(fakeUnit('archerBat')); }
+check('the Archer has a limit of 5', W.UNITS.archerBat.maxAlive, 5);
+check('4 Archers on the lane: you may send another', W.Squad.atLimit('archerBat', lane), false);
+lane.push(fakeUnit('archerBat'));
+check('5 Archers on the lane: you may not', W.Squad.atLimit('archerBat', lane), true);
+lane[0].isDying = true;
+check('...until one of them is dying', W.Squad.atLimit('archerBat', lane), false);
+lane.push(fakeUnit('scoutBat'), fakeUnit('scoutBat'), fakeUnit('mosquito', { team: 'enemy' }));
+check('other bats and bugs are not counted', W.Squad.aliveCount('archerBat', lane), 4);
+check('a bat with no limit never hits one', W.Squad.atLimit('scoutBat', lane.concat(lane, lane)), false);
+
 // A squad must be made of real, non-squad player bats - a squad of squads
 // would multiply every tap, and an enemy in it would fight for the bugs.
 var badSquads = Object.keys(W.UNITS).filter(function (k) {

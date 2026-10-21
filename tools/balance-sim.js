@@ -295,7 +295,8 @@ function playLevel(levelKey, options) {
       wanted = '(none)';
       if (t >= nextTap) {
         var affordable = order.filter(function (k) {
-          return cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost);
+          return cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost) &&
+            !W.Squad.atLimit(k, pool.active);
         });
         if (affordable.length) {
           wanted = affordable[Math.floor(roll() * affordable.length)];
@@ -319,7 +320,10 @@ function playLevel(levelKey, options) {
         return;
       }
 
-      var lit = (cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost));
+      // The same three things BattleScene.canDeploy() checks: off cooldown,
+      // affordable, and not already at the bat's maxAlive (the Archer's 5).
+      var lit = (cooldowns[k] <= 0 && economy.canAfford(W.UNITS[k].cost) &&
+        !W.Squad.atLimit(k, pool.active));
 
       if (!lit) {
         litSince[k] = null;

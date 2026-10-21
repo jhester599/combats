@@ -59,6 +59,39 @@ window.Squad.portraitCount = function (unitKey) {
 };
 
 /* -------------------------------------------------------------------------
+   HOW MANY AT ONCE (2026-10-21). A bat with  maxAlive  in data/units.js can
+   only have that many of itself on the lane at a time - Lewis: "the archer
+   bat [should] have a limit of 5 at once". Its button goes dark at the limit
+   and lights again when one falls.
+
+   Counted: your living bats of that kind, including any a Necrobatcer raised
+   (they are on the lane like any other). A dying one no longer counts. The
+   limit stops YOU sending another; it does not stop a Necrobatcer raising
+   one, which is rare enough not to matter.
+
+   'units' is the list of everything on the lane - the game and the balance
+   sim each pass their own, so both play by exactly the same rule.
+   ------------------------------------------------------------------------- */
+window.Squad.aliveCount = function (unitKey, units) {
+  var n = 0;
+  var i;
+
+  for (i = 0; i < units.length; i++) {
+    if (units[i].active && !units[i].isDying && units[i].team === 'player' &&
+        units[i].unitKey === unitKey) {
+      n++;
+    }
+  }
+
+  return n;
+};
+
+window.Squad.atLimit = function (unitKey, units) {
+  var limit = window.UNITS[unitKey].maxAlive;
+  return !!limit && window.Squad.aliveCount(unitKey, units) >= limit;
+};
+
+/* -------------------------------------------------------------------------
    Send out everyone one tap pays for.
 
    spawnFunction(memberKey, x) does the actual spawning - the game passes one

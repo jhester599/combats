@@ -457,6 +457,11 @@ window.BattleScene.prototype.canDeploy = function (unitKey) {
     return false;
   }
 
+  // Already as many on the lane as this bat allows (the Archer's 5).
+  if (window.Squad.atLimit(unitKey, this.unitPool.active)) {
+    return false;
+  }
+
   return this.economy.canAfford(window.UNITS[unitKey].cost);
 };
 
@@ -735,8 +740,17 @@ window.BattleScene.prototype.syncButtons = function () {
     remaining = this.cooldowns[button.unitKey];
     affordable = this.economy.canAfford(stats.cost);
 
+    // --- at its limit? (the Archer: 5 at once) The whole button goes dark and
+    // says so, until one of them falls. ---
+    var full = window.Squad.atLimit(button.unitKey, this.unitPool.active);
+
     // --- cooldown shade ---
-    if (remaining > 0) {
+    if (full) {
+      button.shade.setVisible(true);
+      button.shade.height = b.height;
+      button.shadeText.setText(stats.maxAlive + '/' + stats.maxAlive);
+      button.shadeText.setVisible(true);
+    } else if (remaining > 0) {
       button.shade.setVisible(true);
       button.shade.height = b.height * (remaining / stats.cooldown);
       button.shadeText.setText(Math.ceil(remaining));
@@ -749,7 +763,7 @@ window.BattleScene.prototype.syncButtons = function () {
     // --- can we afford it? ---
     button.box.fillColor = affordable ? b.readyColor : b.unaffordableColor;
 
-    var usable = affordable && remaining <= 0;
+    var usable = affordable && remaining <= 0 && !full;
 
     button.costText.setAlpha(usable ? 1 : b.disabledTextAlpha);
     button.nameText.setAlpha(usable ? 1 : b.disabledTextAlpha);
