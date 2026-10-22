@@ -900,23 +900,59 @@ being broken rather than tune how it feels:
   scorpion in the game for ever, including next battle.
 - **Fruit cannot be thrown at a full tower**, and cannot overheal.
 
-**Where they come from is still open.** The casino does not exist, so for now a
-level can hand you a starting stock, and exactly one does: the **Graveyard**
+**Where they come from:** the casino, with suns (B29, below). A level can also
+hand you a starting stock, and exactly one does: the **Graveyard**
 practice level starts you with three of each so Lewis can play with his idea
 today. This is the same trick as the Necrobatcer (D14) — the thing itself is
 real and finished, only the way you *acquire* it is stubbed.
 
-**The ten caves deliberately start with none**, and are measured without them,
-so an item is always a bonus and never a requirement. A cave that needs a potion
+**The ten caves are measured without them** (the balance sim never carries a
+bag), so an item is always a bonus and never a requirement. A cave that needs a potion
 is a cave you can arrive at unable to win.
 
 Lewis's answer also narrows B22: "blood is just currency" means the trade-or-
 gamble step buys **upgrades with blood**, while potions and fruit are things you
 *spend in a fight*. So the casino has two kinds of output, not one.
 
-**`[TO DECIDE]` — how do you actually GET potions and fruit?** *(B29, new)* —
-how many does a cave's win buy, do they carry between battles, and can you lose
-them in the gamble? This is the last thing blocking the casino.
+**ANSWERED (2026-10-21) — B29, by Jeff:** *"you buy/gamble for potions and
+fruit at the casino, with suns."* And a new idea alongside it: *"we are going to
+make new bat types that you can only buy/gamble at the casino. the currency for
+bats is blood, which you exchange for using suns. there will be several
+potential new bats at the casino."*
+
+**BUILT (2026-10-21) — suns and the casino** (D79, D80). `data/casino.js` holds
+every number; `src/systems/casino.js` every rule; `src/scenes/CasinoScene.js`
+the screen, reached from the title screen.
+
+```
+beat a cave  ->  SUNS  ->  the casino  ->  buy POTIONS and FRUIT
+                                       ->  or SPIN for them
+                                       ->  swap for BLOOD  ->  buy a CASINO BAT
+                                                           ->  or BAT SPIN for one
+                                                           ->  UPGRADE a bat
+```
+
+- **Suns for a win:** a first win pays 20 + 10 x the cave's number (30 for cave
+  1, 120 for the Final Stadium); winning a cave again pays 10; practice and
+  losing pay nothing. Shown on the victory screen.
+- **The shop:** potion 20 suns, fruit 15, and 10 suns -> 10 blood.
+- **The spin:** 15 suns for one prize from a weighted wheel, from *Nothing!*
+  (45 in 100) up to a 3 + 3 *JACKPOT* (2 in 100). On average it is worth about
+  86% of the shop, so it is a gamble and not a better shop. **A spin only ever
+  costs the spin** — nothing you own is ever bet (B22's charm, kept).
+- **The bag:** potions and fruit you own are saved and come into every real
+  cave, at most **3 of each** per battle so a hoard cannot switch a cave off.
+  What you use is gone. Practice levels keep their own handout and never touch
+  the bag. (So B29's questions: bought or won with suns; they carry over; you
+  never lose them in the gamble; neither is rare.)
+- **Casino bats:** any bat in `data/units.js` with a `casinoPrice` (in blood) is
+  sold only here, and once owned is in the Locker for every cave. A **bat spin**
+  (30 blood) wins one you do not own 1 time in 4. None are drawn yet, so the
+  shelf says they are coming.
+- **Upgrades:** blood moves a bat you own up the colour ladder (§9): 20, 40, 70,
+  110 blood a step, each +15% health and attack, shown as the bat's tint.
+
+Every one of those numbers is marked TRY ME — first guesses to be play-tested.
 
 ---
 
@@ -1063,8 +1099,8 @@ east" rule no longer bites - mirroring them changes nothing.
 Red is the top. Seven upgrades per bat would have meant seven prices to balance
 for every bat in the game; four keeps the backwards rainbow reading the same way
 for a quarter of the work. The ladder is in `data/config.js` as `upgradeTiers`.
-It is **not wired up** — there is nothing to spend upgrades on until the suns
-and the casino exist (B13, M4).
+It is **wired up** (2026-10-21): blood buys each bat its next colour at the
+casino (§8, D79).
 
 **Why black-and-white art is a genuinely good call:** a white drawing can be
 **tinted** any colour by the engine. So Lewis draws each bat **once** and the
@@ -1137,7 +1173,7 @@ B8 (a boss) and B18 (what the last moment looks like).
 | **M1 — First playable** | One lane, two bats, two enemies, energy + cooldowns, bases, win/lose, Retry, placeholder art | ✅ **Done 2026-09-18** |
 | **M2 — Content** | **Ten caves** (B10 = C), a difficulty curve, a way to pick a cave | ✅ **Done 2026-09-19** — all ten built and measured, four bats, a boss, a cave picker |
 | **M3 — Look & feel** | Hand-drawn bats, the bugs, cave backgrounds, sound | 🟡 **Art is DONE.** 10 caves ✅, 2 fortresses ✅, 4 bats ✅, **7 of 7 bugs ✅**. Left: animation (B21) and sound (B15) |
-| **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | 🟡 **Started** — saved progress, cave unlocking, and potions/fruit ✅ built; suns, the casino and upgrades need **B29** |
+| **M4 — Progression** | Saved progress, **suns**, **the casino**, goods, bat upgrades as colours | ✅ **Built** — saved progress, cave unlocking, potions/fruit, suns, the casino, casino bats and colour upgrades (D79, D80); casino bats wait on art |
 | **M5 — Depth** | Maybe a second lane, more powers | Needs B14. *Both of its headline items arrived early* — the Necrobatcer's summon (B5) and the boss (B8) |
 
 Order is a plan, not a promise — if Lewis most wants a boss, we build the boss.
@@ -1152,7 +1188,8 @@ and two usable items, and every cave is measured. Three rounds have answered
 placeholder painter still exists and never runs.
 
 What is left of M3 is **animation** (B21 — nothing moves yet) and **sound**
-(B15). After that the game's remaining work is the casino, which waits on B29.
+(B15). The casino is built (D79); its numbers wait on play-testing and its
+shelf on the first casino bats.
 
 One thing is also exactly backwards: since the redraw, **the placeholder blobs
 animate and Lewis's three real bats are frozen** — the good art is the only art
@@ -1218,7 +1255,7 @@ Full detail is in `README.md`; the design-relevant parts:
 | B26 | Name the new bugs of the later caves | §4 | ✅ **answered & built** — all three, in their caves |
 | B27 | What do blood, potions and fruits do? | §8 | ✅ **answered & built** — potion + fruit are battle actions |
 | B28 | Is "Desert Scorpion" the right name? | §4 | 🔲 **new — on the plate** |
-| B29 | How do you *get* potions and fruit? | §8 | 🔲 **new — on the plate**, blocks M4 |
+| B29 | How do you *get* potions and fruit? | §8 | ✅ **answered by Jeff & built** — bought or spun for with suns at the casino |
 | B30 | What do the three new bugs look like? | §9 | 🔲 **new — on the plate** |
 | B31 | Which bats do caves 4–9 earn? | §3, §7 | ✅ **answered by Jeff & built 2026-10-12** — six bats, team of 3 |
 

@@ -22,10 +22,11 @@
    forgets. If it is unavailable we fall back to remembering for this visit
    only, and the game plays normally.
 
-   ------------------- WHAT IS NOT HERE YET -------------------
-   Suns, the casino, goods and bat upgrades (B13, B22, B27, milestone M4). This
-   file stores the list of caves beaten and the last team you picked in the
-   Locker, so adding those later means adding fields, not rewriting this.
+   ------------------- WHAT IS KEPT -------------------
+   The caves beaten, the last team picked in the Locker, and since the casino
+   (milestone M4, 2026-10-21) your suns, your blood, the potions and fruit in
+   your bag, and the colour each bat has been upgraded to. The RULES for
+   spending all of that are in src/systems/casino.js; this file only keeps it.
    ========================================================================= */
 
 window.Progress = {};
@@ -35,8 +36,14 @@ window.Progress.STORAGE_KEY = 'battleBats.progress.v1';
 /* What we keep. Kept flat and boring on purpose - it has to survive being
    loaded by a future version of the game. */
 window.Progress.blank = function () {
-  return { beaten: [], team: [] };
+  return { beaten: [], team: [], suns: 0, blood: 0, bag: { potion: 0, fruit: 0 }, upgrades: {},
+    casinoBats: [] };
 };
+
+/* A whole number, 0 or more - anything else in a save is treated as 0. */
+function wholeOrZero(n) {
+  return (typeof n === 'number' && isFinite(n) && n > 0) ? Math.floor(n) : 0;
+}
 
 /* In-memory copy, so a blocked localStorage still works for this visit. */
 window.Progress.state = null;
@@ -72,6 +79,36 @@ window.Progress.load = function () {
         state.team = parsed.team.filter(function (key) {
           return typeof key === 'string' && !!window.UNITS[key];
         });
+      }
+
+      // The casino (2026-10-21). A save from before it simply has none of
+      // these, and starts with nothing - which is exactly right.
+      if (parsed) {
+        state.suns = wholeOrZero(parsed.suns);
+        state.blood = wholeOrZero(parsed.blood);
+
+        if (parsed.bag && typeof parsed.bag === 'object') {
+          state.bag.potion = wholeOrZero(parsed.bag.potion);
+          state.bag.fruit = wholeOrZero(parsed.bag.fruit);
+        }
+
+        // Casino bats you own - only ones that still exist and still are.
+        if (Object.prototype.toString.call(parsed.casinoBats) === '[object Array]') {
+          state.casinoBats = parsed.casinoBats.filter(function (key, i, list) {
+            return typeof key === 'string' && window.UNITS[key] &&
+              !!window.UNITS[key].casinoPrice && list.indexOf(key) === i;
+          });
+        }
+
+        // Only real bats, and only real steps on the colour ladder.
+        if (parsed.upgrades && typeof parsed.upgrades === 'object') {
+          Object.keys(parsed.upgrades).forEach(function (key) {
+            var tier = wholeOrZero(parsed.upgrades[key]);
+            if (window.UNITS[key] && !window.UNITS[key].enemy && tier > 0) {
+              state.upgrades[key] = Math.min(tier, window.CONFIG.upgradeTiers.length - 1);
+            }
+          });
+        }
       }
     }
   } catch (err) {

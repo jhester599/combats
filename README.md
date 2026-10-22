@@ -180,6 +180,23 @@ coming. Progress is saved in the browser (`src/systems/progress.js`); there is a
 two-tap **Reset progress** inside the Credits panel if you want to start over or
 test the locking.
 
+### Suns and the Casino
+
+Every win pays **suns** (☀) — more for a first win the further into Palopa the
+cave is, a little for winning it again, nothing for practice. Spend them at the
+**Casino** (button on the title screen):
+
+- **Shop** — buy potions and fruit, or swap suns for **blood**.
+- **Spin** — gamble suns for potions and fruit. A spin only ever costs the spin.
+- **Casino bats** — bats you can *only* get here, bought (or won in a bat spin)
+  with blood. To make one, give a bat a `casinoPrice` in `data/units.js`.
+- **Upgrades** — spend blood to move any bat you own up Lewis's colour ladder
+  (Plain → Violet → Blue → Yellow → Red); each step is tougher and hits harder.
+
+Potions and fruit you own come with you into every cave, up to 3 of each per
+battle. Every price and chance is in `data/casino.js`; the rules are in
+`src/systems/casino.js`; the screen is `src/scenes/CasinoScene.js`.
+
 ### Add a whole new cave → `data/levels.js`
 
 Copy the `level1` block, rename the key, change the numbers. **That is the only
@@ -265,8 +282,9 @@ turns up before the cave is won.
 node tools/necro-test.js    # 20 checks - the Necrobatcer's summoning
 node tools/sting-test.js    # 27 checks - the Desert Scorpion's gamble
 node tools/items-test.js    # 37 checks - potions and fruit
-node tools/roster-test.js   # 34 checks - which cave earns which bat, the Locker, the Bat Bros
+node tools/roster-test.js   # 47 checks - which cave earns which bat, the Locker, the Bat Bros
 node tools/powers-test.js   # 38 checks - Cheer, Bomb, Skeleton, Engineer, Frost, Rabies
+node tools/casino-test.js   # 104 checks - suns, the shop, the spins, casino bats, upgrades, the bag
 ```
 
 ### Is every cave harder than the one before?
@@ -355,14 +373,16 @@ data/               EVERY tuning number lives here
   units.js            all unit stats (yours and the enemy's)
   levels.js           base HP, economy, and the wave schedule
   items.js            potions, fruit and blood (the casino goods)
+  casino.js           what a win pays, the casino's prices, spins and upgrades
   backgrounds.js      each cave's painting, and where its ground line is
 src/
   main.js             starts Phaser, lists the scenes
   scenes/
     BootScene.js      draws the placeholder art, builds the animations
-    MenuScene.js      title, Start button, credits
+    MenuScene.js      title, cave picker, Casino button, credits
     LockerScene.js    pick your team of three before a cave
     BattleScene.js    the battle, the UI, win/lose
+    CasinoScene.js    spend suns and blood: shop, spins, casino bats, upgrades
   systems/
     economy.js        energy goes up, spending takes it down
     spawner.js        turns a wave list into timed spawns
@@ -380,7 +400,8 @@ src/
     rabies.js         the Rabies Bat's walk and big bite
     engineer.js       the Engineer Bat's faster energy
     team.js           the Locker's rules: which teams you may take in
-    progress.js       which caves you have beaten, saved in localStorage
+    progress.js       what you have earned (caves, suns, blood, bag), saved in localStorage
+    casino.js         the casino's rules: buying, spinning, upgrading, the bag
     touch.js          bigger tap areas for fingers on phones and tablets
   entities/
     unit.js           one bat: walk, fight, die
@@ -392,6 +413,7 @@ tools/
   items-test.js       checks the item rules hold (testing only)
   roster-test.js      checks which cave earns which bat, the Locker, the Bat Bros (testing only)
   powers-test.js      checks each of the six new bats' powers (testing only)
+  casino-test.js      checks the casino never cheats anybody (testing only)
   doc-check.js        checks the DOCUMENTS still match the data (testing only)
   difficulty-ladder.js  checks each cave is harder than the last, for a beginner (testing only)
   import-background.js  puts a cave painting into assets/bg (needs a browser)

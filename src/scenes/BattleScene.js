@@ -47,6 +47,7 @@ window.BattleScene.prototype.init = function (data) {
   this.battleOver = false;
   this.playerWon = false;
   this.earnedBat = null;      // the bat this win just earned, if any
+  this.sunsWon = 0;           // suns this win paid (the casino)
 };
 
 /* -------------------------------------------------------------------------
@@ -111,7 +112,8 @@ window.BattleScene.prototype.create = function () {
     // Potions and fruit for this battle (homework B27). The stock comes from
     // the level for now; it will come from the casino and your saved bag once
     // those exist. src/systems/items.js owns everything about them.
-    items: window.Items.createState(this.level),
+    // What you carried in from your bag (or a practice level's handout).
+    items: window.Items.createState(this.level, window.Casino.carriedInto(this.level)),
 
     // src/systems/items.js refuses to spend an item after the battle ends, so
     // it needs to be able to see that from the world.
@@ -777,12 +779,9 @@ window.BattleScene.prototype.syncButtons = function () {
    ITEM BUTTONS  (homework B27)
    =========================================================================
    Potions and fruit. A button is built only for an item you are actually
-   CARRYING at the start of the battle, so the ten caves - which start with
-   nothing until the casino exists - show no item buttons at all.
-
-   That is deliberate. A row of permanently empty buttons in every cave would
-   advertise something the game cannot yet give, and the Graveyard practice
-   level is where these are meant to be played with today.
+   CARRYING at the start of the battle - buy them at the casino and they come
+   with you (up to CASINO.maxPerBattle of each). With an empty bag a cave shows
+   no item buttons at all, rather than a row of buttons that can never work.
    ========================================================================= */
 window.BattleScene.prototype.buildItemButtons = function () {
   var self = this;
@@ -882,6 +881,9 @@ window.BattleScene.prototype.useItem = function (itemKey) {
   if (!outcome) {
     return false;     // none left, nothing to heal, or the battle is over
   }
+
+  // Gone from your saved bag too - it was carried in from there.
+  window.Casino.usedFromBag(itemKey, this.level);
 
   var f = window.CONFIG.floatingText;
 
@@ -1161,6 +1163,14 @@ window.BattleScene.prototype.buildResultPanel = function () {
   var earnedPicture = this.add.sprite(centreX, centreY + 36, '__DEFAULT');
   earnedPicture.setOrigin(0.5, 1);
 
+  // "+30 suns" - what this win paid, along the bottom of the panel, under
+  // the buttons. Spent at the casino (src/scenes/CasinoScene.js).
+  var sunsText = this.add.text(centreX, centreY + 118, '', {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: '18px',
+    color: '#ffd24a'
+  }).setOrigin(0.5);
+
   var self = this;
 
   // Three buttons get BUILT, but only some are shown - see showResultPanel().
@@ -1192,6 +1202,7 @@ window.BattleScene.prototype.buildResultPanel = function () {
     subtitle: subtitle,
     earnedText: earnedText,
     earnedPicture: earnedPicture,
+    sunsText: sunsText,
     next: next,
     retry: retry,
     menu: menu
@@ -1267,6 +1278,8 @@ window.BattleScene.prototype.showResultPanel = function (visible) {
   }
 
   // The earned-bat line only shows when showEarnedBat() has filled it in.
+  r.sunsText.setVisible(visible && this.sunsWon > 0).setDepth(2000);
+
   var earned = visible && !!this.earnedBat;
   r.earnedText.setVisible(earned).setDepth(2000);
   r.earnedPicture.setVisible(earned).setDepth(2000);
@@ -1303,6 +1316,10 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
   }
 
   this.earnedBat = firstWin ? window.Caves.earnedBy(this.levelKey) : null;
+
+  // SUNS for the win (the casino, milestone M4): more for a first win.
+  this.sunsWon = playerWon ? window.Casino.awardWin(this.levelKey, firstWin) : 0;
+  this.resultPanel.sunsText.setText('+' + this.sunsWon + ' suns  \u2600  - spend them at the Casino');
 
   this.resultPanel.title.setText(playerWon ? 'VICTORY!' : 'DEFEAT');
   this.resultPanel.subtitle.setText(this.resultMessage(playerWon));

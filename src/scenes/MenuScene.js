@@ -47,6 +47,8 @@ window.MenuScene.prototype.create = function () {
     this.toggleCredits();
   }.bind(this));
 
+  this.buildCasinoButton();
+
   this.buildFullscreenButton();
 
   this.buildCredits();
@@ -255,6 +257,24 @@ window.MenuScene.prototype.makeButton = function (x, y, w, h, label, onClick, pa
   });
 
   return { box: box, text: text };
+};
+
+/* -------------------------------------------------------------------------
+   THE CASINO (milestone M4), and how many suns you have to spend there.
+   ------------------------------------------------------------------------- */
+window.MenuScene.prototype.buildCasinoButton = function () {
+  var cfg = window.CONFIG;
+  var self = this;
+
+  this.makeButton(690, 470, 150, 38, 'Casino', function () {
+    self.scene.start('CasinoScene');
+  });
+
+  this.add.text(690, 500, '\u2600 ' + window.Progress.load().suns + ' suns', {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: '14px',
+    color: '#ffd24a'
+  }).setOrigin(0.5, 0);
 };
 
 /* -------------------------------------------------------------------------

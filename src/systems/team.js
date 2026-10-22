@@ -32,9 +32,20 @@ window.Team.size = function () {
   return window.CONFIG.team.size;
 };
 
-/* Every bat you could take into this cave. */
+/* Every bat you could take into this cave: the cave's own, plus any casino
+   bats you have bought or won (src/systems/casino.js). A practice level keeps
+   to its own list. */
 window.Team.poolFor = function (levelKey) {
-  return window.LEVELS[levelKey].playerUnits.slice();
+  var level = window.LEVELS[levelKey];
+  var pool = level.playerUnits.slice();
+
+  if (!level.practice && window.Casino) {
+    window.Casino.ownedCasinoBats().forEach(function (key) {
+      if (pool.indexOf(key) === -1) { pool.push(key); }
+    });
+  }
+
+  return pool;
 };
 
 /* Is there anything to choose? If not, the Locker is skipped. */

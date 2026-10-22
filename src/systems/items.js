@@ -8,12 +8,13 @@
      BLOOD   is money, and does nothing in a battle.
 
    ------------------- WHERE THE STOCK COMES FROM -------------------
-   Eventually, from the casino: you win a cave, you get suns, you swap them for
-   goods, and you carry the goods into the next cave (milestone M4, homework
-   B13's saving).
+   From the casino (milestone M4, built 2026-10-21): you win a cave, you get
+   suns, you buy or gamble for potions and fruit, and they wait in your bag.
+   A battle starts with up to CASINO.maxPerBattle of each from the bag - see
+   Casino.carriedInto() - and whatever you use is gone from the bag too.
 
-   None of that exists yet, so a level can hand you a starting stock with
-   "startItems" in data/levels.js. That is exactly the trick that let Lewis
+   A practice level can still hand out its own stock with "startItems" in
+   data/levels.js, and then never touches your bag. That is exactly the trick that let Lewis
    play with the Necrobatcer the day it was built (DECISIONS.md D14): the thing
    itself is real and finished, and only the way you ACQUIRE it is stubbed. When
    the casino arrives, it fills this same stock from saved progress and nothing
@@ -36,9 +37,11 @@ window.Items = {};
    The stock and the timers for one battle. Lives on the world object, so this
    file never needs to know about Phaser, the scene, or the balance sim.
    ------------------------------------------------------------------------- */
-window.Items.createState = function (level) {
+window.Items.createState = function (level, carried) {
   var stock = {};
-  var start = (level && level.startItems) ? level.startItems : {};
+  // A practice level's own handout first; otherwise what you carried in from
+  // your bag (the casino, src/systems/casino.js); otherwise nothing.
+  var start = (level && level.startItems) ? level.startItems : (carried || {});
 
   Object.keys(window.ITEMS).forEach(function (key) {
     if (window.ITEMS[key].currencyOnly) {
