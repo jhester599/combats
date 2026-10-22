@@ -116,13 +116,21 @@ check('...and no fruit appeared', W.Progress.load().bag.fruit, 0);
 check('cannot buy something that is not for sale', (fresh(999), W.Casino.buy('dragon')), false);
 check('...and it cost nothing', W.Progress.load().suns, 999);
 
-fresh(C.bloodTrade.suns + 1);
-check('swap suns for blood', W.Casino.tradeForBlood(), true);
-check('...blood went up', W.Progress.load().blood, C.bloodTrade.blood);
+check('1 sun buys 5 blood (Jeff, 2026-10-22)', C.bloodPerSun, 5);
+fresh(11);
+check('swap 10 suns for blood', W.Casino.tradeForBlood(10), true);
+check('...blood went up by 10 suns\' worth', W.Progress.load().blood, 10 * C.bloodPerSun);
 check('...suns went down', W.Progress.load().suns, 1);
-check('cannot swap without enough suns', W.Casino.tradeForBlood(), false);
+check('cannot swap 10 with only 1 left', W.Casino.tradeForBlood(10), false);
 check('...nothing changed', W.Progress.load().suns + '/' + W.Progress.load().blood,
-  '1/' + C.bloodTrade.blood);
+  '1/' + (10 * C.bloodPerSun));
+check('can swap the last single sun', W.Casino.tradeForBlood(1), true);
+check('...and that is 5 more blood', W.Progress.load().blood, 11 * C.bloodPerSun);
+check('cannot swap 0, half or minus suns',
+  [0, 0.5, -3, 'x'].some(function (n) { return (W.Progress.load().suns = 5, W.Casino.tradeForBlood(n)); }), false);
+check('...and none of that made blood', W.Progress.load().blood, 11 * C.bloodPerSun);
+check('every swap button is a whole number of suns',
+  C.swapSizes.every(function (n) { return n > 0 && n === Math.floor(n); }), true);
 
 /* ------------------------------------------------------------------------- */
 console.log('\nTHE GAMBLE');

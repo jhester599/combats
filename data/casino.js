@@ -45,8 +45,11 @@ window.CASINO = {
     fruit: 15              // <-- TRY ME
   },
 
-  // Blood is bought in bundles: this many suns for this much blood.
-  bloodTrade: { suns: 10, blood: 10 },   // <-- TRY ME
+  /* --- BLOOD: what a sun is worth -------------------------------------
+     Jeff, 2026-10-22: "1 sun buys 5 blood". The casino offers a swap of
+     each size in swapSizes, so nobody has to tap 20 times to swap 20 suns. */
+  bloodPerSun: 5,
+  swapSizes: [1, 10],      // suns per tap, one button each
 
   /* --- THE GAMBLE: one spin, for potions and fruit ----------------------
      Pay spinCost suns and the wheel picks ONE of the prizes below. "weight"
@@ -86,9 +89,11 @@ window.CASINO = {
      Or gamble for one: a BAT SPIN costs batSpin.cost blood and wins one of the
      casino bats you do not own yet, picked at random, batSpin.winChance of the
      time. Otherwise it wins nothing - and, like every spin, costs only the
-     spin. You cannot bat-spin once you own them all. */
+     spin. You cannot bat-spin once you own them all.
+
+     Price casino bats in blood at 5 a sun: 250 blood is 50 suns. */
   batSpin: {
-    cost: 30,              // <-- TRY ME: blood per bat spin
+    cost: 150,             // <-- TRY ME: blood per bat spin (30 suns' worth)
     winChance: 0.25        // <-- TRY ME: 1 spin in 4 wins a bat
   },
 
@@ -101,6 +106,6 @@ window.CASINO = {
      a Red bat has (1 + 4 x 0.15) = 1.6 times the health and attack it
      started with. Bats whose attack is 0 (Cheer, Engineer, Bomb, Rabies) get
      the health. */
-  upgradeCost: [20, 40, 70, 110],   // <-- TRY ME: 240 blood from Plain to Red
+  upgradeCost: [100, 200, 350, 550],   // <-- TRY ME: 1200 blood (240 suns) from Plain to Red
   statBoost: 0.15                   // <-- TRY ME: +15% health and attack a step
 };

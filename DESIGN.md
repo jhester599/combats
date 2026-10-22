@@ -935,7 +935,8 @@ beat a cave  ->  SUNS  ->  the casino  ->  buy POTIONS and FRUIT
 - **Suns for a win:** a first win pays 20 + 10 x the cave's number (30 for cave
   1, 120 for the Final Stadium); winning a cave again pays 10; practice and
   losing pay nothing. Shown on the victory screen.
-- **The shop:** potion 20 suns, fruit 15, and 10 suns -> 10 blood.
+- **The shop:** potion 20 suns, fruit 15. **1 sun buys 5 blood** (Jeff,
+  2026-10-22), swapped 1 or 10 suns at a time.
 - **The spin:** 15 suns for one prize from a weighted wheel, from *Nothing!*
   (45 in 100) up to a 3 + 3 *JACKPOT* (2 in 100). On average it is worth about
   86% of the shop, so it is a gamble and not a better shop. **A spin only ever
@@ -947,10 +948,10 @@ beat a cave  ->  SUNS  ->  the casino  ->  buy POTIONS and FRUIT
   never lose them in the gamble; neither is rare.)
 - **Casino bats:** any bat in `data/units.js` with a `casinoPrice` (in blood) is
   sold only here, and once owned is in the Locker for every cave. A **bat spin**
-  (30 blood) wins one you do not own 1 time in 4. None are drawn yet, so the
+  (150 blood) wins one you do not own 1 time in 4. None are drawn yet, so the
   shelf says they are coming.
-- **Upgrades:** blood moves a bat you own up the colour ladder (§9): 20, 40, 70,
-  110 blood a step, each +15% health and attack, shown as the bat's tint.
+- **Upgrades:** blood moves a bat you own up the colour ladder (§9): 100, 200,
+  350, 550 blood a step, each +15% health and attack, shown as the bat's tint.
 
 Every one of those numbers is marked TRY ME — first guesses to be play-tested.
 

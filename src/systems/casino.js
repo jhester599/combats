@@ -77,17 +77,16 @@ window.Casino.buy = function (itemKey) {
   return true;
 };
 
-/* Swap one bundle of suns for blood. */
-window.Casino.tradeForBlood = function () {
+/* Swap this many suns for blood (bloodPerSun each). */
+window.Casino.tradeForBlood = function (suns) {
   var state = casinoState();
-  var trade = window.CASINO.bloodTrade;
 
-  if (state.suns < trade.suns) {
+  if (!(suns > 0) || suns !== Math.floor(suns) || state.suns < suns) {
     return false;
   }
 
-  state.suns -= trade.suns;
-  state.blood += trade.blood;
+  state.suns -= suns;
+  state.blood += suns * window.CASINO.bloodPerSun;
   window.Progress.save();
   return true;
 };

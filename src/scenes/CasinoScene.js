@@ -95,14 +95,19 @@ window.CasinoScene.prototype.buildShop = function (left, c) {
     }
   });
 
-  this.makeButton(x, 278, w, 46,
-    c.bloodTrade.blood + ' blood - ' + c.bloodTrade.suns + ' ☀', function () {
-      if (window.Casino.tradeForBlood()) {
-        self.say('+' + c.bloodTrade.blood + ' blood. Spend it on bats and upgrades.', true);
-      } else {
-        self.say('Not enough suns to swap for blood.', false);
-      }
-    });
+  // One swap button per size, side by side: "5 blood - 1 sun", "50 blood - 10".
+  var swapW = (w - ((c.swapSizes.length - 1) * 8)) / c.swapSizes.length;
+  c.swapSizes.forEach(function (suns, i) {
+    var blood = suns * c.bloodPerSun;
+    self.makeButton(left + (swapW / 2) + (i * (swapW + 8)), 278, swapW, 46,
+      blood + ' blood - ' + suns + ' ☀', function () {
+        if (window.Casino.tradeForBlood(suns)) {
+          self.say('+' + blood + ' blood. Spend it on bats and upgrades.', true);
+        } else {
+          self.say('Not enough suns to swap for ' + blood + ' blood.', false);
+        }
+      });
+  });
 
   this.makeButton(x, 352, w, 62, 'SPIN for potions\nand fruit - ' + c.spinCost + ' ☀', function () {
     var prize = window.Casino.spin(Math.random);
@@ -205,7 +210,7 @@ window.CasinoScene.prototype.buildUpgrades = function (left) {
       }
     }, 0x2c2152, 3);
 
-    button.text.setText(stats.name + '\n' + nextLabel).setFontSize(12).setX(x + 16);
+    button.text.setText(stats.name + '\n' + nextLabel).setFontSize(11).setX(x + 18);
     self.portrait(key, x - (colW / 2) + 22, y + 15, 30, 28);
   });
 };

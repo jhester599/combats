@@ -284,7 +284,7 @@ node tools/sting-test.js    # 27 checks - the Desert Scorpion's gamble
 node tools/items-test.js    # 37 checks - potions and fruit
 node tools/roster-test.js   # 47 checks - which cave earns which bat, the Locker, the Bat Bros
 node tools/powers-test.js   # 38 checks - Cheer, Bomb, Skeleton, Engineer, Frost, Rabies
-node tools/casino-test.js   # 104 checks - suns, the shop, the spins, casino bats, upgrades, the bag
+node tools/casino-test.js   # 110 checks - suns, the shop, the spins, casino bats, upgrades, the bag
 ```
 
 ### Is every cave harder than the one before?
