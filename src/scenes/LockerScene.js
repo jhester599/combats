@@ -196,6 +196,7 @@ window.LockerScene.prototype.drawPortrait = function (key, x, y) {
     var picture = this.add.sprite(x - offset, y - (m * 3), stats.sprite).setOrigin(0.5, 1);
     picture.setScale(fit * shrink);
     picture.play(key + '_idle');
+    window.Casino.paintPortrait(picture, key);       // its upgrade colour
   }
 };
 
@@ -252,6 +253,7 @@ window.LockerScene.prototype.refresh = function () {
     slot.box.fillColor = l.pickedColor;
     slot.portrait.setTexture(stats.sprite);
     slot.portrait.play(key + '_idle');
+    window.Casino.paintPortrait(slot.portrait, key);
     slot.portrait.setScale(Math.min(b.portraitMaxWidth / stats.anims.frameWidth,
       b.portraitMaxHeight / stats.anims.frameHeight));
     slot.portrait.setVisible(true);

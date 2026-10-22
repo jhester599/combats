@@ -33,11 +33,19 @@ window.CASINO = {
   /* --- SUNS: what a win pays --------------------------------------------
      A FIRST win pays more the further into Palopa the cave is - cave 1 pays
      firstWinBase + firstWinPerCave, cave 10 pays firstWinBase + 10 x that.
-     Winning a cave AGAIN still pays something, so a stuck player can always
-     earn a potion by replaying an easy cave. Losing pays nothing. */
+     Winning a cave AGAIN pays less, but it ALSO grows with the cave (Jeff,
+     2026-10-22: "you should earn more suns as the levels increase, not every
+     level is the same amount") - so a stuck player can always earn a potion
+     by replaying an easy cave, and replaying a hard one is worth more.
+     Losing pays nothing.
+
+       cave        1    2    3    4    5    6    7    8    9   10
+       first win  30   40   50   60   70   80   90  100  110  120
+       again      10   15   20   25   30   35   40   45   50   55   */
   firstWinBase: 20,        // <-- TRY ME
   firstWinPerCave: 10,     // <-- TRY ME: cave 1 = 30 suns, cave 10 = 120
-  replayWin: 10,           // <-- TRY ME: every win after the first
+  replayWinBase: 5,        // <-- TRY ME
+  replayWinPerCave: 5,     // <-- TRY ME: cave 1 = 10 suns again, cave 10 = 55
 
   /* --- THE SHOP: what things cost, in suns ------------------------------ */
   prices: {

@@ -178,7 +178,15 @@ window.UNITS = {
     // the Archer keeps the longest reach in Palopa, and 150 still out-reaches
     // every bug, the Cow Killer Bee's 130 stinger included. Measured: it does
     // as well as it did at 200.
-    range: 150,            // <-- TRY ME: 40 and it walks into the fight and dies
+    //
+    // 150 -> 200 on 2026-10-22 (D83). Jeff, play-testing: "increase the range
+    // of necrobatcer, it is currently standing in-line with archer bat." 150
+    // against the Archer's 160 parks the two side by side; at 200 the summoner
+    // stands clearly behind the shooters. The Archer keeps the longest reach of
+    // anything that does real damage (B9) - this bat's hit is 4. Measured over
+    // every Locker team in caves 4-10: teams with it won 65% at 150, 67% at
+    // 200 (66% without it) - better, not a walkover.
+    range: 200,            // <-- TRY ME: 40 and it walks into the fight and dies
     speed: 70,
     color: '#8f7fd6',      // only used by placeholder art - this bat has real art now
     sprite: 'necroBat',

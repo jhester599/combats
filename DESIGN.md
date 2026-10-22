@@ -69,7 +69,7 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 |---|---|---|---|---|---|---|---|---|
 | **Scout Bat** | 25 | 1.4s | 40 | 8 | 0.6s | **13.3** | 40 | 90 |
 | **Brute Bat** | 90 | 6.0s | 220 | 30 | 1.4s | **21.4** | 46 | 45 |
-| **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **150** | 70 |
+| **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **200** | 70 |
 | **Archer Bat** | 55 | 3.0s | 24 | 22 | 1.1s | **20.0** | **160** | 75 |
 | **Bat Bros** | 55 | 2.0s | 80 | 16 | 0.6s | **26.7** | 40 | 90 |
 | **Cheer Bat** | 60 | 3.5s | 18 | 0 | 1.0s | **0** | 150 | 70 |
@@ -945,7 +945,8 @@ beat a cave  ->  SUNS  ->  the casino  ->  buy POTIONS and FRUIT
 ```
 
 - **Suns for a win:** a first win pays 20 + 10 x the cave's number (30 for cave
-  1, 120 for the Final Stadium); winning a cave again pays 10; practice and
+  1, 120 for the Final Stadium); winning a cave again pays 5 + 5 x its number
+  (10 for cave 1, 55 for the Final Stadium - D83); practice and
   losing pay nothing. Shown on the victory screen.
 - **The shop:** potion 20 suns, fruit 15. **1 sun buys 5 blood** (Jeff,
   2026-10-22), swapped 1 or 10 suns at a time.

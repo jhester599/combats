@@ -93,7 +93,16 @@ check('first win of cave 1 pays base + 1 step', W.Casino.winReward(caves[0], tru
   C.firstWinBase + C.firstWinPerCave);
 check('first win of the last cave pays the most', W.Casino.winReward(caves[caves.length - 1], true),
   C.firstWinBase + (C.firstWinPerCave * caves.length));
-check('a replay pays replayWin', W.Casino.winReward(caves[3], false), C.replayWin);
+check('a replay of cave 4 pays its replay rate', W.Casino.winReward(caves[3], false),
+  C.replayWinBase + (4 * C.replayWinPerCave));
+check('every cave pays more than the one before, first time AND again (Jeff, 2026-10-22)',
+  caves.every(function (k, i) {
+    return i === 0 || (W.Casino.winReward(k, true) > W.Casino.winReward(caves[i - 1], true) &&
+      W.Casino.winReward(k, false) > W.Casino.winReward(caves[i - 1], false));
+  }), true);
+check('a replay always pays less than a first win', caves.every(function (k) {
+  return W.Casino.winReward(k, false) < W.Casino.winReward(k, true);
+}), true);
 check('practice pays nothing', W.Casino.winReward(practiceKey, true), 0);
 
 fresh();

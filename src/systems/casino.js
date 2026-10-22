@@ -36,11 +36,13 @@ window.Casino.winReward = function (levelKey, firstWin) {
     return 0;                       // practice is practice
   }
 
+  var cave = window.Caves.numberOf(levelKey);
+
   if (!firstWin) {
-    return c.replayWin;
+    return c.replayWinBase + (c.replayWinPerCave * cave);
   }
 
-  return c.firstWinBase + (c.firstWinPerCave * window.Caves.numberOf(levelKey));
+  return c.firstWinBase + (c.firstWinPerCave * cave);
 };
 
 /* Pay out a win. Returns how many suns it was, for the victory screen. */
@@ -327,6 +329,21 @@ window.Casino.statsFor = function (unitKey) {
 window.Casino.tintFor = function (unitKey) {
   var tier = window.Casino.tierOf(unitKey);
   return tier > 0 ? window.CONFIG.upgradeTiers[tier].tint : null;
+};
+
+/* Colour a bat's PICTURE - a deploy button, a Locker card, the casino - to
+   match its upgrade, so the icon changes colour along with the bat (Jeff,
+   2026-10-22). Returns the picture. */
+window.Casino.paintPortrait = function (picture, unitKey) {
+  var tint = window.Casino.tintFor(unitKey);
+
+  if (tint === null) {
+    picture.clearTint();
+  } else {
+    picture.setTint(tint);
+  }
+
+  return picture;
 };
 
 /* -------------------------------------------------------------------------

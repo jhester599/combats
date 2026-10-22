@@ -580,6 +580,7 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
     picture.setOrigin(0.5, 1);
     picture.setScale(this.portraitScaleFor(stats) * shrink);
     picture.play(unitKey + '_idle');
+    window.Casino.paintPortrait(picture, unitKey);   // its upgrade colour
     portraits.push(picture);
   }
 

@@ -262,12 +262,7 @@ window.CasinoScene.prototype.portrait = function (key, x, y, maxW, maxH) {
   picture.setScale(Math.min(maxW / stats.anims.frameWidth, maxH / stats.anims.frameHeight));
   picture.play(key + '_idle');
 
-  var tint = window.Casino.tintFor(key);
-  if (tint !== null) {
-    picture.setTint(tint);
-  }
-
-  return picture;
+  return window.Casino.paintPortrait(picture, key);
 };
 
 /* A button; pad = how far its tap area reaches past it (src/systems/touch.js). */
