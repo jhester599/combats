@@ -78,9 +78,12 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 | **Engineer Bat** | 60 | 3.5s | 60 | 0 | 1.0s | **0** | 0 | 0 |
 | **Frost Bat** | 55 | 3.0s | 70 | 8 | 1.0s | **8.0** | 40 | 75 |
 | **Rabies Bat** | 100 | 6.0s | 60 | 0 | 1.0s | **0** | 0 | 85 |
+| **Ghost Bat** | 75 | 5.0s | 45 | 0 | 1.0s | **0** | **220** | 60 |
+| **Ghost** | — | — | *shared* | 3 | 0.8s | **3.75** | 38 | 85 |
 
-*The last six all have powers that the table can't show — see "The six bats of
-caves 4–9" below. A 0 attack means the bat does not fight at all; its range then
+*The **Ghost Bat** is a casino bat (🎰, below); the **Ghost** is what it
+sends out, and has no health of its own. The six before them all have powers
+that the table can't show — see "The six bats of caves 4–9" below. A 0 attack means the bat does not fight at all; its range then
 only decides where it stands.*
 
 `DPS = attack ÷ attackInterval`.
@@ -212,6 +215,15 @@ in order, one earned per cave:
 | 7. Scarred Woods | **Engineer Bat** | *"makes energy grow faster"* | Stays at your door (speed 0); +35% energy per second while it lives. **Two don't stack.** `src/systems/engineer.js` |
 | 8. Abyss | **Frost Bat** | *"freezes the enemy when they touch for x seconds, will need to tune x"* | A touch either way freezes a bug for **x = 2.0s**; after thawing it can't be refrozen for 1.5s. `src/systems/frost.js` |
 | 9. Forgotten Oasis | **Rabies Bat** | *"walks into a random place of the map, then consumes everything within a certain distance, both bats and enemy"* — used up doing it | Walks to a random spot, shakes for 1.2s, eats everything within 90px. Eaten things leave no grave. `src/systems/rabies.js` |
+
+### The casino bats 🎰
+
+Bats you can only buy (or win) at the casino, with blood — never earned in a
+cave (D80). Jeff: *"there will be several potential new bats at the casino."*
+
+| Casino bat | Price | Jeff's brief | How it was built |
+|---|---|---|---|
+| **Ghost Bat** (2026-10-22, D82) | 300 blood (60 suns) | *"similar to necrobatcer, but the summons are small ghosts who do little damage but they are difficult to kill because they share the life with the ghost bat. it is a passive bat, which stays at a long range from the enemies, it has a smaller amount of health, so staying back is important."* | Never attacks; stands **220** back, further than anything reaches. Every **3.5s** it sends out a small, see-through **Ghost** (3.75 dps), at most **3** at once. A ghost has no health of its own: a hit on one costs the Ghost Bat **a quarter** of it, so ghosts are four times harder to wear down — and when the Ghost Bat dies, its ghosts fade. Ghosts leave no grave. **45 hp.** Placeholder art. `src/systems/ghost.js` |
 
 **Rules that are not numbers**, each chosen so nothing snowballs or decides a
 cave on one tap: Cheer and Engineer don't stack (a second one is a spare);

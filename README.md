@@ -191,7 +191,9 @@ button on the title screen:
 - **Shop** — buy potions and fruit, or swap suns for **blood**.
 - **Spin** — gamble suns for potions and fruit. A spin only ever costs the spin.
 - **Casino bats** — bats you can *only* get here, bought (or won in a bat spin)
-  with blood. To make one, give a bat a `casinoPrice` in `data/units.js`.
+  with blood. The first is the **Ghost Bat** (300 blood): it never fights,
+  stands far back, and sends out small ghosts that share its health. To make
+  another, give a bat a `casinoPrice` in `data/units.js`.
 - **Upgrades** — spend blood to move any bat you own up Lewis's colour ladder
   (Plain → Violet → Blue → Yellow → Red); each step is tougher and hits harder.
 
@@ -401,6 +403,7 @@ src/
     frost.js          the Frost Bat's freeze
     rabies.js         the Rabies Bat's walk and big bite
     engineer.js       the Engineer Bat's faster energy
+    ghost.js          the Ghost Bat's ghosts, which share its health (a casino bat)
     team.js           the Locker's rules: which teams you may take in
     progress.js       what you have earned (caves, suns, blood, bag), saved in localStorage
     casino.js         the casino's rules: buying, spinning, upgrading, the bag

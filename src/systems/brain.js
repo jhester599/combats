@@ -45,6 +45,7 @@
        rabies.js    the Rabies Bat's big bite
        engineer.js  the Engineer Bat's extra energy     (asked by the battle,
                                                           not by a unit)
+       ghost.js     the Ghost Bat's ghosts, and their shared health
    ========================================================================= */
 
 window.Brain = {};
@@ -69,6 +70,7 @@ window.Brain.reset = function (unit) {
   window.Frost.resetUnit(unit);
   window.Bomb.resetUnit(unit);
   window.Rabies.resetUnit(unit);
+  window.Ghost.resetUnit(unit);
 };
 
 /* -------------------------------------------------------------------------
@@ -109,6 +111,11 @@ window.Brain.step = function (unit, dt, world) {
   }
 
   if (window.Rabies.step(unit, dt, world)) {
+    return;
+  }
+
+  // A Ghost Bat sends out ghosts; a ghost whose Ghost Bat is gone fades.
+  if (window.Ghost.step(unit, dt, world)) {
     return;
   }
 
@@ -171,6 +178,11 @@ window.Brain.fight = function (unit, dt, target, world) {
    ------------------------------------------------------------------------- */
 window.Brain.takeDamage = function (unit, amount) {
   if (unit.isDying) {
+    return;
+  }
+
+  // A ghost has no health of its own: the hit lands on its Ghost Bat.
+  if (window.Ghost.takeHit(unit, amount)) {
     return;
   }
 

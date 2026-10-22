@@ -106,6 +106,12 @@ Object.keys(W.UNITS).forEach(function (key) {
     ? [['cost', unit.cost], ['cooldown', unit.cooldown]]
     : [['hp', unit.hp], ['attack', unit.attack], ['range', unit.range], ['speed', unit.speed]];
 
+  // Something only ever SUMMONED (a Ghost Bat's ghost) shares its summoner's
+  // health, so the hp in data/units.js is never used and the row says "shared".
+  if (unit.summonOnly) {
+    claims = claims.filter(function (pair) { return pair[0] !== 'hp'; });
+  }
+
   claims.forEach(function (pair) {
     if (mostNumbers.indexOf(pair[1]) === -1) {
       flag('DESIGN.md', unit.name + ': ' + pair[0] + ' should be ' + pair[1] +

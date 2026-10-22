@@ -107,6 +107,10 @@ window.Necro.recordDeath = function (unit, world) {
     return;               // rule 2: no summoner raising a summoner
   }
 
+  if (unit.stats.noGrave) {
+    return;               // a Ghost Bat's ghost was never alive (ghost.js)
+  }
+
   world.graves.push({ unitKey: unit.unitKey, x: unit.x });
 
   // Keep the graveyard from growing for ever in a long battle. Past the cap

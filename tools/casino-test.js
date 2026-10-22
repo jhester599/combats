@@ -257,7 +257,7 @@ check('...it is yours', W.Casino.ownsBat('testDiceBat'), true);
 check('cannot bat-spin without the blood', W.Casino.spinForBat(rolls([0, 0])), null);
 
 W.Progress.load().blood = 999;
-W.Progress.load().casinoBats = ['testLuckyBat', 'testDiceBat'];
+W.Progress.load().casinoBats = W.Casino.casinoBats();
 check('cannot bat-spin when you own them all', W.Casino.spinForBat(rolls([0, 0])), null);
 check('...and it cost nothing', W.Progress.load().blood, 999);
 
