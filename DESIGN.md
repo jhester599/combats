@@ -428,9 +428,9 @@ said "the desert has scorpions", but Palopa already had a Scorpion, and his is a
 different animal: fast and gambling where the old one is slow and armoured. They
 are both in the game under two names that sound like the same creature.
 
-**`[TO DECIDE]` — what do the three new bugs look like?** *(B30, new)* — all
-three are still art the game draws itself, in placeholder colours: desert sand,
-dream magenta and firefly yellow-green.
+**DRAWN — what the three new bugs look like** *(B30)* — all three are Lewis's
+drawings now: the Desert Scorpion, the Evil Butterfly with angry eyes on its
+wings, and the Lightning Bug with glowing antennae and tail (§9, `ASSETS.md`).
 
 ---
 
@@ -1301,8 +1301,13 @@ Full detail is in `README.md`; the design-relevant parts:
 | B27 | What do blood, potions and fruits do? | §8 | ✅ **answered & built** — potion + fruit are battle actions |
 | B28 | Is "Desert Scorpion" the right name? | §4 | 🔲 **new — on the plate** |
 | B29 | How do you *get* potions and fruit? | §8 | ✅ **answered by Jeff & built** — bought or spun for with suns at the casino |
-| B30 | What do the three new bugs look like? | §9 | 🔲 **new — on the plate** |
+| B30 | What do the three new bugs look like? | §9 | ✅ **drawn & in the game** |
 | B31 | Which bats do caves 4–9 earn? | §3, §7 | ✅ **answered by Jeff & built 2026-10-12** — six bats, team of 3 |
+| B32 | Which casino ideas first? | §8, `ROADMAP.md` | 🔲 **new — on the plate** |
+| B33 | Draw and name the casino's dealer bat | §8, `ROADMAP.md` | 🔲 **new — on the plate** |
+| B34 | Draw four icons: sun, blood, potion, fruit | §9, `ROADMAP.md` | 🔲 **new — on the plate** |
+| B35 | Invent the next casino bat | §3, §8 | 🔲 **new — on the plate** |
+| B36 | A drawn map of Palopa for the title screen? | §9, `ROADMAP.md` | 🔲 **new — no rush** |
 
 ### Solved, mostly: the all-or-nothing ending (B9)
 

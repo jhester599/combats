@@ -1,4 +1,4 @@
-# Homework for Lewis — Round 4 🦇
+# Homework for Lewis — Round 5 🦇
 
 > **You're the creative director.** The *look*, the *feel*, and the
 > *what-even-is-this* calls are yours. Dad builds whatever you decide.
@@ -7,6 +7,117 @@
 > you don't have to pick from the options — **"something else"** is always
 > allowed. You keep proving that: the Necrobatcer beat all four of Dad's ideas,
 > and your casino answer was better than either option he offered.
+
+---
+
+## 🆕 Round 5: the casino, the Ghost Bat, and a cooler title screen
+
+**What's new since Round 4:**
+
+- 🎰 **THE CASINO IS OPEN.** Win a cave and you get **suns** ☀. The casino opens
+  the moment you earn your first one, and after that it pops up **between every
+  round**. Buy potions and fruit, **spin** for them, swap suns for **blood**
+  (1 sun = 5 blood), and spend blood on **colour upgrades** — Violet, Blue,
+  Yellow, Red, your ladder from B19 — and on **casino bats**.
+- 👻 **THE GHOST BAT** — the first bat you can *only* get at the casino. It
+  never fights. It hangs right at the back and sends out little ghosts that
+  share its health, so they're really hard to kill... unless something reaches
+  the Ghost Bat. Your drawing of it, **and all four of your ghost drawings**,
+  are in the game — every new ghost wears the next one.
+- 🏞️ **THE TITLE SCREEN IS COOLER**, with **your logo** on it. The cave
+  paintings drift behind it, your bats fly across (tap one — it does a flip!),
+  the cave buttons are little pictures of each cave, and every bat in the game
+  stands along the bottom — the ones you haven't got yet are black **?**
+  shadows.
+
+All the ideas for making the **casino** cooler are written down in
+**`ROADMAP.md`** — go and read them, then answer these. 👇
+
+---
+
+### 🔲 B32. DECIDE: which casino ideas should Dad build first? 🎰
+
+Here they are (the full list, with pictures in words, is in `ROADMAP.md`):
+
+| | Idea |
+|---|---|
+| **C1** | 🎰 A **real slot machine** — spinning reels, a lever, flashing lights, a coin shower on a jackpot |
+| **C2** | 💡 A **neon sign** that says THE CASINO, with flickering bulbs |
+| **C3** | 🔢 **Numbers that move** — suns counting down, potions flying into your bag |
+| **C4** | 🔦 **Casino bats in a spotlight**, and a *"Who's that bat?"* curtain for the bat spin |
+| **C5** | 🎨 The **paint shop** — your bat gets dunked in paint when you upgrade it |
+| **C6** | 🚪 **Rooms** — Shop, Slots, Bat Den, Paint Shop — instead of three squashed columns |
+| **C7** | 🎩 A **dealer bat** who talks to you *(you'd draw it — B33)* |
+| **C8** | ☀️ **Little icons** instead of words *(you'd draw them — B34)* |
+
+**Pick your top 3**, in order. Or tell Dad an idea that isn't on the list.
+
+**Lewis's answer:** _(open)_
+
+---
+
+### 🔲 B33. DRAW + NAME: the casino's dealer bat 🎩
+
+Every casino needs someone behind the counter. This bat would stand in the
+casino and talk to you in speech bubbles — *"Not enough suns, kid!"*,
+*"JACKPOT!"*, *"Back so soon?"*.
+
+1. **What's its name?**
+2. **What does it look like?** Top hat? Bow tie? Sunglasses? A gold tooth?
+   Shifty eyes? It's your casino.
+3. **What's its catchphrase?**
+
+Same as your other bats: any size under 1000 pixels, see-through background.
+
+**Lewis's answer:** _(open)_
+
+---
+
+### 🔲 B34. DRAW: four little icons ☀️🩸🧪🍎
+
+Right now the game writes the words *suns*, *blood*, *potions* and *fruit*
+everywhere. Four small pictures would look much better — and they'd go on the
+slot machine's reels too.
+
+- a **sun**
+- a **drop of blood**
+- a **potion** bottle
+- a **fruit** (which fruit? your call)
+
+Small and simple is best — they'll be shown about the size of a button's
+writing. See-through background.
+
+**Lewis's answer:** _(open)_
+
+---
+
+### 🔲 B35. INVENT: the next casino bat 👻➡️❓
+
+The Ghost Bat is the first bat you can only get at the casino. Dad says there'll
+be **several**. What's the next one?
+
+1. **What's it called?**
+2. **What's its power?** *(The best ones do something no other bat does — the
+   Ghost Bat is the only one whose summons share its health.)*
+3. **Is it cheap or expensive?** The Ghost Bat costs 300 blood (60 suns' worth).
+
+And then, of course — draw it. 🎨
+
+**Lewis's answer:** _(open)_
+
+---
+
+### 🔲 B36. DRAW: a map of Palopa? 🗺️ *(big one — no rush)*
+
+One idea for the title screen was parked for later: instead of two rows of cave
+buttons, **a drawn map of Palopa**, with all ten caves joined by a path, and your
+bats walking along it to the next cave.
+
+1. **Do you want it?** (It's a big drawing.)
+2. If yes — **where is everything?** Which caves are near each other? Is the
+   Final Stadium at the top of a mountain, across the sea, in the middle?
+
+**Lewis's answer:** _(open)_
 
 ---
 
@@ -396,7 +507,7 @@ nearest bug, and raised **7** bats from the dead.)*
 
 ---
 
-## 🟡 Round 4 — four questions
+## 🟡 Round 4 — still here from last time
 
 Two quick ones, a drawing one, and a big inventing one.
 
@@ -459,22 +570,11 @@ the prices are first guesses in `data/casino.js` — tell Dad what feels wrong!
 
 ---
 
-### 🔲 B30. DRAW: the three new bugs 🎨
+### ✅ B30. DRAW: the three new bugs 🎨 *(done — all three are drawn and in the game)*
 
-All three are still Dad's rubbish placeholder shapes — just coloured blobs.
-Right now they're:
-
-| | Placeholder colour | What it should feel like |
-|---|---|---|
-| 🦂 **Desert Scorpion** | sandy yellow | **fast and twitchy.** You should look at it and think "that one's dangerous" |
-| 🦋 **Evil Butterfly** | dream magenta | **wide**, so it reads as a wall. Pretty, but *evil* |
-| ✨ **Lightning Bug** | glowing yellow-green | tiny, and **glowing** — it's the only light in the Abyss |
-
-Same brief as always: hand-drawn, not realistic, **64×64**, facing **east**.
-These are bugs rather than bats, so the "big circle, wings, ears, no legs" rule
-doesn't apply — they can look like whatever you think they look like.
-
-**Lewis's answer:** _(open)_
+The 🦂 **Desert Scorpion**, the 🦋 **Evil Butterfly** (with angry eyes on its
+wings) and the ✨ **Lightning Bug** (with glowing antennae and tail) are all
+your drawings now. Every monster in Palopa is.
 
 ---
 

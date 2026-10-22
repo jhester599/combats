@@ -65,9 +65,10 @@ creative calls, and there's a paper trail so nothing gets lost between sessions:
 | File | What it's for |
 |---|---|
 | **[`DESIGN.md`](DESIGN.md)** | The living design document. What the game *is*, what's decided, what's still open. |
-| **[`HOMEWORK.md`](HOMEWORK.md)** | 🦇 **Lewis's current questions — Round 4.** Start here. |
+| **[`HOMEWORK.md`](HOMEWORK.md)** | 🦇 **Lewis's current questions — Round 5.** Start here. |
 | **[`HOMEWORK_BACKLOG.md`](HOMEWORK_BACKLOG.md)** | Every question for the whole game, sorted by when we need it. |
 | **[`DECISIONS.md`](DECISIONS.md)** | The decision loop, and the log of what's been settled and why. |
+| **[`ROADMAP.md`](ROADMAP.md)** | Ideas we like but haven't built yet — the cooler casino, the map of Palopa, sound. |
 
 **Lewis answers → Dad tells Claude → the loop in `DECISIONS.md` folds it into
 the design and builds it.**

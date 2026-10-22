@@ -203,5 +203,10 @@ These were settled while building Milestone 1. **Any of them can be overruled**
 | B27 | What do blood, potions and fruits DO? | §8 Progression | ✅ Answered **& built** — potion + fruit are battle actions |
 | B28 | Is "Desert Scorpion" the right name? | §4 The Enemy | 🔲 **New** — on the plate |
 | B29 | How do you *get* potions and fruit? | §8 Progression | ✅ Answered by Jeff **& built** — suns at the casino (D79) |
-| B30 | What do the three new bugs look like? | §9 Look & Sound | 🔲 **New** — on the plate |
+| B30 | What do the three new bugs look like? | §9 Look & Sound | ✅ Drawn **& in the game** |
 | B31 | Which bats do caves 4–9 earn? | §3 The Bats, §7 Levels | ✅ **Answered by Jeff & built 2026-10-12** — six bats, and a team of 3 from the Locker (D65, D67) |
+| B32 | Which casino ideas first? | §8 Progression, `ROADMAP.md` | 🔲 **New** — Round 5 |
+| B33 | Draw and name the casino's dealer bat | §8 Progression | 🔲 **New** — Round 5 |
+| B34 | Draw four icons: sun, blood, potion, fruit | §9 Look & Sound | 🔲 **New** — Round 5 |
+| B35 | Invent the next casino bat | §3 The Bats | 🔲 **New** — Round 5 |
+| B36 | A drawn map of Palopa for the title screen? | §9 Look & Sound | 🔲 **New** — Round 5, no rush |
