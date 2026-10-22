@@ -55,6 +55,8 @@ window.Ghost.resetUnit = function (unit) {
   unit.lifeOwner = null;          // the Ghost Bat whose health this ghost shares
   unit.ownerLifeId = 0;
   unit.ghostTimer = window.Ghost.isGhostBat(unit.stats) ? unit.stats.ghosts.interval : 0;
+  unit.ghostsSent = 0;            // a Ghost Bat: how many ghosts it has sent
+  unit.look = 0;                  // a ghost: which of its drawings it wears
 };
 
 /* The Ghost Bat this ghost shares health with - or null if it is not a ghost,
@@ -177,6 +179,11 @@ window.Ghost.step = function (unit, dt, world) {
 
   ghost.lifeOwner = unit;
   ghost.ownerLifeId = unit.lifeId;
+
+  // Each new ghost wears the next drawing, round and round (data/units.js).
+  ghost.look = unit.ghostsSent % (ghost.stats.looks || 1);
+  unit.ghostsSent += 1;
+
   ghost.hp = window.Ghost.fullPool(unit);
   unit.ghostTimer = g.interval;
 

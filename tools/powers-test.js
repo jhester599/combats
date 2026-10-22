@@ -308,6 +308,21 @@ ghost.takeDamage(ghost.hp);              // what an instant kill or a Rabies bit
 check('a hit that takes ALL the shared health destroys just that ghost', ghost.isDying, true);
 check('...and the Ghost Bat is untouched', gb.hp, gbHp);
 
+world = makeWorld();
+var looks = [];
+world.report = function (kind, details) {
+  if (kind === 'ghost') { looks.push(details.unit.look); }
+};
+gb = world.spawn('ghostBat', 100);
+var tries;
+for (tries = 0; tries < 60 && looks.length < 6; tries++) {
+  world.step(G.interval);
+  // make room for the next one, as if the front line had popped them
+  world.units.forEach(function (u) { if (u.unitKey === 'ghost' && !u.isDying) { u.takeDamage(u.hp); } });
+}
+check('each new ghost wears the next of the ' + W.UNITS.ghost.looks + ' drawings, round again (Jeff)',
+  looks.join(','), '0,1,2,3,0,1');
+
 // Pooling: a ghost must not latch on to whatever reuses its Ghost Bat's object.
 world = makeWorld();
 gb = world.spawn('ghostBat', 100);

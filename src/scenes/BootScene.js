@@ -78,9 +78,14 @@ window.BootScene.prototype.preload = function () {
     frameWidth: 152, frameHeight: 64
   });
 
-  // The first casino bat (2026-10-22). Its ghosts use this picture too.
+  // The first casino bat (2026-10-22)...
   this.load.spritesheet('ghostBat', 'assets/sprites/ghostBat.png', {
     frameWidth: 97, frameHeight: 64
+  });
+
+  // ...and its ghosts: four drawings, taken in turn (data/units.js 'looks').
+  this.load.spritesheet('ghost', 'assets/sprites/ghost.png', {
+    frameWidth: 71, frameHeight: 64
   });
 
   // 128 tall, like the boss: the bat AND the bomb hanging under it. Frame 1 is

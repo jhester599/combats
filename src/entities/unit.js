@@ -194,6 +194,15 @@ window.Unit.prototype.playAnim = function (animName, forceRestart) {
   }
 
   this.currentAnim = animName;
+
+  // A unit drawn in several LOOKS (a Ghost Bat's ghosts) is one still picture
+  // per look, not an animation - refresh() keeps it on the right one.
+  if (this.stats.looks) {
+    this.sprite.stop();
+    this.sprite.setFrame(this.look || 0);
+    return;
+  }
+
   this.sprite.play(this.unitKey + '_' + animName, false);
 };
 
@@ -217,6 +226,12 @@ window.Unit.prototype.refresh = function () {
   // Face the way it is going. Bugs walk left, so they are mirrored; a Bomb Bat
   // flying home turns round.
   this.sprite.setFlipX(this.direction < 0);
+
+  // Which drawing a ghost wears is decided just AFTER it appears, so it is
+  // kept up to date here (see playAnim).
+  if (this.stats.looks && this.sprite.frame.name !== (this.look || 0)) {
+    this.sprite.setFrame(this.look || 0);
+  }
 
   // Frozen bugs go icy blue (homework-free: Jeff's Frost Bat, 2026-10-12).
   if (window.Frost.isFrozen(this)) {

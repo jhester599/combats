@@ -28,6 +28,8 @@
    casinoPrice    OPTIONAL. blood it costs at the casino. A bat with one is a
                   CASINO BAT: never earned in a cave, only bought or won there
    alpha          OPTIONAL. how see-through to draw it (1 = solid)
+   looks          OPTIONAL. several drawings of one unit, one frame each; every
+                  new one takes the next (a Ghost Bat's ghosts)
 
    DAMAGE PER SECOND (DPS) = attack / attackInterval
      Scout Bat: 8 / 0.6  = 13.3 dps   (fast little pokes)
@@ -749,20 +751,29 @@ window.UNITS = {
     attackInterval: 0.8,   // 3.75 dps, under a third of a Scout's
     range: 38,
     speed: 85,
-    color: '#eef4ff',      // not used - it borrows the Ghost Bat's picture
+    color: '#eef4ff',      // only used by placeholder art - ghosts have real art now
     alpha: 0.75,           // see-through, but still readable on a bright cave
-    sprite: 'ghostBat',    // a small, faded copy of its Ghost Bat until Lewis
-    scale: 0.45,           // draws a ghost of its own (drawn 59x39 on screen)
+    sprite: 'ghost',
+    scale: 0.5,            // drawn about 43px tall - small next to its Ghost Bat's 65
+
+    // REAL ART - 2026-10-22, Lewis & Jeff: FOUR little ghost bats, each with
+    // flame eyes and a wispy tail. A Ghost Bat sends them out IN TURN - its
+    // first ghost wears drawing 1, the next drawing 2, and so on round again
+    // (Jeff: "make the images alternate each time a new bat is summoned").
+    // looks = how many drawings; each is one frame of the sheet, 0 to 3.
+    looks: 4,
 
     anims: {
-      frameWidth: 97,
+      frameWidth: 71,
       frameHeight: 64,
       idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
       walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
       attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
       death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
+      // frames 1-3 of the sheet are the other three looks - picked per ghost
     }
   },
+
 
   /* TODO for Lewis - fun bats to invent later:
      - healerBat:  needs a new "heal" power in the code, ask Dad
