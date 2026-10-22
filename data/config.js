@@ -17,11 +17,11 @@ window.CONFIG = {
      to tell which build you are playing.
 
      The number after the dot is the last pull request that went into the
-     game: v1.11 = everything up to and including PR #11. Bump it as part of
-     each PR (PR #12 makes it v1.12). PRs #6 and #7 forgot to, so it went
+     game: v1.12 = everything up to and including PR #12. Bump it as part of
+     each PR (PR #13 makes it v1.13). PRs #6 and #7 forgot to, so it went
      straight from v1.05 to v1.08.
      --------------------------------------------------------------------- */
-  version: 'v1.11',
+  version: 'v1.12',
 
   /* ---------------------------------------------------------------------
      SCREEN
@@ -247,9 +247,10 @@ window.CONFIG = {
      bat exactly ONCE, and the game makes all eight versions of it. Nobody has
      to draw eight Scout Bats.
 
-     NOT WIRED UP YET. There is nothing to spend upgrades on until the suns
-     and the casino exist (homework B13, milestone M4). This is the agreed
-     ladder, parked here so it is decided rather than remembered.
+     WIRED UP 2026-10-21 with the suns and the casino (milestone M4): each
+     kind of bat climbs this ladder separately, for blood, at the casino. The
+     prices and how much stronger each step is are in data/casino.js; the
+     rules are in src/systems/casino.js.
      --------------------------------------------------------------------- */
   upgradeTiers: [
     { name: 'Plain',  tint: 0xffffff },   // as drawn: black and white

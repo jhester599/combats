@@ -28,7 +28,7 @@ Every creative-director decision for the whole game, in one place, sorted by
 > | | # | Question | Why it's here |
 > |---|---|---|---|
 > | 🦂 | **B28** | Is "Desert Scorpion" the right name? | His B26 bug and the old Scorpion now have near-identical names for very different animals |
-> | 🎰 | **B29** | How do you *get* potions and fruit? | **The last thing blocking the casino.** They work; only earning them is missing |
+> | 🎰 | ~~**B29**~~ | How do you *get* potions and fruit? | ✅ **Answered by Jeff & built 2026-10-21** — suns at the casino (D79) |
 > | 🎨 | **B30** | Draw the three new bugs | All three are still coloured blobs |
 > | 🎨 | **B4** | Draw the Archer Bat | 3 of 4 bats are drawn; the Archer is the last |
 > | 🎨 | **B3/B4** | Draw the old bugs and the Bee | Still coloured blobs |
@@ -363,7 +363,7 @@ not a scorpion at all.
 
 **Lewis's answer:** _(open)_ → `DESIGN.md` §4
 
-### 🔲 B29. DECIDE: How do you GET potions and fruit? *(needed by M4 — ON THE PLATE, BLOCKING)*
+### ✅ B29. DECIDE: How do you GET potions and fruit? *(answered by Jeff 2026-10-21 & built — D79)*
 
 B27 is built: potions weaken the bugs for ten seconds, fruit heals the tower
 slightly. What does not exist is any way to **earn** them, so they currently
@@ -453,7 +453,7 @@ gets dull once you know you've won.
 | B8 | **A** — one boss, the **Cow Killer Bee** | ✅ built, cave 10 |
 | B24 | **A** — bats only, and reach **320 → 460** | ✅ done |
 | B16 | **D** — **grave markers** *(also settles B25)* | ✅ built |
-| B22 | Casino: suns → **blood/potions/fruits** → trade or gamble | 🟡 B27 answered and the items are built; the casino itself now needs **B29** |
+| B22 | Casino: suns → **blood/potions/fruits** → trade or gamble | ✅ Built 2026-10-21 (D79) — suns, shop, spins, blood, upgrades, casino bats |
 | B23 | **B** — four colours | ✅ in the data |
 
 **Round 3, 2026-09-20 — both, and both got built the same day.**

@@ -88,7 +88,14 @@ window.Unit.prototype.spawn = function (unitKey, startX) {
   var cfg = window.CONFIG;
 
   this.unitKey = unitKey;
-  this.stats = window.UNITS[unitKey];
+
+  // Your bats fight with their UPGRADED numbers, if the casino has upgraded
+  // them - a copy, never the shared original (src/systems/casino.js).
+  this.stats = window.Casino.statsFor(unitKey);
+
+  // And wear their colour from the ladder (CONFIG.upgradeTiers): the whole
+  // point of drawing them black and white. null = plain, as drawn.
+  this.upgradeTint = this.stats.enemy ? null : window.Casino.tintFor(unitKey);
 
   this.team = this.stats.enemy ? 'enemy' : 'player';
   this.direction = this.stats.enemy ? -1 : 1;
@@ -101,7 +108,7 @@ window.Unit.prototype.spawn = function (unitKey, startX) {
   window.Brain.reset(this);
 
   this.sprite.setAlpha(1);
-  this.sprite.clearTint();
+  this.paintTint();
 
   // How big to draw it. Two units can be the same size in the art tool and
   // still look big and small in the game - that is what "scale" is for.
@@ -124,6 +131,15 @@ window.Unit.prototype.spawn = function (unitKey, startX) {
   this.view.setVisible(true);
   this.playAnim('walk');
   this.refresh();
+};
+
+/* The bat's upgrade colour, or none for a plain one. */
+window.Unit.prototype.paintTint = function () {
+  if (this.upgradeTint !== null && this.upgradeTint !== undefined) {
+    this.sprite.setTint(this.upgradeTint);
+  } else {
+    this.sprite.clearTint();
+  }
 };
 
 /* -------------------------------------------------------------------------
@@ -201,7 +217,7 @@ window.Unit.prototype.refresh = function () {
   if (window.Frost.isFrozen(this)) {
     this.sprite.setTint(cfg.units.frozenTint);
   } else {
-    this.sprite.clearTint();
+    this.paintTint();
   }
 
   // Units nearer the front of the screen draw on top. Keeps the pile readable.

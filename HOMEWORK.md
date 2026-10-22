@@ -432,7 +432,7 @@ usual:
 
 ---
 
-### 🔲 B29. DECIDE: how do you GET potions and fruit? 🎰 *(this is the last thing blocking the casino)*
+### ✅ B29. DECIDE: how do you GET potions and fruit? 🎰 *(answered by Dad, and built)*
 
 Potions and fruit **work**. The only thing missing is how you get hold of them.
 
@@ -450,7 +450,12 @@ So, after you beat a cave:
    stuff you're betting?
 4. **Is one of them rare?** Should fruit only come from beating a **boss**, say?
 
-**Lewis's answer:** _(open)_
+**Answer (Dad, 2026-10-21):** *"you buy/gamble for potions and fruit at the
+casino, with suns."* Built: every win pays suns, and the **Casino** button on the
+title screen sells them, or lets you spin for them. They carry over (up to 3 of
+each in any one battle), a spin can never take what you already have, and
+neither is rare. Plus: **casino bats** you can only get there, with blood. All
+the prices are first guesses in `data/casino.js` — tell Dad what feels wrong!
 
 ---
 
