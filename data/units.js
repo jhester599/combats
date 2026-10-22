@@ -697,7 +697,9 @@ window.UNITS = {
                          (the ghosts hold the line, they do not break it), and
                          it is weaker than the rest in the last two caves.
 
-     PLACEHOLDER ART until Lewis draws it (64x64, facing east, like every bat).
+     REAL ART - 2026-10-22, Lewis & Jeff: a horned bat SKULL with torn, ragged
+     wings, a wispy ghost's tail instead of a body, and a reaper's SCYTHE. One
+     pose, 97x64 like every bat's 64px height.
      ===================================================================== */
   ghostBat: {
     name: 'Ghost Bat',
@@ -710,9 +712,9 @@ window.UNITS = {
     attackInterval: 1.0,
     range: 220,            // <-- how far back it stops. The longest in the game.
     speed: 60,
-    color: '#b8c8f0',      // placeholder art: a pale, ghostly blue
+    color: '#b8c8f0',      // only used by placeholder art - this bat has real art now
     sprite: 'ghostBat',
-    scale: 0.75,
+    scale: 0.75,           // drawn 98x65 on screen - Necrobatcer-sized
 
     ghosts: {
       unitKey: 'ghost',    // what it sends out (the next block)
@@ -722,13 +724,15 @@ window.UNITS = {
       spawnAhead: 20       // pixels in front of the Ghost Bat a ghost appears
     },
 
+    // One pose for now, so all four animations share frame 0. More frames go
+    // in assets/sprites/source/ghostBat/ - then re-run tools/pack-spritesheet.js.
     anims: {
-      frameWidth: 64,
+      frameWidth: 97,
       frameHeight: 64,
-      idle:   { start: 0,  end: 3,  frameRate: 6,  repeat: -1 },
-      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
-      attack: { start: 8,  end: 10, frameRate: 10, repeat: 0  },
-      death:  { start: 11, end: 14, frameRate: 8,  repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
@@ -745,18 +749,18 @@ window.UNITS = {
     attackInterval: 0.8,   // 3.75 dps, under a third of a Scout's
     range: 38,
     speed: 85,
-    color: '#eef4ff',      // placeholder art: nearly white
-    alpha: 0.7,            // see-through
-    sprite: 'ghost',
-    scale: 0.45,           // small
+    color: '#eef4ff',      // not used - it borrows the Ghost Bat's picture
+    alpha: 0.75,           // see-through, but still readable on a bright cave
+    sprite: 'ghostBat',    // a small, faded copy of its Ghost Bat until Lewis
+    scale: 0.45,           // draws a ghost of its own (drawn 59x39 on screen)
 
     anims: {
-      frameWidth: 64,
+      frameWidth: 97,
       frameHeight: 64,
-      idle:   { start: 0,  end: 3,  frameRate: 6,  repeat: -1 },
-      walk:   { start: 4,  end: 7,  frameRate: 8,  repeat: -1 },
-      attack: { start: 8,  end: 10, frameRate: 10, repeat: 0  },
-      death:  { start: 11, end: 14, frameRate: 10, repeat: 0  }
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
     }
   },
 
