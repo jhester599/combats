@@ -250,6 +250,91 @@ check('something eaten leaves no grave to raise', world.graves.length, 0);
 check('and the buildings were untouched', world.enemyBase.hp + world.playerBase.hp, 10000);
 W.Sting.useSeed(1);
 
+/* --------------------------------------------------------------------- */
+console.log('');
+console.log('  GHOST BAT (the first casino bat, 2026-10-22)');
+
+var G = W.UNITS.ghostBat.ghosts;
+check('the Ghost Bat is a casino bat', W.UNITS.ghostBat.casinoPrice > 0, true);
+check('...that never attacks', W.UNITS.ghostBat.attack, 0);
+check('...and stands further back than anything reaches',
+  Object.keys(W.UNITS).every(function (k) { return k === 'ghostBat' || W.UNITS[k].range < W.UNITS.ghostBat.range; }), true);
+check('...with less health than a Necrobatcer', W.UNITS.ghostBat.hp < W.UNITS.necroBat.hp, true);
+check('a ghost is never sold, earned or deployed', !!W.UNITS.ghost.summonOnly && !W.UNITS.ghost.casinoPrice, true);
+
+world = makeWorld();
+var gb = world.spawn('ghostBat', 100);
+world.step(G.interval - 0.1);
+check('no ghost before its first interval', world.count('ghost'), 0);
+world.step(0.2);
+check('one ghost after it', world.count('ghost'), 1);
+check('...which is reported', world.reports.indexOf('ghost') !== -1, true);
+world.step(G.interval * (G.maxAlive + 3));
+check('never more than maxAlive ghosts at once', world.count('ghost'), G.maxAlive);
+
+var ghost = world.units.filter(function (u) { return u.unitKey === 'ghost' && !u.isDying; })[0];
+var gbHp = gb.hp;
+ghost.takeDamage(10);
+check('a hit on a ghost comes off the Ghost Bat, times damageShare', near(gb.hp, gbHp - 10 * G.damageShare), true);
+check('...and the ghost is still standing', ghost.isDying, false);
+check('...showing the Ghost Bat\'s health on its bar', near(W.Ghost.healthRatio(ghost), gb.hp / gb.stats.hp), true);
+
+var scoutHits = 0;
+var tough = makeWorld();
+var gb2 = tough.spawn('ghostBat', 100);
+tough.step(G.interval + 0.1);
+var g2 = tough.units.filter(function (u) { return u.unitKey === 'ghost'; })[0];
+while (!gb2.isDying && scoutHits < 1000) { g2.takeDamage(W.UNITS.scoutBat.attack); scoutHits++; }
+check('a ghost takes more Scout hits than a whole Ghost Bat would',
+  scoutHits > Math.ceil(W.UNITS.ghostBat.hp / W.UNITS.scoutBat.attack), true);
+
+world = makeWorld();
+gb = world.spawn('ghostBat', 100);
+world.step(G.interval * 2 + 0.2);
+var before = world.count('ghost');
+gb.takeDamage(gb.hp);
+world.step(1 / W.CONFIG.sim.stepsPerSecond);
+check('when the Ghost Bat dies its ghosts fade with it', before > 0 && world.count('ghost') === 0, true);
+world.step(3);
+check('...and they leave no graves (nothing for a Necrobatcer to raise)',
+  world.graves.filter(function (g) { return g.unitKey === 'ghost'; }).length, 0);
+
+world = makeWorld();
+gb = world.spawn('ghostBat', 100);
+world.step(G.interval + 0.1);
+ghost = world.units.filter(function (u) { return u.unitKey === 'ghost'; })[0];
+gbHp = gb.hp;
+ghost.takeDamage(ghost.hp);              // what an instant kill or a Rabies bite does
+check('a hit that takes ALL the shared health destroys just that ghost', ghost.isDying, true);
+check('...and the Ghost Bat is untouched', gb.hp, gbHp);
+
+world = makeWorld();
+var looks = [];
+world.report = function (kind, details) {
+  if (kind === 'ghost') { looks.push(details.unit.look); }
+};
+gb = world.spawn('ghostBat', 100);
+var tries;
+for (tries = 0; tries < 60 && looks.length < 6; tries++) {
+  world.step(G.interval);
+  // make room for the next one, as if the front line had popped them
+  world.units.forEach(function (u) { if (u.unitKey === 'ghost' && !u.isDying) { u.takeDamage(u.hp); } });
+}
+check('each new ghost wears the next of the ' + W.UNITS.ghost.looks + ' drawings, round again (Jeff)',
+  looks.join(','), '0,1,2,3,0,1');
+
+// Pooling: a ghost must not latch on to whatever reuses its Ghost Bat's object.
+world = makeWorld();
+gb = world.spawn('ghostBat', 100);
+world.step(G.interval + 0.1);
+ghost = world.units.filter(function (u) { return u.unitKey === 'ghost'; })[0];
+gb.active = false;                       // as if it finished dying and was pooled...
+gb.spawn('scoutBat', 50);                // ...and came straight back as a Scout
+ghost.takeDamage(5);
+check('a ghost never shares health with the Scout that reuses its Ghost Bat', gb.hp, W.UNITS.scoutBat.hp);
+world.step(1 / W.CONFIG.sim.stepsPerSecond);
+check('...it fades instead', ghost.isDying || !ghost.active, true);
+
 console.log('');
 console.log('  ' + passed + ' passed, ' + failed + ' failed');
 console.log('');

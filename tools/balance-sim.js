@@ -68,6 +68,7 @@ require(path.join(root, 'src/systems/frost.js'));
 require(path.join(root, 'src/systems/bomb.js'));
 require(path.join(root, 'src/systems/rabies.js'));
 require(path.join(root, 'src/systems/engineer.js'));
+require(path.join(root, 'src/systems/ghost.js'));
 require(path.join(root, 'src/systems/brain.js'));
 require(path.join(root, 'src/systems/caves.js'));
 require(path.join(root, 'src/systems/team.js'));

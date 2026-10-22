@@ -63,6 +63,8 @@ committed PNG.
 | `assets/sprites/bombBat.png` — Bomb Bat in flying goggles: holding its bomb, and empty-handed (2 frames of 194×128) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
 | `assets/sprites/bomb.png` — the bomb the Bomb Bat drops (55×52) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-16 |
 | `assets/sprites/batBros.png` — the Bat Bros: both brothers wing to wing, 1 pose (134×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-17 |
+| `assets/sprites/ghostBat.png` — Ghost Bat (the first casino bat): horned skull, torn wings, a ghost's wispy tail and a scythe, 1 pose (97×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-22 |
+| `assets/sprites/ghost.png` — the Ghost Bat's ghosts: four little ghost bats with flame eyes and wispy tails, one per frame, worn in turn (4 frames of 71×64; stray specks off the edges removed) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-22 |
 | `assets/icons/icon-180.png`, `icon-192.png`, `icon-512.png` — the home-screen icon: the Bat Bros drawing on the game's dark purple | Lewis & Jeff (the drawing) | ⚠️ **tool not recorded** | 2026-10-17 |
 | *(superseded)* Scout Bat in goggles, Brute Bat in a cape | Lewis, via PixelLab (AI-generated) | ⚠️ see note below | 2026-09-18 |
 

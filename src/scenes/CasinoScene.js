@@ -24,9 +24,17 @@ window.CasinoScene = function () {
 window.CasinoScene.prototype = Object.create(Phaser.Scene.prototype);
 window.CasinoScene.prototype.constructor = window.CasinoScene;
 
-/* data.message: what the last tap did, shown along the bottom. */
+/* data.message: what the last tap did, shown along the bottom.
+   data.then: where you were going, when the casino is a stop BETWEEN ROUNDS
+   (Casino.betweenRounds) - { levelKey, team } - or null from the title screen.
+   data.batsBefore: casino bats owned on the way in, kept across redraws. */
 window.CasinoScene.prototype.init = function (data) {
-  this.message = (data && data.message) || 'Win caves to earn suns, then spend them here.';
+  this.then = (data && data.then) || null;
+  this.batsBefore = (data && typeof data.batsBefore === 'number') ? data.batsBefore
+    : window.Progress.load().casinoBats.length;
+  this.message = (data && data.message) ||
+    (this.then ? 'Spend your suns before the next battle - or carry on.'
+      : 'Win caves to earn suns, then spend them here.');
   this.messageColor = (data && data.messageColor) || '#b9a9e8';
 };
 
@@ -54,19 +62,38 @@ window.CasinoScene.prototype.create = function () {
   this.buildBatShelf(345, c);
   this.buildUpgrades(640);
 
-  this.add.text(cfg.screen.width / 2 + 60, 512, this.message, {
+  // Between rounds the bottom row is MENU, the message, and a big button on
+  // to the battle you were heading for. From the title screen it is BACK.
+  var messageX = this.then ? 410 : (cfg.screen.width / 2) + 60;
+  this.add.text(messageX, 512, this.message, {
     fontFamily: cfg.text.fontFamily, fontSize: '17px', color: this.messageColor,
-    align: 'center', wordWrap: { width: 700 }
+    align: 'center', wordWrap: { width: this.then ? 420 : 700 }
   }).setOrigin(0.5);
 
-  this.makeButton(70, 512, 110, 44, 'BACK', function () {
+  this.makeButton(70, 512, 110, 44, this.then ? 'MENU' : 'BACK', function () {
     self.scene.start('MenuScene');
   });
+
+  if (this.then) {
+    var verb = this.then.team ? 'TRY AGAIN: ' : 'ON TO ';
+    var go = this.makeButton(800, 510, 300, 50, verb + window.LEVELS[this.then.levelKey].name + '  \u25B6',
+      function () {
+        window.Casino.carryOn(self, self.then, self.batsBefore);
+      }, 0x2e7d4f);
+    if (go.text.width > 284) {
+      go.text.setScale(284 / go.text.width);
+    }
+  }
 };
 
 /* Redraw with a message about what just happened. */
 window.CasinoScene.prototype.say = function (message, good) {
-  this.scene.restart({ message: message, messageColor: good ? '#7ee08f' : '#ff9a8a' });
+  this.scene.restart({
+    message: message,
+    messageColor: good ? '#7ee08f' : '#ff9a8a',
+    then: this.then,
+    batsBefore: this.batsBefore
+  });
 };
 
 /* -------------------------------------------------------------------------
@@ -235,12 +262,7 @@ window.CasinoScene.prototype.portrait = function (key, x, y, maxW, maxH) {
   picture.setScale(Math.min(maxW / stats.anims.frameWidth, maxH / stats.anims.frameHeight));
   picture.play(key + '_idle');
 
-  var tint = window.Casino.tintFor(key);
-  if (tint !== null) {
-    picture.setTint(tint);
-  }
-
-  return picture;
+  return window.Casino.paintPortrait(picture, key);
 };
 
 /* A button; pad = how far its tap area reaches past it (src/systems/touch.js). */

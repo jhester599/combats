@@ -69,7 +69,7 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 |---|---|---|---|---|---|---|---|---|
 | **Scout Bat** | 25 | 1.4s | 40 | 8 | 0.6s | **13.3** | 40 | 90 |
 | **Brute Bat** | 90 | 6.0s | 220 | 30 | 1.4s | **21.4** | 46 | 45 |
-| **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **150** | 70 |
+| **Necrobatcer** | 60 | 4.0s | 70 | 4 | 1.2s | **3.3** | **200** | 70 |
 | **Archer Bat** | 55 | 3.0s | 24 | 22 | 1.1s | **20.0** | **160** | 75 |
 | **Bat Bros** | 55 | 2.0s | 80 | 16 | 0.6s | **26.7** | 40 | 90 |
 | **Cheer Bat** | 60 | 3.5s | 18 | 0 | 1.0s | **0** | 150 | 70 |
@@ -78,9 +78,12 @@ Every bat is a row of numbers in `data/units.js`. Nothing else defines it.
 | **Engineer Bat** | 60 | 3.5s | 60 | 0 | 1.0s | **0** | 0 | 0 |
 | **Frost Bat** | 55 | 3.0s | 70 | 8 | 1.0s | **8.0** | 40 | 75 |
 | **Rabies Bat** | 100 | 6.0s | 60 | 0 | 1.0s | **0** | 0 | 85 |
+| **Ghost Bat** | 75 | 5.0s | 45 | 0 | 1.0s | **0** | **220** | 60 |
+| **Ghost** | — | — | *shared* | 3 | 0.8s | **3.75** | 38 | 85 |
 
-*The last six all have powers that the table can't show — see "The six bats of
-caves 4–9" below. A 0 attack means the bat does not fight at all; its range then
+*The **Ghost Bat** is a casino bat (🎰, below); the **Ghost** is what it
+sends out, and has no health of its own. The six before them all have powers
+that the table can't show — see "The six bats of caves 4–9" below. A 0 attack means the bat does not fight at all; its range then
 only decides where it stands.*
 
 `DPS = attack ÷ attackInterval`.
@@ -212,6 +215,15 @@ in order, one earned per cave:
 | 7. Scarred Woods | **Engineer Bat** | *"makes energy grow faster"* | Stays at your door (speed 0); +35% energy per second while it lives. **Two don't stack.** `src/systems/engineer.js` |
 | 8. Abyss | **Frost Bat** | *"freezes the enemy when they touch for x seconds, will need to tune x"* | A touch either way freezes a bug for **x = 2.0s**; after thawing it can't be refrozen for 1.5s. `src/systems/frost.js` |
 | 9. Forgotten Oasis | **Rabies Bat** | *"walks into a random place of the map, then consumes everything within a certain distance, both bats and enemy"* — used up doing it | Walks to a random spot, shakes for 1.2s, eats everything within 90px. Eaten things leave no grave. `src/systems/rabies.js` |
+
+### The casino bats 🎰
+
+Bats you can only buy (or win) at the casino, with blood — never earned in a
+cave (D80). Jeff: *"there will be several potential new bats at the casino."*
+
+| Casino bat | Price | Jeff's brief | How it was built |
+|---|---|---|---|
+| **Ghost Bat** (2026-10-22, D82) | 300 blood (60 suns) | *"similar to necrobatcer, but the summons are small ghosts who do little damage but they are difficult to kill because they share the life with the ghost bat. it is a passive bat, which stays at a long range from the enemies, it has a smaller amount of health, so staying back is important."* | Never attacks; stands **220** back, further than anything reaches. Every **3.5s** it sends out a small, see-through **Ghost** (3.75 dps), at most **3** at once. A ghost has no health of its own: a hit on one costs the Ghost Bat **a quarter** of it, so ghosts are four times harder to wear down — and when the Ghost Bat dies, its ghosts fade. Ghosts leave no grave. **45 hp.** Drawn by Lewis & Jeff (2026-10-22): a horned skull with a scythe and a ghost's tail. Its ghosts have **four drawings of their own**, and each new ghost wears the next one in turn. `src/systems/ghost.js` |
 
 **Rules that are not numbers**, each chosen so nothing snowballs or decides a
 cave on one tap: Cheer and Engineer don't stack (a second one is a spare);
@@ -933,7 +945,8 @@ beat a cave  ->  SUNS  ->  the casino  ->  buy POTIONS and FRUIT
 ```
 
 - **Suns for a win:** a first win pays 20 + 10 x the cave's number (30 for cave
-  1, 120 for the Final Stadium); winning a cave again pays 10; practice and
+  1, 120 for the Final Stadium); winning a cave again pays 5 + 5 x its number
+  (10 for cave 1, 55 for the Final Stadium - D83); practice and
   losing pay nothing. Shown on the victory screen.
 - **The shop:** potion 20 suns, fruit 15. **1 sun buys 5 blood** (Jeff,
   2026-10-22), swapped 1 or 10 suns at a time.
@@ -954,6 +967,13 @@ beat a cave  ->  SUNS  ->  the casino  ->  buy POTIONS and FRUIT
   350, 550 blood a step, each +15% health and attack, shown as the bat's tint.
 
 Every one of those numbers is marked TRY ME — first guesses to be play-tested.
+
+**When you see it (2026-10-22, D81).** Jeff: *"the casino should be enabled as
+soon as you have earned 1 sun. it should present to the user between rounds."*
+So a new player never sees it until their first win, whose victory screen says
+**THE CASINO IS OPEN!** After that it stays open for good (spending your last
+sun does not close it), and NEXT CAVE and RETRY both go through it, with a big
+**ON TO** / **TRY AGAIN** button on to the battle. MENU skips it.
 
 ---
 

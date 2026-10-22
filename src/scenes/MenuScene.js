@@ -261,10 +261,15 @@ window.MenuScene.prototype.makeButton = function (x, y, w, h, label, onClick, pa
 
 /* -------------------------------------------------------------------------
    THE CASINO (milestone M4), and how many suns you have to spend there.
+   Only there once you have earned your first sun (Casino.isOpen).
    ------------------------------------------------------------------------- */
 window.MenuScene.prototype.buildCasinoButton = function () {
   var cfg = window.CONFIG;
   var self = this;
+
+  if (!window.Casino.isOpen()) {
+    return;
+  }
 
   this.makeButton(690, 470, 150, 38, 'Casino', function () {
     self.scene.start('CasinoScene');

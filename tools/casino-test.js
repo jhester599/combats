@@ -93,7 +93,16 @@ check('first win of cave 1 pays base + 1 step', W.Casino.winReward(caves[0], tru
   C.firstWinBase + C.firstWinPerCave);
 check('first win of the last cave pays the most', W.Casino.winReward(caves[caves.length - 1], true),
   C.firstWinBase + (C.firstWinPerCave * caves.length));
-check('a replay pays replayWin', W.Casino.winReward(caves[3], false), C.replayWin);
+check('a replay of cave 4 pays its replay rate', W.Casino.winReward(caves[3], false),
+  C.replayWinBase + (4 * C.replayWinPerCave));
+check('every cave pays more than the one before, first time AND again (Jeff, 2026-10-22)',
+  caves.every(function (k, i) {
+    return i === 0 || (W.Casino.winReward(k, true) > W.Casino.winReward(caves[i - 1], true) &&
+      W.Casino.winReward(k, false) > W.Casino.winReward(caves[i - 1], false));
+  }), true);
+check('a replay always pays less than a first win', caves.every(function (k) {
+  return W.Casino.winReward(k, false) < W.Casino.winReward(k, true);
+}), true);
 check('practice pays nothing', W.Casino.winReward(practiceKey, true), 0);
 
 fresh();
@@ -102,6 +111,47 @@ check('awardWin says what it paid', paid, C.firstWinBase + C.firstWinPerCave);
 check('...and it is in the wallet', W.Progress.load().suns, paid);
 check('...and it is saved', reopen().suns, paid);
 check('practice adds nothing to the wallet', (W.Casino.awardWin(practiceKey, true), W.Progress.load().suns), paid);
+
+/* ------------------------------------------------------------------------- */
+console.log('\nTHE CASINO OPENS AT THE FIRST SUN');
+
+// A pretend scene that just remembers where it was sent.
+function fakeScene() {
+  var f = { went: null };
+  f.scene = { start: function (key, data) { f.went = { key: key, data: data }; } };
+  return f;
+}
+
+fresh();
+check('a brand-new player has no casino', W.Casino.isOpen(), false);
+var trip = fakeScene();
+W.Casino.betweenRounds(trip, caves[0]);
+check('...so NEXT CAVE goes straight on, not to the casino', trip.went.key !== 'CasinoScene', true);
+W.Casino.awardWin(practiceKey, true);
+check('practice earns no suns, so it opens nothing', W.Casino.isOpen(), false);
+W.Casino.awardWin(caves[0], true);
+check('the first win opens it', W.Casino.isOpen(), true);
+W.Progress.load().suns = 0;
+check('...and spending every sun does not close it again', W.Casino.isOpen(), true);
+check('...which is remembered', reopen().sunsEarned > 0, true);
+
+trip = fakeScene();
+W.Casino.betweenRounds(trip, caves[1]);
+check('once open, NEXT CAVE stops at the casino', trip.went.key, 'CasinoScene');
+check('...remembering where you were going', trip.went.data.then.levelKey, caves[1]);
+check('...with no team, so it carries on the usual way', trip.went.data.then.team, null);
+
+var retryTeam = W.LEVELS[caves[0]].playerUnits.slice(0, W.Team.size());
+trip = fakeScene();
+W.Casino.betweenRounds(trip, caves[0], retryTeam);
+check('RETRY stops at the casino too', trip.went.key, 'CasinoScene');
+var onward = fakeScene();
+W.Casino.carryOn(onward, trip.went.data.then, W.Progress.load().casinoBats.length);
+check('...and carries on straight into the same battle', onward.went.key, 'BattleScene');
+check('...with the same team', onward.went.data.team.join(), retryTeam.join());
+
+check('a save from before this keeps its casino open if it has suns',
+  (stored = {}, stored[W.Progress.STORAGE_KEY] = JSON.stringify({ beaten: [], suns: 7 }), reopen().sunsEarned), 7);
 
 /* ------------------------------------------------------------------------- */
 console.log('\nTHE SHOP');
@@ -191,6 +241,10 @@ W.Progress.load().blood = 50;
 check('can buy with exactly enough', W.Casino.buyBat('testLuckyBat'), true);
 check('...it is owned', W.Casino.ownsBat('testLuckyBat'), true);
 check('...it is saved', reopen().casinoBats.join(), 'testLuckyBat');
+var afterBuy = fakeScene();
+W.Casino.carryOn(afterBuy, { levelKey: caves[0], team: W.LEVELS[caves[0]].playerUnits.slice(0, W.Team.size()) }, 0);
+check('a RETRY after buying a casino bat goes in with it (or via the Locker to pick it)',
+  afterBuy.went.key === 'LockerScene' || afterBuy.went.data.team.indexOf('testLuckyBat') !== -1, true);
 W.Progress.load().blood = 500;
 check('cannot buy the same bat twice', W.Casino.buyBat('testLuckyBat'), false);
 check('cannot buy a bat that is not a casino bat', W.Casino.buyBat(W.LEVELS[caves[0]].playerUnits[0]), false);
@@ -212,7 +266,7 @@ check('...it is yours', W.Casino.ownsBat('testDiceBat'), true);
 check('cannot bat-spin without the blood', W.Casino.spinForBat(rolls([0, 0])), null);
 
 W.Progress.load().blood = 999;
-W.Progress.load().casinoBats = ['testLuckyBat', 'testDiceBat'];
+W.Progress.load().casinoBats = W.Casino.casinoBats();
 check('cannot bat-spin when you own them all', W.Casino.spinForBat(rolls([0, 0])), null);
 check('...and it cost nothing', W.Progress.load().blood, 999);
 

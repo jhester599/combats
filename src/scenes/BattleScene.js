@@ -580,6 +580,7 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
     picture.setOrigin(0.5, 1);
     picture.setScale(this.portraitScaleFor(stats) * shrink);
     picture.play(unitKey + '_idle');
+    window.Casino.paintPortrait(picture, unitKey);   // its upgrade colour
     portraits.push(picture);
   }
 
@@ -1182,14 +1183,15 @@ window.BattleScene.prototype.buildResultPanel = function () {
     // Winning recorded this cave a moment ago, so the next one is unlocked by
     // the time this button can be pressed. Checked anyway rather than assumed.
     // Via the Locker, where you can fit your new bat into the team.
+    // Through the casino first, once it is open (src/systems/casino.js).
     if (nextKey && window.Progress.isUnlocked(nextKey)) {
-      window.Team.startCave(self, nextKey);
+      window.Casino.betweenRounds(self, nextKey);
     }
   });
 
-  // Same cave, same team - straight back in.
+  // Same cave, same team - back in, via the casino once it is open.
   var retry = this.makePanelButton('RETRY', function () {
-    self.scene.restart({ levelKey: self.levelKey, team: self.team });
+    window.Casino.betweenRounds(self, self.levelKey, self.team);
   });
 
   var menu = this.makePanelButton('MENU', function () {
@@ -1318,8 +1320,10 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
   this.earnedBat = firstWin ? window.Caves.earnedBy(this.levelKey) : null;
 
   // SUNS for the win (the casino, milestone M4): more for a first win.
+  var casinoWasOpen = window.Casino.isOpen();
   this.sunsWon = playerWon ? window.Casino.awardWin(this.levelKey, firstWin) : 0;
-  this.resultPanel.sunsText.setText('+' + this.sunsWon + ' suns  \u2600  - spend them at the Casino');
+  this.resultPanel.sunsText.setText('+' + this.sunsWon + ' suns  \u2600  - ' +
+    (casinoWasOpen ? 'spend them at the Casino' : 'THE CASINO IS OPEN!'));
 
   this.resultPanel.title.setText(playerWon ? 'VICTORY!' : 'DEFEAT');
   this.resultPanel.subtitle.setText(this.resultMessage(playerWon));

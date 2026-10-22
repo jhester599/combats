@@ -25,6 +25,11 @@
                   This is how two units drawn at the same size in the art tool
                   end up looking big and small in the game.
    anims          which picture frames to use for each animation
+   casinoPrice    OPTIONAL. blood it costs at the casino. A bat with one is a
+                  CASINO BAT: never earned in a cave, only bought or won there
+   alpha          OPTIONAL. how see-through to draw it (1 = solid)
+   looks          OPTIONAL. several drawings of one unit, one frame each; every
+                  new one takes the next (a Ghost Bat's ghosts)
 
    DAMAGE PER SECOND (DPS) = attack / attackInterval
      Scout Bat: 8 / 0.6  = 13.3 dps   (fast little pokes)
@@ -175,7 +180,15 @@ window.UNITS = {
     // the Archer keeps the longest reach in Palopa, and 150 still out-reaches
     // every bug, the Cow Killer Bee's 130 stinger included. Measured: it does
     // as well as it did at 200.
-    range: 150,            // <-- TRY ME: 40 and it walks into the fight and dies
+    //
+    // 150 -> 200 on 2026-10-22 (D83). Jeff, play-testing: "increase the range
+    // of necrobatcer, it is currently standing in-line with archer bat." 150
+    // against the Archer's 160 parks the two side by side; at 200 the summoner
+    // stands clearly behind the shooters. The Archer keeps the longest reach of
+    // anything that does real damage (B9) - this bat's hit is 4. Measured over
+    // every Locker team in caves 4-10: teams with it won 65% at 150, 67% at
+    // 200 (66% without it) - better, not a walkover.
+    range: 200,            // <-- TRY ME: 40 and it walks into the fight and dies
     speed: 70,
     color: '#8f7fd6',      // only used by placeholder art - this bat has real art now
     sprite: 'necroBat',
@@ -656,9 +669,114 @@ window.UNITS = {
     }
   },
 
+  /* =====================================================================
+     THE GHOST BAT - the first CASINO BAT (Jeff, 2026-10-22)
+     =====================================================================
+     "similar to necrobatcer, but the summons are small ghosts who do little
+      damage but they are difficult to kill because they share the life with
+      the ghost bat. it is a passive bat, which stays at a long range from the
+      enemies, it has a smaller amount of health, so staying back is
+      important."
+
+     You cannot earn it in a cave: it is bought at the casino with blood
+     (casinoPrice), or won in a bat spin. Rules: src/systems/ghost.js.
+
+     It NEVER ATTACKS (attack 0). Its range is how far back it stops - further
+     than anything in Palopa reaches, the Archer's 160 and the Bee's 130
+     included - so nothing touches it until the front line breaks.
+
+     Its GHOSTS have no health of their own: a hit on one comes off the Ghost
+     Bat, times damageShare. At 0.25 a ghost takes four times the beating
+     before the same health is gone - but every hit still counts, so a big
+     swarm on the ghosts wears the Ghost Bat down from a distance.
+
+     MEASURED (2026-10-22), every Locker team in every cave with the Ghost Bat
+     added to the choice, three attentive players and a beginner each:
+       damageShare 0.4   teams with it won 57%, without it 66% - a trap
+       damageShare 0.3   64% vs 66%
+       damageShare 0.25  70% vs 66% (beginners 63% vs 60%) - kept: worth the
+                         blood without being a walkover. Its wins are slower
+                         (the ghosts hold the line, they do not break it), and
+                         it is weaker than the rest in the last two caves.
+
+     REAL ART - 2026-10-22, Lewis & Jeff: a horned bat SKULL with torn, ragged
+     wings, a wispy ghost's tail instead of a body, and a reaper's SCYTHE. One
+     pose, 97x64 like every bat's 64px height.
+     ===================================================================== */
+  ghostBat: {
+    name: 'Ghost Bat',
+    blurb: 'Sends out ghosts that share its health. Never fights. Keep it back!',
+    casinoPrice: 300,      // <-- TRY ME: blood (60 suns' worth at 1 sun = 5 blood)
+    cost: 75,              // <-- TRY ME
+    cooldown: 5.0,         // below 75 / 13 = 5.8s, so money is the limit (D9)
+    hp: 45,                // <-- TRY ME: small, as asked - a Scout has 40, a Brute 220
+    attack: 0,             // passive: it never attacks
+    attackInterval: 1.0,
+    range: 220,            // <-- how far back it stops. The longest in the game.
+    speed: 60,
+    color: '#b8c8f0',      // only used by placeholder art - this bat has real art now
+    sprite: 'ghostBat',
+    scale: 0.75,           // drawn 98x65 on screen - Necrobatcer-sized
+
+    ghosts: {
+      unitKey: 'ghost',    // what it sends out (the next block)
+      interval: 3.5,       // <-- TRY ME: seconds between ghosts
+      maxAlive: 3,         // <-- TRY ME: most of its own ghosts out at once
+      damageShare: 0.25,   // <-- TRY ME: a hit on a ghost costs the Ghost Bat a quarter of it
+      spawnAhead: 20       // pixels in front of the Ghost Bat a ghost appears
+    },
+
+    // One pose for now, so all four animations share frame 0. More frames go
+    // in assets/sprites/source/ghostBat/ - then re-run tools/pack-spritesheet.js.
+    anims: {
+      frameWidth: 97,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
+    }
+  },
+
+  /* A GHOST - sent out by a Ghost Bat, never bought. No button, no Locker
+     card, no grave. Its hp below is never used: it shares its Ghost Bat's. */
+  ghost: {
+    name: 'Ghost',
+    summonOnly: true,      // never deployed, earned or sold - only summoned
+    noGrave: true,         // it was never alive, so it cannot be raised
+    cost: 0,
+    cooldown: 0,
+    hp: 1,                 // not used - see above
+    attack: 3,             // <-- TRY ME: little damage, as asked
+    attackInterval: 0.8,   // 3.75 dps, under a third of a Scout's
+    range: 38,
+    speed: 85,
+    color: '#eef4ff',      // only used by placeholder art - ghosts have real art now
+    alpha: 0.75,           // see-through, but still readable on a bright cave
+    sprite: 'ghost',
+    scale: 0.5,            // drawn about 43px tall - small next to its Ghost Bat's 65
+
+    // REAL ART - 2026-10-22, Lewis & Jeff: FOUR little ghost bats, each with
+    // flame eyes and a wispy tail. A Ghost Bat sends them out IN TURN - its
+    // first ghost wears drawing 1, the next drawing 2, and so on round again
+    // (Jeff: "make the images alternate each time a new bat is summoned").
+    // looks = how many drawings; each is one frame of the sheet, 0 to 3.
+    looks: 4,
+
+    anims: {
+      frameWidth: 71,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
+      // frames 1-3 of the sheet are the other three looks - picked per ghost
+    }
+  },
+
+
   /* TODO for Lewis - fun bats to invent later:
      - healerBat:  needs a new "heal" power in the code, ask Dad
-     - ghostBat:   walks past enemies without fighting until it reaches the base
   */
 
   /* =====================================================================

@@ -107,7 +107,7 @@ window.Unit.prototype.spawn = function (unitKey, startX) {
   // Units are pooled, so ALL of it is reset for every new bat, in one place.
   window.Brain.reset(this);
 
-  this.sprite.setAlpha(1);
+  this.sprite.setAlpha(this.baseAlpha());
   this.paintTint();
 
   // How big to draw it. Two units can be the same size in the art tool and
@@ -131,6 +131,11 @@ window.Unit.prototype.spawn = function (unitKey, startX) {
   this.view.setVisible(true);
   this.playAnim('walk');
   this.refresh();
+};
+
+/* How solid to draw it: 1, or less for something see-through (a ghost). */
+window.Unit.prototype.baseAlpha = function () {
+  return (this.stats.alpha === undefined) ? 1 : this.stats.alpha;
 };
 
 /* The bat's upgrade colour, or none for a plain one. */
@@ -189,6 +194,15 @@ window.Unit.prototype.playAnim = function (animName, forceRestart) {
   }
 
   this.currentAnim = animName;
+
+  // A unit drawn in several LOOKS (a Ghost Bat's ghosts) is one still picture
+  // per look, not an animation - refresh() keeps it on the right one.
+  if (this.stats.looks) {
+    this.sprite.stop();
+    this.sprite.setFrame(this.look || 0);
+    return;
+  }
+
   this.sprite.play(this.unitKey + '_' + animName, false);
 };
 
@@ -213,6 +227,12 @@ window.Unit.prototype.refresh = function () {
   // flying home turns round.
   this.sprite.setFlipX(this.direction < 0);
 
+  // Which drawing a ghost wears is decided just AFTER it appears, so it is
+  // kept up to date here (see playAnim).
+  if (this.stats.looks && this.sprite.frame.name !== (this.look || 0)) {
+    this.sprite.setFrame(this.look || 0);
+  }
+
   // Frozen bugs go icy blue (homework-free: Jeff's Frost Bat, 2026-10-12).
   if (window.Frost.isFrozen(this)) {
     this.sprite.setTint(cfg.units.frozenTint);
@@ -226,11 +246,12 @@ window.Unit.prototype.refresh = function () {
   if (this.isDying) {
     // Fade out as the death animation plays.
     var remaining = this.dyingTimer / this.deathDuration;
-    this.sprite.setAlpha(remaining < 0 ? 0 : remaining);
+    this.sprite.setAlpha(remaining < 0 ? 0 : remaining * this.baseAlpha());
     return;
   }
 
-  var ratio = this.hp / this.stats.hp;
+  // A Ghost Bat's ghost shows the health it shares (src/systems/ghost.js).
+  var ratio = window.Ghost.healthRatio(this);
 
   // An untouched bat does not need a bar - it just adds clutter to a big pile.
   var showBar = !(cfg.healthBar.hideUnitBarWhenFull && ratio >= 1);
