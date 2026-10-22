@@ -17,11 +17,11 @@ window.CONFIG = {
      to tell which build you are playing.
 
      The number after the dot is the last pull request that went into the
-     game: v1.13 = everything up to and including PR #13. Bump it as part of
-     each PR (PR #14 makes it v1.14). PRs #6 and #7 forgot to, so it went
+     game: v1.14 = everything up to and including PR #14. Bump it as part of
+     each PR (PR #15 makes it v1.15). PRs #6 and #7 forgot to, so it went
      straight from v1.05 to v1.08.
      --------------------------------------------------------------------- */
-  version: 'v1.13',
+  version: 'v1.14',
 
   /* ---------------------------------------------------------------------
      SCREEN
@@ -452,14 +452,27 @@ window.CONFIG = {
      column - ten buttons stacked vertically would not fit on the screen.
      --------------------------------------------------------------------- */
   menu: {
-    caveWidth: 150,
+    caveWidth: 150,        // also the size of the cave pictures in assets/bg/thumbs/
     caveHeight: 52,
     caveGap: 14,
     cavesPerRow: 5,        // 5 across x 2 rows holds the ten caves of B10
-    caveRowY: 268,         // top row's centre line
-    practiceY: 400,        // the "just for practice" row sits below the caves
+    caveRowY: 254,         // top row's centre line
+    practiceY: 388,        // the "just for practice" row sits below the caves
     practiceWidth: 250,
-    practiceHeight: 44,
+    practiceHeight: 40,
+    buttonsY: 436,         // Full screen, Credits, Casino
+
+    // ------------------- THE TITLE SCREEN (2026-10-22) -------------------
+    logoY: 100,            // the centre of Lewis's ComBats logo
+    slideSeconds: 8,       // each cave painting behind the title stays this long
+    slideFade: 1.5,        // seconds to fade from one painting to the next
+    backdropDim: 0.55,     // how dark the painting is kept, so buttons stay readable
+    flyerEvery: 2.2,       // a bat flies across every this many seconds...
+    flyerMost: 6,          // ...but never more than this many at once
+    chaseChance: 0.25,     // how often a mosquito is chasing one
+    sparkleEvery: 0.6,     // seconds between sparkles on the logo
+    lineupY: 534,          // where your bat lineup stands, along the bottom
+    lineupHeight: 40,      // the tallest a bat in the lineup is drawn
 
     // A cave you have not unlocked yet. Shown, but plainly not available -
     // seeing what is ahead is half the point of a map.

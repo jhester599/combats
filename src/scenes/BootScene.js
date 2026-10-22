@@ -133,6 +133,18 @@ window.BootScene.prototype.preload = function () {
      they are only ~145KB. */
   this.load.image('batFortress', 'assets/bases/batFortress.webp');
   this.load.image('beeFortress', 'assets/bases/beeFortress.webp');
+
+  /* THE TITLE SCREEN (2026-10-22). Lewis's ComBats logo, already shrunk to
+     the size it is drawn (420x181) - the game draws pixel-sharp, so a big
+     picture squeezed down in the engine would come out jagged. And a little
+     150x52 picture of every cave for its button, ~3KB each, cut from the
+     cave's painting (assets/bg/thumbs/). */
+  this.load.image('logo', 'assets/ui/logo.webp');
+
+  var self = this;
+  Object.keys(window.BACKGROUNDS || {}).forEach(function (key) {
+    self.load.image('thumb_' + key, 'assets/bg/thumbs/' + key + '.webp');
+  });
 };
 
 /* -------------------------------------------------------------------------

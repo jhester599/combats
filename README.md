@@ -65,9 +65,10 @@ creative calls, and there's a paper trail so nothing gets lost between sessions:
 | File | What it's for |
 |---|---|
 | **[`DESIGN.md`](DESIGN.md)** | The living design document. What the game *is*, what's decided, what's still open. |
-| **[`HOMEWORK.md`](HOMEWORK.md)** | 🦇 **Lewis's current questions — Round 4.** Start here. |
+| **[`HOMEWORK.md`](HOMEWORK.md)** | 🦇 **Lewis's current questions — Round 5.** Start here. |
 | **[`HOMEWORK_BACKLOG.md`](HOMEWORK_BACKLOG.md)** | Every question for the whole game, sorted by when we need it. |
 | **[`DECISIONS.md`](DECISIONS.md)** | The decision loop, and the log of what's been settled and why. |
+| **[`ROADMAP.md`](ROADMAP.md)** | Ideas we like but haven't built yet — the cooler casino, the map of Palopa, sound. |
 
 **Lewis answers → Dad tells Claude → the loop in `DECISIONS.md` folds it into
 the design and builds it.**
@@ -383,7 +384,7 @@ src/
   main.js             starts Phaser, lists the scenes
   scenes/
     BootScene.js      draws the placeholder art, builds the animations
-    MenuScene.js      title, cave picker, Casino button, credits
+    MenuScene.js      the title screen: Lewis's logo, cave pictures, flying bats, your lineup
     LockerScene.js    pick your team of three before a cave
     BattleScene.js    the battle, the UI, win/lose
     CasinoScene.js    spend suns and blood: shop, spins, casino bats, upgrades
@@ -427,6 +428,8 @@ tools/
 assets/
   sprites/            the bats, and the sprite sheets they are packed into
   bg/                 one painting per cave, named after its cave key
+    thumbs/           a 150x52 strip of each, for its title-screen button
+  ui/                 the ComBats logo
   bases/              the two fortresses
 ```
 

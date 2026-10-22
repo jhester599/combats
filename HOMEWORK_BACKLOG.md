@@ -23,17 +23,19 @@ Every creative-director decision for the whole game, in one place, sorted by
 > markers, three more bugs, and potions and fruit. Logged as decisions 4–25 in
 > `DECISIONS.md`.
 >
-> **🟡 On the plate now (Round 4) — three, and one is drawing:**
+> **🟡 On the plate now (Round 5, 2026-10-22) — the casino, mostly:**
 >
 > | | # | Question | Why it's here |
 > |---|---|---|---|
-> | 🦂 | **B28** | Is "Desert Scorpion" the right name? | His B26 bug and the old Scorpion now have near-identical names for very different animals |
-> | 🎰 | ~~**B29**~~ | How do you *get* potions and fruit? | ✅ **Answered by Jeff & built 2026-10-21** — suns at the casino (D79) |
-> | 🎨 | **B30** | Draw the three new bugs | All three are still coloured blobs |
-> | 🎨 | **B4** | Draw the Archer Bat | 3 of 4 bats are drawn; the Archer is the last |
-> | 🎨 | **B3/B4** | Draw the old bugs and the Bee | Still coloured blobs |
+> | 🎰 | **B32** | Which casino ideas first? | Nine ideas in `ROADMAP.md`; Lewis picks his top 3 |
+> | 🎩 | **B33** | Draw and name the dealer bat | The casino's host, talking in speech bubbles (roadmap C7) |
+> | ☀️ | **B34** | Draw four icons: sun, blood, potion, fruit | To replace the words, and for the slot machine's reels (C8) |
+> | 👻 | **B35** | Invent the next casino bat | The Ghost Bat is the first of "several" (Jeff) |
+> | 🗺️ | **B36** | A drawn map of Palopa? | Title idea 6, parked (no rush) |
+> | 🦂 | **B28** | Is "Desert Scorpion" the right name? | Still open from Round 4 |
 >
-> **The bottleneck is still art, not design.** Nothing in M3 waits on Dad.
+> **Done since Round 4:** B29 (the casino, D79), B30 (every bug is drawn), and
+> every bat is drawn too — the Ghost Bat and its ghosts included.
 >
 > Written out in full in `HOMEWORK.md` — go there to answer them.
 
@@ -380,7 +382,7 @@ Lewis's:
 
 **Lewis's answer:** _(open)_ → `DESIGN.md` §8
 
-### 🔲 B30. DRAW: The three new bugs *(needed by M3 — ON THE PLATE)*
+### ✅ B30. DRAW: The three new bugs *(DONE — all three drawn and in the game)*
 
 All three of B26's bugs are still shapes the game paints itself, told apart only
 by colour: desert sand, dream magenta, firefly yellow-green.
@@ -402,6 +404,44 @@ already, so a sixth needs a way to choose a team of five before a cave. Ask
 whether that is fine or whether he has a better idea.
 
 **Lewis's answer:** _(open)_ → `DESIGN.md` §3, §7
+
+### 🔲 B32. DECIDE: Which casino ideas first? *(Round 5 — ON THE PLATE)*
+
+The casino works (D79) but looks like a form. `ROADMAP.md` lists nine ideas, C1
+to C9: a slot machine, a neon sign, moving numbers, a spotlight shelf, a paint
+shop, rooms, a dealer bat, icons, more casino bats. Lewis picks his top three.
+Dad's suggestion if he has none: C1, C2, C3 and C5 (no new art needed).
+
+**Lewis's answer:** _(open)_ → `ROADMAP.md`, then `DESIGN.md` §8
+
+### 🔲 B33. DRAW + NAME: The casino's dealer bat *(Round 5 — ON THE PLATE)*
+
+A host who talks in speech bubbles instead of the message line at the bottom
+(roadmap C7). A name, a look, a catchphrase.
+
+**Lewis's answer:** _(open)_ → `DESIGN.md` §8
+
+### 🔲 B34. DRAW: Four icons — sun, blood, potion, fruit *(Round 5 — ON THE PLATE)*
+
+To replace the words wherever money and items are shown, and to be the symbols
+on the slot machine's reels (roadmap C8, C1).
+
+**Lewis's answer:** _(open)_ → `DESIGN.md` §9
+
+### 🔲 B35. INVENT: The next casino bat *(Round 5 — ON THE PLATE)*
+
+Jeff: *"there will be several potential new bats at the casino."* The Ghost Bat
+is the first (D82). A name, a power no other bat has, and roughly how dear.
+
+**Lewis's answer:** _(open)_ → `DESIGN.md` §3
+
+### 🔲 B36. DRAW: A map of Palopa? *(Round 5 — no rush)*
+
+Title-screen idea 6, parked when the rest were built (D84): the ten caves on a
+drawn map, joined by a path, instead of two rows of buttons. Does he want it,
+and where is everything?
+
+**Lewis's answer:** _(open)_ → `ROADMAP.md`, then `DESIGN.md` §9
 
 ### 🔲 B14. PICK ONE: A second lane? *(needed by M5)*
 

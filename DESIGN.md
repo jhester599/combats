@@ -428,9 +428,9 @@ said "the desert has scorpions", but Palopa already had a Scorpion, and his is a
 different animal: fast and gambling where the old one is slow and armoured. They
 are both in the game under two names that sound like the same creature.
 
-**`[TO DECIDE]` — what do the three new bugs look like?** *(B30, new)* — all
-three are still art the game draws itself, in placeholder colours: desert sand,
-dream magenta and firefly yellow-green.
+**DRAWN — what the three new bugs look like** *(B30)* — all three are Lewis's
+drawings now: the Desert Scorpion, the Evil Butterfly with angry eyes on its
+wings, and the Lightning Bug with glowing antennae and tail (§9, `ASSETS.md`).
 
 ---
 
@@ -985,6 +985,30 @@ shared, and the two buildings are no longer a blue box and a red box.
 `data/backgrounds.js` and `assets/bg/` hold the caves; `assets/bases/` holds the
 fortresses.
 
+### The title screen (2026-10-22, D84)
+
+Lewis wanted the title screen *"to look much cooler"*, and chose from a list
+(the drawn map of Palopa, idea 6, is parked for later):
+
+1. **A living backdrop.** The paintings of every cave you have reached take
+   turns behind the title, each drifting slowly sideways and fading into the
+   next, kept dark so the buttons read. It opens on the furthest cave you have
+   got to.
+2. **Bats flying across**, only ones you have earned or bought, in their
+   upgrade colours, at different heights and speeds, a quarter of them chased
+   by a mosquito. Tap one and it does a flip.
+3. **The title arrives.** The logo drops in and bounces once per visit, then
+   floats, with sparkles twinkling on the letters.
+4. **Cave buttons are pictures**, a strip of each cave's painting: gold border
+   and tick when beaten, a pulsing gold glow on the next one, dark with a
+   padlock when locked.
+5. **Your bat lineup** along the bottom: every bat in the game, yours in
+   colour, the rest black silhouettes with a "?". Tap one for its name, or for
+   where to get it ("beat Wait Um to earn it", "find it at the Casino").
+7. **Lewis's logo**, `assets/ui/logo.webp`, in place of the typed title.
+
+Every timing is in `CONFIG.menu` (data/config.js).
+
 ### The two fortresses
 
 Yours is a **crystal keep flying bat banners**. The enemy's is a **fortified
@@ -1277,8 +1301,13 @@ Full detail is in `README.md`; the design-relevant parts:
 | B27 | What do blood, potions and fruits do? | §8 | ✅ **answered & built** — potion + fruit are battle actions |
 | B28 | Is "Desert Scorpion" the right name? | §4 | 🔲 **new — on the plate** |
 | B29 | How do you *get* potions and fruit? | §8 | ✅ **answered by Jeff & built** — bought or spun for with suns at the casino |
-| B30 | What do the three new bugs look like? | §9 | 🔲 **new — on the plate** |
+| B30 | What do the three new bugs look like? | §9 | ✅ **drawn & in the game** |
 | B31 | Which bats do caves 4–9 earn? | §3, §7 | ✅ **answered by Jeff & built 2026-10-12** — six bats, team of 3 |
+| B32 | Which casino ideas first? | §8, `ROADMAP.md` | 🔲 **new — on the plate** |
+| B33 | Draw and name the casino's dealer bat | §8, `ROADMAP.md` | 🔲 **new — on the plate** |
+| B34 | Draw four icons: sun, blood, potion, fruit | §9, `ROADMAP.md` | 🔲 **new — on the plate** |
+| B35 | Invent the next casino bat | §3, §8 | 🔲 **new — on the plate** |
+| B36 | A drawn map of Palopa for the title screen? | §9, `ROADMAP.md` | 🔲 **new — no rush** |
 
 ### Solved, mostly: the all-or-nothing ending (B9)
 
