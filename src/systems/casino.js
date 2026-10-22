@@ -49,10 +49,52 @@ window.Casino.awardWin = function (levelKey, firstWin) {
 
   if (suns > 0) {
     casinoState().suns += suns;
+    casinoState().sunsEarned += suns;
     window.Progress.save();
   }
 
   return suns;
+};
+
+/* -------------------------------------------------------------------------
+   IS THE CASINO OPEN? From the first sun you ever earn, and for good after
+   that - spending your last sun does not lock you out (Jeff, 2026-10-22:
+   "the casino should be enabled as soon as you have earned 1 sun").
+   ------------------------------------------------------------------------- */
+window.Casino.isOpen = function () {
+  var state = casinoState();
+  return state.sunsEarned > 0 || state.suns > 0 || state.blood > 0;
+};
+
+/* -------------------------------------------------------------------------
+   BETWEEN ROUNDS (Jeff: "it should present to the user between rounds").
+   On the way from one battle to the next - NEXT CAVE or RETRY - you pass
+   through the casino, once it is open, and its big button carries on to
+   where you were going. Before it is open you go straight there.
+
+   'team' is for RETRY: go back in with the same team, as before.
+   ------------------------------------------------------------------------- */
+window.Casino.betweenRounds = function (scene, levelKey, team) {
+  if (window.Casino.isOpen()) {
+    scene.scene.start('CasinoScene', { then: { levelKey: levelKey, team: team || null } });
+    return;
+  }
+
+  window.Casino.carryOn(scene, { levelKey: levelKey, team: team || null }, 0);
+};
+
+/* Leave the casino for the battle you were on your way to. A RETRY keeps its
+   team - unless you have just got a new casino bat, when the Locker opens so
+   you can take it in. 'batsBefore' = how many casino bats you had on arrival. */
+window.Casino.carryOn = function (scene, then, batsBefore) {
+  var gotNewBat = casinoState().casinoBats.length > batsBefore;
+
+  if (then.team && !gotNewBat && window.Team.isValid(then.team, then.levelKey)) {
+    scene.scene.start('BattleScene', { levelKey: then.levelKey, team: then.team });
+    return;
+  }
+
+  window.Team.startCave(scene, then.levelKey);
 };
 
 /* -------------------------------------------------------------------------

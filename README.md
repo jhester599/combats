@@ -183,8 +183,10 @@ test the locking.
 ### Suns and the Casino
 
 Every win pays **suns** (☀) — more for a first win the further into Palopa the
-cave is, a little for winning it again, nothing for practice. Spend them at the
-**Casino** (button on the title screen):
+cave is, a little for winning it again, nothing for practice. Your first sun
+opens the **Casino**. From then on it appears **between rounds** — NEXT CAVE and
+RETRY stop there first, with a big button on to the battle — and it has a
+button on the title screen:
 
 - **Shop** — buy potions and fruit, or swap suns for **blood**.
 - **Spin** — gamble suns for potions and fruit. A spin only ever costs the spin.
@@ -284,7 +286,7 @@ node tools/sting-test.js    # 27 checks - the Desert Scorpion's gamble
 node tools/items-test.js    # 37 checks - potions and fruit
 node tools/roster-test.js   # 47 checks - which cave earns which bat, the Locker, the Bat Bros
 node tools/powers-test.js   # 38 checks - Cheer, Bomb, Skeleton, Engineer, Frost, Rabies
-node tools/casino-test.js   # 110 checks - suns, the shop, the spins, casino bats, upgrades, the bag
+node tools/casino-test.js   # 124 checks - suns, the shop, the spins, casino bats, upgrades, the bag
 ```
 
 ### Is every cave harder than the one before?

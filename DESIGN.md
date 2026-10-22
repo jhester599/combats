@@ -955,6 +955,13 @@ beat a cave  ->  SUNS  ->  the casino  ->  buy POTIONS and FRUIT
 
 Every one of those numbers is marked TRY ME — first guesses to be play-tested.
 
+**When you see it (2026-10-22, D81).** Jeff: *"the casino should be enabled as
+soon as you have earned 1 sun. it should present to the user between rounds."*
+So a new player never sees it until their first win, whose victory screen says
+**THE CASINO IS OPEN!** After that it stays open for good (spending your last
+sun does not close it), and NEXT CAVE and RETRY both go through it, with a big
+**ON TO** / **TRY AGAIN** button on to the battle. MENU skips it.
+
 ---
 
 ## 9. Look & Sound

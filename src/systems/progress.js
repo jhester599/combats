@@ -36,8 +36,8 @@ window.Progress.STORAGE_KEY = 'battleBats.progress.v1';
 /* What we keep. Kept flat and boring on purpose - it has to survive being
    loaded by a future version of the game. */
 window.Progress.blank = function () {
-  return { beaten: [], team: [], suns: 0, blood: 0, bag: { potion: 0, fruit: 0 }, upgrades: {},
-    casinoBats: [] };
+  return { beaten: [], team: [], suns: 0, sunsEarned: 0, blood: 0, bag: { potion: 0, fruit: 0 },
+    upgrades: {}, casinoBats: [] };
 };
 
 /* A whole number, 0 or more - anything else in a save is treated as 0. */
@@ -85,6 +85,8 @@ window.Progress.load = function () {
       // these, and starts with nothing - which is exactly right.
       if (parsed) {
         state.suns = wholeOrZero(parsed.suns);
+        // Every sun ever won, spent or not - the first one opens the casino.
+        state.sunsEarned = Math.max(wholeOrZero(parsed.sunsEarned), state.suns);
         state.blood = wholeOrZero(parsed.blood);
 
         if (parsed.bag && typeof parsed.bag === 'object') {
