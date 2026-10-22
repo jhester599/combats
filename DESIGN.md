@@ -985,6 +985,30 @@ shared, and the two buildings are no longer a blue box and a red box.
 `data/backgrounds.js` and `assets/bg/` hold the caves; `assets/bases/` holds the
 fortresses.
 
+### The title screen (2026-10-22, D84)
+
+Lewis wanted the title screen *"to look much cooler"*, and chose from a list
+(the drawn map of Palopa, idea 6, is parked for later):
+
+1. **A living backdrop.** The paintings of every cave you have reached take
+   turns behind the title, each drifting slowly sideways and fading into the
+   next, kept dark so the buttons read. It opens on the furthest cave you have
+   got to.
+2. **Bats flying across**, only ones you have earned or bought, in their
+   upgrade colours, at different heights and speeds, a quarter of them chased
+   by a mosquito. Tap one and it does a flip.
+3. **The title arrives.** The logo drops in and bounces once per visit, then
+   floats, with sparkles twinkling on the letters.
+4. **Cave buttons are pictures**, a strip of each cave's painting: gold border
+   and tick when beaten, a pulsing gold glow on the next one, dark with a
+   padlock when locked.
+5. **Your bat lineup** along the bottom: every bat in the game, yours in
+   colour, the rest black silhouettes with a "?". Tap one for its name, or for
+   where to get it ("beat Wait Um to earn it", "find it at the Casino").
+7. **Lewis's logo**, `assets/ui/logo.webp`, in place of the typed title.
+
+Every timing is in `CONFIG.menu` (data/config.js).
+
 ### The two fortresses
 
 Yours is a **crystal keep flying bat banners**. The enemy's is a **fortified

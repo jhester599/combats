@@ -383,7 +383,7 @@ src/
   main.js             starts Phaser, lists the scenes
   scenes/
     BootScene.js      draws the placeholder art, builds the animations
-    MenuScene.js      title, cave picker, Casino button, credits
+    MenuScene.js      the title screen: Lewis's logo, cave pictures, flying bats, your lineup
     LockerScene.js    pick your team of three before a cave
     BattleScene.js    the battle, the UI, win/lose
     CasinoScene.js    spend suns and blood: shop, spins, casino bats, upgrades
@@ -427,6 +427,8 @@ tools/
 assets/
   sprites/            the bats, and the sprite sheets they are packed into
   bg/                 one painting per cave, named after its cave key
+    thumbs/           a 150x52 strip of each, for its title-screen button
+  ui/                 the ComBats logo
   bases/              the two fortresses
 ```
 
