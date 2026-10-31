@@ -121,21 +121,18 @@ bats walking along it to the next cave.
 
 ---
 
-### 🔲 B37. DECIDE: what's in the Vault? 🔐
+### 🔲 B37. DRAW: what does the Vault look like? 🔐 *(the prize part is answered by Dad, and built)*
 
-A new idea: **the Vault.** Every time you win **5 caves** (replays count!), the
-Vault opens and gives you a prize. **The first prize is 50 blood.**
+**There's a VAULT now.** Every time you win **5 caves** (replays count!), it
+opens and gives you **50 blood** — every time. The victory screen shows how full
+it is (**Vault 3/5**), and on the 5th win it says **THE VAULT OPENED!**
 
-What comes **after** that? Some ideas — or make up your own:
+Right now it's just words. **What does the Vault look like?** A big round
+bank-vault door? A treasure chest? A bat-shaped safe? Draw it, and Dad can make
+it fill up and swing open.
 
-- **A.** The prizes **grow** — 50, then 75, then 100, then 150 blood...
-- **B.** Always **50 blood**, every time.
-- **C.** **Mixed** — blood, then a potion, then fruit, then a free spin...
-- **D.** Something **really big** every so often — like every 4th opening gives
-  you a casino bat, or a free colour upgrade.
-
-And one more: **what does the Vault look like?** A big round bank-vault door? A
-treasure chest? A bat-shaped safe? (All the ideas are in `ROADMAP.md`.)
+And if you think it should give **something other than blood** sometimes —
+potions, a free spin, something big now and then — say so. Nothing's permanent.
 
 **Lewis's answer:** _(open)_
 

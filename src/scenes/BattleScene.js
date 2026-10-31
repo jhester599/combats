@@ -1169,7 +1169,8 @@ window.BattleScene.prototype.buildResultPanel = function () {
   var sunsText = this.add.text(centreX, centreY + 118, '', {
     fontFamily: cfg.text.fontFamily,
     fontSize: '18px',
-    color: '#ffd24a'
+    color: '#ffd24a',
+    align: 'center'           // two lines: the suns, then the vault
   }).setOrigin(0.5);
 
   var self = this;
@@ -1322,8 +1323,17 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
   // SUNS for the win (the casino, milestone M4): more for a first win.
   var casinoWasOpen = window.Casino.isOpen();
   this.sunsWon = playerWon ? window.Casino.awardWin(this.levelKey, firstWin) : 0;
+
+  // THE VAULT: every win fills a slot; a full vault pays blood.
+  var vaultPaid = (playerWon && this.sunsWon > 0) ? window.Casino.fillVault(this.levelKey) : 0;
+  var vault = window.Casino.vaultProgress();
+  var vaultLine = vaultPaid > 0 ?
+    'THE VAULT OPENED! +' + vaultPaid + ' blood' :
+    'Vault ' + vault.wins + '/' + vault.of;
+
   this.resultPanel.sunsText.setText('+' + this.sunsWon + ' suns  \u2600  - ' +
-    (casinoWasOpen ? 'spend them at the Casino' : 'THE CASINO IS OPEN!'));
+    (casinoWasOpen ? 'spend them at the Casino' : 'THE CASINO IS OPEN!') +
+    '\n' + vaultLine);
 
   this.resultPanel.title.setText(playerWon ? 'VICTORY!' : 'DEFEAT');
   this.resultPanel.subtitle.setText(this.resultMessage(playerWon));

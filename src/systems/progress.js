@@ -25,7 +25,8 @@
    ------------------- WHAT IS KEPT -------------------
    The caves beaten, the last team picked in the Locker, and since the casino
    (milestone M4, 2026-10-21) your suns, your blood, the potions and fruit in
-   your bag, and the colour each bat has been upgraded to. The RULES for
+   your bag, the colour each bat has been upgraded to, and (2026-10-31) how
+   many wins are in the vault. The RULES for
    spending all of that are in src/systems/casino.js; this file only keeps it.
    ========================================================================= */
 
@@ -37,7 +38,7 @@ window.Progress.STORAGE_KEY = 'battleBats.progress.v1';
    loaded by a future version of the game. */
 window.Progress.blank = function () {
   return { beaten: [], team: [], suns: 0, sunsEarned: 0, blood: 0, bag: { potion: 0, fruit: 0 },
-    upgrades: {}, casinoBats: [] };
+    upgrades: {}, casinoBats: [], vaultWins: 0 };
 };
 
 /* A whole number, 0 or more - anything else in a save is treated as 0. */
@@ -88,6 +89,10 @@ window.Progress.load = function () {
         // Every sun ever won, spent or not - the first one opens the casino.
         state.sunsEarned = Math.max(wholeOrZero(parsed.sunsEarned), state.suns);
         state.blood = wholeOrZero(parsed.blood);
+        // Wins toward the next vault opening (2026-10-31). Never a full vault
+        // or more: a save cannot hold an opening back to pay it twice.
+        state.vaultWins = Math.min(wholeOrZero(parsed.vaultWins),
+          window.CASINO ? window.CASINO.vault.winsToOpen - 1 : 0);
 
         if (parsed.bag && typeof parsed.bag === 'object') {
           state.bag.potion = wholeOrZero(parsed.bag.potion);

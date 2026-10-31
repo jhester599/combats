@@ -59,6 +59,38 @@ window.Casino.awardWin = function (levelKey, firstWin) {
 };
 
 /* -------------------------------------------------------------------------
+   THE VAULT (Jeff, 2026-10-31): every vault.winsToOpen cave wins, replays
+   included, it opens and pays vault.prize blood. Practice fills nothing.
+   Returns the blood it paid this time - 0 unless this win opened it.
+   ------------------------------------------------------------------------- */
+window.Casino.fillVault = function (levelKey) {
+  var v = window.CASINO.vault;
+  var level = window.LEVELS[levelKey];
+
+  if (!level || level.practice) {
+    return 0;
+  }
+
+  var state = casinoState();
+  state.vaultWins += 1;
+
+  var paid = 0;
+  if (state.vaultWins >= v.winsToOpen) {
+    state.vaultWins = 0;
+    state.blood += v.prize;
+    paid = v.prize;
+  }
+
+  window.Progress.save();
+  return paid;
+};
+
+/* How full it is, for the screens: e.g. 3 of 5. */
+window.Casino.vaultProgress = function () {
+  return { wins: casinoState().vaultWins, of: window.CASINO.vault.winsToOpen };
+};
+
+/* -------------------------------------------------------------------------
    IS THE CASINO OPEN? From the first sun you ever earn, and for good after
    that - spending your last sun does not lock you out (Jeff, 2026-10-22:
    "the casino should be enabled as soon as you have earned 1 sun").

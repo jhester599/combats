@@ -54,7 +54,8 @@ window.CasinoScene.prototype.create = function () {
   // What you have, always in view.
   this.add.text(cfg.screen.width / 2, 74,
     '☀ ' + state.suns + ' suns      ' + state.blood + ' blood      ' +
-    state.bag.potion + ' potions      ' + state.bag.fruit + ' fruit', {
+    state.bag.potion + ' potions      ' + state.bag.fruit + ' fruit      ' +
+    'vault ' + window.Casino.vaultProgress().wins + '/' + window.Casino.vaultProgress().of, {
       fontFamily: cfg.text.fontFamily, fontSize: '19px', color: '#ffffff'
     }).setOrigin(0.5);
 
