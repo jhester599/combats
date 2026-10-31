@@ -3,7 +3,7 @@
 Ideas we **like** but haven't built yet, kept here so they aren't lost between
 play-testing sessions. Nothing here is decided until it moves into `DESIGN.md`
 and gets a row in `DECISIONS.md`. The questions Lewis needs to answer first are
-in `HOMEWORK.md` (B32–B36).
+in `HOMEWORK.md` (B32–B37).
 
 *Started 2026-10-22, after Lewis asked for the title screen and casino to "look
 much cooler". The title-screen half of that is built (D84); this is the rest.*
@@ -53,6 +53,35 @@ Ideas 1–5 and 7 are built (D84). Parked:
 | # | Idea | What it would be | Needs |
 |---|---|---|---|
 | T6 | **A map of Palopa** | A drawn map with the ten caves joined by a path, and your bats walking along it to the next cave — instead of two rows of buttons. The biggest upgrade, and the most work. | Lewis draws the map (B36) |
+
+---
+
+## 🔐 The Vault
+
+*Jeff, 2026-10-31: "we are thinking on adding something to combats called the
+vault. When you beat 5 maps you get a prize the first prize is 50 blood."*
+
+| What's settled | |
+|---|---|
+| **What fills it** | **Every cave win, replays too** (Jeff, 2026-10-31). Graveyard practice wins don't count, the same as they pay no suns. |
+| **When it opens** | Every **5 wins**. Then it starts filling again, so it keeps paying after cave 10. |
+| **The first prize** | **50 blood.** |
+| **The prizes after that** | **Not decided yet** — Lewis's question, **B37** in `HOMEWORK.md`. |
+
+**How big is 50 blood?** 1 sun buys 5 blood, so it is **10 suns' worth** —
+about one replay of cave 1, or a third of a Violet upgrade (100 blood). Five
+wins already pay at least 50 suns, so the first prize is a nice bonus on top, not
+a new way to get rich. Bigger later prizes are fine; the numbers to beat are a
+Ghost Bat (300 blood) and Plain → Red (1200 blood).
+
+**Ideas for what it could look like** (code only, no art needed to start): a
+round vault door on the title screen or in the casino with **five lights** that
+fill one per win; on the fifth, the wheel spins, the door swings open and the
+prize drips into the blood counter.
+
+**To build it** (small): a `vaultWins` count in the save (`src/systems/progress.js`),
+the prize list in `data/casino.js` as a TRY ME number, one call in the win
+code next to where suns are paid, and checks in `tools/casino-test.js`.
 
 ---
 

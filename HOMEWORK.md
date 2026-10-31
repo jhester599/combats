@@ -121,6 +121,26 @@ bats walking along it to the next cave.
 
 ---
 
+### 🔲 B37. DECIDE: what's in the Vault? 🔐
+
+A new idea: **the Vault.** Every time you win **5 caves** (replays count!), the
+Vault opens and gives you a prize. **The first prize is 50 blood.**
+
+What comes **after** that? Some ideas — or make up your own:
+
+- **A.** The prizes **grow** — 50, then 75, then 100, then 150 blood...
+- **B.** Always **50 blood**, every time.
+- **C.** **Mixed** — blood, then a potion, then fruit, then a free spin...
+- **D.** Something **really big** every so often — like every 4th opening gives
+  you a casino bat, or a free colour upgrade.
+
+And one more: **what does the Vault look like?** A big round bank-vault door? A
+treasure chest? A bat-shaped safe? (All the ideas are in `ROADMAP.md`.)
+
+**Lewis's answer:** _(open)_
+
+---
+
 ## 🆕 NEW: beat a cave, EARN A BAT — and meet the Bat Bros 👊
 
 You start Palopa with just **two** bats now, and you win the rest:

@@ -32,6 +32,7 @@ Every creative-director decision for the whole game, in one place, sorted by
 > | ☀️ | **B34** | Draw four icons: sun, blood, potion, fruit | To replace the words, and for the slot machine's reels (C8) |
 > | 👻 | **B35** | Invent the next casino bat | The Ghost Bat is the first of "several" (Jeff) |
 > | 🗺️ | **B36** | A drawn map of Palopa? | Title idea 6, parked (no rush) |
+> | 🔐 | **B37** | What's in the Vault? | Every 5 wins opens it; the first prize is 50 blood (Jeff). What comes next? |
 > | 🦂 | **B28** | Is "Desert Scorpion" the right name? | Still open from Round 4 |
 >
 > **Done since Round 4:** B29 (the casino, D79), B30 (every bug is drawn), and
@@ -442,6 +443,15 @@ drawn map, joined by a path, instead of two rows of buttons. Does he want it,
 and where is everything?
 
 **Lewis's answer:** _(open)_ → `ROADMAP.md`, then `DESIGN.md` §9
+
+### 🔲 B37. DECIDE: What's in the Vault? *(Round 5 — ON THE PLATE)*
+
+Jeff, 2026-10-31: every **5 cave wins** (replays count, practice doesn't) opens
+**the Vault**, and the first prize is **50 blood**. What are the prizes after
+that — growing blood, the same 50, a mix of items, or a big one now and then?
+And what does the Vault look like?
+
+**Lewis's answer:** _(open)_ → `ROADMAP.md`, then `DESIGN.md` §8
 
 ### 🔲 B14. PICK ONE: A second lane? *(needed by M5)*
 
