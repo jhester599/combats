@@ -47,6 +47,17 @@ window.CASINO = {
   replayWinBase: 5,        // <-- TRY ME
   replayWinPerCave: 5,     // <-- TRY ME: cave 1 = 10 suns again, cave 10 = 55
 
+  /* --- THE VAULT: a prize every few wins ---------------------------------
+     Jeff, 2026-10-31: "When you beat 5 maps you get a prize the first prize
+     is 50 blood" ... "just do blood every time". Every cave WIN fills one
+     slot, replays too (practice does not - it pays no suns either). When
+     every slot is full the vault opens, pays its prize, and starts filling
+     again. 50 blood is 10 suns' worth: a bonus, not a new way to get rich. */
+  vault: {
+    winsToOpen: 5,         // <-- TRY ME: wins per opening
+    prize: 50              // <-- TRY ME: blood each time it opens
+  },
+
   /* --- THE SHOP: what things cost, in suns ------------------------------ */
   prices: {
     potion: 20,            // <-- TRY ME

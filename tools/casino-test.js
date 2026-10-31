@@ -377,6 +377,30 @@ check('an upgrade past Red is clamped to Red',
   loadRaw(JSON.stringify({ beaten: [], upgrades: upgradesBad })).upgrades[starter], W.CONFIG.upgradeTiers.length - 1);
 check('a save that is not JSON at all loads blank', loadRaw('{{{ not json').suns, 0);
 
+/* THE VAULT (Jeff, 2026-10-31): every 5 cave wins, replays too, pays 50
+   blood - every time. Practice fills nothing. */
+console.log('\nthe vault');
+var vs = fresh(0, 0);
+var cave1 = W.Caves.all()[0];
+var practiceKey = Object.keys(W.LEVELS).filter(function (k) { return W.LEVELS[k].practice; })[0];
+check('a fresh save has an empty vault', vs.vaultWins, 0);
+check('a practice win fills nothing', W.Casino.fillVault(practiceKey) + vs.vaultWins, 0);
+var paidSoFar = 0;
+for (var w = 1; w < C.vault.winsToOpen; w++) { paidSoFar += W.Casino.fillVault(cave1); }
+check('wins before the last pay nothing', paidSoFar, 0);
+check('...but are counted', W.Casino.vaultProgress().wins, C.vault.winsToOpen - 1);
+check('...and remembered', reopen().vaultWins, C.vault.winsToOpen - 1);
+check('the 5th win opens it and pays 50 blood', W.Casino.fillVault(cave1), 50);
+check('...into the blood counter', W.Progress.load().blood, 50);
+check('...and it starts filling again', W.Casino.vaultProgress().wins, 0);
+var second = 0;
+for (w = 0; w < C.vault.winsToOpen; w++) { second += W.Casino.fillVault(cave1); }
+check('the second opening pays 50 blood too', second, 50);
+check('...100 blood in all', W.Progress.load().blood, 100);
+check('an edited save cannot hold a full vault',
+  loadRaw(JSON.stringify({ beaten: [], vaultWins: 99 })).vaultWins, C.vault.winsToOpen - 1);
+check('words for vault wins load as 0', loadRaw(JSON.stringify({ beaten: [], vaultWins: 'lots' })).vaultWins, 0);
+
 /* Put things back - the stand-ins must not leak. */
 delete W.UNITS.testLuckyBat;
 delete W.UNITS.testDiceBat;

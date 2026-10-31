@@ -975,6 +975,19 @@ So a new player never sees it until their first win, whose victory screen says
 sun does not close it), and NEXT CAVE and RETRY both go through it, with a big
 **ON TO** / **TRY AGAIN** button on to the battle. MENU skips it.
 
+### The Vault 🔐 (2026-10-31, D85)
+
+Jeff: *"When you beat 5 maps you get a prize the first prize is 50 blood"*, then
+*"just do blood every time"*. **BUILT:** every cave win, replays included, fills
+one slot of the vault (practice fills nothing, the same as it pays no suns).
+On the **5th** win it opens, pays **50 blood**, and starts filling again, so it
+keeps paying after cave 10. The victory screen shows **Vault 3/5** or **THE
+VAULT OPENED! +50 blood**; the casino's top line shows how full it is. Both
+numbers are TRY ME in `data/casino.js` (`vault`), the rule is
+`Casino.fillVault()`, and the count is saved as `vaultWins`. 50 blood is 10
+suns' worth, so it is a bonus on top of five wins, not a new way to get rich.
+What the vault *looks* like is still Lewis's (B37).
+
 ---
 
 ## 9. Look & Sound

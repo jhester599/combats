@@ -32,6 +32,7 @@ Every creative-director decision for the whole game, in one place, sorted by
 > | ☀️ | **B34** | Draw four icons: sun, blood, potion, fruit | To replace the words, and for the slot machine's reels (C8) |
 > | 👻 | **B35** | Invent the next casino bat | The Ghost Bat is the first of "several" (Jeff) |
 > | 🗺️ | **B36** | A drawn map of Palopa? | Title idea 6, parked (no rush) |
+> | 🔐 | **B37** | Draw the Vault | Built: every 5 wins pays 50 blood (Jeff, D85). What does it look like? |
 > | 🦂 | **B28** | Is "Desert Scorpion" the right name? | Still open from Round 4 |
 >
 > **Done since Round 4:** B29 (the casino, D79), B30 (every bug is drawn), and
@@ -442,6 +443,14 @@ drawn map, joined by a path, instead of two rows of buttons. Does he want it,
 and where is everything?
 
 **Lewis's answer:** _(open)_ → `ROADMAP.md`, then `DESIGN.md` §9
+
+### 🔲 B37. DRAW: What does the Vault look like? *(Round 5 — prizes answered by Jeff & BUILT, D85)*
+
+Jeff, 2026-10-31: every **5 cave wins** (replays count, practice doesn't) opens
+**the Vault**, and it pays **50 blood** every time. Built (D85). Still Lewis's:
+what it looks like, and whether it should ever give something other than blood.
+
+**Lewis's answer:** _(open)_ → `DESIGN.md` §8
 
 ### 🔲 B14. PICK ONE: A second lane? *(needed by M5)*
 

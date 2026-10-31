@@ -21,7 +21,7 @@ window.CONFIG = {
      each PR (PR #15 makes it v1.15). PRs #6 and #7 forgot to, so it went
      straight from v1.05 to v1.08.
      --------------------------------------------------------------------- */
-  version: 'v1.14',
+  version: 'v1.15',
 
   /* ---------------------------------------------------------------------
      SCREEN
