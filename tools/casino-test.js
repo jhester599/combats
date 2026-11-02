@@ -384,22 +384,94 @@ var vs = fresh(0, 0);
 var cave1 = W.Caves.all()[0];
 var practiceKey = Object.keys(W.LEVELS).filter(function (k) { return W.LEVELS[k].practice; })[0];
 check('a fresh save has an empty vault', vs.vaultWins, 0);
-check('a practice win fills nothing', W.Casino.fillVault(practiceKey) + vs.vaultWins, 0);
+check('a practice win fills nothing', W.Casino.fillVault(practiceKey).blood + vs.vaultWins, 0);
 var paidSoFar = 0;
-for (var w = 1; w < C.vault.winsToOpen; w++) { paidSoFar += W.Casino.fillVault(cave1); }
+for (var w = 1; w < C.vault.winsToOpen; w++) { paidSoFar += W.Casino.fillVault(cave1).blood; }
 check('wins before the last pay nothing', paidSoFar, 0);
 check('...but are counted', W.Casino.vaultProgress().wins, C.vault.winsToOpen - 1);
 check('...and remembered', reopen().vaultWins, C.vault.winsToOpen - 1);
-check('the 5th win opens it and pays 50 blood', W.Casino.fillVault(cave1), 50);
+var opening = W.Casino.fillVault(cave1);
+check('the 5th win opens it and pays 50 blood', opening.blood, 50);
 check('...into the blood counter', W.Progress.load().blood, 50);
 check('...and it starts filling again', W.Casino.vaultProgress().wins, 0);
 var second = 0;
-for (w = 0; w < C.vault.winsToOpen; w++) { second += W.Casino.fillVault(cave1); }
+for (w = 0; w < C.vault.winsToOpen; w++) { second += W.Casino.fillVault(cave1).blood; }
 check('the second opening pays 50 blood too', second, 50);
 check('...100 blood in all', W.Progress.load().blood, 100);
 check('an edited save cannot hold a full vault',
   loadRaw(JSON.stringify({ beaten: [], vaultWins: 99 })).vaultWins, C.vault.winsToOpen - 1);
 check('words for vault wins load as 0', loadRaw(JSON.stringify({ beaten: [], vaultWins: 'lots' })).vaultWins, 0);
+
+/* SKINS (2026-11-02): each vault opening ALSO hands over the next skin you do
+   not have, which you wear at once. A skin is a new picture for a bat and
+   never a number - "they play the same as bat bros just look different". */
+console.log('\nskins from the vault');
+var skinKeys = Object.keys(W.SKINS);
+check('"They\'re Alive!" is a skin', !!W.SKINS.theyreAlive, true);
+check('...of the Bat Bros', W.SKINS.theyreAlive.skinOf, 'batBros');
+check('...and the first one the vault gives', skinKeys[0], 'theyreAlive');
+skinKeys.forEach(function (key) {
+  var skin = W.SKINS[key];
+  check(key + ' is a skin of a real bat of yours', !!W.UNITS[skin.skinOf] && !W.UNITS[skin.skinOf].enemy, true);
+  check(key + ' has a name, a picture and every animation its bat has',
+    !!skin.name && !!skin.sprite && Object.keys(W.UNITS[skin.skinOf].anims).every(function (a) {
+      return !!skin.anims[a];
+    }), true);
+  check(key + ' is not also a unit', W.UNITS[key], undefined);
+});
+
+fresh(0, 0);
+check('a fresh save owns no skins', W.Casino.unownedSkins().length, skinKeys.length);
+check('...and the Bros wear their own drawing', W.Casino.skinOf('batBros'), null);
+check('...so they fight with the very same stats object', W.Casino.statsFor('batBros'), W.UNITS.batBros);
+check('you cannot wear a skin you do not own', W.Casino.wear('batBros', 'theyreAlive'), false);
+for (w = 1; w < C.vault.winsToOpen; w++) { W.Casino.fillVault(cave1); }
+check('no skin before the vault opens', W.Casino.ownsSkin('theyreAlive'), false);
+var firstOpening = W.Casino.fillVault(cave1);
+check('the first opening gives They\'re Alive!', firstOpening.skin, 'theyreAlive');
+check('...AND its 50 blood, not instead of it', firstOpening.blood, 50);
+check('...the Bros put it on straight away', W.Casino.skinOf('batBros'), 'theyreAlive');
+check('...and it is remembered', (reopen(), W.Casino.ownsSkin('theyreAlive') && W.Casino.skinOf('batBros')), 'theyreAlive');
+
+var dressed = W.Casino.statsFor('batBros');
+check('a skinned bat draws the skin', dressed.sprite, 'theyreAlive');
+check('...plays its animations', dressed.animKey, 'theyreAlive');
+check('...and shows its name', dressed.name, 'They\'re Alive!');
+['cost', 'cooldown', 'hp', 'attack', 'attackInterval', 'range', 'speed'].forEach(function (n) {
+  check('...but fights with the Bros\' own ' + n, dressed[n], W.UNITS.batBros[n]);
+});
+check('...without ever writing on data/units.js', W.UNITS.batBros.sprite, 'batBros');
+check('the Locker and buttons draw it too', W.Casino.lookOf('batBros').sprite, 'theyreAlive');
+
+W.Progress.load().blood = 1000;
+W.Progress.markBeaten(caves[0]);
+W.Progress.markBeaten(caves[1]);              // cave 2 earns the Bros
+check('the Bros can be upgraded while wearing a skin', W.Casino.upgrade('batBros'), true);
+check('an upgrade is the Bros\' own, worn under the skin',
+  W.Casino.statsFor('batBros').hp, Math.round(W.UNITS.batBros.hp * W.Casino.boostFor(1)));
+check('...still in the skin', W.Casino.statsFor('batBros').sprite, 'theyreAlive');
+
+check('LOOK goes back to their own drawing', W.Casino.nextLook('batBros'), null);
+check('...and draws it', W.Casino.lookOf('batBros').sprite, 'batBros');
+check('...and the skin is still yours', W.Casino.ownsSkin('theyreAlive'), true);
+check('LOOK again puts it back on', W.Casino.nextLook('batBros'), 'theyreAlive');
+check('a bat with no skins only has its own look', W.Casino.nextLook('scoutBat'), null);
+check('a skin will not go on the wrong bat', W.Casino.wear('scoutBat', 'theyreAlive'), false);
+
+var before = W.Casino.unownedSkins().length;
+for (w = 0; w < C.vault.winsToOpen; w++) { opening = W.Casino.fillVault(cave1); }
+check('once every skin is won, an opening is blood as before',
+  before === 0 ? (opening.skin === null && opening.blood === 50) : opening.skin !== null, true);
+
+check('a save cannot invent a skin', loadRaw(JSON.stringify({ beaten: [], skins: ['goldenBat', 7] })).skins.length, 0);
+check('...or wear one it does not own',
+  loadRaw(JSON.stringify({ beaten: [], skins: [], wearing: { batBros: 'theyreAlive' } })).wearing.batBros, undefined);
+check('...or put a skin on the wrong bat',
+  loadRaw(JSON.stringify({ beaten: [], skins: ['theyreAlive'], wearing: { scoutBat: 'theyreAlive' } })).wearing.scoutBat,
+  undefined);
+check('a real skin, worn by its bat, loads',
+  loadRaw(JSON.stringify({ beaten: [], skins: ['theyreAlive'], wearing: { batBros: 'theyreAlive' } })).wearing.batBros,
+  'theyreAlive');
 
 /* Put things back - the stand-ins must not leak. */
 delete W.UNITS.testLuckyBat;

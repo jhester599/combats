@@ -67,6 +67,7 @@ committed PNG.
 | `assets/bg/thumbs/*.webp` — a 150×52 strip of each cave's painting, for its title-screen button (made from `assets/bg/`) | from the cave paintings above | — | 2026-10-22 |
 | `assets/sprites/ghostBat.png` — Ghost Bat (the first casino bat): horned skull, torn wings, a ghost's wispy tail and a scythe, 1 pose (97×64) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-22 |
 | `assets/sprites/ghost.png` — the Ghost Bat's ghosts: four little ghost bats with flame eyes and wispy tails, one per frame, worn in turn (4 frames of 71×64; stray specks off the edges removed) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-10-22 |
+| `assets/sprites/theyreAlive.png` — **They're Alive!**, the Bat Bros skin from the Vault: the brothers back from the grave, stitched heads, brains showing, drool and holey wings, 1 pose (trimmed from 600×450 and shrunk to 130×64; two stray specks in a corner removed; 47% light pixels) | Lewis & Jeff | ⚠️ **tool not recorded** | 2026-11-02 |
 | `assets/icons/icon-180.png`, `icon-192.png`, `icon-512.png` — the home-screen icon: the Bat Bros drawing on the game's dark purple | Lewis & Jeff (the drawing) | ⚠️ **tool not recorded** | 2026-10-17 |
 | *(superseded)* Scout Bat in goggles, Brute Bat in a cape | Lewis, via PixelLab (AI-generated) | ⚠️ see note below | 2026-09-18 |
 

@@ -19,6 +19,7 @@ skeletonBat/idle_01.png 152x64  a single pose  (2026-10-16)
 batBros/idle_01.png    134x64   both brothers in one drawing  (2026-10-17)
 ghostBat/idle_01.png    97x64   skull, scythe, ghost's tail - the first casino bat  (2026-10-22)
 ghost/idle_01..04.png  52-71x64 its four ghosts; packed with --pad to 71x64 each  (2026-10-22)
+theyreAlive/idle_01.png 130x64  "They're Alive!" - a Bat Bros SKIN, from the vault  (2026-11-02)
 bombBat/idle_01.png    194x128  holding the bomb - out, and in the Locker
 bombBat/home_01.png    194x128  empty-handed - the flight home (mirrored)
 bomb/bomb.png          55x52    the bomb it drops; also copied to ../bomb.png

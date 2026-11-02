@@ -134,6 +134,12 @@ it fill up and swing open.
 And if you think it should give **something other than blood** sometimes —
 potions, a free spin, something big now and then — say so. Nothing's permanent.
 
+🧟 **NEW: the Vault gives SKINS now!** The next time it opens you get your
+50 blood **and** **They're Alive!** — the Bat Bros, back from the grave like
+Frankenstein. They play exactly like the Bat Bros, they just look different.
+Tap **LOOK** on the Bat Bros in the Locker to swap between the two. Want more
+skins in the Vault? Draw them!
+
 **Lewis's answer:** _(open)_
 
 ---

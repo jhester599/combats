@@ -61,28 +61,40 @@ window.Casino.awardWin = function (levelKey, firstWin) {
 /* -------------------------------------------------------------------------
    THE VAULT (Jeff, 2026-10-31): every vault.winsToOpen cave wins, replays
    included, it opens and pays vault.prize blood. Practice fills nothing.
-   Returns the blood it paid this time - 0 unless this win opened it.
+
+   And since 2026-11-02 an opening ALSO hands over the next SKIN you do not
+   have yet (window.SKINS in data/units.js), on top of the blood - so a
+   skin is never instead of anything. You wear it straight away.
+
+   Returns what this win got out of it: { blood: 0, skin: null } unless this
+   win opened the vault.
    ------------------------------------------------------------------------- */
 window.Casino.fillVault = function (levelKey) {
   var v = window.CASINO.vault;
   var level = window.LEVELS[levelKey];
+  var got = { blood: 0, skin: null };
 
   if (!level || level.practice) {
-    return 0;
+    return got;
   }
 
   var state = casinoState();
   state.vaultWins += 1;
 
-  var paid = 0;
   if (state.vaultWins >= v.winsToOpen) {
     state.vaultWins = 0;
     state.blood += v.prize;
-    paid = v.prize;
+    got.blood = v.prize;
+
+    got.skin = window.Casino.unownedSkins()[0] || null;
+    if (got.skin) {
+      state.skins.push(got.skin);
+      window.Casino.wear(window.SKINS[got.skin].skinOf, got.skin);
+    }
   }
 
   window.Progress.save();
-  return paid;
+  return got;
 };
 
 /* How full it is, for the screens: e.g. 3 of 5. */
@@ -330,27 +342,117 @@ window.Casino.boostFor = function (tier) {
 };
 
 /* -------------------------------------------------------------------------
+   SKINS - a new look for a bat, from the vault (2026-11-02). A skin changes
+   the PICTURE and the name, never a number: see window.SKINS.
+   ------------------------------------------------------------------------- */
+window.Casino.allSkins = function () {
+  return Object.keys(window.SKINS || {});
+};
+
+window.Casino.ownsSkin = function (skinKey) {
+  return casinoState().skins.indexOf(skinKey) !== -1;
+};
+
+/* The skins still to come out of the vault, in the order they are listed. */
+window.Casino.unownedSkins = function () {
+  return window.Casino.allSkins().filter(function (key) {
+    return !window.Casino.ownsSkin(key);
+  });
+};
+
+/* The skins you own for this bat (usually none). */
+window.Casino.skinsFor = function (unitKey) {
+  return casinoState().skins.filter(function (key) {
+    return window.SKINS[key].skinOf === unitKey;
+  });
+};
+
+/* The skin this bat is wearing, or null for its own drawing. */
+window.Casino.skinOf = function (unitKey) {
+  return casinoState().wearing[unitKey] || null;
+};
+
+/* Put a skin on a bat - or null to go back to its own drawing. False if it
+   is not a skin you own, or not one for this bat. */
+window.Casino.wear = function (unitKey, skinKey) {
+  var state = casinoState();
+
+  if (skinKey === null) {
+    delete state.wearing[unitKey];
+  } else if (state.skins.indexOf(skinKey) === -1 || window.SKINS[skinKey].skinOf !== unitKey) {
+    return false;
+  } else {
+    state.wearing[unitKey] = skinKey;
+  }
+
+  window.Progress.save();
+  return true;
+};
+
+/* The Locker's LOOK button: the bat's own drawing, then each skin you own
+   for it, then round again. Returns the new skin, or null for its own. */
+window.Casino.nextLook = function (unitKey) {
+  var looks = [null].concat(window.Casino.skinsFor(unitKey));
+  var next = looks[(looks.indexOf(window.Casino.skinOf(unitKey)) + 1) % looks.length];
+
+  window.Casino.wear(unitKey, next);
+  return next;
+};
+
+/* What to DRAW for this bat: its picture, the name to show, and the name of
+   its animations (unit or skin key + '_idle'). Every screen draws a bat
+   through this, so a skin shows up everywhere at once. */
+window.Casino.lookOf = function (unitKey) {
+  var stats = window.UNITS[unitKey];
+  var skinKey = stats.enemy ? null : window.Casino.skinOf(unitKey);
+  var art = skinKey ? window.SKINS[skinKey] : stats;
+
+  return {
+    animKey: skinKey || unitKey,
+    name: art.name,
+    blurb: art.blurb,
+    sprite: art.sprite,
+    scale: art.scale,
+    anims: art.anims
+  };
+};
+
+/* -------------------------------------------------------------------------
    The stats a bat of this kind fights with in the GAME, upgrades included.
-   A copy for an upgraded bat (see the rules at the top), the shared original
-   for a plain one or a bug. Copies are remembered, so a battle makes each one
-   once, not once per bat.
+   A copy for an upgraded or skinned bat (see the rules at the top), the
+   shared original for a plain one or a bug. Copies are remembered, so a
+   battle makes each one once, not once per bat.
+
+   A skin only swaps the picture (sprite, scale, anims, name) and says which
+   animations to play (animKey) - every fighting number stays the bat's own.
    ------------------------------------------------------------------------- */
 var upgradedCache = {};
 
 window.Casino.statsFor = function (unitKey) {
   var base = window.UNITS[unitKey];
   var tier = base.enemy ? 0 : window.Casino.tierOf(unitKey);
+  var skinKey = base.enemy ? null : window.Casino.skinOf(unitKey);
 
-  if (tier === 0) {
+  if (tier === 0 && !skinKey) {
     return base;
   }
 
-  var cacheKey = unitKey + ':' + tier;
+  var cacheKey = unitKey + ':' + tier + ':' + (skinKey || '');
   if (!upgradedCache[cacheKey]) {
     var boost = window.Casino.boostFor(tier);
     var copy = Object.assign({}, base);
     copy.hp = Math.round(base.hp * boost);
     copy.attack = Math.round(base.attack * boost * 10) / 10;
+
+    if (skinKey) {
+      var look = window.Casino.lookOf(unitKey);
+      copy.name = look.name;
+      copy.sprite = look.sprite;
+      copy.scale = look.scale;
+      copy.anims = look.anims;
+      copy.animKey = look.animKey;
+    }
+
     upgradedCache[cacheKey] = copy;
   }
 

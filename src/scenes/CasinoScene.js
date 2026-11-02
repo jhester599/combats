@@ -258,10 +258,10 @@ window.CasinoScene.prototype.heading = function (x, y, title, sub) {
 
 /* A bat's picture, in its upgrade colour, fitted inside maxW x maxH. */
 window.CasinoScene.prototype.portrait = function (key, x, y, maxW, maxH) {
-  var stats = window.UNITS[key];
-  var picture = this.add.sprite(x, y, stats.sprite).setOrigin(0.5, 1);
-  picture.setScale(Math.min(maxW / stats.anims.frameWidth, maxH / stats.anims.frameHeight));
-  picture.play(key + '_idle');
+  var look = window.Casino.lookOf(key);         // in its skin, if it wears one
+  var picture = this.add.sprite(x, y, look.sprite).setOrigin(0.5, 1);
+  picture.setScale(Math.min(maxW / look.anims.frameWidth, maxH / look.anims.frameHeight));
+  picture.play(look.animKey + '_idle');
 
   return window.Casino.paintPortrait(picture, key);
 };

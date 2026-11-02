@@ -435,10 +435,11 @@ window.MenuScene.prototype.spawnFlyer = function (midway) {
 /* One picture that flies: bobbing up and down as it goes. */
 window.MenuScene.prototype.makeFlyer = function (key, x, y, dir, size) {
   var stats = window.UNITS[key];
-  var sprite = this.add.sprite(x, y, stats.sprite).setDepth(-10);
+  var look = window.Casino.lookOf(key);         // in its skin, if it wears one
+  var sprite = this.add.sprite(x, y, look.sprite).setDepth(-10);
 
-  sprite.setScale(window.Unit.scaleOf(stats) * size);
-  sprite.play(key + '_walk');
+  sprite.setScale(window.Unit.scaleOf(look) * size);
+  sprite.play(look.animKey + '_walk');
   sprite.setFlipX(dir < 0);
   sprite.setAlpha(0.95);
 
@@ -612,7 +613,7 @@ window.MenuScene.prototype.lineupHint = function (key) {
 
   if (window.Casino.ownedBats().indexOf(key) !== -1) {
     var tier = window.Casino.tierOf(key);
-    return stats.name + (tier > 0 ? '  -  ' + tiers[tier].name : '');
+    return window.Casino.lookOf(key).name + (tier > 0 ? '  -  ' + tiers[tier].name : '');
   }
 
   if (stats.casinoPrice) {
@@ -641,13 +642,15 @@ window.MenuScene.prototype.buildLineup = function () {
   var hintTimer = null;
 
   keys.forEach(function (key, i) {
-    var stats = window.UNITS[key];
-    var x = (i + 0.5) * slot;
     var have = owned.indexOf(key) !== -1;
+    // A bat you have is drawn in its skin, if it wears one; a silhouette is
+    // always the bat's own shape.
+    var stats = have ? window.Casino.lookOf(key) : window.UNITS[key];
+    var x = (i + 0.5) * slot;
     var fit = Math.min((slot - 8) / stats.anims.frameWidth, m.lineupHeight / stats.anims.frameHeight);
 
     var bat = self.add.sprite(x, m.lineupY, stats.sprite).setOrigin(0.5, 1).setScale(fit);
-    bat.play(key + '_idle');
+    bat.play((have ? stats.animKey : key) + '_idle');
 
     if (have) {
       window.Casino.paintPortrait(bat, key);

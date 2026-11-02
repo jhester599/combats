@@ -203,7 +203,8 @@ window.Unit.prototype.playAnim = function (animName, forceRestart) {
     return;
   }
 
-  this.sprite.play(this.unitKey + '_' + animName, false);
+  // A bat wearing a skin plays the skin's animations (src/systems/casino.js).
+  this.sprite.play((this.stats.animKey || this.unitKey) + '_' + animName, false);
 };
 
 window.Unit.prototype.setBarsVisible = function (visible) {
