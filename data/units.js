@@ -1159,3 +1159,50 @@ window.UNITS = {
     }
   }
 };
+
+/* =========================================================================
+   SKINS - a new LOOK for a bat you already have (2026-11-02)
+   =========================================================================
+   A skin is a different drawing of a bat, and nothing else. It plays
+   EXACTLY the same: same cost, same health, same bite, same upgrade colour -
+   the numbers all still come from the bat in window.UNITS above. Only the
+   picture (and the name on its button) change.
+
+   Where you get one: THE VAULT. Each time the vault opens, as well as its
+   blood, it hands over the first skin on this list you do not have yet
+   (data/casino.js, src/systems/casino.js). You wear a new skin straight
+   away, and can swap back in the Locker with the LOOK button on that bat's
+   card - and swap again whenever you like.
+
+   ------------------- WHAT EACH LINE MEANS -------------------
+   skinOf   which bat in window.UNITS it is a look for
+   name     the name shown while you are wearing it
+   blurb    one line for the Locker
+   sprite, scale, anims   the picture, exactly as for a unit above
+
+   TO ADD ANOTHER: copy a block, give it a new key, point skinOf at the bat,
+   and draw it. The vault hands skins out in the order they are listed here.
+   ========================================================================= */
+
+window.SKINS = {
+
+  /* "They're Alive!" - Jeff & Lewis, 2026-11-02. The Bat Bros, back from
+     the grave like Frankenstein's monster: stitches, brains showing, drool,
+     and holes in their wings. A Bat Bros skin, and the first vault prize
+     that is not blood. Drawn 130x64, so it stands as big as the Bros. */
+  theyreAlive: {
+    skinOf: 'batBros',
+    name: 'They\'re Alive!',
+    blurb: 'The Bat Bros, back from the grave. Same Bros, new look.',
+    sprite: 'theyreAlive',
+    scale: 0.7,            // the same as the Bat Bros
+    anims: {
+      frameWidth: 130,
+      frameHeight: 64,
+      idle:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      walk:   { start: 0, end: 0, frameRate: 1, repeat: -1 },
+      attack: { start: 0, end: 0, frameRate: 1, repeat: 0  },
+      death:  { start: 0, end: 0, frameRate: 2, repeat: 0  }
+    }
+  }
+};

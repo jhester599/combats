@@ -57,6 +57,12 @@ window.BootScene.prototype.preload = function () {
     frameWidth: 134, frameHeight: 64
   });
 
+  // "They're Alive!" - a Bat Bros SKIN, won from the vault (data/units.js,
+  // window.SKINS). The same bat in a new drawing.
+  this.load.spritesheet('theyreAlive', 'assets/sprites/theyreAlive.png', {
+    frameWidth: 130, frameHeight: 64
+  });
+
   /* The bats you earn by beating caves, drawn 2026-10-16. */
   this.load.spritesheet('cheerBat', 'assets/sprites/cheerBat.png', {
     frameWidth: 141, frameHeight: 64
@@ -197,6 +203,16 @@ window.BootScene.prototype.create = function () {
   // changing a frameRate there changes the game with no code edits.
   for (i = 0; i < unitKeys.length; i++) {
     this.createAnimations(unitKeys[i], window.UNITS[unitKeys[i]]);
+  }
+
+  // Skins too, named the same way after the skin: 'theyreAlive_idle'.
+  var skinKeys = Object.keys(window.SKINS || {});
+  for (i = 0; i < skinKeys.length; i++) {
+    def = window.SKINS[skinKeys[i]];
+    if (!this.textures.exists(def.sprite)) {
+      this.drawPlaceholderSheet(Object.assign({ color: '#9ff0b0' }, def));
+    }
+    this.createAnimations(skinKeys[i], def);
   }
 
   if (this.loadingFill) {

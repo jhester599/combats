@@ -988,6 +988,20 @@ numbers are TRY ME in `data/casino.js` (`vault`), the rule is
 suns' worth, so it is a bonus on top of five wins, not a new way to get rich.
 What the vault *looks* like is still Lewis's (B37).
 
+**Skins from the Vault (2026-11-02, D86).** Jeff: *"we have a new bat for 'the
+vault' ... they are a skin of the bat bros, which means they play the same as
+bat bros just look different. the name of the bat is, 'they're alive!' (like
+Frankenstein)"*. A **skin** is a new drawing of a bat you already have, and
+nothing else: same cost, health, bite, speed and upgrade colour. Each time the
+vault opens it still pays its 50 blood, **and** hands over the next skin you do
+not have yet, which the bat puts on straight away; the victory screen says
+**VAULT PRIZE: They're Alive!** with its picture. Once every skin is won, an
+opening is blood only, as before. Swap looks with the **LOOK** button on the
+bat's card in the Locker. The skins are `window.SKINS` at the bottom of
+`data/units.js`, handed out in the order listed there; the first is
+**They're Alive!** — the Bat Bros back from the grave, stitched up, brains
+showing, drooling.
+
 ---
 
 ## 9. Look & Sound

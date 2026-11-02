@@ -52,7 +52,12 @@ window.CASINO = {
      is 50 blood" ... "just do blood every time". Every cave WIN fills one
      slot, replays too (practice does not - it pays no suns either). When
      every slot is full the vault opens, pays its prize, and starts filling
-     again. 50 blood is 10 suns' worth: a bonus, not a new way to get rich. */
+     again. 50 blood is 10 suns' worth: a bonus, not a new way to get rich.
+
+     SKINS (Jeff, 2026-11-02): an opening ALSO gives the next skin you do not
+     have yet - a new look for a bat you own, e.g. "They're Alive!" for the
+     Bat Bros. The skins, and the order they come out in, are window.SKINS at
+     the bottom of data/units.js. When there are none left, it is blood. */
   vault: {
     winsToOpen: 5,         // <-- TRY ME: wins per opening
     prize: 50              // <-- TRY ME: blood each time it opens

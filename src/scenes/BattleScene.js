@@ -47,6 +47,7 @@ window.BattleScene.prototype.init = function (data) {
   this.battleOver = false;
   this.playerWon = false;
   this.earnedBat = null;      // the bat this win just earned, if any
+  this.vaultSkin = null;      // the skin this win got out of the vault, if any
   this.sunsWon = 0;           // suns this win paid (the casino)
 };
 
@@ -544,6 +545,7 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
   var cfg = window.CONFIG;
   var b = cfg.buttons;
   var stats = window.UNITS[unitKey];
+  var look = window.Casino.lookOf(unitKey);    // its picture - or its skin's
 
   var x = b.startX + (index * (b.width + b.gap));
   var y = b.y;
@@ -575,20 +577,26 @@ window.BattleScene.prototype.makeDeployButton = function (unitKey, index) {
   for (m = members - 1; m >= 0; m--) {
     var offset = (members > 1) ? (m - ((members - 1) / 2)) * spread : 0;
     var picture = this.add.sprite(
-      centre - offset, y + (b.height / 2) + 12 - (m * 3), stats.sprite
+      centre - offset, y + (b.height / 2) + 12 - (m * 3), look.sprite
     );
     picture.setOrigin(0.5, 1);
-    picture.setScale(this.portraitScaleFor(stats) * shrink);
-    picture.play(unitKey + '_idle');
+    picture.setScale(this.portraitScaleFor(look) * shrink);
+    picture.play(look.animKey + '_idle');
     window.Casino.paintPortrait(picture, unitKey);   // its upgrade colour
     portraits.push(picture);
   }
 
-  var nameText = this.add.text(x + 62, y + 14, stats.name, {
+  var nameText = this.add.text(x + 62, y + 14, look.name, {
     fontFamily: cfg.text.fontFamily,
     fontSize: '15px',
     color: cfg.text.color
   });
+
+  // A long name ("They're Alive!") steps down a size rather than run off
+  // the edge of the button.
+  if (nameText.width > b.width - 66) {
+    nameText.setFontSize(13);
+  }
 
   var costText = this.add.text(x + 62, y + 38, stats.cost + ' energy', {
     fontFamily: cfg.text.fontFamily,
@@ -1280,10 +1288,11 @@ window.BattleScene.prototype.showResultPanel = function (visible) {
     always[i].setDepth(2000);
   }
 
-  // The earned-bat line only shows when showEarnedBat() has filled it in.
+  // The earned-bat line only shows when showPrize() has filled it in: a new
+  // bat from the cave, or a skin from the vault.
   r.sunsText.setVisible(visible && this.sunsWon > 0).setDepth(2000);
 
-  var earned = visible && !!this.earnedBat;
+  var earned = visible && !!(this.earnedBat || this.vaultSkin);
   r.earnedText.setVisible(earned).setDepth(2000);
   r.earnedPicture.setVisible(earned).setDepth(2000);
 
@@ -1324,11 +1333,14 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
   var casinoWasOpen = window.Casino.isOpen();
   this.sunsWon = playerWon ? window.Casino.awardWin(this.levelKey, firstWin) : 0;
 
-  // THE VAULT: every win fills a slot; a full vault pays blood.
-  var vaultPaid = (playerWon && this.sunsWon > 0) ? window.Casino.fillVault(this.levelKey) : 0;
+  // THE VAULT: every win fills a slot; a full vault pays blood - and, while
+  // there are any left to win, a new skin (window.SKINS).
+  var vaultGot = (playerWon && this.sunsWon > 0) ? window.Casino.fillVault(this.levelKey) :
+    { blood: 0, skin: null };
   var vault = window.Casino.vaultProgress();
-  var vaultLine = vaultPaid > 0 ?
-    'THE VAULT OPENED! +' + vaultPaid + ' blood' :
+  var vaultLine = vaultGot.blood > 0 ?
+    'THE VAULT OPENED! +' + vaultGot.blood + ' blood' +
+      (vaultGot.skin ? ' and a new look!' : '') :
     'Vault ' + vault.wins + '/' + vault.of;
 
   this.resultPanel.sunsText.setText('+' + this.sunsWon + ' suns  \u2600  - ' +
@@ -1339,6 +1351,13 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
   this.resultPanel.subtitle.setText(this.resultMessage(playerWon));
   this.showEarnedBat(this.earnedBat);
 
+  // A new bat from the cave has the line to itself; the skin is still in the
+  // vault line, and waiting in the Locker.
+  this.vaultSkin = (!this.earnedBat && vaultGot.skin) ? vaultGot.skin : null;
+  if (this.vaultSkin) {
+    this.showVaultSkin(this.vaultSkin);
+  }
+
   this.showResultPanel(true);
 };
 
@@ -1348,21 +1367,32 @@ window.BattleScene.prototype.endBattle = function (playerWon) {
    unlocks: line in data/levels.js.
    ------------------------------------------------------------------------- */
 window.BattleScene.prototype.showEarnedBat = function (unitKey) {
-  var r = this.resultPanel;
-
   if (!unitKey) {
     return;
   }
 
-  var stats = window.UNITS[unitKey];
-  r.earnedText.setText('NEW BAT EARNED: ' + stats.name + '!');
+  var look = window.Casino.lookOf(unitKey);
+  this.showPrize('NEW BAT EARNED: ' + look.name + '!', look);
+};
 
-  // Stand the picture just left of the words, sized like a deploy button's.
-  r.earnedPicture.setTexture(stats.sprite);
-  r.earnedPicture.play(unitKey + '_idle');
+/* The vault's skin prize: "VAULT PRIZE: They're Alive!" in the same place. */
+window.BattleScene.prototype.showVaultSkin = function (skinKey) {
+  var skin = window.SKINS[skinKey];
+  this.showPrize('VAULT PRIZE: ' + skin.name,
+    { sprite: skin.sprite, anims: skin.anims, animKey: skinKey });
+};
+
+/* Words on the victory panel with a picture just left of them, sized like a
+   deploy button's. 'look' as from Casino.lookOf(). */
+window.BattleScene.prototype.showPrize = function (words, look) {
+  var r = this.resultPanel;
+
+  r.earnedText.setText(words);
+  r.earnedPicture.setTexture(look.sprite);
+  r.earnedPicture.play(look.animKey + '_idle');
   r.earnedPicture.setScale(Math.min(
-    window.CONFIG.buttons.portraitMaxWidth / stats.anims.frameWidth,
-    window.CONFIG.buttons.portraitMaxHeight / stats.anims.frameHeight
+    window.CONFIG.buttons.portraitMaxWidth / look.anims.frameWidth,
+    window.CONFIG.buttons.portraitMaxHeight / look.anims.frameHeight
   ));
   r.earnedPicture.x = r.earnedText.x - (r.earnedText.width / 2) - 32;
 };

@@ -26,7 +26,8 @@
    The caves beaten, the last team picked in the Locker, and since the casino
    (milestone M4, 2026-10-21) your suns, your blood, the potions and fruit in
    your bag, the colour each bat has been upgraded to, and (2026-10-31) how
-   many wins are in the vault. The RULES for
+   many wins are in the vault, and (2026-11-02) the skins the vault has
+   given you and which bats are wearing one. The RULES for
    spending all of that are in src/systems/casino.js; this file only keeps it.
    ========================================================================= */
 
@@ -38,7 +39,7 @@ window.Progress.STORAGE_KEY = 'battleBats.progress.v1';
    loaded by a future version of the game. */
 window.Progress.blank = function () {
   return { beaten: [], team: [], suns: 0, sunsEarned: 0, blood: 0, bag: { potion: 0, fruit: 0 },
-    upgrades: {}, casinoBats: [], vaultWins: 0 };
+    upgrades: {}, casinoBats: [], vaultWins: 0, skins: [], wearing: {} };
 };
 
 /* A whole number, 0 or more - anything else in a save is treated as 0. */
@@ -104,6 +105,24 @@ window.Progress.load = function () {
           state.casinoBats = parsed.casinoBats.filter(function (key, i, list) {
             return typeof key === 'string' && window.UNITS[key] &&
               !!window.UNITS[key].casinoPrice && list.indexOf(key) === i;
+          });
+        }
+
+        // Skins from the vault (2026-11-02) - only ones that still exist -
+        // and which bat is wearing which: only a skin you own, on its own bat.
+        var skins = window.SKINS || {};
+        if (Object.prototype.toString.call(parsed.skins) === '[object Array]') {
+          state.skins = parsed.skins.filter(function (key, i, list) {
+            return typeof key === 'string' &&
+              Object.prototype.hasOwnProperty.call(skins, key) && list.indexOf(key) === i;
+          });
+        }
+        if (parsed.wearing && typeof parsed.wearing === 'object') {
+          Object.keys(parsed.wearing).forEach(function (unitKey) {
+            var skinKey = parsed.wearing[unitKey];
+            if (state.skins.indexOf(skinKey) !== -1 && skins[skinKey].skinOf === unitKey) {
+              state.wearing[unitKey] = skinKey;
+            }
           });
         }
 

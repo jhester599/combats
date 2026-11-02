@@ -8,6 +8,12 @@
    you have earned so far. Tap a bat to put it in your team; tap it again (or
    tap its place in the team) to take it out. FIGHT! goes into the cave.
 
+   A bat you have a SKIN for (from the vault - window.SKINS in data/units.js)
+   has a little LOOK button in its card's corner: tap it to switch between
+   the bat's own drawing and its skins. That is all a skin is - the card,
+   the team place, the deploy button and the bat on the lane all change, and
+   nothing else does.
+
    The rules - which bats you may take, and the team the Locker opens with -
    are src/systems/team.js. This file only draws them and takes the taps.
    The team you pick is remembered (src/systems/progress.js), so next time
@@ -142,9 +148,9 @@ window.LockerScene.prototype.buildCards = function () {
     box.setInteractive({ useHandCursor: true });
     window.Touch.pad(box, l.cardGap / 2);
 
-    self.drawPortrait(key, x, y + 4);
+    var pictures = self.drawPortrait(key, x, y + 4);
 
-    self.add.text(x, y + 18, stats.name, {
+    var nameText = self.add.text(x, y + 18, window.Casino.lookOf(key).name, {
       fontFamily: cfg.text.fontFamily,
       fontSize: '13px',
       color: cfg.text.color
@@ -156,8 +162,16 @@ window.LockerScene.prototype.buildCards = function () {
       color: '#ffd24a'
     }).setOrigin(0.5);
 
+    // LOOK: only on a bat you own a skin for, in the top-right corner (NEW!
+    // steps left to make room). Its own button, on top of the card, so
+    // changing the look never puts the bat in or takes it out.
+    var hasLooks = window.Casino.skinsFor(key).length > 0;
+    if (hasLooks) {
+      self.makeLookButton(key, x + (l.cardWidth / 2) - 22, y - (l.cardHeight / 2) + 14);
+    }
+
     if (key === self.newBat) {
-      self.add.text(x + (l.cardWidth / 2) - 5, y - (l.cardHeight / 2) + 4, 'NEW!', {
+      self.add.text(x + (l.cardWidth / 2) - (hasLooks ? 46 : 5), y - (l.cardHeight / 2) + 4, 'NEW!', {
         fontFamily: cfg.text.fontFamily,
         fontSize: '12px',
         color: '#ffd24a'
@@ -176,28 +190,68 @@ window.LockerScene.prototype.buildCards = function () {
       self.toggle(key);
     });
 
-    self.cards.push({ key: key, box: box, tick: tick });
+    self.cards.push({ key: key, box: box, tick: tick, pictures: pictures, nameText: nameText });
+  });
+};
+
+/* The LOOK button in a card's top-right corner. Each tap moves to the next
+   look and redraws everything. */
+window.LockerScene.prototype.makeLookButton = function (key, x, y) {
+  var cfg = window.CONFIG;
+  var self = this;
+
+  var box = this.add.rectangle(x, y, 38, 22, 0x6e3fa8);
+  box.setStrokeStyle(1, 0xffd24a, 0.9);
+  box.setInteractive({ useHandCursor: true });
+  window.Touch.pad(box, 4);
+
+  this.add.text(x, y, 'LOOK', {
+    fontFamily: cfg.text.fontFamily,
+    fontSize: '10px',
+    color: '#ffd24a'
+  }).setOrigin(0.5);
+
+  box.on('pointerdown', function (pointer, localX, localY, event) {
+    if (event && event.stopPropagation) {
+      event.stopPropagation();          // not a tap on the card underneath
+    }
+    window.Casino.nextLook(key);
+    self.describe(key);
+    self.refresh();
   });
 };
 
 /* A bat's little picture, sized like a deploy button's - one per member for a
-   squad that uses its member's picture (Squad.portraitCount). */
+   squad that uses its member's picture (Squad.portraitCount). Returns the
+   pictures, so a change of LOOK can redraw them. */
 window.LockerScene.prototype.drawPortrait = function (key, x, y) {
   var b = window.CONFIG.buttons;
-  var stats = window.UNITS[key];
   var members = window.Squad.portraitCount(key);
-  var fit = Math.min(b.portraitMaxWidth / stats.anims.frameWidth,
-    b.portraitMaxHeight / stats.anims.frameHeight);
   var shrink = (members > 1) ? b.squadPortraitShrink : 1;
+  var pictures = [];
   var m;
 
   for (m = members - 1; m >= 0; m--) {
     var offset = (members > 1) ? (m - ((members - 1) / 2)) * b.squadPortraitSpread : 0;
-    var picture = this.add.sprite(x - offset, y - (m * 3), stats.sprite).setOrigin(0.5, 1);
-    picture.setScale(fit * shrink);
-    picture.play(key + '_idle');
-    window.Casino.paintPortrait(picture, key);       // its upgrade colour
+    var picture = this.add.sprite(x - offset, y - (m * 3), '__DEFAULT').setOrigin(0.5, 1);
+    this.dressPortrait(picture, key, shrink);
+    pictures.push(picture);
   }
+
+  return pictures;
+};
+
+/* Draw this bat on a picture: in its skin if it wears one, in its upgrade
+   colour, fitted like a deploy button's portrait. */
+window.LockerScene.prototype.dressPortrait = function (picture, key, shrink) {
+  var b = window.CONFIG.buttons;
+  var look = window.Casino.lookOf(key);
+
+  picture.setTexture(look.sprite);
+  picture.play(look.animKey + '_idle');
+  picture.setScale(Math.min(b.portraitMaxWidth / look.anims.frameWidth,
+    b.portraitMaxHeight / look.anims.frameHeight) * (shrink || 1));
+  window.Casino.paintPortrait(picture, key);       // its upgrade colour
 };
 
 /* -------------------------------------------------------------------------
@@ -226,9 +280,10 @@ window.LockerScene.prototype.describe = function (key) {
     return;
   }
 
-  var stats = window.UNITS[key];
+  var look = window.Casino.lookOf(key);
+  var more = window.Casino.skinsFor(key).length ? '   (tap LOOK to change how it looks)' : '';
   this.infoText.setColor('#ffffff');
-  this.infoText.setText(stats.name + ':  ' + (stats.blurb || ''));
+  this.infoText.setText(look.name + ':  ' + (look.blurb || '') + more);
 };
 
 /* Redraw the team places, the ticks and the FIGHT button. */
@@ -249,15 +304,10 @@ window.LockerScene.prototype.refresh = function () {
       return;
     }
 
-    var stats = window.UNITS[key];
     slot.box.fillColor = l.pickedColor;
-    slot.portrait.setTexture(stats.sprite);
-    slot.portrait.play(key + '_idle');
-    window.Casino.paintPortrait(slot.portrait, key);
-    slot.portrait.setScale(Math.min(b.portraitMaxWidth / stats.anims.frameWidth,
-      b.portraitMaxHeight / stats.anims.frameHeight));
+    self.dressPortrait(slot.portrait, key);
     slot.portrait.setVisible(true);
-    slot.label.setText(stats.name);
+    slot.label.setText(window.Casino.lookOf(key).name);
     slot.label.setAlpha(1);
   });
 
@@ -265,6 +315,11 @@ window.LockerScene.prototype.refresh = function () {
     var picked = self.team.indexOf(card.key) !== -1;
     card.box.fillColor = picked ? l.pickedColor : b.readyColor;
     card.tick.setVisible(picked);
+
+    // Its look may have just changed (the LOOK button).
+    var shrink = (card.pictures.length > 1) ? b.squadPortraitShrink : 1;
+    card.pictures.forEach(function (picture) { self.dressPortrait(picture, card.key, shrink); });
+    card.nameText.setText(window.Casino.lookOf(card.key).name);
   });
 
   // FIGHT! only lights up for a team you are allowed to take in.
