@@ -90,12 +90,30 @@ window.CASINO = {
   spinCost: 15,            // <-- TRY ME
   prizes: [
     { name: 'Nothing!',        potion: 0, fruit: 0, weight: 45 },
-    { name: '1 fruit',         potion: 0, fruit: 1, weight: 25 },
-    { name: '1 potion',        potion: 1, fruit: 0, weight: 17 },
-    { name: '2 fruit',         potion: 0, fruit: 2, weight: 7 },
-    { name: '2 potions',       potion: 2, fruit: 0, weight: 4 },
-    { name: 'JACKPOT! 3 + 3',  potion: 3, fruit: 3, weight: 2 }
+    { name: '1 fruit',         potion: 0, fruit: 1, weight: 25, reel: 'scoutBat' },
+    { name: '1 potion',        potion: 1, fruit: 0, weight: 17, reel: 'bruteBat' },
+    { name: '2 fruit',         potion: 0, fruit: 2, weight: 7,  reel: 'archerBat' },
+    { name: '2 potions',       potion: 2, fruit: 0, weight: 4,  reel: 'necroBat' },
+    { name: 'JACKPOT! 3 + 3',  potion: 3, fruit: 3, weight: 2,  reel: 'ghostBat' }
   ],
+
+  /* --- THE SLOT MACHINE: bats on the reels -------------------------------
+     Jeff, 2026-11-02: "on the reels we should include the different bats
+     (instead of fruit, 7, etc.)". Every prize above but Nothing has a  reel:
+     bat, and THREE of that bat in a row is that prize - so the commonest
+     prize is three Scouts and the jackpot is three Ghost Bats. Swap any bat
+     for another (any key in data/units.js that is not a bug), but give each
+     prize a different one. The reels are just those bats.
+
+     The odds are still the weights above, and only them: the machine picks
+     the prize FIRST (Casino.spin) and then the reels are made to land on it
+     (Casino.reelsFor). A Nothing lands on any line that is NOT three of a
+     kind, every such line equally likely - so a near-miss turns up only as
+     often as luck makes it, never on purpose. */
+  slot: {
+    spinSeconds: 1.1,      // how long the first reel spins
+    stopGap: 0.45          // each next reel stops this much later
+  },
 
   /* --- THE BAG -----------------------------------------------------------
      Potions and fruit you own are saved, and come with you into every cave.

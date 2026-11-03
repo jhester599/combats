@@ -47,7 +47,8 @@ window.GAME_CONFIG = {
     window.MenuScene,     // title screen, then ->
     window.LockerScene,   // pick your team (only when there is a choice), then ->
     window.BattleScene,   // the game
-    window.CasinoScene    // spend your suns (from the title screen)
+    window.CasinoScene,   // spend your suns (from the title screen)
+    window.SlotScene      // the casino's slot machine, bats on the reels
   ]
 };
 

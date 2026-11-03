@@ -8,8 +8,9 @@
      buy a potion          bats you can only get   each bat you own climbs
      buy a fruit           here, and a bat spin    the colour ladder
      swap suns for blood   to win one
-     spin for potions
-       and fruit
+     the SLOT MACHINE
+       (its own screen,
+       SlotScene.js)
 
    This screen only DRAWS things and passes taps on. Every rule - prices, the
    gamble, what you can afford - is in src/systems/casino.js, and the numbers
@@ -137,16 +138,12 @@ window.CasinoScene.prototype.buildShop = function (left, c) {
       });
   });
 
-  this.makeButton(x, 352, w, 62, 'SPIN for potions\nand fruit - ' + c.spinCost + ' ☀', function () {
-    var prize = window.Casino.spin(Math.random);
-    if (!prize) {
-      self.say('Not enough suns to spin.', false);
-    } else if (!prize.potion && !prize.fruit) {
-      self.say('The wheel says... nothing this time!', false);
-    } else {
-      self.say('The wheel says... ' + prize.name + '!', true);
-    }
-  }, 0x5a2a6e);
+  // The gamble has its own screen now: a slot machine with bats on the
+  // reels (src/scenes/SlotScene.js, 2026-11-02).
+  this.makeButton(x, 352, w, 62, 'SLOT MACHINE  \u25B6\npotions and fruit - ' + c.spinCost + ' ☀ a spin',
+    function () {
+      self.scene.start('SlotScene', { then: self.then, batsBefore: self.batsBefore });
+    }, 0x5a2a6e);
 
   this.add.text(x, 402, 'Up to ' + c.maxPerBattle + ' of each come into every battle.', {
     fontFamily: window.CONFIG.text.fontFamily, fontSize: '13px', color: '#8f82b8'

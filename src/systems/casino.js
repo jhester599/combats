@@ -222,6 +222,57 @@ window.Casino.spin = function (roll) {
 };
 
 /* -------------------------------------------------------------------------
+   THE SLOT MACHINE (2026-11-02) - the same spin, shown on three reels of bats.
+   The prize is picked first by spin(); these only say what the reels show.
+   ------------------------------------------------------------------------- */
+
+/* The bats on the reels: one per prize that has a reel: bat, in prize order. */
+window.Casino.reelBats = function () {
+  return window.CASINO.prizes.filter(function (p) { return !!p.reel; })
+    .map(function (p) { return p.reel; });
+};
+
+/* What the three reels land on for this prize: three of its bat for a win.
+   For Nothing, one line picked from EVERY line that is not three of a kind,
+   each as likely as the others - so a near-miss is luck, never a trick.
+   'roll' as for spin(); one roll is used. */
+window.Casino.reelsFor = function (prize, roll) {
+  var bats = window.Casino.reelBats();
+  var n = bats.length;
+
+  if (prize.reel) {
+    return [prize.reel, prize.reel, prize.reel];
+  }
+
+  // Number the losing lines 0 .. n^3 - n - 1, skipping the n winners.
+  var losers = (n * n * n) - n;
+  var pick = Math.min(Math.floor(roll() * losers), losers - 1);
+  var line = 0;
+
+  for (line = 0; line < n * n * n; line++) {
+    var a = Math.floor(line / (n * n));
+    var b = Math.floor(line / n) % n;
+    var c = line % n;
+
+    if (a === b && b === c) {
+      continue;                     // a winner - never shown for a loss
+    }
+    if (pick === 0) {
+      return [bats[a], bats[b], bats[c]];
+    }
+    pick -= 1;
+  }
+
+  return [bats[0], bats[1], bats[0]];   // not reached
+};
+
+/* How likely each prize is, as a whole-number percent, for the paytable. */
+window.Casino.prizeChance = function (prize) {
+  var total = window.CASINO.prizes.reduce(function (sum, p) { return sum + p.weight; }, 0);
+  return Math.round((prize.weight / total) * 100);
+};
+
+/* -------------------------------------------------------------------------
    CASINO BATS - bats with a casinoPrice in data/units.js, sold for blood
    ------------------------------------------------------------------------- */
 window.Casino.casinoBats = function () {

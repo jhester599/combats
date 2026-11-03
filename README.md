@@ -190,7 +190,10 @@ RETRY stop there first, with a big button on to the battle — and it has a
 button on the title screen:
 
 - **Shop** — buy potions and fruit, or swap suns for **blood**.
-- **Spin** — gamble suns for potions and fruit. A spin only ever costs the spin.
+- **Slot machine** — gamble suns for potions and fruit on three reels of
+  **bats**: three of a bat in a row wins that bat's prize (three Scouts is a
+  fruit, three Ghost Bats is the jackpot). The machine shows the real odds,
+  and a spin only ever costs the spin. Its own screen: `src/scenes/SlotScene.js`.
 - **Casino bats** — bats you can *only* get here, bought (or won in a bat spin)
   with blood. The first is the **Ghost Bat** (300 blood): it never fights,
   stands far back, and sends out small ghosts that share its health. To make
@@ -387,7 +390,8 @@ src/
     MenuScene.js      the title screen: Lewis's logo, cave pictures, flying bats, your lineup
     LockerScene.js    pick your team of three before a cave
     BattleScene.js    the battle, the UI, win/lose
-    CasinoScene.js    spend suns and blood: shop, spins, casino bats, upgrades
+    CasinoScene.js    spend suns and blood: shop, casino bats, upgrades
+    SlotScene.js      the casino's slot machine, with bats on the reels
   systems/
     economy.js        energy goes up, spending takes it down
     spawner.js        turns a wave list into timed spawns

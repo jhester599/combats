@@ -473,6 +473,47 @@ check('a real skin, worn by its bat, loads',
   loadRaw(JSON.stringify({ beaten: [], skins: ['theyreAlive'], wearing: { batBros: 'theyreAlive' } })).wearing.batBros,
   'theyreAlive');
 
+/* THE SLOT MACHINE (2026-11-02): bats on the reels. The prize is picked
+   first; the reels only show it - and a loss is never a fake near-miss. */
+console.log('\nthe slot machine');
+var reelBats = W.Casino.reelBats();
+var winners = C.prizes.filter(function (p) { return !!p.reel; });
+check('every prize but Nothing has a bat on the reels', winners.length, C.prizes.length - 1);
+check('...and Nothing has none', C.prizes.filter(function (p) { return !p.reel; }).length, 1);
+check('every reel bat is a real bat of yours', reelBats.every(function (k) {
+  return !!W.UNITS[k] && !W.UNITS[k].enemy;
+}), true);
+check('no two prizes share a bat (three of a bat means ONE prize)',
+  reelBats.filter(function (k, i) { return reelBats.indexOf(k) === i; }).length, reelBats.length);
+winners.forEach(function (p) {
+  var line = W.Casino.reelsFor(p, rolls([0.5]));
+  check(p.name + ' lands on three ' + p.reel, line.join(','), [p.reel, p.reel, p.reel].join(','));
+});
+
+var nothing = C.prizes.filter(function (p) { return !p.reel; })[0];
+var n = reelBats.length;
+var losers = (n * n * n) - n;
+var seen = {};
+var triples = 0;
+var pairs = 0;
+for (var li = 0; li < losers; li++) {
+  var lose = W.Casino.reelsFor(nothing, rolls([(li + 0.5) / losers]));
+  if (lose[0] === lose[1] && lose[1] === lose[2]) { triples++; }
+  if (lose[0] === lose[1] && lose[1] !== lose[2]) { pairs++; }
+  seen[lose.join(',')] = true;
+}
+check('a loss is never three of a kind', triples, 0);
+check('every losing line can turn up', Object.keys(seen).length, losers);
+check('...each exactly as often as the others (no near-miss on purpose)',
+  pairs, n * (n - 1));          // two-alike-then-different: n bats x (n - 1) others
+check('a roll of exactly 1 still gives a losing line',
+  W.Casino.reelsFor(nothing, rolls([1])).length, 3);
+check('the paytable odds add up to about 100%', Math.abs(C.prizes.reduce(function (sum, p) {
+  return sum + W.Casino.prizeChance(p);
+}, 0) - 100) <= 2, true);
+check('the jackpot is the rarest line',
+  W.Casino.prizeChance(C.prizes[C.prizes.length - 1]) <= Math.min.apply(null, winners.map(W.Casino.prizeChance)), true);
+
 /* Put things back - the stand-ins must not leak. */
 delete W.UNITS.testLuckyBat;
 delete W.UNITS.testDiceBat;

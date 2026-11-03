@@ -17,7 +17,7 @@ is a line of text. Ideas, roughly from biggest difference to smallest:
 
 | # | Idea | What it would be | Needs |
 |---|---|---|---|
-| C1 | **A real slot machine** | The spin becomes three spinning reels of ☀ / potion / fruit / skull symbols, a lever to pull, chasing lights round the edge, and a coin shower on a jackpot. | Code only (Lewis's symbols later, B34) |
+| C1 | ✅ **A real slot machine** — **BUILT 2026-11-02 (D87)** | Three spinning reels of **bats** (Jeff: *"the different bats (instead of fruit, 7, etc.)"*), a lever to pull, chasing lights round the edge, a paytable with the real odds, and a shower of suns on a jackpot. `src/scenes/SlotScene.js`. | Done |
 | C2 | **A neon sign** | "THE CASINO" in glowing letters with a couple of flickering bulbs, and a light-bulb border round the screen. | Code only |
 | C3 | **Numbers that move** | Suns count down when you spend; a bought potion flies into your bag; blood drips into its counter. | Code only |
 | C4 | **Casino bats in the spotlight** | Each casino bat on a pedestal under a spotlight; ones you don't own are a silhouette. The bat spin becomes a curtain that opens on a *"Who's that bat?"* reveal. | Code only |
@@ -27,7 +27,7 @@ is a line of text. Ideas, roughly from biggest difference to smallest:
 | C8 | **Little icons** | A sun, a blood drop, a potion and a fruit, instead of words, everywhere the game shows money or items. | Lewis draws them (B34) |
 | C9 | **More casino bats** | Jeff: *"there will be several potential new bats at the casino."* The Ghost Bat is the first (D82). Adding one is a block in `data/units.js` with a `casinoPrice`. | Lewis invents them (B35) |
 
-**Suggested first casino PR:** C1, C2, C3 and C5 — they need no new art and they
+**Suggested next:** C2, C3 and C5 (C1 is built) — they need no new art and they
 change how the casino *feels* the most. C7 and C8 drop in whenever Lewis's
 drawings arrive.
 
