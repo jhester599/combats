@@ -954,6 +954,18 @@ beat a cave  ->  SUNS  ->  the casino  ->  buy POTIONS and FRUIT
   (45 in 100) up to a 3 + 3 *JACKPOT* (2 in 100). On average it is worth about
   86% of the shop, so it is a gamble and not a better shop. **A spin only ever
   costs the spin** — nothing you own is ever bet (B22's charm, kept).
+- **The slot machine (2026-11-02, D87):** the spin is played on its own
+  screen, a slot machine with **bats on the reels** (Jeff: *"on the reels we
+  should include the different bats (instead of fruit, 7, etc.)"*). Three of a
+  bat in a row is that bat's prize: three **Scouts** a fruit, three **Brutes**
+  a potion, three **Archers** 2 fruit, three **Necrobatcers** 2 potions, and
+  three **Ghost Bats** the jackpot — the rarer the prize, the rarer the bat.
+  Anything else is nothing. A lever, chasing lights, and a shower of suns on
+  the jackpot; the paytable shows every line's real chance. The wheel above
+  still decides the prize and pays it first, and the reels land on it, so the
+  odds are exactly the same — and a losing line is any line that is not three
+  of a kind, all equally likely, so a near-miss is never on purpose. Which bat
+  pays what is the `reel:` on each prize in `data/casino.js`.
 - **The bag:** potions and fruit you own are saved and come into every real
   cave, at most **3 of each** per battle so a hoard cannot switch a cave off.
   What you use is gone. Practice levels keep their own handout and never touch

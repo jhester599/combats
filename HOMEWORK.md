@@ -41,7 +41,7 @@ Here they are (the full list, with pictures in words, is in `ROADMAP.md`):
 
 | | Idea |
 |---|---|
-| **C1** | 🎰 A **real slot machine** — spinning reels, a lever, flashing lights, a coin shower on a jackpot |
+| **C1** | 🎰 A **real slot machine** — ✅ **BUILT!** Bats on the reels: three Scouts = a fruit … three Ghost Bats = the JACKPOT. Want different bats paying different prizes? Tell Dad. |
 | **C2** | 💡 A **neon sign** that says THE CASINO, with flickering bulbs |
 | **C3** | 🔢 **Numbers that move** — suns counting down, potions flying into your bag |
 | **C4** | 🔦 **Casino bats in a spotlight**, and a *"Who's that bat?"* curtain for the bat spin |
